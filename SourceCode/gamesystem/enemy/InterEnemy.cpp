@@ -41,7 +41,7 @@ bool InterEnemy::Collision() {
 
 	Box box;
 	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
-	box.scale = { 6.5f,4.5f,8.5f };
+	box.scale = { 8.5f,5.5f,8.5f };
 
 	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 5)) {
 		m_EffectArgment = true;

@@ -23,7 +23,7 @@ PlayerSoul::PlayerSoul() {
 void PlayerSoul::Initialize() {
 	//DushEffecttexture->SetRotation({ 90,0,0 });
 	m_scale = { 0.0f,0.0f,0.0f };
-	m_Radius.x = 1.2f;
+	m_Radius.x = 1.4f;
 	m_Radius.y = 0.8f;
 	m_Effect = false;
 }
