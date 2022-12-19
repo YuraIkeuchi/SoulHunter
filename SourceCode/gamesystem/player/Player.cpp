@@ -54,7 +54,7 @@ void Player::StateInitialize() {
 	m_HP = 5;
 	//プレイヤー関係
 	m_OldPlayerPos = { 0, 0, 0 };
-	m_Radius.x = 0.8f * m_Scale.x;
+	m_Radius.x = 1.0f * m_Scale.x;
 	m_Radius.y = 0.7f * m_Scale.y;
 	m_Jump = false;
 	m_AddPower = 0;
@@ -197,22 +197,44 @@ void Player::SwordUpdate() {
 //プレイヤーの移動
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
-	if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
-		//動きやジャンプ
-		if (input->LeftTiltStick(input->Right) && (!m_Dush) && (!m_Special) && (m_Alive)) {
-			MoveCommon(0.3f, Right, 90.0f);
-		
-		}
+	//地面にいる間は攻撃モーションで動き止まる
+	if (m_AddPower == 0.0f) {
+		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
+			//動きやジャンプ
+			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+				MoveCommon(0.3f, Right, 90.0f);
 
-		if (input->LeftTiltStick(input->Left) && (!m_Dush) && (!m_Special) && (m_Alive)) {
-			MoveCommon(-0.3f, Left, 270.0f);
-			
+			}
+
+			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+				MoveCommon(-0.3f, Left, 270.0f);
+
+			}
+			particletex->SetParticleBreak(true);
 		}
-		particletex->SetParticleBreak(true);
+		else {
+			m_Velocity = 0.0f;
+			m_FoodParticleCount = 0;
+		}
 	}
 	else {
-		m_Velocity = 0.0f;
-		m_FoodParticleCount = 0;
+		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal)) {
+			//動きやジャンプ
+			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+				MoveCommon(0.3f, Right, 90.0f);
+
+			}
+
+			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+				MoveCommon(-0.3f, Left, 270.0f);
+
+			}
+			particletex->SetParticleBreak(true);
+		}
+		else {
+			m_Velocity = 0.0f;
+			m_FoodParticleCount = 0;
+		}
 	}
 	m_Position.x += m_Velocity;
 	particletex->SetParticleBreak(true);
@@ -346,7 +368,7 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(0, 2);
+			PlayerAnimetion(0, 4);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -359,11 +381,12 @@ void Player::PlayerAttack() {
 	if (m_Attack) {
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 8) {
+			
 			m_AttackArgment = true;
 		}
 		m_AttackTimer++;
 
-		if (m_AttackTimer >= 10) {
+		if (m_AttackTimer >= 20) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -641,20 +664,20 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("JumpCount:%d", m_WingDeleteCount);
-	//ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
-	//ImGui::Text("SwordFrame:%f", m_SwordFrame);
-	//ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
-	///*if (ImGui::Button("Add", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
-	//}
-	//if (ImGui::Button("Sub", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
-	//}*/
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("JumpCount:%d", m_AttackTimer);
+	ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
+	ImGui::Text("SwordFrame:%f", m_SwordFrame);
+	ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
+	/*if (ImGui::Button("Add", ImVec2(90, 50))) {
+		m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
+	}
+	if (ImGui::Button("Sub", ImVec2(90, 50))) {
+		m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
+	}*/
+	ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {

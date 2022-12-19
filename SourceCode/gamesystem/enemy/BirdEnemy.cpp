@@ -30,7 +30,7 @@ bool BirdEnemy::Initialize() {
 	//“G‚ÌŽí—Þ
 	m_EnemyType = Bird;
 	//X•ûŒü
-	m_Radius.x = 0.8f * 2.7f;
+	m_Radius.x = 1.0f * 2.7f;
 	//‰º•ûŒü
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 5;
