@@ -1,0 +1,1040 @@
+#include "Block.h"
+#include "imgui.h"
+#include "ModelManager.h"
+//読み込み
+Block::Block() {
+	IKEModel* modelNormalBlock_;
+	modelNormalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
+	//マップチップ用のオブジェクトの初期化
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			IKEObject3d* objNormalBlock_[map_max_y][map_max_x];
+			objNormalBlock_[y][x] = new IKEObject3d();
+			objNormalBlock_[y][x] = IKEObject3d::Create();
+			objNormalBlock_[y][x]->SetModel(modelNormalBlock_);
+			objNormalBlock_[y][x]->SetScale({ 0.7f,1.2f,3.0f });
+			objNormalBlock_[y][x]->SetTiling({ 5.0f });
+			objNormalBlock_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			objNormalBlock[y][x].reset(objNormalBlock_[y][x]);
+		}
+	}
+	modelNormalBlock.reset(modelNormalBlock_);
+
+	IKEModel* modelInBlock_;
+	modelInBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::InBlock);
+	//マップチップ用のオブジェクトの初期化
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			IKEObject3d* objInBlock_[map_max_y][map_max_x];
+			objInBlock_[y][x] = new IKEObject3d();
+			objInBlock_[y][x] = IKEObject3d::Create();
+			objInBlock_[y][x]->SetModel(modelInBlock_);
+			objInBlock_[y][x]->SetScale({ 0.8f,2.0f,3.0f });
+			objInBlock_[y][x]->SetTiling({ 5.0f });
+			objInBlock_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			objInBlock[y][x].reset(objInBlock_[y][x]);
+		}
+	}
+	modelInBlock.reset(modelInBlock_);
+	IKEModel* modelToge_;
+	modelToge_ = ModelManager::GetInstance()->GetModel(ModelManager::Toge);
+
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			IKEObject3d* objToge_[map_max_y][map_max_x];
+			objToge_[y][x] = new IKEObject3d();
+			objToge_[y][x] = IKEObject3d::Create();
+			objToge_[y][x]->SetModel(modelToge_);
+			objToge_[y][x]->SetScale({ 0.6f,1.0f,0.6f });
+			objToge_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			objToge[y][x].reset(objToge_[y][x]);
+		}
+	}
+	modelToge.reset(modelToge_);
+	
+	IKEModel* modelGoalBlock_;
+	//modelWhiteBlock = ModelManager::GetInstance()->GetModel(ModelManager::WhiteBlock);
+	modelGoalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
+	
+	modelGoalBlock.reset(modelGoalBlock_);
+}
+//初期化
+void Block::Initialize(std::vector<std::vector<int>>& map, int mapNumber,int StageNumber) {
+
+	stagemap = map;
+	//ステージによってマップの読み込みが変わる
+	if (StageNumber == Map1) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage.csv");
+	}
+	else if (StageNumber == Map2) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage_second.csv");
+	}
+	else if (StageNumber == Map3) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage_third.csv");
+	}
+	else if (StageNumber == Map4) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage_fourth.csv");
+	}
+	else if (StageNumber == Map5) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage_fifth.csv");
+	}
+	else if (StageNumber == Map6) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firststage_sixth.csv");
+	}
+	else if (StageNumber == BossMap) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/firstboss.csv");
+	}
+	else if (StageNumber == TutoRial) {
+
+		MapChip::LoadCsvMap(stagemap, "Resources/csv/tutorial.csv");
+	}
+	MapCreate(0,StageNumber);
+}
+//更新
+void Block::Update(XMFLOAT3& pos) {
+	//ステージごとに違う
+		//各ブロックのアップデート
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			m_Distance[y][x].x = pos.x - objNormalBlock[y][x]->GetPosition().x;
+			m_Distance[y][x].x = fabs(m_Distance[y][x].x);
+			m_Distance[y][x].y = pos.y - objNormalBlock[y][x]->GetPosition().y;
+			m_Distance[y][x].y = fabs(m_Distance[y][x].y);
+			if ((m_Distance[y][x].x <= 80.0f && m_Distance[y][x].y <= 80.0f) && (objNormalBlock[y][x]->GetPosition().z != 1000.0f)) {
+					objNormalBlock[y][x]->Update();
+			}
+
+			m_InDistance[y][x].x = pos.x - objInBlock[y][x]->GetPosition().x;
+			m_InDistance[y][x].x = fabs(m_InDistance[y][x].x);
+			m_InDistance[y][x].y = pos.y - objInBlock[y][x]->GetPosition().y;
+			m_InDistance[y][x].y = fabs(m_InDistance[y][x].y);
+			if ((m_InDistance[y][x].x <= 80.0f && m_InDistance[y][x].y <= 80.0f) && (objInBlock[y][x]->GetPosition().z != 1000.0f)) {
+				objInBlock[y][x]->Update();
+			}
+
+			m_TogeDistance[y][x].x = pos.x - objToge[y][x]->GetPosition().x;
+			m_TogeDistance[y][x].x = fabs(m_TogeDistance[y][x].x);
+			m_TogeDistance[y][x].y = pos.y - objToge[y][x]->GetPosition().y;
+			m_TogeDistance[y][x].y = fabs(m_TogeDistance[y][x].y);
+			if ((m_TogeDistance[y][x].x <= 60.0f && m_TogeDistance[y][x].y <= 60.0f) && objToge[y][x]->GetPosition().z != 1000.0f) {
+				objToge[y][x]->Update();
+			}
+		}
+	}
+}
+//描画
+void Block::Draw(XMFLOAT3& pos) {
+	//float l_MapPosX;
+	//float l_MapPosY;
+	//ImGui::Begin("Game");
+	///*ImGui::SliderFloat("pos.l_MapPosX", &pos.l_MapPosX, 860, -860);
+	//ImGui::SliderFloat("pos.l_MapPosY", &pos.l_MapPosY, 860, -860);*/
+	///*ImGui::Text("LeftGoal::%d", m_Left_Goal);
+	//ImGui::Text("RightGoal::%d", m_Right_Goal);
+	//ImGui::Text("DownGoal::%d", m_Down_Goal);
+	//ImGui::Text("UpGoal::%d", m_Up_Goal);*/
+	//ImGui::Text("HitDir::%d", m_HitDown);
+	////ImGui::Text("Interval::%d", Interval);
+	//ImGui::End();
+	IKEObject3d::PreDraw();
+	//マップチップの描画
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			if ((m_Distance[y][x].x <= 80.0f && m_Distance[y][x].y <= 80.0f) && (objNormalBlock[y][x]->GetPosition().z != 1000.0f)) {
+				if (m_AirType[y][x] == NoAir && m_GoalType[y][x] == NoGoal) {
+					objNormalBlock[y][x]->Draw();
+				}
+			}
+
+			if ((m_InDistance[y][x].x <= 80.0f && m_InDistance[y][x].y <= 80.0f) && (objInBlock[y][x]->GetPosition().z != 1000.0f)) {
+				objInBlock[y][x]->Draw();
+			}
+
+			if ((m_TogeDistance[y][x].x <= 60.0f && m_TogeDistance[y][x].y <= 60.0f) && objToge[y][x]->GetPosition().z != 1000.0f) {
+				objToge[y][x]->Draw();
+			}
+		}
+	}
+}
+//ブロック配置
+void Block::MapCreate(int mapNumber, int StageNumber)
+{
+	
+	for (int y = 0; y < map_max_y; y++) {//(yが15)
+		for (int x = 0; x < map_max_x; x++) {//(xが59)
+
+			if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 1)
+			{
+				//位置と大きさの変更
+				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
+				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 7.5 });
+			}
+
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 2)
+			{
+				m_AirType[y][x] = AirBlock;
+				//位置と大きさの変更
+				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
+				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 0 });
+			}
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 3 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 4 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 5 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 6) {
+				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 5 });
+				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 3) {
+					m_GoalType[y][x] = DownGoal;
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 4) {
+					m_GoalType[y][x] = UpGoal;
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 5) {
+					m_GoalType[y][x] = RightGoal;
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 6) {
+					m_GoalType[y][x] = LeftGoal;
+				}
+			}
+
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 7 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 8 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 9 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 10)
+			{
+				//位置と大きさの変更
+				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
+				objToge[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 0 });
+				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 7) {
+					objToge[y][x]->SetRotation({ 0.0f,0.0f,0.0f });
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 8) {
+					objToge[y][x]->SetRotation({ 0.0f,0.0f,180.0f });
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 9) {
+					objToge[y][x]->SetRotation({ 0.0f,0.0f,270.0f });
+				}
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 10) {
+					objToge[y][x]->SetRotation({ 0.0f,0.0f,90.0f });
+				}
+			}
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 11) {
+				objInBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 7.5 });
+			}
+
+		/*	else {
+				objNormalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objToge[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objAirBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objLeftGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objRightGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objUpGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+				objDownGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			}*/
+		}
+	}
+}
+//プレイヤーとブロック当たり判定
+bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
+	const XMFLOAT3& old_pos, bool& is_jump, float& addPower)
+{
+	if (addPower != 0.0f) {
+		m_HitDown = false;
+	}
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0.0f;
+	float l_MapPosY = 0.0f;
+	//Radius
+	float l_RadiusX = 2.5f;
+	float l_RadiusUp = 2.5f;
+	float l_RadiusDown = 2.8f;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+			
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						m_HitDown = true;
+						pos.y = l_MapPosY + l_RadiusUp + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						m_HitDown = false;
+						pos.y = l_MapPosY - l_RadiusDown - radius.y;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+						}
+						else
+						{
+							addPower = 0;
+						}
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						m_HitDown = false;
+						//touchLeft = true;
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_jump == false)
+						{
+							//touchLeft = false;
+							l_IsHit = true;
+						}
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_HitDown = false;
+						//touchRight = true;
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_jump == false)
+						{
+							//touchRight = false;
+							l_IsHit = true;
+						}
+					}
+				}
+			}
+
+			//ゴールとの当たり判定
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 3 && !m_Down_Goal && m_GoalType[h][w] == DownGoal)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+			
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
+						//l_IsHit = true;
+						m_Down_Goal = true;
+						//cameraframe = 0.0f;
+					}
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Down_Goal = true;
+							//cameraframe = 0.0f;
+						}
+						else
+						{
+							//addPower = 0;
+						}
+					}
+					else {
+						m_Down_Goal = false;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+				{
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						m_Down_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Down_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_Down_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Down_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else {
+						m_Down_Goal = false;
+					}
+				}
+			}
+
+			//ゴールとの当たり判定
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 4 && !m_Up_Goal && m_GoalType[h][w] == UpGoal)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
+						//l_IsHit = true;
+						m_Up_Goal = true;
+						//cameraframe = 0.0f;
+					}
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Up_Goal = true;
+							//cameraframe = 0.0f;
+						}
+						else
+						{
+							//addPower = 0;
+						}
+					}
+					else {
+						m_Up_Goal = false;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+				{
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						m_Up_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Up_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_Up_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Up_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else {
+						m_Up_Goal = false;
+					}
+				}
+			}
+
+			//ゴールとの当たり判定
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 5 && !m_Right_Goal && m_GoalType[h][w] == RightGoal)
+			{
+			l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+			l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+		
+			if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+			{
+				if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+				{
+					//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
+					//l_IsHit = true;
+					m_Right_Goal = true;
+					//cameraframe = 0.0f;
+				}
+				else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+				{
+					//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
+					if (is_jump == false)
+					{
+						//l_IsHit = true;
+						m_Right_Goal = true;
+						//cameraframe = 0.0f;
+					}
+					else
+					{
+						//addPower = 0;
+					}
+				}
+				else {
+					m_Right_Goal = false;
+				}
+			}
+			if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+			{
+				if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+				{
+					m_Right_Goal = true;
+					//cameraframe = 0.0f;
+					//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
+					if (is_jump == false)
+					{
+						//l_IsHit = true;
+						m_Right_Goal = true;
+						//cameraframe = 0.0f;
+					}
+				}
+				else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+				{
+					m_Right_Goal = true;
+					//cameraframe = 0.0f;
+					//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
+					if (is_jump == false)
+					{
+						l_IsHit = true;
+						m_Right_Goal = true;
+						//cameraframe = 0.0f;
+					}
+				}
+				else {
+					m_Right_Goal = false;
+				}
+			}
+			}
+
+			//ゴールとの当たり判定
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 6 && !m_Left_Goal && m_GoalType[h][w] == LeftGoal)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+			
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
+						//l_IsHit = true;
+						m_Left_Goal = true;
+						//cameraframe = 0.0f;
+					}
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Left_Goal = true;
+							//cameraframe = 0.0f;
+						}
+						else
+						{
+							//addPower = 0;
+						}
+					}
+					else {
+						m_Left_Goal = false;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+				{
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						m_Left_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							//l_IsHit = true;
+							m_Left_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_Left_Goal = true;
+						//cameraframe = 0.0f;
+						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+							m_Left_Goal = true;
+							//cameraframe = 0.0f;
+						}
+					}
+					else {
+						m_Left_Goal = false;
+					}
+				}
+			}
+
+
+			//棘との当たり判定
+			else if ((MapChip::GetChipNum(w, h, stagemap[0]) == 7 || MapChip::GetChipNum(w, h, stagemap[0]) == 8 || 
+			MapChip::GetChipNum(w, h, stagemap[0]) == 9 || MapChip::GetChipNum(w, h, stagemap[0]) == 10)
+			&& objToge[h][w]->GetPosition().z != 1000.0f)
+			{
+			l_MapPosX = objToge[h][w]->GetPosition().x;
+			l_MapPosY = objToge[h][w]->GetPosition().y;
+
+			if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+			{
+				//下の当たり判定
+				if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+				{
+					m_ThornDir = DownThorn;
+					m_ThornHit = true;
+					pos.y = l_MapPosY + l_RadiusUp + radius.y;
+					l_IsHit = true;
+				}
+				//上の当たり判定
+				else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
+				{
+					m_ThornDir = UpThorn;
+					m_ThornHit = true;
+					pos.y = l_MapPosY - l_RadiusDown - radius.y;
+					if (is_jump == false)
+					{
+						l_IsHit = true;
+					}
+					else
+					{
+						//addPower = 0;
+					}
+				}
+			}
+			if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+			{
+				//左の当たり判定
+				if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+				{
+					m_ThornDir = LeftThorn;
+					m_ThornHit = true;
+					//hit = 3;
+					//touchLeft = true;
+					pos.x = l_MapPosX + l_RadiusX + radius.x;
+					if (is_jump == false)
+					{
+						//touchLeft = false;
+						m_ThornHit = true;
+						l_IsHit = true;
+					}
+				}
+				//右の当たり判定
+				else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+				{
+					m_ThornDir = RightThorn;
+					m_ThornHit = true;
+					//hit = 4;
+					//touchRight = true;
+					pos.x = l_MapPosX - l_RadiusX - radius.x;
+					if (is_jump == false)
+					{
+						//touchRight = false;
+						m_ThornHit = true;
+						l_IsHit = true;
+					}
+				}
+			}
+			}
+
+		}
+	}
+
+	return l_IsHit;
+}
+//敵とブロックの当たり判定
+bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
+	const XMFLOAT3& old_pos, bool& is_jump, float& EnemyaddPower, int& touchWall, int& HP)
+{
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0;
+	float l_MapPosY = 0;
+	//Radius
+	float l_RadiusX = 0;
+	float l_RadiusY = 0;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						is_jump = true;
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						if (is_jump == false)
+						{
+						
+							l_IsHit = true;
+						}
+						else
+						{
+							EnemyaddPower = 0;
+						}
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						touchWall = Left;
+						//touchLeft = true;
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_jump == false)
+						{
+							//touchLeft = false;
+							touchWall = Left;
+							l_IsHit = true;
+						}
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						touchWall = Right;
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_jump == false)
+						{
+							touchWall = Right;
+							l_IsHit = true;
+						}
+					}
+				}
+			}
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 2 && m_AirType[h][w] == AirBlock && HP >= 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						touchWall = Down;
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						touchWall = Down;
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						if (is_jump == false)
+						{
+
+							l_IsHit = true;
+						}
+						else
+						{
+							EnemyaddPower = 0;
+						}
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						touchWall = Left;
+						//touchLeft = true;
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_jump == false)
+						{
+							//touchLeft = false;
+							touchWall = Left;
+							l_IsHit = true;
+						}
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						touchWall = Right;
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_jump == false)
+						{
+							touchWall = Right;
+							l_IsHit = true;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return l_IsHit;
+}
+//飛んでる敵とブロックの当たり判定
+bool Block::BirdEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, int& touchWall,
+	const XMFLOAT3& old_pos, bool& is_Attack)
+{
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0;
+	float l_MapPosY = 0;
+	//Radius
+	float l_RadiusX = 0;
+	float l_RadiusY = 0;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						if (is_Attack) {
+							is_Attack = false;
+						}
+						touchWall = 0;
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+
+						if (is_Attack) {
+							is_Attack = false;
+						}
+						touchWall = 1;
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						l_IsHit = true;
+					}
+					else {
+						touchWall = 2;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_Attack) {
+							is_Attack = false;
+						}
+						l_IsHit = true;
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						//touchWall = Right;
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_Attack) {
+							is_Attack = false;
+						}
+						l_IsHit = true;
+					}
+				}
+			}
+		}
+	}
+
+	return l_IsHit;
+}
+//魂とブロック当たり判定
+bool Block::PlayerSoulMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
+	const XMFLOAT3& old_pos, bool& is_jump, float& addPower)
+{
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0;
+	float l_MapPosY = 0;
+	//Radius
+	float l_RadiusX = 0;
+	float l_RadiusY = 0;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						//hit = 2;
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+						}
+						else
+						{
+							addPower = 0;
+						}
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+						}
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	return l_IsHit;
+}
+//マップチップの初期化
+void Block::ResetBlock() {
+	for (int y = 0; y < map_max_y; y++)
+	{
+		for (int x = 0; x < map_max_x; x++)
+		{
+			objNormalBlock[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			objInBlock[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			objToge[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
+			m_GoalType[y][x] = NoGoal;
+			m_AirType[y][x] = NoAir;
+		}
+	}
+	m_Down_Goal = false;
+	m_Up_Goal = false;
+	m_Right_Goal = false;
+	m_Left_Goal = false;
+}

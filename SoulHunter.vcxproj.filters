@@ -1,0 +1,1009 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\DepthBlurPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\DepthBlurVS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianVS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffectTestPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffectTestVS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
+      <Filter>SourceCords\shader\2d\sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
+      <Filter>SourceCords\shader\2d\sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\BasicVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\OBJPixelShader.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\OBJVertexShader.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointLightPS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointLightVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SingleColorPS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SingleColorVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ToonPS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ToonVS.hlsl">
+      <Filter>SourceCords\shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\MosaicPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\DirectXCommon.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\main.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\SceneFactory.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\WinApp.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\XorShift.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\IKETexture.cpp">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\camera\Camera.cpp">
+      <Filter>SourceCords\engine\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\camera\DebugCamera.cpp">
+      <Filter>SourceCords\engine\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\Collision.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionInfo.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionManager.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionPrimitive.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionTypes.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\MeshCollider.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\SphereCollider.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\TouchableObject.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\BaseCollider.cpp">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\ease\Easing.cpp">
+      <Filter>SourceCords\engine\ease</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\FpsManager\FPSManager.cpp">
+      <Filter>SourceCords\engine\FpsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\input\Input.cpp">
+      <Filter>SourceCords\engine\input</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\LightGroup.cpp">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\PointLight.cpp">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\SpotLight.cpp">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Matrix4.cpp">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Quaternion.cpp">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Vector3.cpp">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackRock.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackBox.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackTorch.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackLight.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Always</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObjAlways.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Always</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObjCommon.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\audio\Audio.cpp">
+      <Filter>SourceCords\engine\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\audio\VolumManager.cpp">
+      <Filter>SourceCords\engine\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\Chest.cpp">
+      <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\boss\BossName.cpp">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\boss\FirstBoss.cpp">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\boss\ResPornEnemy.cpp">
+      <Filter>SourceCords\gamesystem\boss\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\boss\InterBoss.cpp">
+      <Filter>SourceCords\gamesystem\boss\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\EnemyEdit.cpp">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\ImGuiEditor.cpp">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\ObjEdit.cpp">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\ThornEnemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\WingEnemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\ThornObj.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
+      <Filter>SourceCords\gamesystem\ui\GameView</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\CompassPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\DushPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\LibraPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\HealPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\Option.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\SkillPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\Pause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\MiniMap.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\TutorialText.cpp">
+      <Filter>SourceCords\gamesystem\ui\TutoRial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scenechange\scenechange.cpp">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\save\Save.cpp">
+      <Filter>SourceCords\gamesystem\save</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\playerhelp\PlayerHelp.cpp">
+      <Filter>SourceCords\gamesystem\playerhelp</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\Player.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerBullet.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerSkill.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ThornParticle.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\EditorScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
+      <Filter>SourceCords\gamesystem\scene\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\ClearScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\GameoverScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\TitleObj.cpp">
+      <Filter>SourceCords\gamesystem\scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\Framework.cpp">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEFbxLoader.cpp">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEFBXModel.cpp">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEFBXObject3d.cpp">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\IkeGame.cpp">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEMaterial.cpp">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEMesh.cpp">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEObject3d.cpp">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\ModelManager.cpp">
+      <Filter>SourceCords\engine\3d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\ObjCommon.cpp">
+      <Filter>SourceCords\engine\3d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\AttackEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\JumpEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BossEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\EnemyEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\Message.cpp">
+      <Filter>SourceCords\gamesystem\ui\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\ChestEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\IntroductionObj.cpp">
+      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
+      <Filter>SourceCords\gamesystem\gamecamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\MarkEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\SceneFactory.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\WinApp.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\XorShift.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\DebugText.h">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKETexture.h">
+      <Filter>SourceCords\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\camera\Camera.h">
+      <Filter>SourceCords\engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
+      <Filter>SourceCords\engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\Collision.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionAttribute.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionInfo.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionManager.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionPrimitive.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionTypes.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\MeshCollider.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\QueryCallback.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\RaycastHit.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\SphereCollider.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\TouchableObject.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\BaseCollider.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\ease\Easing.h">
+      <Filter>SourceCords\engine\ease</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\FpsManager\FPSManager.h">
+      <Filter>SourceCords\engine\FpsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\input\Input.h">
+      <Filter>SourceCords\engine\input</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\CircleShadow.h">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\DirectionalLight.h">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\LightGroup.h">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\PointLight.h">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\SpotLight.h">
+      <Filter>SourceCords\engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Matrix4.h">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Quaternion.h">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Vector3.h">
+      <Filter>SourceCords\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackRock.h">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackBox.h">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackTorch.h">
+      <Filter>SourceCords\gamesystem\backobj\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackLight.h">
+      <Filter>SourceCords\gamesystem\backobj\Always</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObjAlways.h">
+      <Filter>SourceCords\gamesystem\backobj\Always</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObjCommon.h">
+      <Filter>SourceCords\gamesystem\backobj\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\audio\Audio.h">
+      <Filter>SourceCords\engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\audio\VolumManager.h">
+      <Filter>SourceCords\engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\Chest.h">
+      <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\boss\BossName.h">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\boss\ResPornEnemy.h">
+      <Filter>SourceCords\gamesystem\boss\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\boss\InterBoss.h">
+      <Filter>SourceCords\gamesystem\boss\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\EnemyEdit.h">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\ImGuiEditor.h">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\ObjEdit.h">
+      <Filter>SourceCords\gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\ThornEnemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\WingEnemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\ThornObj.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
+      <Filter>SourceCords\gamesystem\ui\GameView</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\CompassPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\DushPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\HealPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\LibraPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\Option.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\SkillPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\Pause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\MiniMap.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\TutorialText.h">
+      <Filter>SourceCords\gamesystem\ui\TutoRial</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scenechange\scenechange.h">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\save\Save.h">
+      <Filter>SourceCords\gamesystem\save</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\playerhelp\PlayerHelp.h">
+      <Filter>SourceCords\gamesystem\playerhelp</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\Player.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerBullet.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ThornParticle.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\EditorScene.h">
+      <Filter>SourceCords\gamesystem\scene\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FirstStage.h">
+      <Filter>SourceCords\gamesystem\scene\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\ClearScene.h">
+      <Filter>SourceCords\gamesystem\scene\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
+      <Filter>SourceCords\gamesystem\scene\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h">
+      <Filter>SourceCords\gamesystem\scene\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\TitleObj.h">
+      <Filter>SourceCords\gamesystem\scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h">
+      <Filter>SourceCords\gamesystem\scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\Framework.h">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFbxLoader.h">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFBXModel.h">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFBXObject3d.h">
+      <Filter>SourceCords\engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h">
+      <Filter>SourceCords\gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEMaterial.h">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEMesh.h">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEModel.h">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEObject3d.h">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\ModelManager.h">
+      <Filter>SourceCords\engine\3d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\ObjCommon.h">
+      <Filter>SourceCords\engine\3d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\BlockCollision.h">
+      <Filter>SourceCords\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\AttackEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\JumpEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BossEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\EnemyEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\Message.h">
+      <Filter>SourceCords\gamesystem\ui\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\ChestEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h">
+      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\IntroductionObj.h">
+      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
+      <Filter>SourceCords\gamesystem\gamecamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\Common\AllArray.h">
+      <Filter>SourceCords\gamesystem\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\Common\VariableCommon.h">
+      <Filter>SourceCords\gamesystem\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\MarkEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\DepthBlur.hlsli">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </None>
+    <None Include="Resources\Shaders\Gaussian.hlsli">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </None>
+    <None Include="Resources\Shaders\PostEffectTest.hlsli">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </None>
+    <None Include="Resources\Shaders\Sprite.hlsli">
+      <Filter>SourceCords\shader\2d\sprite</Filter>
+    </None>
+    <None Include="Resources\Shaders\Basic.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\FBX.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\OBJShaderHeaderhlsli.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\PointLight.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\SingleColor.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Toon.hlsli">
+      <Filter>SourceCords\shader\3d</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="SourceCords">
+      <UniqueIdentifier>{042811fc-0f04-43aa-a674-7368a709da28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine">
+      <UniqueIdentifier>{02f61a80-706e-4006-a200-30be79e04615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem">
+      <UniqueIdentifier>{96ae28b4-5990-4735-8426-da58b5747ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\2d">
+      <UniqueIdentifier>{c113d048-3f88-4e83-9773-688ea9fd4381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\3d">
+      <UniqueIdentifier>{2b8e1f8e-7219-4dec-a6d6-853c3263446b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\enginebase">
+      <UniqueIdentifier>{ef1b5e51-60e0-4656-931e-0a62888c603a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\camera">
+      <UniqueIdentifier>{c75f62e5-2843-438f-8dcd-5c40712d6d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\collision">
+      <UniqueIdentifier>{36db9963-3975-4eca-b84e-3158db38d4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\ease">
+      <UniqueIdentifier>{b1aabed9-00e1-4f6c-822a-098ece52deb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\FpsManager">
+      <UniqueIdentifier>{4370320a-eebd-44c2-a065-48f6d0ebe3af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\input">
+      <UniqueIdentifier>{9d6614ed-1cc9-4a79-ab9f-ca74136941d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\light">
+      <UniqueIdentifier>{03d6c5ec-fce0-4d8e-8274-fcd0ec3047a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\math">
+      <UniqueIdentifier>{7fb2c38e-a57c-46b0-94cf-d1ea2b882cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\shader">
+      <UniqueIdentifier>{9dd77d0e-8e10-4ace-a204-6c08eef4afef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\shader\2d">
+      <UniqueIdentifier>{13e2a42f-d1d5-4c58-b1a4-77b6905c75f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\shader\3d">
+      <UniqueIdentifier>{7eaec124-492c-40fc-8392-623a4d7a0ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\shader\2d\sprite">
+      <UniqueIdentifier>{73db1c2b-12d7-451e-b279-739c933bff3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\shader\2d\posteffect">
+      <UniqueIdentifier>{cc58ef50-1897-4fb0-b936-e7f8e252264c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj">
+      <UniqueIdentifier>{cb940428-60c3-42e1-b9f2-6e9e4fbbf629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj\Various">
+      <UniqueIdentifier>{fa14c39c-9378-4067-ad3c-88a80349fc2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj\Common">
+      <UniqueIdentifier>{62422928-4cc6-462c-9052-2845ba129a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj\Always">
+      <UniqueIdentifier>{4e73e02f-0047-4ce1-abf9-c6792353c1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj\Chest">
+      <UniqueIdentifier>{220baad0-f169-4716-a9b7-4bbd18db4779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\audio">
+      <UniqueIdentifier>{445f9c3f-9db1-4726-a0b3-a2c24608f0b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\boss">
+      <UniqueIdentifier>{7292f04c-9736-4849-9536-342caedabf25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\boss\Common">
+      <UniqueIdentifier>{fc91be76-7bfd-4628-9dfe-c311f3aef935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\boss\Various">
+      <UniqueIdentifier>{bb88a2d3-36e3-4b3e-af18-dfcb18036bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\editor">
+      <UniqueIdentifier>{aeab696e-9006-4b6f-af96-8b31f29c60b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\effect">
+      <UniqueIdentifier>{f7af5aec-c20c-4e67-bf3e-5d2cd4b3ec07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\enemy">
+      <UniqueIdentifier>{d4827105-3fc7-45e6-9b03-eb0db62463fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\mapchip">
+      <UniqueIdentifier>{ad6f83fa-02bb-4eb4-9d30-e3ca5a22b945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ParticleManager">
+      <UniqueIdentifier>{2ac04071-7e7e-4e2d-92ba-7a7cb66b6599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\player">
+      <UniqueIdentifier>{36dc49c4-871c-4674-94ac-5a69629d70a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\playerhelp">
+      <UniqueIdentifier>{3c5d3d23-ea84-4a90-b10d-6c338fe14260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\save">
+      <UniqueIdentifier>{87886716-c993-40a0-85d5-8b6185914c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene">
+      <UniqueIdentifier>{4b8a529f-ad04-4e67-bd89-5140066db1ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scenechange">
+      <UniqueIdentifier>{6b1cdae9-8eae-43b6-9011-3cc929ef6cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui">
+      <UniqueIdentifier>{bffb2868-7d52-4569-bff5-92477e29db90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\enemy\Common">
+      <UniqueIdentifier>{61612788-279b-4ca3-8572-da2140589f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\enemy\Various">
+      <UniqueIdentifier>{2615e0b1-efd5-44f9-9dce-eac169c50ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\enemy\Various\Monster">
+      <UniqueIdentifier>{f73b50a6-71f8-46d3-b522-b2965463b6d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\enemy\Various\Obj">
+      <UniqueIdentifier>{055861e1-39ba-4d09-9958-b2b32de2c2dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\GameView">
+      <UniqueIdentifier>{d1982425-68b4-46a0-aeb6-5daaab29fa30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\Pause">
+      <UniqueIdentifier>{7a392763-e9b9-436c-aee4-2c82064dcc18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\TutoRial">
+      <UniqueIdentifier>{6f95096d-ea4d-4203-8554-b2fb56d6a5be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\Pause\PauseMenu">
+      <UniqueIdentifier>{fc84fdaf-ff97-493d-8d65-526430efd417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\Pause\Skill">
+      <UniqueIdentifier>{52b9bd74-54cb-4240-9691-0d35c85173a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Base">
+      <UniqueIdentifier>{d16a95f8-9ef1-49ec-a77f-88bc3c207b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Title">
+      <UniqueIdentifier>{d7734dcb-7306-4fc6-baf7-0b8c15208e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Load">
+      <UniqueIdentifier>{739cb66f-86d7-4bc0-99b2-789235e1b599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\GameOver">
+      <UniqueIdentifier>{72906fb7-b226-48b7-a706-4a826305cd74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\PlayScene">
+      <UniqueIdentifier>{8e36a027-8559-4db8-859b-17b71102f167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Clear">
+      <UniqueIdentifier>{6ec84ed4-04e9-4e8a-8810-539615944d57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\3d\Obj">
+      <UniqueIdentifier>{035e69c6-785c-4ca6-b443-4540b6b761a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\3d\Fbx">
+      <UniqueIdentifier>{df473ff6-fab4-4973-8b3e-93e6559fb6e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\3d\Common">
+      <UniqueIdentifier>{7744dd82-e9e1-48d3-a255-c190c9352c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\effect\Player">
+      <UniqueIdentifier>{707d2cd1-38d3-45a4-854b-1815027300ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\effect\Enemy">
+      <UniqueIdentifier>{70dbe090-c19c-478a-a59c-edd9e9876d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\ui\Message">
+      <UniqueIdentifier>{c1fa57f5-ba2e-4636-a7c8-70cd5c6e6a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\gamecamera">
+      <UniqueIdentifier>{99bacae7-4270-4f69-b8b5-a16881456a1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\effect\Other">
+      <UniqueIdentifier>{4b4210fe-55d4-4f1e-a6cc-25121ad4639c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Common">
+      <UniqueIdentifier>{02cc02f6-e6e2-4a29-a487-75d4fa188e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Introduction">
+      <UniqueIdentifier>{d28e5e3d-213c-437a-ae7f-5ec12e0e1fb3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

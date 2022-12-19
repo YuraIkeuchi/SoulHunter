@@ -1,0 +1,12 @@
+RockCount,0
+BoxCount,3
+BoxWait,120
+BoxPOP,33.5,-280.54,10
+BoxROT,0,139.592,0
+BoxWait,120
+BoxPOP,28.1,-280.54,10
+BoxROT,0,146.939,0
+BoxWait,120
+BoxPOP,30.8,-276.34,10
+BoxROT,0,146.939,0
+TorchCount,0
