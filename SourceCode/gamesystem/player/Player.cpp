@@ -664,20 +664,20 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("JumpCount:%d", m_AttackTimer);
-	ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
-	ImGui::Text("SwordFrame:%f", m_SwordFrame);
-	ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
-	/*if (ImGui::Button("Add", ImVec2(90, 50))) {
-		m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
-	}
-	if (ImGui::Button("Sub", ImVec2(90, 50))) {
-		m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
-	}*/
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("JumpCount:%d", m_AttackTimer);
+	//ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
+	//ImGui::Text("SwordFrame:%f", m_SwordFrame);
+	//ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
+	///*if (ImGui::Button("Add", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
+	//}
+	//if (ImGui::Button("Sub", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
+	//}*/
+	//ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {

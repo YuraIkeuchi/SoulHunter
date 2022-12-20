@@ -38,4 +38,8 @@ public:
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* m_Distance = nullptr, XMVECTOR* inter = nullptr);
 	//” ‚Æ‹…
 	static bool CheckSphere2Box(const Sphere& sphere, const Box& box);
+	//OBB‚ÆOBB‚Ì“–‚½‚è”»’è
+	static bool OBBCollision(OBB& obbA, OBB& obbB);
+	// •ª—£²‚É“Š‰e‚³‚ê‚½²¬•ª‚©‚ç“Š‰eü•ª’·‚ğZo
+	static double LenSegOnSeparateAxis(XMVECTOR* Sep, XMVECTOR* e1, XMVECTOR* e2, XMVECTOR* e3 = 0);
 };
