@@ -133,6 +133,9 @@ public: // メンバ関数
 
 	//毎フレーム処理
 	virtual void Update();
+
+	virtual void AffineUpdate();
+
 	//追従させるものの更新
 	void FollowUpdate(XMMATRIX matworld);
 	// 描画
@@ -186,6 +189,35 @@ public: // メンバ関数
 	//コールバック
 	virtual void OnCollision(const CollisionInfo& info) {}
 
+
+	//アフィン変換行列を乗算する
+	void AddMatrix(XMMATRIX matrix)
+	{
+		Affine = true;
+		this->matrix = matrix;
+	}
+
+	//ワールド行列取得
+	const XMMATRIX GetMatrix()
+	{
+		XMFLOAT3 l_scale = {};
+		l_scale.x = 1 / scale.x;
+		l_scale.y = 1 / scale.y;
+		l_scale.z = 1 / scale.z;
+
+		XMMATRIX l_mat = matWorld;
+		l_mat.r[0].m128_f32[0] *= l_scale.x;
+		l_mat.r[0].m128_f32[1] *= l_scale.x;
+		l_mat.r[0].m128_f32[2] *= l_scale.x;
+		l_mat.r[1].m128_f32[0] *= l_scale.y;
+		l_mat.r[1].m128_f32[1] *= l_scale.y;
+		l_mat.r[1].m128_f32[2] *= l_scale.y;
+		l_mat.r[2].m128_f32[0] *= l_scale.z;
+		l_mat.r[2].m128_f32[1] *= l_scale.z;
+		l_mat.r[2].m128_f32[2] *= l_scale.z;
+		return l_mat;
+	}
+
 protected: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	//オフセット値
@@ -218,6 +250,11 @@ protected: // メンバ変数
 	const char* name = nullptr;
 	//コライダー
 	BaseCollider* collider = nullptr;
+	//アフィン変換用
+	bool Affine = false;
+
+	//親子構造用
+	DirectX::XMMATRIX matrix = {};
 
 };
 

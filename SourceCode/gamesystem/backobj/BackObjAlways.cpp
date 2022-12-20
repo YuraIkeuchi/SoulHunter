@@ -22,6 +22,7 @@ void BackObjAlways::Initialize() {
 		objground_[i] = IKEObject3d::Create();
 		objground_[i]->SetModel(modelground);
 		objground_[i]->SetTiling(15.0f);
+		objground_[i]->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 		objground_[i]->SetScale({ 0.2f,0.2f,0.1f });
 		//objground_[i]->SetLightEffect(false);
 		//objground_[i]->SetFog(true);

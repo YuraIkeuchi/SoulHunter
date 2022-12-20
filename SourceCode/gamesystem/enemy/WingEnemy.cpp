@@ -12,7 +12,7 @@ WingEnemy::WingEnemy() {
 bool WingEnemy::Initialize() {
 	m_ChangeColor = true;
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Scale = { 0.05f, 0.05f, 0.05f };
+	m_Scale = { 0.03f, 0.03f, 0.03f };
 	//FBX
 	IKEFBXObject3d* m_fbxObject_ = new IKEFBXObject3d();
 	m_fbxObject_->Initialize();

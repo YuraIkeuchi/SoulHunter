@@ -161,6 +161,10 @@ public: // メンバ関数
 	bool Initialize();
 	/// 毎フレーム処理
 	void Update();
+	//アフィン変換用
+	void AffineUpdate();
+	//行列の更新
+	void UpdateWorldMatrix();
 
 	/// 描画
 	void Draw();
@@ -184,6 +188,35 @@ public: // メンバ関数
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 	const XMFLOAT3& GetScale() { return scale; }
+
+
+	//アフィン変換行列を乗算する
+	void AddMatrix(XMMATRIX matrix)
+	{
+		Affine = true;
+		this->matrix = matrix;
+	}
+
+	//ワールド行列取得
+	const XMMATRIX GetMatrix()
+	{
+		XMFLOAT3 l_scale = {};
+		l_scale.x = 1 / scale.x;
+		l_scale.y = 1 / scale.y;
+		l_scale.z = 1 / scale.z;
+
+		XMMATRIX l_mat = matWorld;
+		l_mat.r[0].m128_f32[0] *= l_scale.x;
+		l_mat.r[0].m128_f32[1] *= l_scale.x;
+		l_mat.r[0].m128_f32[2] *= l_scale.x;
+		l_mat.r[1].m128_f32[0] *= l_scale.y;
+		l_mat.r[1].m128_f32[1] *= l_scale.y;
+		l_mat.r[1].m128_f32[2] *= l_scale.y;
+		l_mat.r[2].m128_f32[0] *= l_scale.z;
+		l_mat.r[2].m128_f32[1] *= l_scale.z;
+		l_mat.r[2].m128_f32[2] *= l_scale.z;
+		return l_mat;
+	}
 private: // メンバ変数
 	
 
@@ -206,6 +239,13 @@ private: // メンバ変数
 		ADD,
 		SUB
 	};
+
+
+	//アフィン変換用
+	bool Affine = false;
+
+	//親子構造用
+	XMMATRIX matrix = {};
 };
 
 

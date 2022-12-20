@@ -416,6 +416,43 @@ void IKEObject3d::FollowUpdate(XMMATRIX matworld)
 		collider->Update();
 	}
 }
+//アフィン変換用
+void IKEObject3d::AffineUpdate() {
+	assert(camera);
+
+	HRESULT result;
+	//行列の更新
+	UpdateWorldMatrix();
+
+	if (Affine)
+	{
+		matWorld *= matrix;
+	}
+
+	const XMMATRIX& matViewProjection = camera->GetViewProjectionMatrix();
+	const XMFLOAT3& cameraPos = camera->GetEye();
+
+	// 定数バッファへデータ転送
+	ConstBufferDataB0* constMap = nullptr;
+	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
+	constMap->offset = offset;
+	constMap->viewproj = matViewProjection;
+	constMap->world = matWorld;
+	constMap->cameraPos = cameraPos;
+	constMap->color = color;
+	constMap->Addcolor = Addcolor;
+	constMap->ChangeColor = ChangeColor;
+	constMap->Disolve = Disolve;
+	constMap->Fog = Fog;
+	constMap->Tiling = Tiling;
+	constMap->LightEfffect = LightEffect;
+	constBuffB0->Unmap(0, nullptr);
+	//当たり判定更新
+	if (collider) {
+		collider->Update();
+	}
+}
+
 
 void IKEObject3d::Draw()
 {// nullptrチェック
