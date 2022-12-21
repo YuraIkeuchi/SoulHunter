@@ -36,6 +36,10 @@ bool Player::Initialize()
 	particletex_->Initialize();
 	particletex.reset(particletex_);
 
+	SwordParticle* swordparticle_ = new SwordParticle();
+	swordparticle_->Initialize();
+	swordparticle.reset(swordparticle_);
+
 	ParticleHeal* particleheal_ = new ParticleHeal();
 	particleheal_->Initialize();
 	particleheal.reset(particleheal_);
@@ -112,6 +116,17 @@ void Player::Update()
 	BirthParticle();
 	//剣の更新
 	SwordUpdate();
+	//パーティクルを出す
+	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
+			 static_cast<float>(rand() % 1) + 1,
+			0 };
+	//パーティクル
+	if (m_SwordParticleCount < 1) {
+		m_SwordParticleCount++;
+	}
+	else {
+		m_SwordParticleCount = 0;
+	}
 	//プレイモード
 	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
@@ -143,9 +158,13 @@ void Player::Update()
 		m_HealCount = 0;
 	}
 	m_WingPosition = m_Position;
+	//パーティクル関係
 	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
 	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
 	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
+	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
+	//羽
 	if (m_PlayerDir == Left) {
 		playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
 		playerwing->SetDir(0);
@@ -191,7 +210,7 @@ void Player::SwordUpdate() {
 		m_SwordColor.w = Ease(In, Cubic, m_SwordFrame, m_SwordColor.w, m_SwordAfterAlpha);
 	}
 	m_FollowObject->SetRotation(m_SwordRotation);
-	m_FollowObject->SetColor(m_SwordColor);
+	//m_FollowObject->SetColor(m_SwordColor);
 	m_FollowObject->FollowUpdate(m_HandMat);
 }
 //プレイヤーの移動
@@ -214,7 +233,9 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0;
+			if (m_FoodParticleCount == 5.0f) {
+				m_FoodParticleCount = 0.0f;
+			}
 		}
 	}
 	else {
@@ -233,7 +254,7 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0;
+			m_FoodParticleCount = 0.0f;
 		}
 	}
 	m_Position.x += m_Velocity;
@@ -264,8 +285,8 @@ void Player::WalkAnimation() {
 		m_AnimeTimer = 0;
 		if (m_AnimeTimer == 0 && !m_AnimationStop) {
 			m_AnimeLoop = true;
-			m_Number = 3;
 			m_AnimeSpeed = 1;
+			m_Number = 3;
 			m_fbxObject->PlayAnimation(m_Number);
 		}
 	}
@@ -276,10 +297,15 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_PlayerDir = Dir;
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
-		m_FoodParticleCount += 1;
+		m_FoodParticleCount += 0.5f;
 		m_ParticlePos.x = m_Position.x;
 		m_ParticlePos.y = m_Position.y - 1.5f;
 		m_ParticlePos.z = m_Position.z;
+		m_FoodParticlePos = {
+			m_Position.x,
+			m_Position.y - 1.0f,
+			m_Position.z,
+		};
 	}
 }
 //プレイヤーのジャンプ
@@ -360,6 +386,7 @@ void Player::PlayerAttack() {
 	//攻撃
 	//攻撃の向き
 	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal) && (m_Alive)) {
+		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
 			if (m_Rotation.y == 90.0f) {
@@ -368,7 +395,7 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(0, 4);
+			PlayerAnimetion(0, 2);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -377,22 +404,39 @@ void Player::PlayerAttack() {
 			playerwing->SetFrame(0.0f);
 			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
 		}
+		else {
+			m_AnimeLoop = true;
+			m_AnimeSpeed = 2;
+			m_Number = 3;
+			m_fbxObject->PlayAnimation(m_Number);
+		}
+	}
+
 	//攻撃のインターバル
 	if (m_Attack) {
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 8) {
-			
 			m_AttackArgment = true;
 		}
 		m_AttackTimer++;
-
-		if (m_AttackTimer >= 20) {
+		
+		if (m_AttackTimer >= 30) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
+			m_SwordParticleCount = 0;
+		}
+
+		if (m_AddPower == 0.0f) {
+			m_FoodParticleCount += 0.25f;
+			m_FoodParticlePos = {
+		m_AttackPos.x,
+		m_AttackPos.y - 2.0f,
+		m_AttackPos.z,
+			};
 		}
 	}
 }
@@ -664,20 +708,14 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("JumpCount:%d", m_AttackTimer);
-	//ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
-	//ImGui::Text("SwordFrame:%f", m_SwordFrame);
-	//ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
-	///*if (ImGui::Button("Add", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
-	//}
-	//if (ImGui::Button("Sub", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
-	//}*/
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_FoodParticleCount:%f", m_FoodParticleCount);
+	ImGui::Text("m_FoodParticlePos.x:%f", m_FoodParticlePos.x);
+	ImGui::Text("m_FoodParticlePos.y:%f", m_FoodParticlePos.y);
+	ImGui::Text("m_FoodParticlePos.z:%f", m_FoodParticlePos.z);
+	ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
@@ -693,16 +731,17 @@ void Player::Draw(DirectXCommon* dxCommon) {
 
 	//m_Object->Draw();
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
+		FollowObj_Draw();
 		//Obj_Draw();
 		if (m_SwordColor.w >= 0.1f) {
-			FollowObj_Draw();
+			
 		}
 		Fbx_Draw(dxCommon);
 		playerwing->Draw(dxCommon);
 	}
 	particleheal->Draw();
 	particletex->Draw();
-
+	swordparticle->Draw();
 	//particleobj->ImGuiDraw();
 	//object1->Draw(dxCommon->GetCmdList());
 }
@@ -787,8 +826,8 @@ void Player::InitPlayer(int StageNumber) {
 	}
 
 	m_AnimeLoop = true;
-	m_Number = 1;
 	m_AnimeSpeed = 2;
+	m_Number = 3;
 	m_fbxObject->PlayAnimation(m_Number);
 }
 //ポーズ開いたときはキャラが動かない
@@ -829,8 +868,7 @@ void Player::Editor() {
 //パーティクルが出てくる
 void Player::BirthParticle() {
 	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5 && m_Alive) {
-
+	if (m_FoodParticleCount >= 5.0f && m_Alive) {
 		for (int i = 0; i < m_FoodParticleNum; ++i) {
 			const float rnd_vel = 0.1f;
 			XMFLOAT3 vel{};
@@ -840,9 +878,9 @@ void Player::BirthParticle() {
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_FoodParticleCount = 0;
+		m_FoodParticleCount = 0.0f;
 	}
 }
 //アニメーションの共通変数
@@ -927,7 +965,13 @@ void Player::IntroductionUpdate(int Timer) {
 		m_Position = { 0.0f,2.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
-
+	//パーティクル
+	//if (m_SwordParticleCount < 3) {
+	//	m_SwordParticleCount++;
+	//}
+	//else {
+	//	m_SwordParticleCount = 0;
+	//}
 	//一定時間立ったら前にすすむ
 	if (Timer >= 100) {
 		m_Position.z -= 0.3f;
@@ -942,10 +986,10 @@ void Player::IntroductionUpdate(int Timer) {
 		m_AnimeSpeed = 1;
 		m_fbxObject->PlayAnimation(m_Number);
 	}
+
 	//剣の更新
 	SwordUpdate();
 	Fbx_SetParam();
-	
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 
 	
@@ -955,4 +999,5 @@ void Player::IntroductionUpdate(int Timer) {
 void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
 }

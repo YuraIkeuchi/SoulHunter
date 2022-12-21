@@ -417,6 +417,9 @@
     <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -778,6 +781,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h">
       <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

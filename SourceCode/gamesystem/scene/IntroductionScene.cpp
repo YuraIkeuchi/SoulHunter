@@ -59,9 +59,9 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 //çXêV
 void IntroductionScene::Update(DirectXCommon* dxCommon) {
 	if (m_Timer <= 20) {
-		
+		m_Timer++;
+
 	}
-	m_Timer++;
 	//
 	ParticleManager::GetInstance()->Update();
 	Input* input = Input::GetInstance();
