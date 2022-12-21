@@ -214,7 +214,9 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0;
+			if (m_FoodParticleCount == 5.0f) {
+				m_FoodParticleCount = 0.0f;
+			}
 		}
 	}
 	else {
@@ -233,7 +235,7 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0;
+			m_FoodParticleCount = 0.0f;
 		}
 	}
 	m_Position.x += m_Velocity;
@@ -264,8 +266,8 @@ void Player::WalkAnimation() {
 		m_AnimeTimer = 0;
 		if (m_AnimeTimer == 0 && !m_AnimationStop) {
 			m_AnimeLoop = true;
-			m_Number = 3;
 			m_AnimeSpeed = 1;
+			m_Number = 3;
 			m_fbxObject->PlayAnimation(m_Number);
 		}
 	}
@@ -276,10 +278,15 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_PlayerDir = Dir;
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
-		m_FoodParticleCount += 1;
+		m_FoodParticleCount += 0.5f;
 		m_ParticlePos.x = m_Position.x;
 		m_ParticlePos.y = m_Position.y - 1.5f;
 		m_ParticlePos.z = m_Position.z;
+		m_FoodParticlePos = {
+			m_Position.x,
+			m_Position.y - 1.0f,
+			m_Position.z,
+		};
 	}
 }
 //プレイヤーのジャンプ
@@ -360,6 +367,7 @@ void Player::PlayerAttack() {
 	//攻撃
 	//攻撃の向き
 	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal) && (m_Alive)) {
+		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
 			if (m_Rotation.y == 90.0f) {
@@ -377,11 +385,18 @@ void Player::PlayerAttack() {
 			playerwing->SetFrame(0.0f);
 			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
 		}
+		else {
+			m_AnimeLoop = true;
+			m_AnimeSpeed = 2;
+			m_Number = 3;
+			m_fbxObject->PlayAnimation(m_Number);
+		}
+	}
+
 	//攻撃のインターバル
 	if (m_Attack) {
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 8) {
-			
 			m_AttackArgment = true;
 		}
 		m_AttackTimer++;
@@ -393,6 +408,15 @@ void Player::PlayerAttack() {
 			m_SwordFrame = 0.0f;
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
+		}
+
+		if (m_AddPower == 0.0f) {
+			m_FoodParticleCount += 0.25f;
+			m_FoodParticlePos = {
+		m_AttackPos.x,
+		m_AttackPos.y - 2.0f,
+		m_AttackPos.z,
+			};
 		}
 	}
 }
@@ -664,20 +688,14 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("JumpCount:%d", m_AttackTimer);
-	//ImGui::Text("SwordColor.w:%f", m_SwordColor.w);
-	//ImGui::Text("SwordFrame:%f", m_SwordFrame);
-	//ImGui::Text("BoneNumber:%d", m_fbxObject->GetBoneNumber());
-	///*if (ImGui::Button("Add", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
-	//}
-	//if (ImGui::Button("Sub", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
-	//}*/
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_FoodParticleCount:%f", m_FoodParticleCount);
+	ImGui::Text("m_FoodParticlePos.x:%f", m_FoodParticlePos.x);
+	ImGui::Text("m_FoodParticlePos.y:%f", m_FoodParticlePos.y);
+	ImGui::Text("m_FoodParticlePos.z:%f", m_FoodParticlePos.z);
+	ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
@@ -787,8 +805,8 @@ void Player::InitPlayer(int StageNumber) {
 	}
 
 	m_AnimeLoop = true;
-	m_Number = 1;
 	m_AnimeSpeed = 2;
+	m_Number = 3;
 	m_fbxObject->PlayAnimation(m_Number);
 }
 //ポーズ開いたときはキャラが動かない
@@ -829,8 +847,7 @@ void Player::Editor() {
 //パーティクルが出てくる
 void Player::BirthParticle() {
 	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5 && m_Alive) {
-
+	if (m_FoodParticleCount >= 5.0f && m_Alive) {
 		for (int i = 0; i < m_FoodParticleNum; ++i) {
 			const float rnd_vel = 0.1f;
 			XMFLOAT3 vel{};
@@ -840,9 +857,9 @@ void Player::BirthParticle() {
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_FoodParticleCount = 0;
+		m_FoodParticleCount = 0.0f;
 	}
 }
 //アニメーションの共通変数

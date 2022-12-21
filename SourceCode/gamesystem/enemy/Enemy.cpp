@@ -106,9 +106,11 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 		Fbx_Draw(dxCommon);
 	}
 	if (m_Alive) {
-	/*	ImGui::Begin("Enemy");
-		ImGui::Text("m_AddPower : %f", m_AddPower);
-		ImGui::End();*/
+		ImGui::Begin("Enemy");
+		ImGui::Text("m_Rotation.x : %f", m_Rotation.x);
+		ImGui::Text("m_Rotation.y : %f", m_Rotation.y);
+		ImGui::Text("m_Rotation.z : %f", m_Rotation.z);
+		ImGui::End();
 	}
 	//エフェクト関係
 	for (EnemyEffect* enemyeffect : enemyeffects) {

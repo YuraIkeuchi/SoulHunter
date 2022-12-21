@@ -146,6 +146,7 @@ public:
 	void SetChangeInterVal(bool m_ChangeInterVal) { this->m_ChangeInterVal = m_ChangeInterVal; }
 	void SetGoalDir(int m_GoalDir) { this->m_GoalDir = m_GoalDir; }
 	void SetCollideObj(bool m_CollideObj) { this->m_CollideObj = m_CollideObj; }
+	void SetCollideChest(bool m_CollideChest) { this->m_CollideChest = m_CollideChest; }
 	void SetMovie(bool m_Movie) { this->m_Movie = m_Movie; }
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
 
@@ -221,7 +222,7 @@ private:
 	int m_DushDir = 0;
 	//足元のパーティクル
 	int m_FoodParticleNum = 5;
-	int m_FoodParticleCount = 0;
+	float m_FoodParticleCount = 0;
 	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
 	int m_ParticleCount = 0;
@@ -240,7 +241,7 @@ private:
 	//宝箱を見ているか
 	bool m_ReadText = false;
 	bool m_CollideObj = false;
-	
+	bool m_CollideChest = false;
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
 	//アニメーション関係

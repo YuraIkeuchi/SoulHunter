@@ -294,12 +294,12 @@ bool Chest::Collide() {
 		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f, m_ChestPos[i].x, m_ChestPos[i].y, 3.0f) && m_Alive[i]
 			&& player->GetAddPower() == 0.0f) {
 			m_Hit[i] = true;
-			player->SetCollideObj(true);
+			player->SetCollideChest(true);
 			break;
 		}
 		else {
 			m_Hit[i] = false;
-			player->SetCollideObj(false);
+			player->SetCollideChest(false);
 		}
 	}
 
