@@ -9,6 +9,7 @@
 #include "ParticleTex.h"
 #include "VolumManager.h"
 #include "ParticleHeal.h"
+#include "SwordParticle.h"
 #include "ObjCommon.h"
 #include "JumpEffect.h"
 #include "AttackEffect.h"
@@ -160,6 +161,7 @@ private:
 	//攻撃の位置を取る
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	unique_ptr<ParticleTex> particletex = nullptr;
+	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<PlayerBullet> playerbullet = nullptr;
@@ -227,6 +229,9 @@ private:
 	//普通のパーティクル
 	int m_ParticleCount = 0;
 	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	//剣のパーティクル
+	int m_SwordParticleCount = 0;
+	XMFLOAT3 m_SwordParticlePos = { 0.0f,0.0f,0.0f };
 	//ゴールしたときの変数
 	bool m_ChangeInterVal = false;
 	int m_IntervalTimer = 0;

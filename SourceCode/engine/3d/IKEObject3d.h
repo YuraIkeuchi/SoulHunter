@@ -218,6 +218,27 @@ public: // メンバ関数
 		return l_mat;
 	}
 
+	//ワールド行列取得
+	const XMMATRIX GetMatrix2(XMMATRIX matWorld2)
+	{
+		XMFLOAT3 l_scale = {};
+		l_scale.x = 1 / scale.x;
+		l_scale.y = 1 / scale.y;
+		l_scale.z = 1 / scale.z;
+
+		XMMATRIX l_mat = matWorld * matWorld2;
+		l_mat.r[0].m128_f32[0] *= l_scale.x;
+		l_mat.r[0].m128_f32[1] *= l_scale.x;
+		l_mat.r[0].m128_f32[2] *= l_scale.x;
+		l_mat.r[1].m128_f32[0] *= l_scale.y;
+		l_mat.r[1].m128_f32[1] *= l_scale.y;
+		l_mat.r[1].m128_f32[2] *= l_scale.y;
+		l_mat.r[2].m128_f32[0] *= l_scale.z;
+		l_mat.r[2].m128_f32[1] *= l_scale.z;
+		l_mat.r[2].m128_f32[2] *= l_scale.z;
+		return l_mat;
+	}
+
 protected: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	//オフセット値
@@ -255,6 +276,9 @@ protected: // メンバ変数
 
 	//親子構造用
 	DirectX::XMMATRIX matrix = {};
+private:
+	XMMATRIX matScale, matRot, matTrans;
+
 
 };
 

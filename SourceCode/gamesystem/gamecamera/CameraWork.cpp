@@ -42,7 +42,7 @@ void CameraWork::IntroductionCamera() {
 
 	//ƒJƒƒ‰‚ÌˆÊ’u‚Ìˆ—
 	if (m_IntroTimer <= 119) {
-		m_eyePos = { 5.0f,10.0f,20.0f };
+		m_eyePos = { 0.0f,10.0f,20.0f };
 	}
 	else {
 		if (m_IntroTimer == 120) {

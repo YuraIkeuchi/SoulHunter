@@ -36,6 +36,10 @@ bool Player::Initialize()
 	particletex_->Initialize();
 	particletex.reset(particletex_);
 
+	SwordParticle* swordparticle_ = new SwordParticle();
+	swordparticle_->Initialize();
+	swordparticle.reset(swordparticle_);
+
 	ParticleHeal* particleheal_ = new ParticleHeal();
 	particleheal_->Initialize();
 	particleheal.reset(particleheal_);
@@ -112,6 +116,17 @@ void Player::Update()
 	BirthParticle();
 	//剣の更新
 	SwordUpdate();
+	//パーティクルを出す
+	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
+			 static_cast<float>(rand() % 1) + 1,
+			0 };
+	//パーティクル
+	if (m_SwordParticleCount < 1) {
+		m_SwordParticleCount++;
+	}
+	else {
+		m_SwordParticleCount = 0;
+	}
 	//プレイモード
 	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
@@ -143,9 +158,13 @@ void Player::Update()
 		m_HealCount = 0;
 	}
 	m_WingPosition = m_Position;
+	//パーティクル関係
 	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
 	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
 	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
+	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
+	//羽
 	if (m_PlayerDir == Left) {
 		playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
 		playerwing->SetDir(0);
@@ -191,7 +210,7 @@ void Player::SwordUpdate() {
 		m_SwordColor.w = Ease(In, Cubic, m_SwordFrame, m_SwordColor.w, m_SwordAfterAlpha);
 	}
 	m_FollowObject->SetRotation(m_SwordRotation);
-	m_FollowObject->SetColor(m_SwordColor);
+	//m_FollowObject->SetColor(m_SwordColor);
 	m_FollowObject->FollowUpdate(m_HandMat);
 }
 //プレイヤーの移動
@@ -376,7 +395,7 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(0, 4);
+			PlayerAnimetion(0, 2);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -400,14 +419,15 @@ void Player::PlayerAttack() {
 			m_AttackArgment = true;
 		}
 		m_AttackTimer++;
-
-		if (m_AttackTimer >= 20) {
+		
+		if (m_AttackTimer >= 30) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
+			m_SwordParticleCount = 0;
 		}
 
 		if (m_AddPower == 0.0f) {
@@ -711,16 +731,17 @@ void Player::Draw(DirectXCommon* dxCommon) {
 
 	//m_Object->Draw();
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
+		FollowObj_Draw();
 		//Obj_Draw();
 		if (m_SwordColor.w >= 0.1f) {
-			FollowObj_Draw();
+			
 		}
 		Fbx_Draw(dxCommon);
 		playerwing->Draw(dxCommon);
 	}
 	particleheal->Draw();
 	particletex->Draw();
-
+	swordparticle->Draw();
 	//particleobj->ImGuiDraw();
 	//object1->Draw(dxCommon->GetCmdList());
 }
@@ -944,7 +965,13 @@ void Player::IntroductionUpdate(int Timer) {
 		m_Position = { 0.0f,2.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
-
+	//パーティクル
+	//if (m_SwordParticleCount < 3) {
+	//	m_SwordParticleCount++;
+	//}
+	//else {
+	//	m_SwordParticleCount = 0;
+	//}
 	//一定時間立ったら前にすすむ
 	if (Timer >= 100) {
 		m_Position.z -= 0.3f;
@@ -959,10 +986,10 @@ void Player::IntroductionUpdate(int Timer) {
 		m_AnimeSpeed = 1;
 		m_fbxObject->PlayAnimation(m_Number);
 	}
+
 	//剣の更新
 	SwordUpdate();
 	Fbx_SetParam();
-	
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 
 	
@@ -972,4 +999,5 @@ void Player::IntroductionUpdate(int Timer) {
 void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
 }
