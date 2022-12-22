@@ -48,6 +48,10 @@ public:
 	void Update() override;
 	//剣の更新
 	void SwordUpdate();
+	//エフェクトの更新
+	void EffectUpdate();
+	//羽関係
+	void WingUpdate();
 	//プレイヤーの挙動
 	//移動
 	void PlayerMove();
@@ -300,6 +304,7 @@ private:
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;
 	int m_SwordType = 0;
+	int m_SwordParticleNum = 0;
 	float m_SwordAfterAlpha = 0.0f;
 	enum SwordType {
 		NoSword,

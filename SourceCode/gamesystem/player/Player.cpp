@@ -116,17 +116,7 @@ void Player::Update()
 	BirthParticle();
 	//剣の更新
 	SwordUpdate();
-	//パーティクルを出す
-	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
-			 static_cast<float>(rand() % 1) + 1,
-			0 };
-	//パーティクル
-	if (m_SwordParticleCount < 1) {
-		m_SwordParticleCount++;
-	}
-	else {
-		m_SwordParticleCount = 0;
-	}
+	
 	//プレイモード
 	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
@@ -149,43 +139,10 @@ void Player::Update()
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	m_fbxObject->SetDisolve(Disolve);
 
-	//パーティクルのカウント数の更新
-	if (m_ParticleCount > 3) {
-		m_ParticleCount = 0;
-	}
-
-	if (m_HealCount > 3) {
-		m_HealCount = 0;
-	}
-	m_WingPosition = m_Position;
-	//パーティクル関係
-	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
-	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
-	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
-	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-	//羽
-	if (m_PlayerDir == Left) {
-		playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
-		playerwing->SetDir(0);
-	}
-	else {
-		playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
-		playerwing->SetDir(1);
-	}
-	
-	playerwing->Update();
-	//エフェクト関係
-	for (JumpEffect* jumpeffect : jumpeffects) {
-		if (jumpeffect != nullptr) {
-			jumpeffect->Update(m_Position);
-		}
-	}
-	for (AttackEffect* attackeffect : attackeffects) {
-		if (attackeffect != nullptr) {
-			attackeffect->Update();
-		}
-	}
+	//羽関係
+	WingUpdate();
+	//エフェクトの更新
+	EffectUpdate();
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -210,8 +167,59 @@ void Player::SwordUpdate() {
 		m_SwordColor.w = Ease(In, Cubic, m_SwordFrame, m_SwordColor.w, m_SwordAfterAlpha);
 	}
 	m_FollowObject->SetRotation(m_SwordRotation);
-	//m_FollowObject->SetColor(m_SwordColor);
+	m_FollowObject->SetColor(m_SwordColor);
 	m_FollowObject->FollowUpdate(m_HandMat);
+}
+//エフェクトの更新
+void Player::EffectUpdate() {
+	//パーティクルのカウント数の更新
+	if (m_ParticleCount > 3) {
+		m_ParticleCount = 0;
+	}
+
+	if (m_HealCount > 3) {
+		m_HealCount = 0;
+	}
+	//パーティクルを出す
+	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
+			 static_cast<float>(rand() % 1) + 1,
+			0 };
+
+	//パーティクル関係
+	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
+	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
+	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
+	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	for (int i = 0; i < m_SwordParticleNum; i++) {
+		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
+	}
+	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
+	//エフェクト関係
+	for (JumpEffect* jumpeffect : jumpeffects) {
+		if (jumpeffect != nullptr) {
+			jumpeffect->Update(m_Position);
+		}
+	}
+	for (AttackEffect* attackeffect : attackeffects) {
+		if (attackeffect != nullptr) {
+			attackeffect->Update();
+		}
+	}
+}
+//羽関係
+void Player::WingUpdate() {
+	m_WingPosition = m_Position;
+	//羽
+	if (m_PlayerDir == Left) {
+		playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
+		playerwing->SetDir(0);
+	}
+	else {
+		playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
+		playerwing->SetDir(1);
+	}
+
+	playerwing->Update();
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -410,17 +418,26 @@ void Player::PlayerAttack() {
 			m_Number = 3;
 			m_fbxObject->PlayAnimation(m_Number);
 		}
-	}
-
+	}	
 	//攻撃のインターバル
 	if (m_Attack) {
+		if (m_AttackTimer <= 10) {
+			m_SwordParticleNum = 1;
+		}
+		else if(m_AttackTimer >= 15 && m_AttackTimer <= 20) {
+			m_SwordParticleNum = 7;
+		}
+		else {
+			m_SwordParticleNum = 0;
+		}
+		m_SwordParticleCount = 1;
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 8) {
 			m_AttackArgment = true;
 		}
 		m_AttackTimer++;
 		
-		if (m_AttackTimer >= 30) {
+		if (m_AttackTimer >= 40) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -603,7 +620,6 @@ void Player::PlayerDamage() {
 
 	//ダメージ時の跳ね返り
 	if (m_HitDir == 1) {
-
 		if (m_BoundPower > 0.0f) {
 			m_BoundPower -= 0.05f;
 		}
@@ -613,7 +629,6 @@ void Player::PlayerDamage() {
 		}
 	}
 	else if (m_HitDir == 2) {
-
 		if (m_BoundPower < 0.0f) {
 			m_BoundPower += 0.05f;
 		}
@@ -699,7 +714,6 @@ void Player::AttackArgment() {
 //ゴール後の動き
 void Player::GoalMove() {
 	if (m_GoalDir == RightGoal) {
-
 		m_Position.x += 0.3f;
 	}
 	else if (m_GoalDir == LeftGoal) {
@@ -711,10 +725,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_FoodParticleCount:%f", m_FoodParticleCount);
-	ImGui::Text("m_FoodParticlePos.x:%f", m_FoodParticlePos.x);
-	ImGui::Text("m_FoodParticlePos.y:%f", m_FoodParticlePos.y);
-	ImGui::Text("m_FoodParticlePos.z:%f", m_FoodParticlePos.z);
+	ImGui::Text("m_Attack:%d", m_AttackTimer);
 	ImGui::End();
 
 	//エフェクト関係
@@ -731,10 +742,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 
 	//m_Object->Draw();
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
-		FollowObj_Draw();
 		//Obj_Draw();
 		if (m_SwordColor.w >= 0.1f) {
-			
+			FollowObj_Draw();
 		}
 		Fbx_Draw(dxCommon);
 		playerwing->Draw(dxCommon);
@@ -924,6 +934,7 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
+	PlayerAnimetion(4, 3);
 	m_Effect = true;
 	m_HP -= 1;
 	m_Interval = 100;
