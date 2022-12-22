@@ -34,7 +34,7 @@ const int HP_Max = 5;
 //背景の岩のマックス数
 const int BackRock_Max = 11;
 //パーティクルのマックス数
-const int Particle_Max = 40;
+const int Particle_Max = 80;
 const int ParticleSoul_Max = 25;
 const int ParticleTex_Max = 40;
 const int ParticleHeal_Max = 25;

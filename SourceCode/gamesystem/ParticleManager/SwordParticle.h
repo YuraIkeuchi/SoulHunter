@@ -38,8 +38,9 @@ public:
 	/// </summary>
 	void Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix);
 
-	void NormalParticle(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix);
+	void NormalParticle(int Timer, int TargetTimer, XMMATRIX matrix);
 
+	void SetParticle(int Timer, int TargetTimer, XMMATRIX matrix);
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
@@ -71,6 +72,5 @@ private:
 	array<int, Particle_Max> m_Number;
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
 	//unique_ptr<Player> player;
-	int m_NormalParticleCount = 40;
-	int m_WideParticleCount = 20;
+	int m_NormalParticleCount = 80;
 };

@@ -79,7 +79,7 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 	//プレイヤーの更新
 	player->IntroductionUpdate(m_Timer);
 
-	if (input->TriggerButton(input->Button_A)) {
+	if (input->TriggerButton(input->Button_A) && !scenechange->GetSubStartChange()) {
 		scenechange->SetAddStartChange(true);
 	}
 	

@@ -23,7 +23,7 @@ void SwordParticle::Initialize() {
 }
 
 void SwordParticle::Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix) {
-	NormalParticle(StartPos, Timer, TargetTimer, matrix);
+	NormalParticle(Timer, TargetTimer, matrix);
 	for (int i = 0; i < m_NormalParticleCount; i++) {
 		object[i]->SetPosition(m_pos[i]);
 		object[i]->SetScale(m_scale[i]);
@@ -72,35 +72,8 @@ void SwordParticle::ChangeShader(int DrawNumber) {
 	}*/
 }
 
-void SwordParticle::NormalParticle(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix) {
-	m_StartPos = StartPos;
-
-	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
-			if (!m_Alive[i]) {
-				object[i]->AddMatrix(matrix);
-				//パーティクルを出す
-				m_RandPos[i] = {0,
-			 (static_cast<float>(rand() % 10) + 10) * -1,
-				 (static_cast<float>(rand() % 20) + 20)
-			};
-				m_RandPos[i] = { m_RandPos[i].x,
-					m_RandPos[i].y / 10,
-					 m_RandPos[i].z / 10
-				};
-				m_pos[i] = m_RandPos[i];
-				m_angle[i] = (float)(rand() % 360);
-				m_speed[i] = { 0.02f,0.02f };
-				m_Number[i] = rand() % 2;
-				m_addPower[i].y = 0.0f;
-				m_scale[i] = { 0.1f,0.1f,0.1f };
-				m_Alive[i] = true;
-				m_ScaleChange[i] = false;
-				break;
-			}
-		}
-	}
-
+void SwordParticle::NormalParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
+	
 	for (int i = 0; i < m_NormalParticleCount; i++) {
 		if (m_Alive[i]) {
 			m_pos[i].x += (cos(m_angle[i]) * m_speed[i].x);
@@ -108,18 +81,18 @@ void SwordParticle::NormalParticle(XMFLOAT3 StartPos, int Timer, int TargetTimer
 			/*	m_speed[i].x += 0.05f;
 				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
-				m_scale[i].x += 0.008f;
-				m_scale[i].y += 0.008f;
-				m_scale[i].z += 0.008f;
+				m_scale[i].x += 0.01f;
+				m_scale[i].y += 0.01f;
+				m_scale[i].z += 0.01f;
 
 				if (m_scale[i].x >= 0.2f) {
 					m_ScaleChange[i] = true;
 				}
 			}
 			else {
-				m_scale[i].x -= 0.008f;
-				m_scale[i].y -= 0.008f;
-				m_scale[i].z -= 0.008f;
+				m_scale[i].x -= 0.01f;
+				m_scale[i].y -= 0.01f;
+				m_scale[i].z -= 0.01f;
 
 				if (m_scale[i].x <= 0.0f) {
 					m_Alive[i] = false;
@@ -134,6 +107,34 @@ void SwordParticle::SetMatrix(XMMATRIX matrix)
 	for (int i = 0; i < m_NormalParticleCount; i++) {
 		if (!m_Alive[i]) {
 			object[i]->AddMatrix(matrix);
+		}
+	}
+}
+
+void SwordParticle::SetParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
+	if (Timer >= TargetTimer) {
+		for (int i = 0; i < m_NormalParticleCount; i++) {
+			if (!m_Alive[i]) {
+				object[i]->AddMatrix(matrix);
+				//パーティクルを出す
+				m_RandPos[i] = { 0,
+			 (static_cast<float>(rand() % 10) + 10) * -1,
+				 (static_cast<float>(rand() % 20) + 20)
+				};
+				m_RandPos[i] = { m_RandPos[i].x,
+					m_RandPos[i].y / 10,
+					 m_RandPos[i].z / 10
+				};
+				m_pos[i] = m_RandPos[i];
+				m_angle[i] = (float)(rand() % 360);
+				m_speed[i] = { 0.02f,0.02f };
+				m_Number[i] = rand() % 2;
+				m_addPower[i].y = 0.0f;
+				m_scale[i] = { 0.1f,0.1f,0.1f };
+				m_Alive[i] = true;
+				m_ScaleChange[i] = false;
+				break;
+			}
 		}
 	}
 }
