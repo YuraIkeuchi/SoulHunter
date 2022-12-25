@@ -41,6 +41,7 @@
 #include "ObjEdit.h"
 #include "Chest.h"
 #include "HitStop.h"
+
 #include <vector>
 #include<fstream>
 #include<string>
@@ -310,7 +311,7 @@ public:
 	//共通変数(クリアしたかどうか)
 	Save* save = nullptr;
 	//ポーズメニュー関連
-	Pause* pause;
+	Pause* pause = nullptr;
 	SkillPause* skillpause = nullptr;
 	static MiniMap* minimap;
 	Option* option = nullptr;

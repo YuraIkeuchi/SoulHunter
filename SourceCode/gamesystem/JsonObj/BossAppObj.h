@@ -1,0 +1,52 @@
+#pragma once
+#include "IKEObject3d.h"
+#include "IKEModel.h"
+#include <memory>
+#include <list> // ヘッダファイルインクルード
+#include <map>
+#include "ParticleTex.h"
+
+struct JsonData;
+
+using namespace std;         //  名前空間指定
+class BossAppObj {
+public:
+protected:
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
+public:
+	void Initialize();
+	void Update();
+	void Finalize();
+	const void BackDraw();
+	const void FrontDraw();
+
+public:
+	//gettersetter
+	bool GetApp() { return  m_App; }
+	//gettersetter
+	int GetAppTimer() { return  m_AppTimer; }
+
+	void SetApp(bool m_App) { this->m_App = m_App; }
+	void SetAppStart(bool m_AppStart) { this->m_AppStart = m_AppStart; }
+	void SetAppTimer(bool m_AppTimer) { this->m_AppTimer = m_AppTimer; }
+private:
+	//絶対に必要なOBJ
+	IKEModel* modelskydome = nullptr;
+	unique_ptr <IKEObject3d> objskydome;
+	//Json用
+	JsonData* jsonData = nullptr;
+	std::map<std::string, IKEModel*> models;
+	std::vector<IKEObject3d*> objects;
+
+	//その他変数
+	bool m_AppStart = false;//登場スタート
+	int m_AppTimer = 0;//時間
+	bool m_EndApp = false;//登場終了
+	bool m_App = false;//登場の間はtrue
+	
+};

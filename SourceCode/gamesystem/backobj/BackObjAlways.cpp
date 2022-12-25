@@ -3,16 +3,6 @@
 #include "ImageManager.h"
 //初期化
 void BackObjAlways::Initialize() {
-	//ステージ背景
-	modelskydome = ModelManager::GetInstance()->GetModel(ModelManager::Back);
-	IKEObject3d* objskydome_ = new IKEObject3d();
-	objskydome_ = IKEObject3d::Create();
-	objskydome_->SetModel(modelskydome);
-	objskydome_->SetPosition({ 150, -150, -30 });
-	objskydome_->SetScale({ 4.0f,4.0f,4.0f });
-	objskydome_->SetFog(true);
-	objskydome_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
-	objskydome.reset(objskydome_);
 
 	//ステージ地面
 	modelground = ModelManager::GetInstance()->GetModel(ModelManager::StageBackRock);
@@ -32,7 +22,6 @@ void BackObjAlways::Initialize() {
 
 //更新
 void BackObjAlways::Update() {
-	objskydome->Update();
 	for (int i = 0; i < BackRock_Max; i++) {
 		objground[i]->Update();
 	}
@@ -41,7 +30,6 @@ void BackObjAlways::Update() {
 //描画
 const void BackObjAlways::Draw() {
 	IKEObject3d::PreDraw();
-	objskydome->Draw();
 	for (int i = 0; i < BackRock_Max; i++) {
 		objground[i]->Draw();
 	}

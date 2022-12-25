@@ -118,7 +118,7 @@ void SwordParticle::SetParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
 				object[i]->AddMatrix(matrix);
 				//パーティクルを出す
 				m_RandPos[i] = { 0,
-			 (static_cast<float>(rand() % 10) + 10) * -1,
+			 (static_cast<float>(rand() % 10) + 10) * -1.2f,
 				 (static_cast<float>(rand() % 20) + 20)
 				};
 				m_RandPos[i] = { m_RandPos[i].x,

@@ -53,7 +53,7 @@ private:
 	float m_PI = 3.14f;
 	float m_TitleCameraRadius = 0.0f;
 	float m_TitleCameraSpeed = 0.0f;
-	float m_TitleCameraScale = 80.0f;// LaneNumと一緒に変えること
+	float m_TitleCameraScale = 0.0f;// LaneNumと一緒に変えること
 	float m_TitleCameraCircleX = 0.0f;
 	float m_TitleCameraCircleZ = 0.0f;
 	//ボスシーンのカメラの動き

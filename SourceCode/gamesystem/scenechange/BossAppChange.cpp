@@ -1,4 +1,4 @@
-#include "MapChange.h"
+#include "BossAppChange.h"
 #include "ImageManager.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -9,9 +9,9 @@ using XMFLOAT3 = DirectX::XMFLOAT3;
 using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
-XMFLOAT4 MapChange::s_color = { 1.0f,1.0f,1.0f,0.0f };
+XMFLOAT4 BossAppChange::s_color = { 1.0f,1.0f,1.0f,0.0f };
 
-MapChange::MapChange() {
+BossAppChange::BossAppChange() {
 	//死んだときに暗くなるようのやつ
 	IKESprite* change_;
 	change_ = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
@@ -19,12 +19,12 @@ MapChange::MapChange() {
 	change.reset(change_);
 }
 
-void MapChange::Update() {
+void BossAppChange::Update() {
 	change->SetColor(s_color);
 }
 
-const void MapChange::Draw() {
-	ImGui::Begin("mapfilter");
+const void BossAppChange::Draw() {
+	ImGui::Begin("filter");
 	ImGui::Text("%d", m_AddStartChange);
 	ImGui::Text("%d", m_SubStartChange);
 	ImGui::Text("%f", s_color.w);
@@ -33,18 +33,18 @@ const void MapChange::Draw() {
 	change->Draw();
 }
 
-void MapChange::Finalize() {
+void BossAppChange::Finalize() {
 
 }
 
-bool MapChange::AddBlack() {
+bool BossAppChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		if (s_color.w < 1.2f) {
-			s_color.w += 0.08f;
+		if (s_color.w < 1.0f) {
+			s_color.w += AddPower;
 		}
 		else {
 			m_AddStartChange = false;
-			s_color.w = 1.2f;
+			s_color.w = 1.0f;
 			return true;
 		}
 	}
@@ -52,10 +52,10 @@ bool MapChange::AddBlack() {
 	return false;
 }
 
-bool MapChange::SubBlack() {
+bool BossAppChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
 		if (s_color.w > 0.0f) {
-			s_color.w -= 0.08f;
+			s_color.w -= SubPower;
 		}
 		else {
 			m_SubStartChange = false;

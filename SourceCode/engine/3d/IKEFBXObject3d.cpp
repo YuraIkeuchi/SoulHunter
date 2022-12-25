@@ -450,3 +450,33 @@ void IKEFBXObject3d::PlayAnimation(int Number)
 void IKEFBXObject3d::StopAnimation() {
 	isPlay = false;
 }
+
+XMMATRIX IKEFBXObject3d::ExtractRotationMat(XMMATRIX matworld)
+{
+	XMMATRIX mOffset = ExtractPositionMat(matworld);
+	XMMATRIX mScaling = ExtractScaleMat(matworld);
+
+	XMVECTOR det;
+	// 左からScaling、右からOffsetの逆行列をそれぞれかける。
+	return XMMatrixInverse(&det, mScaling) * matworld * XMMatrixInverse(&det, mOffset);
+}
+
+XMMATRIX IKEFBXObject3d::ExtractScaleMat(XMMATRIX matworld)
+{
+	return XMMatrixScaling(
+		XMVector3Length(XMVECTOR{
+			matworld.r[0].m128_f32[0], matworld.r[0].m128_f32[1], matworld.r[0].m128_f32[2]
+			}).m128_f32[0],
+		XMVector3Length(XMVECTOR{
+			matworld.r[1].m128_f32[0], matworld.r[1].m128_f32[1], matworld.r[1].m128_f32[2]
+			}).m128_f32[0],
+		XMVector3Length(XMVECTOR{
+			matworld.r[2].m128_f32[0], matworld.r[2].m128_f32[1], matworld.r[2].m128_f32[2]
+			}).m128_f32[0]
+	);
+}
+
+XMMATRIX IKEFBXObject3d::ExtractPositionMat(XMMATRIX matworld)
+{
+	return XMMatrixTranslation(matworld.r[3].m128_f32[0], matworld.r[3].m128_f32[1], matworld.r[3].m128_f32[2]);
+}

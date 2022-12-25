@@ -20,7 +20,6 @@ public:
 		NormalBlock,
 		InBlock,
 		Toge,
-		Back,
 		Ground,
 		Skydome,
 		BackRock,
