@@ -356,6 +356,7 @@
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp" />
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scenechange\BossAppChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\scenechange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp" />
@@ -480,6 +481,7 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h" />
     <ClInclude Include="SourceCode\gamesystem\save\Save.h" />
+    <ClInclude Include="SourceCode\gamesystem\scenechange\BossAppChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\scenechange.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h" />

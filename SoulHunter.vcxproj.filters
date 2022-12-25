@@ -423,6 +423,9 @@
     <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scenechange\BossAppChange.cpp">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -790,6 +793,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scenechange\BossAppChange.h">
+      <Filter>SourceCords\gamesystem\scenechange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

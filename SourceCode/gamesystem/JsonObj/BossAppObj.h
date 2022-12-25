@@ -28,7 +28,10 @@ public:
 public:
 	//gettersetter
 	bool GetApp() { return  m_App; }
+	//gettersetter
+	int GetAppTimer() { return  m_AppTimer; }
 
+	void SetApp(bool m_App) { this->m_App = m_App; }
 	void SetAppStart(bool m_AppStart) { this->m_AppStart = m_AppStart; }
 	void SetAppTimer(bool m_AppTimer) { this->m_AppTimer = m_AppTimer; }
 private:

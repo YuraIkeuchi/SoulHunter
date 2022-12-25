@@ -14,7 +14,7 @@ void BossAppObj::Initialize() {
 	objskydome_->SetScale({ 4.0f,4.0f,4.0f });
 	objskydome.reset(objskydome_);
 
-	jsonData = JsonLoader::LoadFile("Title");
+	jsonData = JsonLoader::LoadFile("BossApp");
 
 	//リスポーン位置
 	for (auto& objectData : jsonData->objects) {
@@ -62,7 +62,7 @@ void BossAppObj::Update() {
 		m_AppTimer++;
 		//一定フレームでフラグ終了
 		if (m_AppTimer == 400) {
-			m_App = false;
+			//m_App = false;
 			m_AppStart = false;
 			m_EndApp = true;
 		}
@@ -79,12 +79,12 @@ const void BossAppObj::FrontDraw() {
 }
 //背景描画
 const void BossAppObj::BackDraw() {
-	ImGui::Begin("BossApp");
+	/*ImGui::Begin("BossApp");
 	ImGui::Text("m_App:%d", m_App);
 	ImGui::Text("m_AppTimer:%d", m_AppTimer);
 	ImGui::Text("m_End:%d", m_EndApp);
 	ImGui::Text("m_AppStart:%d", m_AppStart);
-	ImGui::End();
+	ImGui::End();*/
 	//Json用
 	for (auto& object : objects) {
 		object->Draw();
