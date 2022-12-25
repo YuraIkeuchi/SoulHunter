@@ -1012,3 +1012,14 @@ void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();
 }
+//ボスシーンの更新
+void Player::BossAppUpdate(int Timer) {
+	m_fbxObject->SetPosition({ 0.0f,5.0f,0.0f });
+	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+}
+
+void Player::BossAppDraw(DirectXCommon* dxCommon) {
+	//FollowObj_Draw();
+	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
+}

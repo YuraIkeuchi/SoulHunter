@@ -366,6 +366,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 //ボスシーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
 	bossappobj->BackDraw();
+	player->BossAppDraw(dxCommon);
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {
@@ -444,7 +445,7 @@ void FirstStage::AllUpdate() {
 	mapchange->Update();
 	mapchange->SubBlack();
 	bossappchange->Update();
-	bossappchange->SubBlack(0.005f);
+	bossappchange->SubBlack(0.08f);
 	camerawork->Update(camera);
 }
 //ライトの位置
@@ -530,14 +531,14 @@ void FirstStage::LightSet() {
 void FirstStage::BossRoomUpdate() {
 	//ボス部屋の処理
 	if (StageNumber == BossMap) {
-
 		firstboss->SetAlive(true);
 		//ボス登場
 		if (bossappobj->GetApp()) {
+			player->BossAppUpdate(1);
 			if (bossappobj->GetAppTimer() == 400) {
 				bossappchange->SetAddStartChange(true);
 			}
-			if (bossappchange->AddBlack(0.005f)) {
+			if (bossappchange->AddBlack(0.08f)) {
 				bossappchange->SetSubStartChange(true);
 				bossappobj->SetApp(false);
 			}

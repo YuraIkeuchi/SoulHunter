@@ -40,7 +40,7 @@ void MapChange::Finalize() {
 bool MapChange::AddBlack() {
 	if (m_AddStartChange) {
 		if (s_color.w < 1.2f) {
-			s_color.w += 0.01f;
+			s_color.w += 0.08f;
 		}
 		else {
 			m_AddStartChange = false;
@@ -55,7 +55,7 @@ bool MapChange::AddBlack() {
 bool MapChange::SubBlack() {
 	if (m_SubStartChange) {
 		if (s_color.w > 0.0f) {
-			s_color.w -= 0.01f;
+			s_color.w -= 0.08f;
 		}
 		else {
 			m_SubStartChange = false;

@@ -82,10 +82,6 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 	AllUpdate();
 	//光の配置
 	LightSet();
-	//ボスの部屋の処理
-	BossRoomUpdate();
-	//ゴール判定
-	GoalHit();
 	//シーンやマップの変更の処理
 	ChangeUpdate();
 	//BGMスタート
@@ -685,52 +681,6 @@ void EditorScene::LightSet() {
 		}
 	}
 }
-//ボス部屋の処理
-void EditorScene::BossRoomUpdate() {
-	//ボス部屋の処理
-	if (StageNumber == BossMap) {
-		firstboss->SetAlive(true);
-		if (player->GetAddPower() == 0.0f && player->GetPosition().y <= -50.0f) {
-			m_AppTimer++;
-		}
-		if (firstboss->GetDeathTimer() > 200) {
-			scenechange->SetAddStartChange(true);
-		}
-
-		if (m_BossNumber == BossApp) {
-			camerawork->SetCameraType(3);
-			firstboss->SetMovie(true);
-			player->SetMovie(true);
-			if (camerawork->GetEndApp()) {
-				firstboss->SetMovie(false);
-				m_BossNumber = BossBattle;
-				player->SetMovie(false);
-			}
-		}
-		else {
-			//ボスステージの敵生成
-			if (respornenemy->GetEnemyArgment()) {
-				InterEnemy* newEnemy;
-				newEnemy = new Enemy();
-				newEnemy->Initialize();
-				newEnemy->SetPlayer(player);
-				newEnemy->SetBlock(block);
-				newEnemy->SetPlayerBullet(playerbullet);
-				newEnemy->SetPlayerEffect(playereffect);
-				newEnemy->SetPosition(respornenemy->GetResPornPosition());
-				m_Enemys.push_back(newEnemy);
-				m_NormalEnemyCount++;
-				respornenemy->SetEnemyArgment(false);
-			}
-			camerawork->SetCameraType(2);
-		}
-	}
-	else {
-		camerawork->SetCameraType(2);
-		firstboss->SetAlive(false);
-	}
-
-}
 //シーン変更など
 void EditorScene::ChangeUpdate() {
 
@@ -779,86 +729,6 @@ void EditorScene::ChangeUpdate() {
 	}
 	else if (player->GetAlive() && BlackColor.w > 0.0f) {
 		BlackColor.w -= 0.02f;
-	}
-}
-//ゴール判定
-void EditorScene::GoalHit() {
-
-	//ゴール判定
-	if (!player->GetChangeInterVal()) {
-		if (block->GetLeftGoal()) {
-			player->SetChangeInterVal(true);
-			player->SetGoalDir(1);
-			if (StageNumber == Map1) {
-				StageNumber = TutoRial;
-			}
-			else if (StageNumber == Map2) {
-				StageNumber = Map1;
-			}
-			else if (StageNumber == Map3) {
-				StageNumber = Map2;
-			}
-			else if (StageNumber == Map4) {
-				StageNumber = Map5;
-			}
-			else if (StageNumber == Map5) {
-				StageNumber = Map6;
-			}
-			mapchange->SetAddStartChange(true);
-			block->SetLeftGoal(false);
-		}
-
-		if (block->GetRightGoal()) {
-			player->SetChangeInterVal(true);
-			player->SetGoalDir(2);
-			if (StageNumber == TutoRial) {
-				StageNumber = Map1;
-			}
-			else if (StageNumber == Map1) {
-				StageNumber = Map2;
-			}
-			else if (StageNumber == Map2) {
-				StageNumber = Map3;
-			}
-			else if (StageNumber == Map5) {
-				StageNumber = Map4;
-			}
-			else if (StageNumber == Map6) {
-				StageNumber = Map5;
-			}
-			mapchange->SetAddStartChange(true);
-			block->SetRightGoal(false);
-		}
-
-		if (block->GetDownGoal()) {
-			player->SetChangeInterVal(true);
-			player->SetGoalDir(4);
-			if (StageNumber == Map1) {
-				StageNumber = Map6;
-			}
-			else if (StageNumber == Map3) {
-				StageNumber = Map4;
-			}
-			else if (StageNumber == Map5) {
-				StageNumber = BossMap;
-				firstboss->SetMovie(true);
-			}
-			mapchange->SetAddStartChange(true);
-			block->SetDownGoal(false);
-		}
-
-		if (block->GetUpGoal()) {
-			player->SetGoalDir(3);
-			player->SetChangeInterVal(true);
-			if (StageNumber == Map4) {
-				StageNumber = Map3;
-			}
-			else if (StageNumber == Map6) {
-				StageNumber = Map1;
-			}
-			mapchange->SetAddStartChange(true);
-			block->SetUpGoal(false);
-		}
 	}
 }
 //エディタ関係の更新

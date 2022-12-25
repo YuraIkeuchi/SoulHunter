@@ -40,12 +40,8 @@ public:
 	void AllUpdate();
 	//ライトの設置
 	void LightSet();
-	//ボス部屋の更新
-	void BossRoomUpdate();
 	//シーンチェンジなど
 	void ChangeUpdate();
-	//ゴール判定
-	void GoalHit();
 	//エディタ関係
 	void EditorUpdate();
 public:

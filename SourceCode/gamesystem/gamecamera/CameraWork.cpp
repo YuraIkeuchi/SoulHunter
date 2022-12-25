@@ -27,6 +27,7 @@ void CameraWork::Update(DebugCamera* camera) {
 }
 //ƒ^ƒCƒgƒ‹‚ÌƒJƒƒ‰(‰ñ“]‚·‚é‚æ‚¤‚È“®‚«)
 void CameraWork::TitleCamera() {
+	m_TitleCameraScale = 80.0f;
 	m_TitleCameraSpeed += 0.1f;
 	//‰~‰^“®‚ÌŒvZ
 	m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
@@ -210,7 +211,7 @@ void CameraWork::AppCamera() {
 	//	m_AppCameraNumber = No;
 	//	m_EndApp = true;
 	//}
-
+	m_TitleCameraScale = 30.0f;
 	m_TitleCameraSpeed += 0.1f;
 	//‰~‰^“®‚ÌŒvZ
 	m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
@@ -218,8 +219,8 @@ void CameraWork::AppCamera() {
 	m_TitleCameraCircleZ = sinf(m_TitleCameraRadius) * m_TitleCameraScale;
 	m_eyePos.x = m_TitleCameraCircleX;
 	m_eyePos.z = m_TitleCameraCircleZ;
-	m_eyePos.y = 50.0f;
-	m_targetPos = { 0.0f,30.0f,0.0f };
+	m_eyePos.y = 20.0f;
+	m_targetPos = { 0.0f,10.0f,0.0f };
 }
 //ImGui‚Ì•`‰æ
 void CameraWork::ImGuiDraw() {
