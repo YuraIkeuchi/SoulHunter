@@ -330,9 +330,6 @@
     <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp">
       <Filter>SourceCords\gamesystem\scene\Load</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\TitleObj.cpp">
-      <Filter>SourceCords\gamesystem\scene\Title</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp">
       <Filter>SourceCords\gamesystem\scene\Title</Filter>
     </ClCompile>
@@ -405,9 +402,6 @@
     <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp">
       <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\IntroductionObj.cpp">
-      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
       <Filter>SourceCords\gamesystem\gamecamera</Filter>
     </ClCompile>
@@ -419,6 +413,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -686,9 +689,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h">
       <Filter>SourceCords\gamesystem\scene\Load</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\TitleObj.h">
-      <Filter>SourceCords\gamesystem\scene\Title</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h">
       <Filter>SourceCords\gamesystem\scene\Title</Filter>
     </ClInclude>
@@ -764,9 +764,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h">
       <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\IntroductionObj.h">
-      <Filter>SourceCords\gamesystem\scene\Introduction</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>SourceCords\gamesystem\gamecamera</Filter>
     </ClInclude>
@@ -784,6 +781,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1010,6 +1016,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\scene\Introduction">
       <UniqueIdentifier>{d28e5e3d-213c-437a-ae7f-5ec12e0e1fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\JsonObj">
+      <UniqueIdentifier>{e17ea6d3-67d8-43c2-980a-bbd86560e76b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

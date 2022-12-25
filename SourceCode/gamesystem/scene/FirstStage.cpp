@@ -26,6 +26,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	firstboss = new FirstBoss();
 	camerawork = new CameraWork();
 	hitstop = new HitStop();
+	bossappobj = new BossAppObj();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -60,11 +61,18 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	LoadEnemyParam(StageNumber);
 	LoadObjParam(StageNumber);
 	BGMStart = true;
+
+	bossappobj->Initialize();
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
 {
 	Input* input = Input::GetInstance();
+	if (!bossappobj->GetApp()) {
+		NormalUpdate();
+	}
+	
+	BossAppUpdate();
 	//各クラス更新
 	AllUpdate();
 	//光の配置
@@ -93,241 +101,8 @@ void FirstStage::Update(DirectXCommon* dxCommon)
 		save->SetGameSave(false);
 	}
 }
-//描画
-void FirstStage::Draw(DirectXCommon* dxCommon)
-{
-	//描画方法
-	//ポストエフェクトをかけるか
-	if (PlayPostEffect) {
-		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		BackDraw(dxCommon);
-		postEffect->PostDrawScene(dxCommon->GetCmdList());
-	
-		dxCommon->PreDraw();
-		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
-		//FPSManager::GetInstance()->ImGuiDraw();
-		//ImGuiDraw(dxCommon);
-		camerawork->ImGuiDraw();
-		//PostImGuiDraw(dxCommon);
-		dxCommon->PostDraw();
-	}
-	else {
-		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		postEffect->Draw(dxCommon->GetCmdList());
-		postEffect->PostDrawScene(dxCommon->GetCmdList());
-		dxCommon->PreDraw();
-		//FPSManager::GetInstance()->ImGuiDraw();
-		//ImGuiDraw(dxCommon);
-		camerawork->ImGuiDraw();
-		//PostImGuiDraw(dxCommon);
-		BackDraw(dxCommon);
-		FrontDraw(dxCommon);
-		dxCommon->PostDraw();
-	}
-}
-//解放
-void FirstStage::Finalize()
-{
-	delete postEffect;
-}
-//モデルの描画
-void FirstStage::ModelDraw(DirectXCommon* dxCommon) {
-#pragma region 3Dオブジェクト描画
-	//背景は先に描画する
-	IKEObject3d::PreDraw();
-	
-}
-//後ろの描画
-void FirstStage::BackDraw(DirectXCommon* dxCommon)
-{
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-
-#pragma endregion
-	//スプライトの描画
-	ModelDraw(dxCommon);
-	//FBXの描画
-	//object1->Draw(dxCommon->GetCmdList());
-}
-//ポストエフェクトがかからない
-void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
-	IKEObject3d::PreDraw();
-	backobjalways->Draw();
-
-	block->Draw(m_PlayerPos);
-	
-	if (StageNumber != BossMap) {
-		BackObjDraw(m_BackRocks, dxCommon);
-		BackObjDraw(m_BackBoxs, dxCommon);
-		BackObjDraw(m_BackTorchs, dxCommon);
-	}
-	backlight->Draw();
-	save->Draw();
-	//パーティクルの描画
-	particleMan->Draw(dxCommon->GetCmdList());
-	//チュートリアル
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->Draw();
-	}
-	//たからばこ
-	chest->Draw();
-	message->Draw();
-	//敵の描画
-	EnemyDraw(m_Enemys, dxCommon);
-	EnemyDraw(m_ThornEnemys, dxCommon);
-	EnemyDraw(m_WingEnemys, dxCommon);
-	EnemyDraw(m_BirdEnemys, dxCommon);
-	//棘のOBJ
-	for (ThornObj* thornobj : m_ThornObjs) {
-		if (thornobj != nullptr) {
-			thornobj->Draw(dxCommon);
-		}
-	}
-	
-	//プレイヤーの描画
-	player->Draw(dxCommon);
-	playerbullet->Draw(dxCommon);
-	playereffect->Draw();
-
-	//ボスの描画
-	if (StageNumber == BossMap) {
-		firstboss->Draw();
-		respornenemy->Draw();
-	}
-
-	//魂関係
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_NormalEnemyCount; j++) {
-			normalplayersoul[i][j]->Draw();
-		}
-	}
-
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_WingEnemyCount; j++) {
-			wingplayersoul[i][j]->Draw();
-		}
-	}
-
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_BirdEnemyCount; j++) {
-			birdplayersoul[i][j]->Draw();
-		}
-	}
-
-	playerskill->Draw();
-	// 3Dオブジェクト描画後処理
-	IKEObject3d::PostDraw();
-	
-	//完全に前に各スプライト
-	IKESprite::PreDraw();
-	ui->Draw();
-	mapchange->Draw();
-	pause->Draw();
-	chest->ExplainDraw();
-	message->ExplainDraw();
-	scenechange->Draw();
-	BlackFilter->Draw();
-	IKESprite::PostDraw();
-#pragma endregion
-}
-//IMGuiの描画
-void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
-	{
-		int App = camerawork->GetCameraNumber();
-		float frame = camerawork->GetFrame();
-		ImGui::Begin("GamePlay");
-		ImGui::SetWindowPos(ImVec2(1000, 150));
-		ImGui::SetWindowSize(ImVec2(280, 150));
-		if (ImGui::RadioButton("m_SceneChange", &m_SceneChange)) {
-			scenechange->SetAddStartChange(true);
-			m_SceneChange = true;
-		}
-		ImGui::End();
-	}
-	/*{
-		ImGui::Begin("Load");
-		ImGui::Text("m_RockNum:%d", m_BackRock_Num);
-		ImGui::Text("m_TorchNum:%d", m_BackTorch_Num);
-		ImGui::End();
-	}*/
-}
-//マップ初期化とそれに合わせた初期化
-void FirstStage::MapInitialize() {
-	//マップの読み込み
-	if (StageChange) {
-		AllDelete();
-		switch (StageNumber)
-		{
-		case Map1:
-			block->Initialize(map1,0, StageNumber);
-			minimap->InitMap(map1, StageNumber);
-		case Map2:
-			block->Initialize(map2, 0, StageNumber);
-			minimap->InitMap(map2, StageNumber);
-		case Map3:
-			block->Initialize(map3, 0, StageNumber);
-			minimap->InitMap(map3, StageNumber);
-		case Map4:
-			block->Initialize(map4, 0, StageNumber);
-			minimap->InitMap(map4, StageNumber);
-		case Map5:
-			block->Initialize(map5, 0, StageNumber);
-			minimap->InitMap(map5, StageNumber);
-		case Map6:
-			block->Initialize(map6, 0, StageNumber);
-			minimap->InitMap(map6, StageNumber);
-		case BossMap:
-			block->Initialize(bossmap,0, StageNumber);
-			minimap->InitMap(bossmap, StageNumber);
-		case TutoRial:
-			block->Initialize(tutorialmap, 0, StageNumber);
-			minimap->InitMap(tutorialmap, StageNumber);
-		default:
-			break;
-		}
-		player->InitPlayer(StageNumber);
-		save->InitSave(StageNumber);
-		backobjalways->InitRock(StageNumber);
-		LoadEnemyParam(StageNumber);
-		for (int i = 0; i < tutorialtext.size(); i++) {
-			tutorialtext[i]->InitBoard(StageNumber, i);
-		}
-		message->InitMessage(StageNumber);
-		chest->InitChest(StageNumber);
-		LoadObjParam(StageNumber);
-		StageChange = false;
-		player->SetGoalDir(0);
-	}
-}
-//全削除
-void FirstStage::AllDelete() {
-	//要素全削除
-	EnemyFinalize(m_Enemys);
-	EnemyFinalize(m_ThornEnemys);
-	EnemyFinalize(m_WingEnemys);
-	EnemyFinalize(m_BirdEnemys);
-	player->Finalize();
-	m_Enemys.clear();
-	m_ThornEnemys.clear();
-	m_WingEnemys.clear();
-	m_BirdEnemys.clear();
-	m_ThornObjs.clear();
-	m_BackRocks.clear();
-	m_BackBoxs.clear();
-	m_NormalEnemyCount = 0;
-	m_ThornObjCount = 0;
-	m_WingEnemyCount = 0;
-	m_EnemyCount = 0;
-	m_BackObjCount = 0;
-}
-//各クラスの更新
-void FirstStage::AllUpdate() {
-	lightGroup->Update();
-	scenechange->Update();
-	scenechange->SubBlack(0.05f);
-	mapchange->Update();
-	mapchange->SubBlack();
+//普通の更新
+void FirstStage::NormalUpdate() {
 	message->Update();
 	block->Update(m_PlayerPos);
 
@@ -422,6 +197,248 @@ void FirstStage::AllUpdate() {
 	else {
 		ui->Update();
 	}
+}
+//ボス部屋の更新
+void FirstStage::BossAppUpdate() {
+	bossappobj->Update();
+}
+//描画
+void FirstStage::Draw(DirectXCommon* dxCommon)
+{
+	//描画方法
+	//ポストエフェクトをかけるか
+	if (PlayPostEffect) {
+		postEffect->PreDrawScene(dxCommon->GetCmdList());
+		BackDraw(dxCommon);
+		postEffect->PostDrawScene(dxCommon->GetCmdList());
+	
+		dxCommon->PreDraw();
+		postEffect->Draw(dxCommon->GetCmdList());
+		FrontDraw(dxCommon);
+		//FPSManager::GetInstance()->ImGuiDraw();
+		//ImGuiDraw(dxCommon);
+		camerawork->ImGuiDraw();
+		//PostImGuiDraw(dxCommon);
+		dxCommon->PostDraw();
+	}
+	else {
+		postEffect->PreDrawScene(dxCommon->GetCmdList());
+		postEffect->Draw(dxCommon->GetCmdList());
+		postEffect->PostDrawScene(dxCommon->GetCmdList());
+		dxCommon->PreDraw();
+		//FPSManager::GetInstance()->ImGuiDraw();
+		ImGuiDraw(dxCommon);
+		camerawork->ImGuiDraw();
+		//PostImGuiDraw(dxCommon);
+		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
+		dxCommon->PostDraw();
+	}
+}
+//解放
+void FirstStage::Finalize()
+{
+	delete postEffect;
+}
+//モデルの描画
+void FirstStage::ModelDraw(DirectXCommon* dxCommon) {
+}
+//後ろの描画
+void FirstStage::BackDraw(DirectXCommon* dxCommon)
+{
+#pragma endregion
+	ModelDraw(dxCommon);
+}
+//ポストエフェクトがかからない
+void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
+	//ボス登場シーンかどうかで描画を決める
+	if (!bossappobj->GetApp()) {
+		NormalDraw(dxCommon);
+	}
+	else {
+		BossAppDraw(dxCommon);
+	}
+	//bossappobj->BackDraw();
+}
+//IMGuiの描画
+void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
+	{
+		int App = camerawork->GetCameraNumber();
+		float frame = camerawork->GetFrame();
+		ImGui::Begin("GamePlay");
+		ImGui::SetWindowPos(ImVec2(1000, 150));
+		ImGui::SetWindowSize(ImVec2(280, 150));
+		if (ImGui::RadioButton("m_SceneChange", &m_SceneChange)) {
+			scenechange->SetAddStartChange(true);
+			m_SceneChange = true;
+		}
+		ImGui::End();
+	}
+	/*{
+		ImGui::Begin("Load");
+		ImGui::Text("m_RockNum:%d", m_BackRock_Num);
+		ImGui::Text("m_TorchNum:%d", m_BackTorch_Num);
+		ImGui::End();
+	}*/
+}
+//普通の描画
+void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
+	//ステージの描画
+	backobjalways->Draw();
+	block->Draw(m_PlayerPos);
+	if (StageNumber != BossMap) {
+		BackObjDraw(m_BackRocks, dxCommon);
+		BackObjDraw(m_BackBoxs, dxCommon);
+		BackObjDraw(m_BackTorchs, dxCommon);
+	}
+	backlight->Draw();
+	save->Draw();
+	//パーティクルの描画
+	particleMan->Draw(dxCommon->GetCmdList());
+	//チュートリアル
+	for (int i = 0; i < tutorialtext.size(); i++) {
+		tutorialtext[i]->Draw();
+	}
+	//たからばこ
+	chest->Draw();
+	message->Draw();
+	//敵の描画
+	EnemyDraw(m_Enemys, dxCommon);
+	EnemyDraw(m_ThornEnemys, dxCommon);
+	EnemyDraw(m_WingEnemys, dxCommon);
+	EnemyDraw(m_BirdEnemys, dxCommon);
+	//棘のOBJ
+	for (ThornObj* thornobj : m_ThornObjs) {
+		if (thornobj != nullptr) {
+			thornobj->Draw(dxCommon);
+		}
+	}
+
+	//プレイヤーの描画
+	player->Draw(dxCommon);
+	playerbullet->Draw(dxCommon);
+	playereffect->Draw();
+
+	//ボスの描画
+	if (StageNumber == BossMap) {
+		firstboss->Draw();
+		respornenemy->Draw();
+	}
+
+	//魂関係
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_NormalEnemyCount; j++) {
+			normalplayersoul[i][j]->Draw();
+		}
+	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_WingEnemyCount; j++) {
+			wingplayersoul[i][j]->Draw();
+		}
+	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_BirdEnemyCount; j++) {
+			birdplayersoul[i][j]->Draw();
+		}
+	}
+
+	playerskill->Draw();
+	// 3Dオブジェクト描画後処理
+	IKEObject3d::PostDraw();
+
+	//完全に前に書くスプライト
+	IKESprite::PreDraw();
+	ui->Draw();
+	mapchange->Draw();
+	pause->Draw();
+	chest->ExplainDraw();
+	message->ExplainDraw();
+	scenechange->Draw();
+	BlackFilter->Draw();
+	IKESprite::PostDraw();
+}
+//ボスシーンの描画
+void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
+	
+}
+//マップ初期化とそれに合わせた初期化
+void FirstStage::MapInitialize() {
+	//マップの読み込み
+	if (StageChange) {
+		AllDelete();
+		switch (StageNumber)
+		{
+		case Map1:
+			block->Initialize(map1,0, StageNumber);
+			minimap->InitMap(map1, StageNumber);
+		case Map2:
+			block->Initialize(map2, 0, StageNumber);
+			minimap->InitMap(map2, StageNumber);
+		case Map3:
+			block->Initialize(map3, 0, StageNumber);
+			minimap->InitMap(map3, StageNumber);
+		case Map4:
+			block->Initialize(map4, 0, StageNumber);
+			minimap->InitMap(map4, StageNumber);
+		case Map5:
+			block->Initialize(map5, 0, StageNumber);
+			minimap->InitMap(map5, StageNumber);
+		case Map6:
+			block->Initialize(map6, 0, StageNumber);
+			minimap->InitMap(map6, StageNumber);
+		case BossMap:
+			block->Initialize(bossmap,0, StageNumber);
+			minimap->InitMap(bossmap, StageNumber);
+		case TutoRial:
+			block->Initialize(tutorialmap, 0, StageNumber);
+			minimap->InitMap(tutorialmap, StageNumber);
+		default:
+			break;
+		}
+		player->InitPlayer(StageNumber);
+		save->InitSave(StageNumber);
+		backobjalways->InitRock(StageNumber);
+		LoadEnemyParam(StageNumber);
+		for (int i = 0; i < tutorialtext.size(); i++) {
+			tutorialtext[i]->InitBoard(StageNumber, i);
+		}
+		message->InitMessage(StageNumber);
+		chest->InitChest(StageNumber);
+		LoadObjParam(StageNumber);
+		StageChange = false;
+		player->SetGoalDir(0);
+	}
+}
+//全削除
+void FirstStage::AllDelete() {
+	//要素全削除
+	EnemyFinalize(m_Enemys);
+	EnemyFinalize(m_ThornEnemys);
+	EnemyFinalize(m_WingEnemys);
+	EnemyFinalize(m_BirdEnemys);
+	player->Finalize();
+	m_Enemys.clear();
+	m_ThornEnemys.clear();
+	m_WingEnemys.clear();
+	m_BirdEnemys.clear();
+	m_ThornObjs.clear();
+	m_BackRocks.clear();
+	m_BackBoxs.clear();
+	m_NormalEnemyCount = 0;
+	m_ThornObjCount = 0;
+	m_WingEnemyCount = 0;
+	m_EnemyCount = 0;
+	m_BackObjCount = 0;
+}
+//各クラスの更新
+void FirstStage::AllUpdate() {
+	lightGroup->Update();
+	scenechange->Update();
+	scenechange->SubBlack(0.05f);
+	mapchange->Update();
+	mapchange->SubBlack();
 	camerawork->Update(camera);
 }
 //ライトの位置
@@ -507,15 +524,22 @@ void FirstStage::LightSet() {
 void FirstStage::BossRoomUpdate() {
 	//ボス部屋の処理
 	if (StageNumber == BossMap) {
+		bossappobj->SetAppStart(true);
 		firstboss->SetAlive(true);
 		if (firstboss->GetDeathTimer() > 200) {
 			scenechange->SetAddStartChange(true);
 		}
 		//ボス登場
 		if (m_BossNumber == BossApp) {
-			if (player->GetAddPower() == 0.0f && player->GetPosition().y <= -50.0f) {
+			if (bossappobj->GetApp()) {
 				camerawork->SetCameraType(3);
 			}
+			else {
+				camerawork->SetCameraType(2);
+			}
+			/*if (player->GetAddPower() == 0.0f && player->GetPosition().y <= -50.0f) {
+			
+			}*/
 			firstboss->SetMovie(true);
 			player->SetMovie(true);
 			if (camerawork->GetEndApp()) {

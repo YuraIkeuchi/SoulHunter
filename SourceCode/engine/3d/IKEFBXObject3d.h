@@ -98,6 +98,10 @@ public:	//ƒƒ“ƒoŠÖ”
 
 	void StopAnimation();
 
+	XMMATRIX ExtractPositionMat(XMMATRIX matworld);
+	XMMATRIX ExtractRotationMat(XMMATRIX matworld);
+	XMMATRIX ExtractScaleMat(XMMATRIX matworld);
+
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
 
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }

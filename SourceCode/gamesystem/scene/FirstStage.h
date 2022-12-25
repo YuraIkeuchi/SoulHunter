@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include <array>       // ヘッダファイルインクルード
+#include "BossAppObj.h"
 using namespace std;         //  名前空間指定
 
 //ゲームプレイシーン
@@ -20,9 +21,12 @@ public:
 	void ModelDraw(DirectXCommon* dxCommon);
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
+	void NormalDraw(DirectXCommon* dxCommon);//普通の描画
+	void BossAppDraw(DirectXCommon* dxCommon);//ボス登場シーンの描画
+	void NormalUpdate();//普通の更新
+	void BossAppUpdate();//ボス登場シーンの描画
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
-
+	
 	//要素全削除
 	void AllDelete();
 	//マップの初期化
@@ -39,5 +43,7 @@ public:
 	void ChangeUpdate();
 	//ゴール判定
 	void GoalHit();
-public:
+private:
+	//ボス登場シーンのクラス
+	BossAppObj* bossappobj = nullptr;
 };

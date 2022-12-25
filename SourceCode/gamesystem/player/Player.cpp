@@ -437,7 +437,7 @@ void Player::PlayerAttack() {
 		}
 		m_AttackTimer++;
 		
-		if (m_AttackTimer >= 40) {
+		if (m_AttackTimer >= 30) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -461,7 +461,7 @@ void Player::PlayerAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (s_UseDush) && (!m_Special) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
+	if ((!m_Dush) && (!m_Special) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
@@ -722,11 +722,11 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
+	/*ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
 	ImGui::Text("m_Attack:%d", m_AttackTimer);
-	ImGui::End();
+	ImGui::End();*/
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
