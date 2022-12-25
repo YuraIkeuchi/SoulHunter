@@ -16,7 +16,6 @@ void ModelManager::Initialize() {
 	LoadModel(NormalBlock, "RockBlock");
 	LoadModel(InBlock, "RockBlock2");
 	LoadModel(Toge, "Toge");
-	LoadModel(Back, "skydome");
 	LoadModel(Ground, "ground");
 	LoadModel(Skydome, "skydome");
 	LoadModel(BackRock, "CaveRock");

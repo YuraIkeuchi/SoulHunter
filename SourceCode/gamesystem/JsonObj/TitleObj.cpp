@@ -5,14 +5,6 @@
 using namespace DirectX;	
 //初期化
 void TitleObj::Initialize() {
-	//ステージ背景
-	modelskydome = ModelManager::GetInstance()->GetModel(ModelManager::Back);
-	IKEObject3d* objskydome_ = new IKEObject3d();
-	objskydome_ = IKEObject3d::Create();
-	objskydome_->SetModel(modelskydome);
-	objskydome_->SetPosition({ 0, 0, -30 });
-	objskydome_->SetScale({ 4.0f,4.0f,4.0f });
-	objskydome.reset(objskydome_);
 	//パーティクル
 	m_ParticleCount = 0;
 	ParticleTex* particletex_ = new ParticleTex();
@@ -60,9 +52,6 @@ void TitleObj::Initialize() {
 }
 //更新
 void TitleObj::Update() {
-	//pos = player->GetPosition();
-	objskydome->Update();
-	
 	//Json用
 	for (auto& object : objects) {
 		object->Update();
@@ -98,7 +87,6 @@ const void TitleObj::BackDraw() {
 	for (auto& object : objects) {
 		object->Draw();
 	}
-	//objskydome->Draw();
 }
 //解放
 void TitleObj::Finalize() {

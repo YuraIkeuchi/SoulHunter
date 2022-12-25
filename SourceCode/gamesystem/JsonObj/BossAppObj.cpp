@@ -5,14 +5,6 @@
 using namespace DirectX;
 //‰Šú‰»
 void BossAppObj::Initialize() {
-	//ƒXƒe[ƒW”wŒi
-	modelskydome = ModelManager::GetInstance()->GetModel(ModelManager::Back);
-	IKEObject3d* objskydome_ = new IKEObject3d();
-	objskydome_ = IKEObject3d::Create();
-	objskydome_->SetModel(modelskydome);
-	objskydome_->SetPosition({ 0, 0, -30 });
-	objskydome_->SetScale({ 4.0f,4.0f,4.0f });
-	objskydome.reset(objskydome_);
 
 	jsonData = JsonLoader::LoadFile("BossApp");
 
@@ -89,7 +81,6 @@ const void BossAppObj::BackDraw() {
 	for (auto& object : objects) {
 		object->Draw();
 	}
-	//objskydome->Draw();
 }
 //‰ð•ú
 void BossAppObj::Finalize() {
