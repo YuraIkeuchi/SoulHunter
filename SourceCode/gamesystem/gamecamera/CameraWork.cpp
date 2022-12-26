@@ -133,6 +133,45 @@ void CameraWork::NormalCamera() {
 }
 //ボス登場時のカメラ
 void CameraWork::AppCamera() {
+	if (m_Timer <= 710) {
+		m_Timer++;
+	}
+	//カメラを移動する
+	if (m_AppCameraNumber == No) {
+		if (m_Timer == 1) {
+			m_eyePos = { 10.0f,20.0f,10.0f };
+			m_targetPos = { 0.0f,5.0f,0.0f };
+		}
+
+		if (m_Timer == 10) {
+			m_Frame = 0.0f;
+			m_AppCameraNumber = Camera1;
+		}
+	}
+	else if (m_AppCameraNumber == Camera1) {
+		AppCameraMove({ -10.0f, 20.0f,10.0f },
+					{ 0.0f,5.0f,0.0f },0.0025f);
+
+		if (m_Timer == 200) {
+			m_Frame = 0.0f;
+			m_AppCameraNumber = Camera2;
+		}
+	}
+
+	else if (m_AppCameraNumber == Camera2) {
+		AppCameraMove({ 0.0f, 10.0f,-20.0f },
+			{ 0.0f,18.0f,0.0f }, 0.0025f);
+
+		if (m_Timer == 700) {
+			m_Frame = 0.0f;
+			m_AppCameraNumber = Camera3;
+		}
+	}
+	else if (m_AppCameraNumber == Camera3) {
+		AppCameraMove({ 0.0f, 22.0f,0.0f },
+			{ 0.0f,27.0f,20.0f }, 0.008f);
+	}
+
 	//XMFLOAT3 m_PlayerPos = player->GetPosition();
 	//XMFLOAT3 bossPos = interboss->GetPosition();
 	////フレームでカメラの目標を変更する
@@ -211,28 +250,29 @@ void CameraWork::AppCamera() {
 	//	m_AppCameraNumber = No;
 	//	m_EndApp = true;
 	//}
-	m_TitleCameraScale = 30.0f;
-	m_TitleCameraSpeed += 0.1f;
-	//円運動の計算
-	m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
-	m_TitleCameraCircleX = cosf(m_TitleCameraRadius) * m_TitleCameraScale;
-	m_TitleCameraCircleZ = sinf(m_TitleCameraRadius) * m_TitleCameraScale;
-	m_eyePos.x = m_TitleCameraCircleX;
-	m_eyePos.z = m_TitleCameraCircleZ;
-	m_eyePos.y = 20.0f;
-	m_targetPos = { 0.0f,10.0f,0.0f };
+	//m_TitleCameraScale = 30.0f;
+	//m_TitleCameraSpeed += 0.1f;
+	////円運動の計算
+	//m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
+	//m_TitleCameraCircleX = cosf(m_TitleCameraRadius) * m_TitleCameraScale;
+	//m_TitleCameraCircleZ = sinf(m_TitleCameraRadius) * m_TitleCameraScale;
+	//m_eyePos.x = m_TitleCameraCircleX;
+	//m_eyePos.z = m_TitleCameraCircleZ;
+	//m_eyePos.y = 20.0f;
+	//m_targetPos = { 0.0f,10.0f,0.0f };
 }
 //ImGuiの描画
 void CameraWork::ImGuiDraw() {
-	ImGui::Begin("CameraWork");
-	ImGui::SliderFloat("eyeX", &m_eyePos.x, 360, 0);
-	ImGui::SliderFloat("eyeY", &m_eyePos.y, 360, 0);
-	ImGui::SliderFloat("eyeZ", &m_eyePos.z, 360, 0);
-	ImGui::SliderFloat("targetX", &m_targetPos.x, 360, 0);
-	ImGui::SliderFloat("targetY", &m_targetPos.y, 360, 0);
-	ImGui::SliderFloat("targetZ", &m_targetPos.z, 360, 0);
-	ImGui::Text("%d", m_CameraType);
-	ImGui::End();
+	//ImGui::Begin("CameraWork");
+	//ImGui::SliderFloat("eyeX", &m_eyePos.x, 360, 0);
+	//ImGui::SliderFloat("eyeY", &m_eyePos.y, 360, 0);
+	//ImGui::SliderFloat("eyeZ", &m_eyePos.z, 360, 0);
+	//ImGui::SliderFloat("targetX", &m_targetPos.x, 360, 0);
+	//ImGui::SliderFloat("targetY", &m_targetPos.y, 360, 0);
+	//ImGui::SliderFloat("targetZ", &m_targetPos.z, 360, 0);
+	//ImGui::Text("Timer:%d", m_Timer);
+	//ImGui::Text("m_AppCameraNumber:%d", m_AppCameraNumber);
+	//ImGui::End();
 }
 //右のスティック
 void CameraWork::RightStickCamera() {
@@ -285,8 +325,7 @@ void CameraWork::AppCameraMove(XMFLOAT3 AfterEye, XMFLOAT3 AfterTarget, float Ad
 	else {
 		m_AfterEye = AfterEye;
 		m_AfterTarget = AfterTarget;
-		m_AppCameraNumber++;
-		m_Frame = 0.0f;
+		m_Frame = 1.0f;
 	}
 
 	m_eyePos = {

@@ -18,8 +18,10 @@ bool Enemy::Initialize() {
 	m_fbxObject_->Initialize();
 	m_fbxObject_->SetModel(m_fbxModel);
 	m_Position = { 110.0f,-90.0,0.0f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_fbxObject_->SetScale(m_Scale);
 	m_fbxObject_->SetPosition(m_Position);
+	m_fbxObject_->SetRotation(m_Rotation);
 	m_fbxObject_->LoadAnimation();
 	m_fbxObject_->PlayAnimation(0);
 	m_fbxObject.reset(m_fbxObject_);
@@ -110,6 +112,7 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 		ImGui::Text("m_Rotation.x : %f", m_Rotation.x);
 		ImGui::Text("m_Rotation.y : %f", m_Rotation.y);
 		ImGui::Text("m_Rotation.z : %f", m_Rotation.z);
+		ImGui::Text("m_TargetTimer : %d", m_TargetTimer);
 		ImGui::End();*/
 	}
 	//エフェクト関係
@@ -209,7 +212,9 @@ void Enemy::AttackExtra() {
 //攻撃
 void Enemy::Tackle() {
 	m_fbxObject->StopAnimation();
-	m_TargetTimer++;
+	if (m_BoundPower.x == 0.0f) {
+		m_TargetTimer++;
+	}
 	
 	//突進までのインターバルは動かない
 	if (m_TargetTimer <= 29) {

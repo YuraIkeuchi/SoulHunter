@@ -17,9 +17,6 @@ void InterBoss::Update() {
 				End();
 			}
 		}
-		else {
-			App();
-		}
 	}
 	//HPをマイナスにしない
 	if (m_HP <= 0) {
@@ -43,16 +40,13 @@ void InterBoss::Update() {
 	if (!player->GetSpecialEffect()) {
 		m_SpecialHit = false;
 	}
-	//生きてる時しか更新しない
-	if (m_Alive) {
-		enemyobj->Update();
-	}
+	
 	//エフェクトの生成
 	ArgEffect();
 	//エフェクトの更新
 	for (BossEffect* bosseffect : bosseffects) {
 		if (bosseffect != nullptr) {
-			bosseffect->Update(m_pos, m_Effect, m_HitDir);
+			bosseffect->Update(m_Position, m_Effect, m_HitDir);
 		}
 	}
 	//ボスの名前の更新
@@ -60,10 +54,10 @@ void InterBoss::Update() {
 	//パーティクル
 	particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
 	particletex->SetParticleBreak(true);
-	particletex->Update(m_pos, m_ParticleCount, 1, 2);
+	particletex->Update(m_Position, m_ParticleCount, 1, 2);
 }
 //描画
-void InterBoss::Draw() {
+void InterBoss::Draw(DirectXCommon* dxCommon) {
 	/*ImGui::Begin("Boss");
 	ImGui::Text("Timer : %d", m_MovieTimer);
 	ImGui::Text("Scale.x : %f", m_Scale.x);
@@ -71,7 +65,7 @@ void InterBoss::Draw() {
 	//ボスの描画
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
-		enemyobj->Draw();
+		Fbx_Draw(dxCommon);
 	}
 
 	//エフェクトの描画
@@ -85,15 +79,15 @@ void InterBoss::Draw() {
 	//ボスの名前
 	bossname->Draw();
 	//ボスごとのオブジェクトの描画
-	specialDraw();
+	specialDraw(dxCommon);
 }
 //プレイヤーがダメージを食らう
 bool InterBoss::collidePlayer() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	int playerhp = player->GetHP();
 	int Interval = player->GetInterVal();
-	if (Collision::CircleCollision(m_pos.x, m_pos.y,m_HitRadius, m_PlayerPos.x, m_PlayerPos.y, m_HitRadius) && Interval == 0 && m_HP > 0) {
-		player->PlayerHit(m_pos);
+	if (Collision::CircleCollision(m_Position.x, m_Position.y,m_HitRadius, m_PlayerPos.x, m_PlayerPos.y, m_HitRadius) && Interval == 0 && m_HP > 0) {
+		player->PlayerHit(m_Position);
 		return true;
 	}
 	else {
@@ -103,35 +97,24 @@ bool InterBoss::collidePlayer() {
 }
 //ボスがダメージ食らう(通常攻撃)
 bool InterBoss::collideBoss() {
+
 	XMFLOAT3 AttackPos = player->GetAttackPos();
-	if (Collision::CircleCollision(m_pos.x, m_pos.y, 2.5f, AttackPos.x, AttackPos.y, 2.5f) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
+
+	//外積当たり判定
+	Sphere sphere;
+	sphere.center = { m_Position.x,m_Position.y,m_Position.z };
+	sphere.radius = 1;
+
+	Box box;
+	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
+	box.scale = { 6.5f,5.5f,8.5f };
+
+	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
 		m_HP--;
 		m_Effect = true;
 		m_EffectArgment = true;
 		//どっちにあたったか
-		if (AttackPos.x > m_pos.x) {
-			m_HitDir = HitRight;
-		}
-		else {
-			m_HitDir = HitLeft;
-		}
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-//敵がダメージ食らう(弾)
-bool InterBoss::BulletCollision() {
-	XMFLOAT3 bulletpos = playerbullet->GetPosition();
-	if (Collision::CircleCollision(m_pos.x, m_pos.y, 1.5f, bulletpos.x, bulletpos.y, 1.5f) && (m_HP > 0)
-		&& (playerbullet->GetAlive()) && (!m_BulletHit)) {
-		m_HP -= 2;
-		m_Effect = true;
-		m_EffectArgment = true;
-		m_BulletHit = true;
-		//どっちにあたったか
-		if (bulletpos.x > m_pos.x) {
+		if (AttackPos.x > m_Position.x) {
 			m_HitDir = HitRight;
 		}
 		else {
@@ -145,13 +128,36 @@ bool InterBoss::BulletCollision() {
 
 	return true;
 }
+//敵がダメージ食らう(弾)
+bool InterBoss::BulletCollision() {
+	XMFLOAT3 bulletpos = playerbullet->GetPosition();
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.5f, bulletpos.x, bulletpos.y, 1.5f) && (m_HP > 0)
+		&& (playerbullet->GetAlive()) && (!m_BulletHit)) {
+		m_HP -= 2;
+		m_Effect = true;
+		m_EffectArgment = true;
+		m_BulletHit = true;
+		//どっちにあたったか
+		if (bulletpos.x > m_Position.x) {
+			m_HitDir = HitRight;
+		}
+		else {
+			m_HitDir = HitLeft;
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
 
+	return true;
+}
 //敵がダメージ食らう(必殺技)
 bool InterBoss::SpecialCollide() {
 	bool l_SpecialAlive = playereffect->GetSpecialAlive();
 	XMFLOAT3 l_SpecialPos = playereffect->GetSpecialPosition();
 	float l_SpecialRadius = playereffect->GetSpecialRadius();
-	if (Collision::CircleCollision(m_pos.x, m_pos.y, l_SpecialRadius, l_SpecialPos.x, l_SpecialPos.y, l_SpecialRadius)
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_SpecialRadius, l_SpecialPos.x, l_SpecialPos.y, l_SpecialRadius)
 		&& (m_HP > 0) && (l_SpecialAlive) && (!m_SpecialHit)) {
 		m_HP -= 5;
 		m_EffectArgment = true;
@@ -174,4 +180,18 @@ void InterBoss::ArgEffect() {
 		bosseffects.push_back(newEffect);
 		m_EffectArgment = false;
 	}
+}
+//ボス登場シーン更新
+void InterBoss::AppUpdate() {
+	App();
+}
+//ボス登場シーン描画
+void InterBoss::AppDraw(DirectXCommon* dxCommon) {
+	//ボスの描画
+	IKEObject3d::PreDraw();
+	if (m_Alive) {
+		Fbx_Draw(dxCommon);
+	}
+	//ボスごとのオブジェクトの描画
+	specialDrawApp();
 }

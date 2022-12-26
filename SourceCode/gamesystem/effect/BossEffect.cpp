@@ -44,22 +44,22 @@ void BossEffect::Update(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 		if (m_Effect[i]) {
 			//object3d->Update();
 			ParticleEffect[i]->Update();
-			HitEffectTexture->Update();
+		
 		}
 		ParticleEffect[i]->SetPosition(m_Pos[i]);
 		ParticleEffect[i]->SetColor(m_Color[i]);
 		ParticleEffect[i]->SetScale(m_Scale[i]);
 	}
-
+	HitEffectTexture->Update();
 	HitEffectTexture->SetPosition(m_HitPos);
 	HitEffectTexture->SetScale(m_HitScale);
 	HitEffectTexture->SetColor(m_HitColor);
 }
 //•`‰æ
 void BossEffect::Draw() {
-	ImGui::Begin("Effect");
-	ImGui::Text("ScaleX : %f", m_Scale[0].x);
-	ImGui::End();
+	/*ImGui::Begin("Effect");
+	ImGui::Text("ScaleX : %f", m_AddScale[0]);
+	ImGui::End();*/
 	IKETexture::PreDraw(1);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.5f)) {
@@ -80,8 +80,8 @@ void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 		if (!m_Effect[i] && Effect && !m_DeleteEffect) {
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 100 - 50) / 1000,
-					(float)(rand() % 100 - 50) / 1000,
+					(float)(rand() % 100 - 50) / 400,
+					(float)(rand() % 100 - 50) / 400,
 					0.0f,
 			};
 			m_AddScale[i] = (float)(rand() % 20 + 20) / 800;

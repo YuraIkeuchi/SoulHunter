@@ -725,7 +725,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	/*ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Attack:%d", m_AttackTimer);
+	ImGui::Text("m_Attack:%f", m_Position.y);
 	ImGui::End();*/
 
 	//エフェクト関係
@@ -822,7 +822,7 @@ void Player::InitPlayer(int StageNumber) {
 	}
 	else if (StageNumber == BossMap) {
 		if (m_GoalDir == DownGoal) {
-			m_Position = { 175.0f,-20.0f,0.0f };
+			m_Position = { 175.0f,-155.0f,0.0f };
 		}
 		else if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-66.0f,0.0f };
@@ -1014,7 +1014,8 @@ void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 }
 //ボスシーンの更新
 void Player::BossAppUpdate(int Timer) {
-	m_fbxObject->SetPosition({ 0.0f,10.0f,0.0f });
+	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
+	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
 

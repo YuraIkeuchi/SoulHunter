@@ -27,6 +27,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	camerawork = new CameraWork();
 	hitstop = new HitStop();
 	bossappobj = new BossAppObj();
+	//bossappobj->SetAppStart(true);
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -68,7 +69,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
 {
-	Input* input = Input::GetInstance();
+	
 	if (!bossappobj->GetApp()) {
 		NormalUpdate();
 	}
@@ -191,8 +192,7 @@ void FirstStage::NormalUpdate() {
 	VolumManager::GetInstance()->Update();
 	save->Update();
 	BlackFilter->SetColor(BlackColor);
-	if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
-		firstboss->Update();
+	if (StageNumber == BossMap) {
 		ui->Update(firstboss);
 	}
 	else {
@@ -259,6 +259,7 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	else {
 		BossAppDraw(dxCommon);
 	}
+
 	//
 	IKESprite::PreDraw();
 	mapchange->Draw();
@@ -321,16 +322,16 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 	}
 
+	//ボスの描画
+	if (StageNumber == BossMap) {
+		firstboss->Draw(dxCommon);
+		respornenemy->Draw();
+	}
+
 	//プレイヤーの描画
 	player->Draw(dxCommon);
 	playerbullet->Draw(dxCommon);
 	playereffect->Draw();
-
-	//ボスの描画
-	if (StageNumber == BossMap) {
-		firstboss->Draw();
-		respornenemy->Draw();
-	}
 
 	//魂関係
 	for (int i = 0; i < Soul_Max; i++) {
@@ -365,8 +366,9 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 }
 //ボスシーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
-	bossappobj->BackDraw();
+	firstboss->AppDraw(dxCommon);
 	player->BossAppDraw(dxCommon);
+	bossappobj->BackDraw();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {
@@ -472,7 +474,12 @@ void FirstStage::LightSet() {
 
 	//丸影
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ player->GetPosition().x, player->GetPosition().y, player->GetPosition().z }));
+	if (!bossappobj->GetApp()) {
+		lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ player->GetPosition().x, player->GetPosition().y, player->GetPosition().z }));
+	}
+	else {
+		lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ 0.0f, 8.0f, 0.0f }));
+	}
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
@@ -529,28 +536,41 @@ void FirstStage::LightSet() {
 }
 //ボス部屋の処理
 void FirstStage::BossRoomUpdate() {
+	Input* input = Input::GetInstance();
 	//ボス部屋の処理
 	if (StageNumber == BossMap) {
+		Audio::GetInstance()->StopWave(0);
 		firstboss->SetAlive(true);
 		//ボス登場
 		if (bossappobj->GetApp()) {
-			player->BossAppUpdate(1);
-			if (bossappobj->GetAppTimer() == 400) {
-				bossappchange->SetAddStartChange(true);
-			}
-			if (bossappchange->AddBlack(0.08f)) {
-				bossappchange->SetSubStartChange(true);
-				bossappobj->SetApp(false);
-			}
+			//カメラワークやプレイヤーの挙動
 			camerawork->SetCameraType(3);
 			firstboss->SetMovie(true);
 			player->SetMovie(true);
-			if (camerawork->GetEndApp()) {
+			player->BossAppUpdate(1);
+
+			//一定フレームでボス戦に入る
+			if (bossappobj->GetAppTimer() == 800) {
+				bossappchange->SetAddStartChange(true);
+			}
+			//ボタンでも行ける
+			if (input->TriggerButton(input->Button_A) && !bossappchange->GetSubStartChange()) {
+				bossappchange->SetAddStartChange(true);
+				bossappobj->SetEndApp(true);
+			}
+
+			//こっからボス戦
+			if (bossappchange->AddBlack(0.04f)) {
+				bossappchange->SetSubStartChange(true);
+				bossappobj->SetApp(false);
 				Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 				firstboss->SetMovie(false);
 				m_BossNumber = BossBattle;
 				player->SetMovie(false);
+				firstboss->BattleInitialize();
 			}
+			
+			firstboss->AppUpdate();
 		}
 		else {
 			//ボスバトル
@@ -571,6 +591,10 @@ void FirstStage::BossRoomUpdate() {
 				respornenemy->SetEnemyArgment(false);
 			}
 			camerawork->SetCameraType(2);
+
+			if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
+				firstboss->Update();
+			}
 		}
 	}
 	else {
@@ -680,7 +704,6 @@ void FirstStage::GoalHit() {
 				StageNumber = Map4;
 			}
 			else if (StageNumber == Map5) {
-				Audio::GetInstance()->StopWave(0);
 				StageNumber = BossMap;
 				firstboss->SetMovie(true);
 			}

@@ -55,11 +55,11 @@ void AttackEffect::SetEffect(const XMFLOAT3& pos,int Dir) {
 		AttackEffecttexture->SetColor(m_Color);
 		AttackEffecttexture->SetScale(m_Scale);
 		if (Dir == 0) {
-			m_AddPower = 0.2f;
+			m_AddPower = 0.3f;
 			AttackEffecttexture->SetRotation({ 0.0f,0.0f,180.0f });
 		}
 		else {
-			m_AddPower = -0.2f;
+			m_AddPower = -0.3f;
 			AttackEffecttexture->SetRotation({ 0.0f,0.0f,0.0f });
 		}
 	}

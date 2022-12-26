@@ -80,7 +80,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		}
 	}
 
-	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange()) {
+	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
 		titleobj->SetStopParticle(true);
 		m_LightPos = { 0.0f,-20.0f,5.0f };
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -95,7 +95,12 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	if (scenechange->AddBlack(0.01f)) {
-		SceneManager::GetInstance()->ChangeScene("INTRODUCTION");
+		if (!m_GameLoad) {
+			SceneManager::GetInstance()->ChangeScene("INTRODUCTION");
+		}
+		else {
+			SceneManager::GetInstance()->ChangeScene("LOAD");
+		}
 	}
 	for (int i = 0; i < TitlePartsSprite.size(); i++) {
 		TitlePartsSprite[i]->SetPosition(m_PartsPos[i]);

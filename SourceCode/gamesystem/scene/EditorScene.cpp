@@ -86,7 +86,7 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 	ChangeUpdate();
 	//BGMスタート
 	if (BGMStart == true) {
-		Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
+		//Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 		BGMStart = false;
 	}
 	//音楽の音量が変わる
@@ -253,7 +253,7 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	//playereffect->Draw();
 
 	if (StageNumber == BossMap) {
-		firstboss->Draw();
+		firstboss->Draw(dxCommon);
 		respornenemy->Draw();
 	}
 

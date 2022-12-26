@@ -18,17 +18,17 @@ MapChange::MapChange() {
 	change_->SetColor(s_color);
 	change.reset(change_);
 }
-
+//XV
 void MapChange::Update() {
 	change->SetColor(s_color);
 }
-
+//•`‰æ
 const void MapChange::Draw() {
-	ImGui::Begin("mapfilter");
+	/*ImGui::Begin("mapfilter");
 	ImGui::Text("%d", m_AddStartChange);
 	ImGui::Text("%d", m_SubStartChange);
 	ImGui::Text("%f", s_color.w);
-	ImGui::End();
+	ImGui::End();*/
 	IKESprite::PreDraw();
 	change->Draw();
 }
@@ -36,7 +36,7 @@ const void MapChange::Draw() {
 void MapChange::Finalize() {
 
 }
-
+//ˆÃ‚­‚È‚éˆ—
 bool MapChange::AddBlack() {
 	if (m_AddStartChange) {
 		if (s_color.w < 1.2f) {
@@ -51,7 +51,7 @@ bool MapChange::AddBlack() {
 
 	return false;
 }
-
+//‚ ‚©‚é‚­‚È‚éˆ—
 bool MapChange::SubBlack() {
 	if (m_SubStartChange) {
 		if (s_color.w > 0.0f) {

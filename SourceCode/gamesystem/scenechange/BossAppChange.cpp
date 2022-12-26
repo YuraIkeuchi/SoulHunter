@@ -18,17 +18,17 @@ BossAppChange::BossAppChange() {
 	change_->SetColor(s_color);
 	change.reset(change_);
 }
-
+//çXêV
 void BossAppChange::Update() {
 	change->SetColor(s_color);
 }
-
+//ï`âÊ
 const void BossAppChange::Draw() {
-	ImGui::Begin("filter");
+	/*ImGui::Begin("filter");
 	ImGui::Text("%d", m_AddStartChange);
 	ImGui::Text("%d", m_SubStartChange);
 	ImGui::Text("%f", s_color.w);
-	ImGui::End();
+	ImGui::End();*/
 	IKESprite::PreDraw();
 	change->Draw();
 }
@@ -36,7 +36,7 @@ const void BossAppChange::Draw() {
 void BossAppChange::Finalize() {
 
 }
-
+//à√Ç≠Ç»ÇÈèàóù
 bool BossAppChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
 		if (s_color.w < 1.0f) {
@@ -51,7 +51,7 @@ bool BossAppChange::AddBlack(float AddPower) {
 
 	return false;
 }
-
+//ñæÇÈÇ≠Ç»ÇÈèàóù
 bool BossAppChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
 		if (s_color.w > 0.0f) {
