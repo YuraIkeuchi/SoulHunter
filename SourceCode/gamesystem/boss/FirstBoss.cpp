@@ -43,7 +43,8 @@ bool FirstBoss::Initialize() {
 bool FirstBoss::BattleInitialize() {
 	assert(player);
 	assert(playereffect);
-	m_Position = { 205.0f, -145.0f,0.0f };
+	m_Position = { 205.0f, -152.0f,0.0f };
+	m_Rotation = { 0.0f,270.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
 	m_HitRadius = 3.0f;
@@ -59,45 +60,64 @@ void FirstBoss::Spec() {
 			bossname->SetAddStartChange(true);
 		}
 		//攻撃していない
-		//NotAttack();
+		NotAttack();
 	}
 	else {
 		//行動開始
-		if ((m_Action % 2) == 0) {
+		if (m_Action == 0) {
 			//横移動
-			//BesideAttack();
+			BesideAttack();
 			
 		}
-		else if ((m_Action % 2) == 1) {
+		else if (m_Action == 1) {
 			//突き刺してくる攻撃
-			//StabbingAttack();
+			StabbingAttack();
+		}
+		else if (m_Action == 2) {
+			//炎の攻撃
+			FireAttack();
 		}
 	}
-
-	//DrawOutArea();
+	FireBallArgment();
+	DrawOutArea();
 
 	//生きてる時しか更新しない
 	if (m_Alive) {
+		//エフェクト関係
+		for (FireBall* fireball : fireballs) {
+			if (fireball != nullptr) {
+				if (fireball->Collide(player->GetPosition())) {
+					player->PlayerHit(m_Position);
+				}
+				fireball->Update();
+			}
+		}
 		m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 		Fbx_SetParam();
 	}
 }
 //各ボス特有の描画
-void FirstBoss::specialDraw() {
-	ImGui::Begin("Boss");
-	ImGui::SliderFloat("PosX", &m_Position.x, 100, 280);
-	ImGui::SliderFloat("PosY", &m_Position.y, -100,-200);
-	ImGui::Text("m_AttackCount:%d", m_AttackCount);
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::Text("RotZ:%f", m_Rotation.z);
-	ImGui::End();
+void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
+	//ImGui::Begin("Boss");
+	//ImGui::Text("m_FireState:%d", m_FireState);
+	//ImGui::Text("m_Cool:%d", m_CoolT);
+	//ImGui::Text("Frame:%f", m_Frame);
+	////ImGui::Text("PosX:%f", m_Position.x);
+	////ImGui::Text("PosY:%f", m_Position.y);
+	////ImGui::Text("PosZ:%f", m_Position.z);
+	////ImGui::Text("RotX:%f", m_Rotation.x);
+	////ImGui::Text("RotY:%f", m_Rotation.y);
+	////ImGui::Text("RotZ:%f", m_Rotation.z);
+	//ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
+	}
+	//エフェクト関係
+	for (FireBall* fireball : fireballs) {
+		if (fireball != nullptr) {
+			fireball->Draw(dxCommon);
+		}
 	}
 }
 //各ボス特有の描画
@@ -223,13 +243,17 @@ void FirstBoss::DrawOutArea() {
 }
 //攻撃していない
 void FirstBoss::NotAttack() {
-	if (m_AttackCount > 180) {
-		m_Action = (rand() % 2);
+	if (m_AttackCount > 250) {
+		m_RandFire = rand() % 3;
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
 		m_Active = true;
 	}
 	else {
+		//sin波によって上下に動く
+		m_Angle += 1.0f;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-152.0f);
 		//攻撃間のインターバル
 		if (m_HP >= 20.0f) {
 			m_AttackCount++;
@@ -237,12 +261,25 @@ void FirstBoss::NotAttack() {
 		else {
 			m_AttackCount += 5;
 		}
+
+		if (m_AttackCount == 5) {
+			//アニメーションのためのやつ
+			m_AnimeLoop = true;
+			m_Number = 0;
+			m_AnimeSpeed = 1;
+			m_fbxObject->PlayAnimation(m_Number);
+		}
 	}
 }
 //横移動
 void FirstBoss::BesideAttack() {
+	//アニメーションのためのやつ
+	m_AnimeLoop = true;
+	m_Number = 1;
+	m_AnimeSpeed = 1;
+	m_fbxObject->PlayAnimation(m_Number);
 	if (m_Frame < m_FrameMax) {
-		m_Frame += 0.008f;
+		m_Frame += 0.01f;
 	}
 	else {
 		m_Frame = m_FrameMin;
@@ -251,46 +288,53 @@ void FirstBoss::BesideAttack() {
 
 	if (m_Pat == 1) {
 		m_AfterPos.x = 159.0f;
-		m_AfterPos.y = -151.0f;
-		m_AfterRot.y = 270.0f;
+		m_AfterPos.y = -152.0f;
+		m_AfterRot = { 45.0f,270.0f,0.0f };
 	}
 	else if (m_Pat == 2) {
 		m_AfterPos.x = 203.0f;
-		m_AfterRot.y = 90.0f;
+		m_AfterRot = { 0.0f,180.0f,0.0f };
 	}
 	else if (m_Pat == 3) {
 		m_AfterPos.x = 248.0f;
-		m_AfterRot.y = 90.0f;
+		m_AfterRot = { 45.0f,90.0f,0.0f };
 	}
 	else if (m_Pat == 4) {
 		m_AfterPos.x = 203.0f;
-		m_AfterRot.y = 270.0f;
+		m_AfterRot = { 0.0f,270.0f,0.0f };
 	}
-	else if (m_Pat == 5) {
-		//AfterPos.x = 55.0f;
-		m_AfterRot.y = 180.0f;
-	}
+	/*else if (m_Pat == 5) {
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+	}*/
 	else {
+		m_Angle = 280.0f;
 		m_Active = false;
 		m_AttackCount = 0;
 		m_Frame = m_FrameMin;
 		m_Pat = 0;
 	}
 //
-//	m_pos = {
-//Ease(In,Cubic,m_Frame,m_pos.x,m_AfterPos.x),
-//Ease(In,Cubic,m_Frame,m_pos.y,m_AfterPos.y),
-//m_pos.z,
-//	};
-//	enemyobj->SetPosition(m_pos);
-//	m_rot.y = Ease(In, Quint, 0.5f, m_rot.y, m_AfterRot.y);
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+m_Position.z,
+	};
+	m_Rotation = {
+		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+m_Rotation.z,
+	};
 }
 //突き刺してくる攻撃
 void FirstBoss::StabbingAttack() {
 	if (m_MoveCount < 4) {
-		m_AfterRot.y = 180.0f;
+		m_AfterRot = { 0.0f,180.0f,0.0f };
 		switch (m_Pat) {
-		case 1:
+		case 1:	//アニメーションのためのやつ
+		/*	m_AnimeLoop = true;
+			m_Number = 0;
+			m_AnimeSpeed = 1;
+			m_fbxObject->PlayAnimation(m_Number);*/
 			m_AfterPos = {
 			m_Position.x,
 			-120.0f,
@@ -328,7 +372,7 @@ void FirstBoss::StabbingAttack() {
 		case 3:
 			m_AfterPos = {
 			m_Position.x,
-			-151.0f,
+			-152.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -357,17 +401,20 @@ void FirstBoss::StabbingAttack() {
 	}
 	else {
 		switch (m_Pat) {
+			
 		case 1:
 			m_AfterPos = {
 			223.0f,
-			-158.0f,
+			-152.0f,
 			m_Position.z
 			};
+			m_AfterRot = { 0.0f,270.0f,0.0f };
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.01f;
 				break;
 			}
 			else {
+				m_Angle = 280.0f;
 				m_Active = false;
 				m_AttackCount = 0;
 				m_Frame = m_FrameMin;
@@ -384,8 +431,123 @@ Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
-	m_Rotation.y = Ease(In, Quint, 0.5f, m_Rotation.y, m_AfterRot.y);
-	//enemyobj->SetPosition(m_pos);
+	m_Rotation = {
+		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+m_Rotation.z,
+	};
+}
+//炎の攻撃
+void FirstBoss::FireAttack() {
+
+	if (m_FireState == Set0) {
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		m_AfterPos = {
+		m_Position.x,
+		-130.0f,
+		m_Position.z
+		};
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.01f;
+		}
+		else {
+			m_Frame = m_FrameMax;
+			m_CoolT++;
+			if (m_CoolT > 90) {
+				m_CoolT = 0;
+				m_Frame = m_FrameMin;
+				m_RandFire = rand() % 2;
+				m_FireState = Set1;
+			}
+		}
+	}
+	else if (m_FireState == Set1) {
+		if (m_RandFire == 0) {
+			m_AfterPos = { 159.0f,-152.0f,0.0f };
+			m_AfterRot = { -20.0f,90.0f,0.0f };
+		}
+		else {
+			m_AfterPos = { 248.0f,-152.0f,0.0f };
+			m_AfterRot = { -20.0f,270.0f,0.0f };
+		}
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.01f;
+		}
+		else {
+			m_Frame = m_FrameMin;
+			m_FireState = Set2;
+		}
+	}
+	else if (m_FireState == Set2) {
+		if (m_RandFire == 0) {
+			m_AfterRot = { 20.0f,90.0f,0.0f };
+		}
+		else {
+			m_AfterRot = { 20.0f,270.0f,0.0f };
+		}
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.01f;
+		}
+		else {
+			m_FireBallArgment = true;
+			m_Frame = m_FrameMin;
+			m_FireState = ShotFire;
+		}
+	}
+	else if (m_FireState == ShotFire) {
+		m_CoolT++;
+		if (m_CoolT > 100) {
+			m_CoolT = 0;
+			m_Frame = m_FrameMin;
+			m_FireState = EndFire;
+		}
+	}
+	else {
+		m_AfterPos = {
+			223.0f,
+			-152.0f,
+			m_Position.z
+		};
+		m_AfterRot = { 0.0f,270.0f,0.0f };
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.01f;
+		}
+		else {
+			m_Angle = 280.0f;
+			m_Active = false;
+			m_AttackCount = 0;
+			m_Frame = m_FrameMin;
+			m_FireState = Set0;
+		}
+	}
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+	};
+	m_Rotation = {
+		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+m_Rotation.z,
+	};
+}
+//エフェクト生成
+void FirstBoss::FireBallArgment() {
+	if (m_FireBallArgment) {
+		FireBall* newFireBall;
+		newFireBall = new FireBall();
+		newFireBall->Initialize();
+		newFireBall->SetAlive(true);
+		newFireBall->SetPosition({m_Position.x,m_Position.y + 1.5f,m_Position.z});
+		if (m_RandFire == 0) {
+			newFireBall->SetAddSpeed(0.5f);
+		}
+		else {
+			newFireBall->SetAddSpeed(-0.5f);
+		}
+		fireballs.push_back(newFireBall);
+		m_FireBallArgment = false;
+	}
 }
 //ボス登場シーンのイージング関数(座標)
 void FirstBoss::AppBossMove(XMFLOAT3 AfterPos, float AddFrame) {

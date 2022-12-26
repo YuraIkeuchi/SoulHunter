@@ -426,6 +426,9 @@
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossAppChange.cpp">
       <Filter>SourceCords\gamesystem\scenechange</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\boss\FireBall.cpp">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -796,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossAppChange.h">
       <Filter>SourceCords\gamesystem\scenechange</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\boss\FireBall.h">
+      <Filter>SourceCords\gamesystem\boss\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

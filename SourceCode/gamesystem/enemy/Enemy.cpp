@@ -108,12 +108,12 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 		Fbx_Draw(dxCommon);
 	}
 	if (m_Alive) {
-		ImGui::Begin("Enemy");
+	/*	ImGui::Begin("Enemy");
 		ImGui::Text("m_Rotation.x : %f", m_Rotation.x);
 		ImGui::Text("m_Rotation.y : %f", m_Rotation.y);
 		ImGui::Text("m_Rotation.z : %f", m_Rotation.z);
 		ImGui::Text("m_TargetTimer : %d", m_TargetTimer);
-		ImGui::End();
+		ImGui::End();*/
 	}
 	//エフェクト関係
 	for (EnemyEffect* enemyeffect : enemyeffects) {

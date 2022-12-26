@@ -79,7 +79,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 	//ボスの名前
 	bossname->Draw();
 	//ボスごとのオブジェクトの描画
-	specialDraw();
+	specialDraw(dxCommon);
 }
 //プレイヤーがダメージを食らう
 bool InterBoss::collidePlayer() {

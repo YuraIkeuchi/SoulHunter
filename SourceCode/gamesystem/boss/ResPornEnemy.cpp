@@ -47,8 +47,8 @@ void  ResPornEnemy::Update(InterBoss* boss) {
 }
 //•`‰æ
 const void ResPornEnemy::Draw() {
-	ImGui::Begin("ResPorn");
-	ImGui::Text("m_ResPornTimer::%d", m_ResPornTimer);
-	ImGui::End();
+	//ImGui::Begin("ResPorn");
+	//ImGui::Text("m_ResPornTimer::%d", m_ResPornTimer);
+	//ImGui::End();
 	particletex->Draw();
 }

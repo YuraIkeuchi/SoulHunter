@@ -58,7 +58,7 @@ public:
 	virtual void Spec() = 0;//ボス特有の処理
 
 	virtual void End() = 0;//ボス特有の処理
-	virtual void specialDraw() = 0;//ボス特有の描画
+	virtual void specialDraw(DirectXCommon* dxCommon) = 0;//ボス特有の描画
 	virtual void specialDrawApp() = 0;//ボス特有の描画
 
 	bool collidePlayer();//プレイヤーとの当たり判定

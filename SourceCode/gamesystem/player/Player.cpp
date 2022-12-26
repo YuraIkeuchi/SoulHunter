@@ -722,11 +722,11 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
+	/*ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
 	ImGui::Text("m_Attack:%f", m_Position.y);
-	ImGui::End();
+	ImGui::End();*/
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
