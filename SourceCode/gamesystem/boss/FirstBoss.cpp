@@ -2,8 +2,7 @@
 #include "ImageManager.h"
 #include <Easing.h>
 FirstBoss::FirstBoss() {
-	model = ModelManager::GetInstance()->GetModel(ModelManager::FirstBoss);
-	
+	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
 	//ボスの名前
 	BossName* bossname_;
 	bossname_ = new BossName();
@@ -21,22 +20,24 @@ FirstBoss::FirstBoss() {
 	OutAreatexture_->SetScale(m_Scale);
 	OutAreatexture.reset(OutAreatexture_);
 
+	//
+	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
+	m_Scale = { 0.01f,0.01f,0.01f };
+	fbxobject_->Initialize();
+	fbxobject_->SetModel(m_fbxModel);
+	fbxobject_->LoadAnimation();
+	m_fbxObject.reset(fbxobject_);
 }
 
-void FirstBoss::Initialize() {
+bool FirstBoss::Initialize() {
 	assert(player);
 	assert(playereffect);
-	m_pos = { 205.0f, -145.0f,80.0f };
-	//敵
-	IKEObject3d* enemyobj_ = new IKEObject3d();
-	enemyobj_ = IKEObject3d::Create();
-	enemyobj_->SetModel(model);
-	enemyobj_->SetPosition(m_pos);
-	m_rot = { 0.0f,180.0f,0.0f };
-	enemyobj_->SetRotation(m_rot);
-	enemyobj_->SetScale(m_Scale);
-	enemyobj.reset(enemyobj_);
+	//m_Position = { 205.0f, -145.0f,80.0f };
+	m_Position = { 5.0f,10.0f,0.0f };
+	m_Scale = { 0.01f,0.01f,0.01f };
 	m_HitRadius = 2.0f;
+
+	return true;
 }
 //行動
 void FirstBoss::Spec() {
@@ -63,7 +64,12 @@ void FirstBoss::Spec() {
 	}
 
 	DrawOutArea();
-	enemyobj->SetRotation(m_rot);
+
+	//生きてる時しか更新しない
+	if (m_Alive) {
+		m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+		Fbx_SetParam();
+	}
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw() {
@@ -72,40 +78,58 @@ void FirstBoss::specialDraw() {
 		OutAreatexture->Draw();
 	}
 }
+//各ボス特有の描画
+void FirstBoss::specialDrawApp() {
+	ImGui::Begin("Boss");
+	ImGui::SliderFloat("m_Position.x", &m_Position.x, -20, 20);
+	ImGui::SliderFloat("m_Position.y", &m_Position.y, -20, 20);
+	ImGui::SliderFloat("m_Position.z", &m_Position.z, -20, 20);
+
+	ImGui::SliderFloat("m_Scale.x", &m_Scale.x, 1, 0);
+	ImGui::SliderFloat("m_Scale.y", &m_Scale.y, 1, 0);
+	ImGui::SliderFloat("m_Scale.z", &m_Scale.z, 1, 0);
+	ImGui::End();
+}
 //登場ムービー
 void FirstBoss::App() {
-	//奥の方から徐々に出るような演出
-	if (!m_AppMove) {
-		m_MovieTimer++;
-		if (m_MovieTimer == 680) {
-			m_AppMove = true;
-	
-			m_Frame = m_FrameMin;
-			m_AfterPos.z = 0.0f;
-		}
+	//生きてる時しか更新しない
+	if (m_Alive) {
+		m_fbxObject->SetScale(m_Scale);
+		m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+		Fbx_SetParam();
 	}
-	else {
+	////奥の方から徐々に出るような演出
+	//if (!m_AppMove) {
+	//	m_MovieTimer++;
+	//	if (m_MovieTimer == 680) {
+	//		m_AppMove = true;
+	//
+	//		m_Frame = m_FrameMin;
+	//		m_AfterPos.z = 0.0f;
+	//	}
+	//}
+	//else {
 
-		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.01f;
-		}
-		else {
-			m_MovieTimer = 0;
-			m_AppMove = false;
-			m_Frame = m_FrameMin;
-		}
-		m_pos.z = Ease(In, Quint, m_Frame, m_pos.z, m_AfterPos.z);
-		m_Scale = { Ease(In, Quint, m_Frame, m_Scale.x, m_AfterScale.x),
-			Ease(In, Quint, m_Frame,m_Scale.y, m_AfterScale.y),
-			Ease(In, Quint, m_Frame,m_Scale.z, m_AfterScale.z),
-		};
-	}
-	enemyobj->SetPosition(m_pos);
-	enemyobj->SetScale(m_Scale);
+	//	if (m_Frame < m_FrameMax) {
+	//		m_Frame += 0.01f;
+	//	}
+	//	else {
+	//		m_MovieTimer = 0;
+	//		m_AppMove = false;
+	//		m_Frame = m_FrameMin;
+	//	}
+	///*	m_pos.z = Ease(In, Quint, m_Frame, m_pos.z, m_AfterPos.z);
+	//	m_Scale = { Ease(In, Quint, m_Frame, m_Scale.x, m_AfterScale.x),
+	//		Ease(In, Quint, m_Frame,m_Scale.y, m_AfterScale.y),
+	//		Ease(In, Quint, m_Frame,m_Scale.z, m_AfterScale.z),
+	//	};*/
+	//}
+	////enemyobj->SetPosition(m_pos);
+	////enemyobj->SetScale(m_Scale);
 }
 //倒した後の動き
 void FirstBoss::End() {
-	m_rot.y += 5.0f;
+	m_Rotation.y += 5.0f;
 	if (m_Scale.x > 0.0f) {
 		m_Scale.x -= 0.02f;
 		m_Scale.y -= 0.02f;
@@ -115,8 +139,8 @@ void FirstBoss::End() {
 		m_Scale = { 0.0f,0.0f,0.0f };
 	}
 
-	enemyobj->SetScale(m_Scale);
-	enemyobj->SetRotation(m_rot);
+	//enemyobj->SetScale(m_Scale);
+	//enemyobj->SetRotation(m_rot);
 }
 //突き刺してくる攻撃のエリア表示
 void FirstBoss::DrawOutArea() {
@@ -198,14 +222,14 @@ void FirstBoss::BesideAttack() {
 		m_Frame = m_FrameMin;
 		m_Pat = 0;
 	}
-
-	m_pos = {
-Ease(In,Cubic,m_Frame,m_pos.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_pos.y,m_AfterPos.y),
-m_pos.z,
-	};
-	enemyobj->SetPosition(m_pos);
-	m_rot.y = Ease(In, Quint, 0.5f, m_rot.y, m_AfterRot.y);
+//
+//	m_pos = {
+//Ease(In,Cubic,m_Frame,m_pos.x,m_AfterPos.x),
+//Ease(In,Cubic,m_Frame,m_pos.y,m_AfterPos.y),
+//m_pos.z,
+//	};
+//	enemyobj->SetPosition(m_pos);
+//	m_rot.y = Ease(In, Quint, 0.5f, m_rot.y, m_AfterRot.y);
 }
 //突き刺してくる攻撃
 void FirstBoss::StabbingAttack() {
@@ -214,9 +238,9 @@ void FirstBoss::StabbingAttack() {
 		switch (m_Pat) {
 		case 1:
 			m_AfterPos = {
-			m_pos.x,
+			m_Position.x,
 			-120.0f,
-			m_pos.z
+			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.01f;
@@ -227,14 +251,14 @@ void FirstBoss::StabbingAttack() {
 				m_Frame = m_FrameMin;
 				m_TargetPos.x = player->GetPosition().x;
 				m_Pat++;
-				m_OutPos = { m_TargetPos.x,m_pos.y,m_pos.z + 5 };
+				m_OutPos = { m_TargetPos.x,m_Position.y,m_Position.z + 5 };
 				break;
 			}
 		case 2:
 			m_AfterPos = {
 			m_TargetPos.x,
-			m_pos.y,
-			m_pos.z
+			m_Position.y,
+			m_Position.z
 			};
 			if (m_Aiming < 30) {
 				m_Frame = 0.5f;
@@ -249,9 +273,9 @@ void FirstBoss::StabbingAttack() {
 			}
 		case 3:
 			m_AfterPos = {
-			m_pos.x,
+			m_Position.x,
 			-158.0f,
-			m_pos.z
+			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.1f;
@@ -283,7 +307,7 @@ void FirstBoss::StabbingAttack() {
 			m_AfterPos = {
 			223.0f,
 			-158.0f,
-			m_pos.z
+			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.01f;
@@ -301,11 +325,11 @@ void FirstBoss::StabbingAttack() {
 			break;
 		}
 	}
-	m_pos = {
-Ease(In,Cubic,m_Frame,m_pos.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_pos.y,m_AfterPos.y),
-	Ease(In,Cubic,m_Frame,m_pos.z,m_AfterPos.z)
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
-	m_rot.y = Ease(In, Quint, 0.5f, m_rot.y, m_AfterRot.y);
-	enemyobj->SetPosition(m_pos);
+	m_Rotation.y = Ease(In, Quint, 0.5f, m_Rotation.y, m_AfterRot.y);
+	//enemyobj->SetPosition(m_pos);
 }

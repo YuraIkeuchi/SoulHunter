@@ -191,8 +191,7 @@ void FirstStage::NormalUpdate() {
 	VolumManager::GetInstance()->Update();
 	save->Update();
 	BlackFilter->SetColor(BlackColor);
-	if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
-		firstboss->Update();
+	if (StageNumber == BossMap) {
 		ui->Update(firstboss);
 	}
 	else {
@@ -259,6 +258,7 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	else {
 		BossAppDraw(dxCommon);
 	}
+
 	//
 	IKESprite::PreDraw();
 	mapchange->Draw();
@@ -321,16 +321,16 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 	}
 
+	//ボスの描画
+	if (StageNumber == BossMap) {
+		firstboss->Draw(dxCommon);
+		respornenemy->Draw();
+	}
+
 	//プレイヤーの描画
 	player->Draw(dxCommon);
 	playerbullet->Draw(dxCommon);
 	playereffect->Draw();
-
-	//ボスの描画
-	if (StageNumber == BossMap) {
-		firstboss->Draw();
-		respornenemy->Draw();
-	}
 
 	//魂関係
 	for (int i = 0; i < Soul_Max; i++) {
@@ -365,6 +365,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 }
 //ボスシーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
+	firstboss->AppDraw(dxCommon);
 	bossappobj->BackDraw();
 	player->BossAppDraw(dxCommon);
 }
@@ -551,6 +552,8 @@ void FirstStage::BossRoomUpdate() {
 				m_BossNumber = BossBattle;
 				player->SetMovie(false);
 			}
+
+			firstboss->AppUpdate();
 		}
 		else {
 			//ボスバトル
@@ -571,6 +574,10 @@ void FirstStage::BossRoomUpdate() {
 				respornenemy->SetEnemyArgment(false);
 			}
 			camerawork->SetCameraType(2);
+
+			if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
+				firstboss->Update();
+			}
 		}
 	}
 	else {

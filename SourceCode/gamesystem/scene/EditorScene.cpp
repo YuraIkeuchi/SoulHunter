@@ -253,7 +253,7 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	//playereffect->Draw();
 
 	if (StageNumber == BossMap) {
-		firstboss->Draw();
+		firstboss->Draw(dxCommon);
 		respornenemy->Draw();
 	}
 

@@ -38,6 +38,7 @@ public:
 		NormalEnemy,
 		WingEnemy,
 		PlayerFBX,
+		BossFBX,
 		BirdEnemy,
 		PlayerWing,
 	};

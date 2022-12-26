@@ -1,8 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-#include "IKEObject3d.h"
-#include "IKEModel.h"
-#include "IKESprite.h"
+#include "DirectXCommon.h"
 #include "Player.h"
 #include "Pause.h"
 #include "PlayerEffect.h"
@@ -12,11 +10,13 @@
 #include "BossEffect.h"
 #include "BossName.h"
 #include "VariableCommon.h"
+#include "ObjCommon.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 #define DIRECTINPUT_VERSION 0x0800
 
-class InterBoss {
+class InterBoss :
+	public ObjCommon {
 protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -31,33 +31,33 @@ public:
 	void SetPause(Pause* pause) { this->pause.reset(pause); }
 	
 	//gettersetter
-	const XMFLOAT3& GetPosition() { return  enemyobj->GetPosition(); }
-	const XMFLOAT3& GetRotation() { return enemyobj->GetRotation(); }
 	bool GetEffect() { return  m_Effect; }
 	bool GetAlive() { return  m_Alive; }
 	const float& GetHP() { return  m_HP; }
 	const int& GetDeathTimer() { return  m_DeathTimer; }
 
-	void SetPosition(const XMFLOAT3& position) { enemyobj->SetPosition(position); }
-	void SetRotation(const XMFLOAT3& rotation) { enemyobj->SetRotation(rotation); }
-	void SetScale(const XMFLOAT3& scale) { enemyobj->SetScale(scale); }
 	void SetEffect(bool effect) { this->m_Effect = effect; }
 	void SetAlive(bool m_Alive) { this->m_Alive = m_Alive; }
 	void SetMovie(bool m_Movie) { this->m_Movie = m_Movie; }
 public:
 	
 	//初期化
-	virtual void Initialize() = 0;
+	virtual bool Initialize() = 0;
 	//更新
 	void Update();
 	//描画
-	void Draw();
+	void Draw(DirectXCommon* dxCommon);
+	//更新
+	void AppUpdate();
+	//描画
+	void AppDraw(DirectXCommon* dxCommon);
 	virtual void App() = 0;//ボス出現モーション
 
 	virtual void Spec() = 0;//ボス特有の処理
 
 	virtual void End() = 0;//ボス特有の処理
 	virtual void specialDraw() = 0;//ボス特有の描画
+	virtual void specialDrawApp() = 0;//ボス特有の描画
 
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
@@ -74,16 +74,10 @@ protected:
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<PlayerEffect> playereffect = nullptr;
 	unique_ptr<Pause> pause = nullptr;
-	//テクスチャやオブジェクト
-	unique_ptr<IKEObject3d> enemyobj = nullptr;
-	IKEModel* model = nullptr;
-	
+
 	//座標や回転
 	const float PI = 3.14f;
-	XMFLOAT3 m_pos = { 0,0,0 };
 	XMFLOAT3 m_OldPos = { 0,0,0 };
-	XMFLOAT3 m_rot = { 0,0,0 };
-	XMFLOAT3 m_Scale{ 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterScale{ 2.8f,2.8f,2.8f };
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterPos = { 0.0f,0.0f,0.0f };

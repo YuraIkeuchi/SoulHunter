@@ -32,6 +32,7 @@ void ModelManager::Initialize() {
 	LoadFBXModel(BirdEnemy, "bat_move");
 	LoadFBXModel(WingEnemy, "RabbitFBX");
 	LoadFBXModel(PlayerFBX, "PlayerFBXNew");
+	LoadFBXModel(BossFBX, "DragonFBX");
 	LoadFBXModel(PlayerWing, "WingFBX");
 }
 

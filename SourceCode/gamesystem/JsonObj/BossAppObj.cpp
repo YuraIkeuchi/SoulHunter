@@ -51,7 +51,7 @@ void BossAppObj::Update() {
 	if (m_AppStart && !m_EndApp) {
 		//登場の間はtrue
 		m_App = true;
-		m_AppTimer++;
+		//m_AppTimer++;
 		//一定フレームでフラグ終了
 		if (m_AppTimer == 400) {
 			//m_App = false;

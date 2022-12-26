@@ -4,10 +4,11 @@
 class FirstBoss :public InterBoss {
 public:
 	FirstBoss();
-	void Initialize() override;//初期化
+	bool Initialize() override;//初期化
 	void Spec() override;//ボスの行動
 	void End() override;//ボス死亡
 	void specialDraw() override;//このシーンのみの描画
+	void specialDrawApp() override;//このシーンのみの描画
 	void App() override;//ボス登場
 	void DrawOutArea();//アウトラインの描画
 	void NotAttack();//攻撃していない
@@ -20,4 +21,10 @@ private:
 	XMFLOAT4 m_OutColor = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT3 m_OutScale = { 0.5f,10.0f,1.0f };
 	bool m_DrawArea = false;
+	//アニメーション関係
+	int m_Number = 0;
+	bool m_AnimeLoop = false;
+	int m_AnimeTimer = 0;
+	int m_AnimeSpeed = 1;
+	bool m_AnimationStop = false;
 };
