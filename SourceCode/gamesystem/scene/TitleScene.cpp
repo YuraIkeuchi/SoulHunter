@@ -95,7 +95,12 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	if (scenechange->AddBlack(0.01f)) {
-		SceneManager::GetInstance()->ChangeScene("INTRODUCTION");
+		if (!m_GameLoad) {
+			SceneManager::GetInstance()->ChangeScene("INTRODUCTION");
+		}
+		else {
+			SceneManager::GetInstance()->ChangeScene("LOAD");
+		}
 	}
 	for (int i = 0; i < TitlePartsSprite.size(); i++) {
 		TitlePartsSprite[i]->SetPosition(m_PartsPos[i]);

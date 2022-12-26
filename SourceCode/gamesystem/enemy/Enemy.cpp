@@ -18,8 +18,10 @@ bool Enemy::Initialize() {
 	m_fbxObject_->Initialize();
 	m_fbxObject_->SetModel(m_fbxModel);
 	m_Position = { 110.0f,-90.0,0.0f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_fbxObject_->SetScale(m_Scale);
 	m_fbxObject_->SetPosition(m_Position);
+	m_fbxObject_->SetRotation(m_Rotation);
 	m_fbxObject_->LoadAnimation();
 	m_fbxObject_->PlayAnimation(0);
 	m_fbxObject.reset(m_fbxObject_);

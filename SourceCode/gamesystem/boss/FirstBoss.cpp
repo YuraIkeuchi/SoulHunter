@@ -32,10 +32,21 @@ FirstBoss::FirstBoss() {
 bool FirstBoss::Initialize() {
 	assert(player);
 	assert(playereffect);
-	//m_Position = { 205.0f, -145.0f,80.0f };
-	m_Position = { 5.0f,10.0f,0.0f };
+	m_Position = { 205.0f, -145.0f,0.0f };
+	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
 	m_HitRadius = 2.0f;
+
+	return true;
+}
+
+bool FirstBoss::BattleInitialize() {
+	assert(player);
+	assert(playereffect);
+	m_Position = { 205.0f, -145.0f,0.0f };
+	//m_Position = { 5.0f,10.0f,0.0f };
+	m_Scale = { 0.03f,0.03f,0.03f };
+	m_HitRadius = 5.0f;
 
 	return true;
 }
@@ -73,6 +84,15 @@ void FirstBoss::Spec() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw() {
+	ImGui::Begin("Boss");
+	ImGui::Text("m_AttackCount:%d", m_AttackCount);
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("RotY:%f", m_Rotation.y);
+	ImGui::Text("RotZ:%f", m_Rotation.z);
+	ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
@@ -81,17 +101,77 @@ void FirstBoss::specialDraw() {
 //各ボス特有の描画
 void FirstBoss::specialDrawApp() {
 	ImGui::Begin("Boss");
-	ImGui::SliderFloat("m_Position.x", &m_Position.x, -20, 20);
-	ImGui::SliderFloat("m_Position.y", &m_Position.y, -20, 20);
-	ImGui::SliderFloat("m_Position.z", &m_Position.z, -20, 20);
-
-	ImGui::SliderFloat("m_Scale.x", &m_Scale.x, 1, 0);
-	ImGui::SliderFloat("m_Scale.y", &m_Scale.y, 1, 0);
-	ImGui::SliderFloat("m_Scale.z", &m_Scale.z, 1, 0);
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("RotY:%f", m_Rotation.y);
+	ImGui::Text("RotZ:%f", m_Rotation.z);
 	ImGui::End();
 }
 //登場ムービー
 void FirstBoss::App() {
+	if (m_AppTimer < 800) {
+		m_AppTimer++;
+	}
+
+	if (m_AppNumber == NoMove) {
+		if (m_AppTimer == 1) {
+			//アニメーションのためのやつ
+			m_AnimeLoop = true;
+			m_Number = 1;
+			m_AnimeSpeed = 1;
+			m_fbxObject->PlayAnimation(m_Number);
+			m_Position = { 60.0f,30.0f,10.0f };
+			m_Rotation = { 45.0f,270.0f,0.0f };
+		}
+
+		if (m_AppTimer ==350) {
+			m_AfterPos = { -60.0f,25.0f,7.0f };
+			m_Frame = 0.0f;
+			m_RotFrame = 0.0f;
+			m_AppNumber = FirstMove;
+		}
+	}
+	else if (m_AppNumber == FirstMove) {
+		AppBossMove(m_AfterPos, 0.003f);
+		if (m_AppTimer == 500) {
+			//アニメーションのためのやつ
+			m_AnimeLoop = true;
+			m_Number = 0;
+			m_AnimeSpeed = 1;
+			m_fbxObject->PlayAnimation(m_Number);
+			m_AfterPos = { 0.0f,25.0f,7.0f };
+			m_AfterRot = { 45.0f,180.0f,0.0f };
+			m_Frame = 0.0f;
+			m_RotFrame = 0.0f;
+			m_AppNumber = SecondMove;
+		}
+	}
+	else if (m_AppNumber == SecondMove) {
+		AppBossMove(m_AfterPos,0.003f);
+		AppBossRot(m_AfterRot, 0.003f);
+		if (m_AppTimer == 720) {
+			m_AfterRot = { -25.0f,180.0f,0.0f };
+			m_Frame = 0.0f;
+			m_RotFrame = 0.0f;
+			m_AppNumber = ThirdMove;
+		}
+	}
+	else if (m_AppNumber == ThirdMove) {
+		AppBossRot(m_AfterRot, 0.05f);
+		if (m_AppTimer == 750) {
+			m_AfterRot = { 45.0f,180.0f,0.0f };
+			m_Frame = 0.0f;
+			m_RotFrame = 0.0f;
+			m_AppNumber = ThirdMove;
+		}
+	}
+	else {
+		AppBossRot(m_AfterRot, 0.1f);
+	}
+
 	//生きてる時しか更新しない
 	if (m_Alive) {
 		m_fbxObject->SetScale(m_Scale);
@@ -332,4 +412,40 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	};
 	m_Rotation.y = Ease(In, Quint, 0.5f, m_Rotation.y, m_AfterRot.y);
 	//enemyobj->SetPosition(m_pos);
+}
+//ボス登場シーンのイージング関数(座標)
+void FirstBoss::AppBossMove(XMFLOAT3 AfterPos, float AddFrame) {
+	if (m_Frame < 1.0f)
+	{
+		m_Frame += AddFrame;
+	}
+	else {
+		m_AfterPos = AfterPos;
+		//m_AfterTarget = AfterTarget;
+		m_Frame = 1.0f;
+	}
+
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,AfterPos.z)
+	};
+}
+//ボス登場シーンのイージング関数(回転)
+void FirstBoss::AppBossRot(XMFLOAT3 AfterRot, float AddFrame) {
+	if (m_RotFrame  < 1.0f)
+	{
+		m_RotFrame  += AddFrame;
+	}
+	else {
+		m_AfterRot = AfterRot;
+		//m_AfterTarget = AfterTarget;
+		m_RotFrame = 1.0f;
+	}
+
+	m_Rotation = {
+Ease(In,Cubic,m_RotFrame,m_Rotation.x,AfterRot.x),
+Ease(In,Cubic,m_RotFrame,m_Rotation.y,AfterRot.y),
+	Ease(In,Cubic,m_RotFrame,m_Rotation.z,AfterRot.z)
+	};
 }

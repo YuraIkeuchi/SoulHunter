@@ -5,6 +5,7 @@ class FirstBoss :public InterBoss {
 public:
 	FirstBoss();
 	bool Initialize() override;//初期化
+	bool BattleInitialize() override;//初期化
 	void Spec() override;//ボスの行動
 	void End() override;//ボス死亡
 	void specialDraw() override;//このシーンのみの描画
@@ -14,6 +15,8 @@ public:
 	void NotAttack();//攻撃していない
 	void BesideAttack();//横移動
 	void StabbingAttack();//突き刺してくる攻撃
+	void AppBossMove(XMFLOAT3 AfterPos, float AddFrame);//ボス登場シーンのイージング関数(座標)
+	void AppBossRot(XMFLOAT3 AfterRot, float AddFrame);//ボス登場シーンのイージング関数(回転)
 private:
 	//アウトエリアの描画
 	unique_ptr<IKETexture> OutAreatexture;
@@ -27,4 +30,14 @@ private:
 	int m_AnimeTimer = 0;
 	int m_AnimeSpeed = 1;
 	bool m_AnimationStop = false;
+	int m_AppTimer = 0;
+	int m_AppNumber = 0;
+	enum AppNumber {
+		NoMove,
+		FirstMove,
+		SecondMove,
+		ThirdMove,
+		FourthMove,
+		FifthMove,
+	};
 };

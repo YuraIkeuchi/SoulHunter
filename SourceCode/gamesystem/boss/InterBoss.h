@@ -43,6 +43,8 @@ public:
 	
 	//初期化
 	virtual bool Initialize() = 0;
+	//初期化
+	virtual bool BattleInitialize() = 0;
 	//更新
 	void Update();
 	//描画
@@ -89,6 +91,7 @@ protected:
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム
+	float m_RotFrame = 0.0f;//フレーム
 	bool m_Active = false;//行動開始
 	int m_Action = 0;//攻撃の種類
 	int m_Pat = 0;//パターン

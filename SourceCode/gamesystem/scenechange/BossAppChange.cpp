@@ -24,11 +24,11 @@ void BossAppChange::Update() {
 }
 //•`‰æ
 const void BossAppChange::Draw() {
-	ImGui::Begin("filter");
+	/*ImGui::Begin("filter");
 	ImGui::Text("%d", m_AddStartChange);
 	ImGui::Text("%d", m_SubStartChange);
 	ImGui::Text("%f", s_color.w);
-	ImGui::End();
+	ImGui::End();*/
 	IKESprite::PreDraw();
 	change->Draw();
 }

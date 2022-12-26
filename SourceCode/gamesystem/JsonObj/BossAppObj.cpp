@@ -56,6 +56,13 @@ void BossAppObj::Initialize() {
 
 	CurtainSprite[0]->SetPosition({ 640.0f,0.0f });
 	CurtainSprite[1]->SetPosition({ 640.0f,620.0f });
+
+	IKESprite* SkipSprite_;
+	SkipSprite_ = IKESprite::Create(ImageManager::SkipText, { 0.0f,0.0f });
+	SkipSprite_->SetAnchorPoint({ 0.5f,0.0f });
+	SkipSprite_->SetPosition({ 1000.0f,620.0f });
+	SkipSprite.reset(SkipSprite_);
+
 }
 //更新
 void BossAppObj::Update() {
@@ -66,7 +73,7 @@ void BossAppObj::Update() {
 		m_App = true;
 		m_AppTimer++;
 		//一定フレームでフラグ終了
-		if (m_AppTimer == 750) {
+		if (m_AppTimer == 800) {
 			//m_App = false;
 			m_AppStart = false;
 			m_EndApp = true;
@@ -99,6 +106,7 @@ const void BossAppObj::BackDraw() {
 	for (int i = 0; i < CurtainSprite.size(); i++) {
 		CurtainSprite[i]->Draw();
 	}
+	SkipSprite->Draw();
 	IKESprite::PostDraw();
 }
 //解放

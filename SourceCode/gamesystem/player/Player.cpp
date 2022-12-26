@@ -1014,7 +1014,7 @@ void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 }
 //ボスシーンの更新
 void Player::BossAppUpdate(int Timer) {
-	m_fbxObject->SetPosition({ 0.0f,10.0f,0.0f });
+	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
