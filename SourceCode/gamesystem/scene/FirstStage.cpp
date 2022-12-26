@@ -27,6 +27,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	camerawork = new CameraWork();
 	hitstop = new HitStop();
 	bossappobj = new BossAppObj();
+	bossappobj->SetAppStart(true);
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -366,8 +367,8 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 //ボスシーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
 	firstboss->AppDraw(dxCommon);
-	bossappobj->BackDraw();
 	player->BossAppDraw(dxCommon);
+	bossappobj->BackDraw();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {
@@ -535,24 +536,22 @@ void FirstStage::BossRoomUpdate() {
 		firstboss->SetAlive(true);
 		//ボス登場
 		if (bossappobj->GetApp()) {
-			player->BossAppUpdate(1);
-			if (bossappobj->GetAppTimer() == 400) {
-				bossappchange->SetAddStartChange(true);
-			}
-			if (bossappchange->AddBlack(0.08f)) {
-				bossappchange->SetSubStartChange(true);
-				bossappobj->SetApp(false);
-			}
 			camerawork->SetCameraType(3);
 			firstboss->SetMovie(true);
 			player->SetMovie(true);
-			if (camerawork->GetEndApp()) {
+			player->BossAppUpdate(1);
+			if (bossappobj->GetAppTimer() == 750) {
+				bossappchange->SetAddStartChange(true);
+			}
+			if (bossappchange->AddBlack(0.04f)) {
+				bossappchange->SetSubStartChange(true);
+				bossappobj->SetApp(false);
 				Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 				firstboss->SetMovie(false);
 				m_BossNumber = BossBattle;
 				player->SetMovie(false);
 			}
-
+			
 			firstboss->AppUpdate();
 		}
 		else {

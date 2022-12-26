@@ -139,7 +139,6 @@ bool InterBoss::BulletCollision() {
 
 	return true;
 }
-
 //敵がダメージ食らう(必殺技)
 bool InterBoss::SpecialCollide() {
 	bool l_SpecialAlive = playereffect->GetSpecialAlive();
@@ -169,11 +168,11 @@ void InterBoss::ArgEffect() {
 		m_EffectArgment = false;
 	}
 }
-
+//ボス登場シーン更新
 void InterBoss::AppUpdate() {
 	App();
 }
-
+//ボス登場シーン描画
 void InterBoss::AppDraw(DirectXCommon* dxCommon) {
 	//ボスの描画
 	IKEObject3d::PreDraw();

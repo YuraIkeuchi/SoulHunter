@@ -172,7 +172,7 @@ void BaseScene::StartGame() {
 	//Å‰‚©‚ç‚É‚µ‚½ê‡
 	if (!m_GameLoad) {
 		skillpause->InitPos();
-		StageNumber = TutoRial;
+		StageNumber = BossMap;
 		block->Initialize(tutorialmap, 0, StageNumber);
 		minimap->InitMap(tutorialmap, StageNumber);
 		playerskill->ResetSkill();

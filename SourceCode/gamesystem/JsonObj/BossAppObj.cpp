@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include "imgui.h"
 #include "JsonLoader.h"
+#include "ImageManager.h"
 using namespace DirectX;
 //初期化
 void BossAppObj::Initialize() {
@@ -43,6 +44,18 @@ void BossAppObj::Initialize() {
 			objects.push_back(newObject);
 		}
 	}
+
+	//スプライト生成
+	IKESprite* CurtainSprite_[2];
+	//gaussian = new PostEffect();
+	for (int i = 0; i < CurtainSprite.size(); i++) {
+		CurtainSprite_[i] = IKESprite::Create(ImageManager::Curtain, { 0.0f,0.0f });
+		CurtainSprite_[i]->SetAnchorPoint({ 0.5f,0.0f });
+		CurtainSprite[i].reset(CurtainSprite_[i]);
+	}
+
+	CurtainSprite[0]->SetPosition({ 640.0f,0.0f });
+	CurtainSprite[1]->SetPosition({ 640.0f,620.0f });
 }
 //更新
 void BossAppObj::Update() {
@@ -51,9 +64,9 @@ void BossAppObj::Update() {
 	if (m_AppStart && !m_EndApp) {
 		//登場の間はtrue
 		m_App = true;
-		//m_AppTimer++;
+		m_AppTimer++;
 		//一定フレームでフラグ終了
-		if (m_AppTimer == 400) {
+		if (m_AppTimer == 750) {
 			//m_App = false;
 			m_AppStart = false;
 			m_EndApp = true;
@@ -71,16 +84,22 @@ const void BossAppObj::FrontDraw() {
 }
 //背景描画
 const void BossAppObj::BackDraw() {
-	/*ImGui::Begin("BossApp");
+	ImGui::Begin("BossApp");
 	ImGui::Text("m_App:%d", m_App);
 	ImGui::Text("m_AppTimer:%d", m_AppTimer);
 	ImGui::Text("m_End:%d", m_EndApp);
 	ImGui::Text("m_AppStart:%d", m_AppStart);
-	ImGui::End();*/
+	ImGui::End();
 	//Json用
 	for (auto& object : objects) {
 		object->Draw();
 	}
+
+	IKESprite::PreDraw();
+	for (int i = 0; i < CurtainSprite.size(); i++) {
+		CurtainSprite[i]->Draw();
+	}
+	IKESprite::PostDraw();
 }
 //解放
 void BossAppObj::Finalize() {

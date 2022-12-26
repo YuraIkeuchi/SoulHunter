@@ -5,7 +5,7 @@
 #include <list> // ヘッダファイルインクルード
 #include <map>
 #include "ParticleTex.h"
-
+#include "IKESprite.h"
 struct JsonData;
 
 using namespace std;         //  名前空間指定
@@ -42,7 +42,8 @@ private:
 	JsonData* jsonData = nullptr;
 	std::map<std::string, IKEModel*> models;
 	std::vector<IKEObject3d*> objects;
-
+	//スプライト
+	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	//その他変数
 	bool m_AppStart = false;//登場スタート
 	int m_AppTimer = 0;//時間
