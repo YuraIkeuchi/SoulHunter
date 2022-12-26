@@ -91,12 +91,12 @@ const void BossAppObj::FrontDraw() {
 }
 //”wŒi•`‰æ
 const void BossAppObj::BackDraw() {
-	ImGui::Begin("BossApp");
+	/*ImGui::Begin("BossApp");
 	ImGui::Text("m_App:%d", m_App);
 	ImGui::Text("m_AppTimer:%d", m_AppTimer);
 	ImGui::Text("m_End:%d", m_EndApp);
 	ImGui::Text("m_AppStart:%d", m_AppStart);
-	ImGui::End();
+	ImGui::End();*/
 	//Json—p
 	for (auto& object : objects) {
 		object->Draw();

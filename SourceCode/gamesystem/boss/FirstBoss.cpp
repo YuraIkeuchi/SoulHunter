@@ -45,8 +45,8 @@ bool FirstBoss::BattleInitialize() {
 	assert(playereffect);
 	m_Position = { 205.0f, -145.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
-	m_Scale = { 0.03f,0.03f,0.03f };
-	m_HitRadius = 5.0f;
+	m_Scale = { 0.02f,0.02f,0.02f };
+	m_HitRadius = 3.0f;
 
 	return true;
 }
@@ -59,22 +59,22 @@ void FirstBoss::Spec() {
 			bossname->SetAddStartChange(true);
 		}
 		//攻撃していない
-		NotAttack();
+		//NotAttack();
 	}
 	else {
 		//行動開始
 		if ((m_Action % 2) == 0) {
 			//横移動
-			BesideAttack();
+			//BesideAttack();
 			
 		}
 		else if ((m_Action % 2) == 1) {
 			//突き刺してくる攻撃
-			StabbingAttack();
+			//StabbingAttack();
 		}
 	}
 
-	DrawOutArea();
+	//DrawOutArea();
 
 	//生きてる時しか更新しない
 	if (m_Alive) {
@@ -85,6 +85,8 @@ void FirstBoss::Spec() {
 //各ボス特有の描画
 void FirstBoss::specialDraw() {
 	ImGui::Begin("Boss");
+	ImGui::SliderFloat("PosX", &m_Position.x, 100, 280);
+	ImGui::SliderFloat("PosY", &m_Position.y, -100,-200);
 	ImGui::Text("m_AttackCount:%d", m_AttackCount);
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::Text("PosY:%f", m_Position.y);
@@ -100,15 +102,15 @@ void FirstBoss::specialDraw() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDrawApp() {
-	ImGui::Begin("Boss");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::Text("RotZ:%f", m_Rotation.z);
-	ImGui::End();
+	//ImGui::Begin("Boss");
+	//ImGui::Text("Timer:%d", m_AppTimer);
+	//ImGui::Text("PosX:%f", m_Position.x);
+	//ImGui::Text("PosY:%f", m_Position.y);
+	//ImGui::Text("PosZ:%f", m_Position.z);
+	//ImGui::Text("RotX:%f", m_Rotation.x);
+	//ImGui::Text("RotY:%f", m_Rotation.y);
+	//ImGui::Text("RotZ:%f", m_Rotation.z);
+	//ImGui::End();
 }
 //登場ムービー
 void FirstBoss::App() {
@@ -178,34 +180,6 @@ void FirstBoss::App() {
 		m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 		Fbx_SetParam();
 	}
-	////奥の方から徐々に出るような演出
-	//if (!m_AppMove) {
-	//	m_MovieTimer++;
-	//	if (m_MovieTimer == 680) {
-	//		m_AppMove = true;
-	//
-	//		m_Frame = m_FrameMin;
-	//		m_AfterPos.z = 0.0f;
-	//	}
-	//}
-	//else {
-
-	//	if (m_Frame < m_FrameMax) {
-	//		m_Frame += 0.01f;
-	//	}
-	//	else {
-	//		m_MovieTimer = 0;
-	//		m_AppMove = false;
-	//		m_Frame = m_FrameMin;
-	//	}
-	///*	m_pos.z = Ease(In, Quint, m_Frame, m_pos.z, m_AfterPos.z);
-	//	m_Scale = { Ease(In, Quint, m_Frame, m_Scale.x, m_AfterScale.x),
-	//		Ease(In, Quint, m_Frame,m_Scale.y, m_AfterScale.y),
-	//		Ease(In, Quint, m_Frame,m_Scale.z, m_AfterScale.z),
-	//	};*/
-	//}
-	////enemyobj->SetPosition(m_pos);
-	////enemyobj->SetScale(m_Scale);
 }
 //倒した後の動き
 void FirstBoss::End() {
@@ -276,20 +250,20 @@ void FirstBoss::BesideAttack() {
 	}
 
 	if (m_Pat == 1) {
-		m_AfterPos.x = 155.0f;
-		m_AfterPos.y = -158.0f;
+		m_AfterPos.x = 159.0f;
+		m_AfterPos.y = -151.0f;
 		m_AfterRot.y = 270.0f;
 	}
 	else if (m_Pat == 2) {
-		m_AfterPos.x = 223.0f;
+		m_AfterPos.x = 203.0f;
 		m_AfterRot.y = 90.0f;
 	}
 	else if (m_Pat == 3) {
-		m_AfterPos.x = 254.0f;
+		m_AfterPos.x = 248.0f;
 		m_AfterRot.y = 90.0f;
 	}
 	else if (m_Pat == 4) {
-		m_AfterPos.x = 223.0f;
+		m_AfterPos.x = 203.0f;
 		m_AfterRot.y = 270.0f;
 	}
 	else if (m_Pat == 5) {
@@ -354,7 +328,7 @@ void FirstBoss::StabbingAttack() {
 		case 3:
 			m_AfterPos = {
 			m_Position.x,
-			-158.0f,
+			-151.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {

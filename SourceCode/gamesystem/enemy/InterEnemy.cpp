@@ -41,7 +41,7 @@ bool InterEnemy::Collision() {
 
 	Box box;
 	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
-	box.scale = { 8.5f,5.5f,8.5f };
+	box.scale = { 6.5f,5.5f,8.5f };
 
 	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 5)) {
 		m_EffectArgment = true;
@@ -198,6 +198,9 @@ void InterEnemy::DamageAct() {
 			}
 			else {
 				m_BoundPower.x = -0.8f;
+				if (m_EnemyType == Normal){
+					m_Rotation = { 0.0f,90.0f,0.0f };
+				}
 			}
 		}
 		else {
@@ -207,6 +210,9 @@ void InterEnemy::DamageAct() {
 			}
 			else {
 				m_BoundPower.x = 0.8f;
+				if (m_EnemyType == Normal) {
+					m_Rotation = { 0.0f,270.0f,0.0f };
+				}
 			}
 		}
 		if (m_HP == 0) {

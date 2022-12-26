@@ -722,11 +722,11 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
+	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Attack:%d", m_AttackTimer);
-	ImGui::End();*/
+	ImGui::Text("m_Attack:%f", m_Position.y);
+	ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
@@ -822,7 +822,7 @@ void Player::InitPlayer(int StageNumber) {
 	}
 	else if (StageNumber == BossMap) {
 		if (m_GoalDir == DownGoal) {
-			m_Position = { 175.0f,-20.0f,0.0f };
+			m_Position = { 175.0f,-155.0f,0.0f };
 		}
 		else if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-66.0f,0.0f };

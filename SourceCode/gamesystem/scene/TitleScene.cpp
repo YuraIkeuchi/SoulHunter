@@ -80,7 +80,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		}
 	}
 
-	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange()) {
+	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
 		titleobj->SetStopParticle(true);
 		m_LightPos = { 0.0f,-20.0f,5.0f };
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());

@@ -97,8 +97,19 @@ bool InterBoss::collidePlayer() {
 }
 //ボスがダメージ食らう(通常攻撃)
 bool InterBoss::collideBoss() {
+
 	XMFLOAT3 AttackPos = player->GetAttackPos();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 2.5f, AttackPos.x, AttackPos.y, 2.5f) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
+
+	//外積当たり判定
+	Sphere sphere;
+	sphere.center = { m_Position.x,m_Position.y,m_Position.z };
+	sphere.radius = 1;
+
+	Box box;
+	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
+	box.scale = { 6.5f,5.5f,8.5f };
+
+	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
 		m_HP--;
 		m_Effect = true;
 		m_EffectArgment = true;
@@ -114,6 +125,8 @@ bool InterBoss::collideBoss() {
 	else {
 		return false;
 	}
+
+	return true;
 }
 //敵がダメージ食らう(弾)
 bool InterBoss::BulletCollision() {
