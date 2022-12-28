@@ -212,6 +212,9 @@ private:
 	float m_Gravity = 0.0f;
 	//ジャンプ回数
 	int m_JumpCount = 4;
+	//ジャンプ時の動きの変数
+	bool m_JumpRot = false;
+	float m_RotFrame = 0.0f;
 	//ジャンプ時のエフェクト発生条件
 	bool m_JumpArgment = false;
 	//向いている向き

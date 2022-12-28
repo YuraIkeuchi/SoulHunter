@@ -205,6 +205,29 @@
             },
             "file_name": "CaveRock",
             "gimmick_name": "NoGimmick"
+        },
+        {
+            "type": "MESH",
+            "name": "円錐",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    19.457075119018555
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    25.993331909179688,
+                    25.993331909179688,
+                    25.993331909179688
+                ]
+            },
+            "file_name": "Toge",
+            "gimmick_name": "NoGimmick"
         }
     ]
 }

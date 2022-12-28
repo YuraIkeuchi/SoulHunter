@@ -44,9 +44,9 @@ bool Player::Initialize()
 	particleheal_->Initialize();
 	particleheal.reset(particleheal_);
 
-	PlayerWing* playerwing_ = new PlayerWing();
+	/*PlayerWing* playerwing_ = new PlayerWing();
 	playerwing_->Initialize();
-	playerwing.reset(playerwing_);
+	playerwing.reset(playerwing_);*/
 
 	return true;
 }
@@ -208,18 +208,18 @@ void Player::EffectUpdate() {
 }
 //羽関係
 void Player::WingUpdate() {
-	m_WingPosition = m_Position;
-	//羽
-	if (m_PlayerDir == Left) {
-		playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
-		playerwing->SetDir(0);
-	}
-	else {
-		playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
-		playerwing->SetDir(1);
-	}
+	//m_WingPosition = m_Position;
+	////羽
+	//if (m_PlayerDir == Left) {
+	//	playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
+	//	playerwing->SetDir(0);
+	//}
+	//else {
+	//	playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
+	//	playerwing->SetDir(1);
+	//}
 
-	playerwing->Update();
+	//playerwing->Update();
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -327,13 +327,39 @@ void Player::PlayerJump() {
 		m_ParticleCount = 0;
 		m_WingDeleteCount = 0;
 		m_AddPower = 0.8f;
-		PlayerAnimetion(2, 2);
 		m_JumpArgment = true;
-		//ジャンプ回数でプレイヤーの羽が変化する
-		playerwing->SetAnimation(true);
-		playerwing->SetEaseStart(true);
-		playerwing->SetFrame(0.0f);
-		playerwing->SetAfterScale({ 0.005f,0.005f,0.005f });
+		if (m_JumpCount == 1) {
+			PlayerAnimetion(2, 2);
+		}
+		else if (m_JumpCount == 2) {
+			PlayerAnimetion(5, 2);
+		}
+		else if (m_JumpCount == 3) {
+			PlayerAnimetion(6, 2);
+		}
+		else if (m_JumpCount == 4) {
+			PlayerAnimetion(7, 2);
+			m_JumpRot = true;
+			m_RotFrame = 0.0f;
+		}
+		////ジャンプ回数でプレイヤーの羽が変化する
+		//playerwing->SetAnimation(true);
+		//playerwing->SetEaseStart(true);
+		//playerwing->SetFrame(0.0f);
+		//playerwing->SetAfterScale({ 0.005f,0.005f,0.005f });
+	}
+
+	//四回目はジャンプ時回転する
+	if (m_JumpRot) {
+		if (m_RotFrame < 1.0f) {
+			m_RotFrame += 0.025f;
+		}
+		else {
+			m_Rotation.x = 0.0f;
+			m_RotFrame = 0.0f;
+			m_JumpRot = false;
+		}
+		m_Rotation.x = Ease(In, Cubic, m_RotFrame, m_Rotation.x, 360.0f);
 	}
 	//エフェクトの発生
 }
@@ -360,16 +386,16 @@ void Player::PlayerFall() {
 			m_AddPower = 0.0f;
 		}
 
-		if (m_JumpCount != 0) {
-			m_WingDeleteCount++;
-		}
+		//if (m_JumpCount != 0) {
+		//	m_WingDeleteCount++;
+		//}
 
-		if (m_WingDeleteCount == 15) {
-			playerwing->SetEaseStart(true);
-			playerwing->SetFrame(0.0f);
-			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
-			m_WingDeleteCount = 0;
-		}
+		//if (m_WingDeleteCount == 15) {
+		//	playerwing->SetEaseStart(true);
+		//	playerwing->SetFrame(0.0f);
+		//	playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
+		//	m_WingDeleteCount = 0;
+		//}
 		//if(m_JumpCount)
 	}
 	else {
@@ -384,8 +410,8 @@ void Player::PlayerFall() {
 	//ジャンプ回数のリセット
 	if (m_AddPower == 0.0f && block->GetHitDown()) {
 		m_JumpCount = 0;
-		playerwing->SetEaseStart(true);
-		playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
+	/*	playerwing->SetEaseStart(true);
+		playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 	}
 }
 //プレイヤーの攻撃
@@ -408,9 +434,9 @@ void Player::PlayerAttack() {
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
 			m_SwordAfterAlpha = 1.0f;
-			playerwing->SetEaseStart(true);
+		/*	playerwing->SetEaseStart(true);
 			playerwing->SetFrame(0.0f);
-			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
+			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 		}
 		else {
 			m_AnimeLoop = true;
@@ -477,6 +503,7 @@ void Player::PlayerDush() {
 				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
+			PlayerAnimetion(8, 2);
 		}
 	}
 
@@ -722,11 +749,11 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
+	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Attack:%f", m_Position.y);
-	ImGui::End();*/
+	ImGui::Text("m_Attack:%f", m_Rotation.x);
+	ImGui::End();
 
 	//エフェクト関係
 	for (JumpEffect* jumpeffect : jumpeffects) {
@@ -747,7 +774,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 			FollowObj_Draw();
 		}
 		Fbx_Draw(dxCommon);
-		playerwing->Draw(dxCommon);
+		//playerwing->Draw(dxCommon);
 	}
 	particleheal->Draw();
 	particletex->Draw();
