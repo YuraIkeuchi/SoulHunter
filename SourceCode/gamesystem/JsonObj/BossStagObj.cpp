@@ -1,11 +1,11 @@
-#include "BossAppObj.h"
+#include "BossStagObj.h"
 #include "ModelManager.h"
 #include "imgui.h"
 #include "JsonLoader.h"
 #include "ImageManager.h"
 using namespace DirectX;
 //初期化
-void BossAppObj::Initialize() {
+void BossStagObj::Initialize() {
 
 	jsonData = JsonLoader::LoadFile("BossApp");
 
@@ -62,10 +62,15 @@ void BossAppObj::Initialize() {
 	SkipSprite_->SetAnchorPoint({ 0.5f,0.0f });
 	SkipSprite_->SetPosition({ 1000.0f,620.0f });
 	SkipSprite.reset(SkipSprite_);
+	//パーティクル
+	ParticleTex* particletex_;
+	particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 
 }
 //更新
-void BossAppObj::Update() {
+void BossStagObj::AppUpdate() {
 	//pos = player->GetPosition();
 	//ボス登場フラグが立ったらタイマーが動く
 	if (m_AppStart && !m_EndApp) {
@@ -79,37 +84,57 @@ void BossAppObj::Update() {
 			m_EndApp = true;
 		}
 	}
-	
+
 	//Json用
 	for (auto& object : objects) {
 		object->Update();
 	}
-
 }
-//前面描画
-const void BossAppObj::FrontDraw() {
-}
-//背景描画
-const void BossAppObj::BackDraw() {
-	/*ImGui::Begin("BossApp");
-	ImGui::Text("m_App:%d", m_App);
-	ImGui::Text("m_AppTimer:%d", m_AppTimer);
-	ImGui::Text("m_End:%d", m_EndApp);
-	ImGui::Text("m_AppStart:%d", m_AppStart);
-	ImGui::End();*/
+void BossStagObj::EndUpdate() {
+	m_EndTimer++;
 	//Json用
 	for (auto& object : objects) {
-		object->Draw();
+		object->Update();
 	}
-
+	m_ParticleCount++;
+	if (m_ParticleCount > 2) {
+		m_ParticleCount = 0;
+	}
+	//パーティクル
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	particletex->SetStartScale(0.5f);
+	particletex->SetParticleBreak(true);
+	particletex->SetParticleBillboard(true);
+	particletex->Update({ 0.0f,8.0f,20.0f }, m_ParticleCount, 2, 2);
+}
+//前面描画
+const void BossStagObj::FrontDraw() {
+	//パーティクルの描画
+	IKEObject3d::PreDraw();
+	particletex->Draw();
+	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	for (int i = 0; i < CurtainSprite.size(); i++) {
 		CurtainSprite[i]->Draw();
 	}
 	SkipSprite->Draw();
 	IKESprite::PostDraw();
+
+}
+//背景描画
+const void BossStagObj::BackDraw() {
+	ImGui::Begin("BossApp");
+	ImGui::Text("m_EndTimer:%d", m_EndTimer);
+	ImGui::End();
+
+	IKEObject3d::PreDraw();
+	//Json用
+	for (auto& object : objects) {
+		object->Draw();
+	}
+	IKEObject3d::PostDraw();
 }
 //解放
-void BossAppObj::Finalize() {
+void BossStagObj::Finalize() {
 
 }

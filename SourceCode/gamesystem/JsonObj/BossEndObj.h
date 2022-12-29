@@ -27,14 +27,14 @@ public:
 
 public:
 	//gettersetter
-	bool GetApp() { return  m_App; }
+	bool GetEnd() { return  m_End; }
 	//gettersetter
-	int GetAppTimer() { return  m_AppTimer; }
+	int GetEndTimer() { return  m_EndTimer; }
 
-	void SetApp(bool m_App) { this->m_App = m_App; }
-	void SetEndApp(bool m_EndApp) { this->m_EndApp = m_EndApp; }
-	void SetAppStart(bool m_AppStart) { this->m_AppStart = m_AppStart; }
-	void SetAppTimer(bool m_AppTimer) { this->m_AppTimer = m_AppTimer; }
+	void SetEnd(bool m_End) { this->m_End = m_End; }
+	void SetEndEnd(bool m_EndEnd) { this->m_EndEnd = m_EndEnd; }
+	void SetEndStart(bool m_EndStart) { this->m_EndStart = m_EndStart; }
+	void SetEndTimer(bool m_EndTimer) { this->m_EndTimer = m_EndTimer; }
 private:
 	//絶対に必要なOBJ
 	IKEModel* modelskydome = nullptr;
@@ -47,9 +47,9 @@ private:
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
 	//その他変数
-	bool m_AppStart = false;//登場スタート
-	int m_AppTimer = 0;//時間
-	bool m_EndApp = false;//登場終了
-	bool m_App = false;//登場の間はtrue
+	bool m_EndStart = false;//登場スタート
+	int m_EndTimer = 0;//時間
+	bool m_EndEnd = false;//登場終了
+	bool m_End = false;//登場の間はtrue
 
 };

@@ -6,7 +6,6 @@ void InterBoss::Update() {
 	collidePlayer();
 	collideBoss();
 	BulletCollision();
-	SpecialCollide();
 	//ボスの行動
 	if (!pause->GetIsPause()) {
 		if (!m_Movie) {
@@ -14,7 +13,7 @@ void InterBoss::Update() {
 				Spec();
 			}
 			else {
-				End();
+				Dead();
 			}
 		}
 	}
@@ -36,11 +35,7 @@ void InterBoss::Update() {
 	if (!playerbullet->GetAlive()) {
 		m_BulletHit = false;
 	}
-	//必殺技があたったかどうか
-	if (!player->GetSpecialEffect()) {
-		m_SpecialHit = false;
-	}
-	
+
 	//エフェクトの生成
 	ArgEffect();
 	//エフェクトの更新
@@ -52,7 +47,7 @@ void InterBoss::Update() {
 	//ボスの名前の更新
 	bossname->Update();
 	//パーティクル
-	particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	particletex->SetParticleBreak(true);
 	particletex->Update(m_Position, m_ParticleCount, 1, 2);
 }
@@ -152,25 +147,6 @@ bool InterBoss::BulletCollision() {
 
 	return true;
 }
-//敵がダメージ食らう(必殺技)
-bool InterBoss::SpecialCollide() {
-	bool l_SpecialAlive = playereffect->GetSpecialAlive();
-	XMFLOAT3 l_SpecialPos = playereffect->GetSpecialPosition();
-	float l_SpecialRadius = playereffect->GetSpecialRadius();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_SpecialRadius, l_SpecialPos.x, l_SpecialPos.y, l_SpecialRadius)
-		&& (m_HP > 0) && (l_SpecialAlive) && (!m_SpecialHit)) {
-		m_HP -= 5;
-		m_EffectArgment = true;
-		m_SpecialHit = true;
-		m_Effect = true;
-		return true;
-	}
-	else {
-		return false;
-	}
-
-	return true;
-}
 //エフェクトの生成
 void InterBoss::ArgEffect() {
 	if (m_EffectArgment) {
@@ -198,14 +174,13 @@ void InterBoss::AppDraw(DirectXCommon* dxCommon) {
 //ボス登場シーン更新
 void InterBoss::EndUpdate() {
 	End();
+
 }
 //ボス登場シーン描画
 void InterBoss::EndDraw(DirectXCommon* dxCommon) {
 	//ボスの描画
 	IKEObject3d::PreDraw();
-	if (m_Alive) {
-		Fbx_Draw(dxCommon);
-	}
+	Fbx_Draw(dxCommon);
 	//ボスごとのオブジェクトの描画
 	specialDrawEnd();
 }

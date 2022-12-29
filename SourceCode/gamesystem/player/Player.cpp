@@ -86,10 +86,6 @@ void Player::Update()
 			else if (m_AttackType == Shot) {
 				PlayerShot();
 			}
-			//必殺技
-			else if (m_AttackType == Special) {
-				PlayerSpecial();
-			}
 			//HP回復
 			PlayerHeal();
 			//ダメージ
@@ -218,12 +214,12 @@ void Player::PlayerMove() {
 	if (m_AddPower == 0.0f) {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
 			//動きやジャンプ
-			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (m_Alive)) {
 				MoveCommon(0.3f, Right, 90.0f);
 
 			}
 
-			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (m_Alive)) {
 				MoveCommon(-0.3f, Left, 270.0f);
 
 			}
@@ -239,12 +235,12 @@ void Player::PlayerMove() {
 	else {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal)) {
 			//動きやジャンプ
-			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (m_Alive)) {
 				MoveCommon(0.3f, Right, 90.0f);
 
 			}
 
-			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (!m_Special) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (m_Alive)) {
 				MoveCommon(-0.3f, Left, 270.0f);
 
 			}
@@ -267,7 +263,7 @@ void Player::WalkAnimation() {
 	Input* input = Input::GetInstance();
 	//歩きモーション
 	if (input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left) && (m_HealType == NoHeal) && (m_AddPower == 0.0f)) {
-		if ((m_AnimeTimer < 3) && (m_JumpCount == 0) && (!m_AnimationStop) && (!m_Special)) {
+		if ((m_AnimeTimer < 3) && (m_JumpCount == 0) && (!m_AnimationStop)) {
 			m_AnimeTimer++;
 		}
 		if (m_AnimeTimer == 1) {
@@ -310,7 +306,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
-	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f) && (!m_Special)
+	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
 		&& (m_HealType == NoHeal) && (m_Alive)) {
 		m_JumpCount++;
 		m_Jump = true;
@@ -350,12 +346,10 @@ void Player::PlayerJump() {
 }
 //プレイヤーの落下
 void Player::PlayerFall() {
-
-	m_WingPosition.y = m_Position.y;
 	if (m_Jump) {
 		//ジャンプ処理
 	//ダッシュ中のときは重力がない
-		if (!m_Dush && !m_Special) {
+		if (!m_Dush) {
 			m_AddPower -= m_Gravity;
 			m_Position.y += m_AddPower;
 			m_WingPosition.y += m_AddPower;
@@ -370,18 +364,6 @@ void Player::PlayerFall() {
 			m_Jump = false;
 			m_AddPower = 0.0f;
 		}
-
-		//if (m_JumpCount != 0) {
-		//	m_WingDeleteCount++;
-		//}
-
-		//if (m_WingDeleteCount == 15) {
-		//	playerwing->SetEaseStart(true);
-		//	playerwing->SetFrame(0.0f);
-		//	playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });
-		//	m_WingDeleteCount = 0;
-		//}
-		//if(m_JumpCount)
 	}
 	else {
 		m_Jump = true;
@@ -472,7 +454,7 @@ void Player::PlayerAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (!m_Special) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
+	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
@@ -532,55 +514,11 @@ void Player::PlayerShot() {
 		playerbullet->SetAlive(false);
 	}
 }
-//必殺技
-void Player::PlayerSpecial() {
-	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->Button_A) && (m_AddPower == 0.0f) && (!m_Special) && (m_SoulCount >= 25.0f)) {
-		m_SoulCount -= 25.0f;
-		m_Special = true;
-		m_Frame = 0.0f;
-		m_AfterPosY = m_Position.y + 8.0f;
-		m_SpecialCount = 0;
-	}
-
-	//必殺技
-	if (m_Special) {
-		if (m_SpecialCount == 0) {
-			if (m_Frame < 1.0f) {
-				m_Frame += 0.025f;
-			}
-			else {
-				m_SpecialCount = 1;
-				m_AfterPosY = m_Position.y - 8.0f;
-				m_Frame = 0.0f;
-				m_Rotation.z = 0.0f;
-			}
-			m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 10.0f);
-			m_Rotation.z = Ease(In, Quad, m_Frame, m_Rotation.z, 360.0f);
-		}
-		else {
-			if (m_Frame < 1.0f) {
-				m_Frame += 0.2f;
-			}
-			else {
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Decision.wav", VolumManager::GetInstance()->GetSEVolum());
-				m_SpecialCount = 0;
-				m_Frame = 0.0f;
-				m_Special = false;
-				m_SpecialEffect = true;
-				m_ParticleCount = 3;
-				particletex->SetParticleBreak(false);
-			}
-			m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 0.0f);
-		}
-		m_Position.y = Ease(In, Quad, m_Frame, m_Position.y, m_AfterPosY);
-	}
-}
 //プレイヤーのHP回復
 void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
-	if (input->PushButton(input->Button_Y) && (s_UseHeal) && (m_HP <= 4) && (!m_Special)
+	if (input->PushButton(input->Button_Y) && (s_UseHeal) && (m_HP <= 4)
 		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())) {
 		m_HealType = InterVal;
 	}
@@ -1021,6 +959,10 @@ void Player::BossAppDraw(DirectXCommon* dxCommon) {
 }
 //ボス終了シーンの更新
 void Player::BossEndUpdate(int Timer) {
+	m_AnimeLoop = true;
+	m_AnimeSpeed = 1;
+	m_Number = 3;
+	m_fbxObject->PlayAnimation(m_Number);
 	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);

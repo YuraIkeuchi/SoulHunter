@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\DepthBlurPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\DepthBlurVS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\GaussianVS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>
@@ -51,27 +45,6 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointLightPS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointLightVS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SingleColorPS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SingleColorVS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ToonPS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ToonVS.hlsl">
-      <Filter>SourceCords\shader\3d</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\MosaicPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
@@ -282,9 +255,6 @@
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp">
       <Filter>SourceCords\gamesystem\save</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\playerhelp\PlayerHelp.cpp">
-      <Filter>SourceCords\gamesystem\playerhelp</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\player\Player.cpp">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
@@ -405,9 +375,6 @@
     <ClCompile Include="SourceCode\gamesystem\effect\MarkEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
@@ -417,7 +384,7 @@
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp">
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossStagObj.cpp">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp">
@@ -428,9 +395,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossEndObj.cpp">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,9 +614,6 @@
     <ClInclude Include="SourceCode\gamesystem\save\Save.h">
       <Filter>SourceCords\gamesystem\save</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\playerhelp\PlayerHelp.h">
-      <Filter>SourceCords\gamesystem\playerhelp</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\player\Player.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
@@ -782,9 +743,6 @@
     <ClInclude Include="SourceCode\gamesystem\effect\MarkEffect.h">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
@@ -794,7 +752,7 @@
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h">
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossStagObj.h">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h">
@@ -806,14 +764,8 @@
     <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossEndObj.h">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\DepthBlur.hlsli">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </None>
     <None Include="Resources\Shaders\Gaussian.hlsli">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </None>
@@ -833,15 +785,6 @@
       <Filter>SourceCords\shader\3d</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>SourceCords\shader\3d</Filter>
-    </None>
-    <None Include="Resources\Shaders\PointLight.hlsli">
-      <Filter>SourceCords\shader\3d</Filter>
-    </None>
-    <None Include="Resources\Shaders\SingleColor.hlsli">
-      <Filter>SourceCords\shader\3d</Filter>
-    </None>
-    <None Include="Resources\Shaders\Toon.hlsli">
       <Filter>SourceCords\shader\3d</Filter>
     </None>
   </ItemGroup>
@@ -944,9 +887,6 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\player">
       <UniqueIdentifier>{36dc49c4-871c-4674-94ac-5a69629d70a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\playerhelp">
-      <UniqueIdentifier>{3c5d3d23-ea84-4a90-b10d-6c338fe14260}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\save">
       <UniqueIdentifier>{87886716-c993-40a0-85d5-8b6185914c02}</UniqueIdentifier>

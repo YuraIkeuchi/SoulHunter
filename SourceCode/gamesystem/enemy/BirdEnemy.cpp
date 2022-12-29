@@ -67,7 +67,6 @@ void BirdEnemy::Action() {
 	if (m_Alive && UpdateCollide()) {
 		//“–‚½‚è”»’èŒi
 		PlayerCollide();
-		SpecialCollide();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		Fbx_SetParam();
 	}

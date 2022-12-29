@@ -394,8 +394,10 @@ public:
 	int m_AppTimer = 0;
 	int m_BossNumber = 0;
 	enum BossNumber {
+		NoBoss,
 		BossApp,
 		BossBattle,
+		BossEnd
 	};
 
 	bool m_SceneChange = false;

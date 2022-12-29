@@ -101,16 +101,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli" />
-    <None Include="Resources\Shaders\DepthBlur.hlsli" />
     <None Include="Resources\Shaders\FBX.hlsli" />
     <None Include="Resources\Shaders\Gaussian.hlsli" />
     <None Include="Resources\Shaders\OBJShaderHeaderhlsli.hlsli" />
     <None Include="Resources\Shaders\Particle.hlsli" />
-    <None Include="Resources\Shaders\PointLight.hlsli" />
     <None Include="Resources\Shaders\PostEffectTest.hlsli" />
-    <None Include="Resources\Shaders\SingleColor.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
-    <None Include="Resources\Shaders\Toon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -120,18 +116,6 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\BasicVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\DepthBlurPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\DepthBlurVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -159,12 +143,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\MosaicPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\OBJPixelShader.hlsl">
@@ -197,18 +175,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointLightPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointLightVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectTestPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -227,18 +193,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\SingleColorPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SingleColorVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -246,18 +200,6 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ToonPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ToonVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -338,8 +280,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BoundEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossEndObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossStagObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
@@ -351,12 +292,10 @@
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ThornParticle.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\playerhelp\PlayerHelp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSkill.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp" />
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp" />
@@ -465,8 +404,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornObj.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BoundEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
-    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h" />
-    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossEndObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossStagObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
@@ -478,12 +416,10 @@
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ThornParticle.h" />
-    <ClInclude Include="SourceCode\gamesystem\playerhelp\PlayerHelp.h" />
     <ClInclude Include="SourceCode\gamesystem\player\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h" />
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h" />
     <ClInclude Include="SourceCode\gamesystem\save\Save.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h" />

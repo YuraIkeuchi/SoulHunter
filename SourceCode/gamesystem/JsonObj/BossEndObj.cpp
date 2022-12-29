@@ -68,15 +68,15 @@ void BossEndObj::Initialize() {
 void BossEndObj::Update() {
 	//pos = player->GetPosition();
 	//ボス登場フラグが立ったらタイマーが動く
-	if (m_AppStart && !m_EndApp) {
+	if (m_EndStart && !m_EndEnd) {
 		//登場の間はtrue
-		m_App = true;
-		m_AppTimer++;
+		m_End = true;
+		m_EndTimer++;
 		//一定フレームでフラグ終了
-		if (m_AppTimer == 800) {
-			//m_App = false;
-			m_AppStart = false;
-			m_EndApp = true;
+		if (m_EndTimer == 800) {
+			//m_End = false;
+			m_EndStart = false;
+			m_EndEnd = true;
 		}
 	}
 
@@ -91,11 +91,11 @@ const void BossEndObj::FrontDraw() {
 }
 //背景描画
 const void BossEndObj::BackDraw() {
-	/*ImGui::Begin("BossApp");
-	ImGui::Text("m_App:%d", m_App);
-	ImGui::Text("m_AppTimer:%d", m_AppTimer);
-	ImGui::Text("m_End:%d", m_EndApp);
-	ImGui::Text("m_AppStart:%d", m_AppStart);
+	/*ImGui::Begin("BossEnd");
+	ImGui::Text("m_End:%d", m_End);
+	ImGui::Text("m_EndTimer:%d", m_EndTimer);
+	ImGui::Text("m_End:%d", m_EndEnd);
+	ImGui::Text("m_EndStart:%d", m_EndStart);
 	ImGui::End();*/
 	//Json用
 	for (auto& object : objects) {

@@ -33,10 +33,8 @@ void ThornEnemy::Action() {
 	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	RotMove();
 	if (m_Alive && UpdateCollide()) {
-		
 		ThornCollision();
-		PlayerCollide();
-		
+		PlayerCollide();	
 		Obj_SetParam();
 	}
 }

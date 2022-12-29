@@ -90,7 +90,6 @@ void Enemy::Action() {
 	if (m_Alive && UpdateCollide()) {
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		//当たり判定
-		SpecialCollide();
 		PlayerCollide();
 		Fbx_SetParam();
 	}
@@ -121,7 +120,6 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 			enemyeffect->Draw();
 		}
 	}
-	IKETexture::PreDraw(1);
 	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない

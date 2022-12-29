@@ -67,8 +67,6 @@ public:
 	void PlayerDush();
 	//弾を撃つ
 	void PlayerShot();
-	//必殺技
-	void PlayerSpecial();
 	//HP回復
 	void PlayerHeal();
 	//ダメージ
@@ -140,14 +138,12 @@ public:
 	int GetAttackTimer() { return  m_AttackTimer; }
 	bool GetDush() { return  m_Dush; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
-	bool GetSpecialEffect() { return  m_SpecialEffect; }
 	bool GetReadText() { return  m_ReadText; }
 
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
 	void SetEffect(bool effect) { this->m_Effect = effect; }
-	void SetSpecialEffect(bool SpecialEffect) { this->m_SpecialEffect = SpecialEffect; }
 	void SetUseDush(bool UseDush) { this->s_UseDush = UseDush; }
 	void SetUseLibra(bool UseLibra) { this->s_UseLibra = UseLibra; }
 	void SetUseCompass(bool UseCompass) { this->s_UseCompass = UseCompass; }
@@ -264,11 +260,7 @@ private:
 	int m_AnimeSpeed = 1;
 	bool m_AnimationStop = false;
 	//必殺技
-	bool m_Special = false;
 	float m_Frame = 0.0f;
-	float m_AfterPosY = 0.0f;
-	int m_SpecialCount = 0;
-	bool m_SpecialEffect = false;
 	//必殺技時のカメラの距離
 	float m_CameraDistance = 0.0f;
 	//パーティクルのための変数
@@ -279,7 +271,6 @@ private:
 	enum AttackType {
 		Sword,
 		Shot,
-		Special
 	};
 	//ムービー中の動き
 	bool m_Movie = false;

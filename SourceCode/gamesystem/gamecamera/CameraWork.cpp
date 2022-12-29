@@ -7,7 +7,6 @@ CameraWork::CameraWork() {
 }
 //更新
 void CameraWork::Update(DebugCamera* camera) {
-	
 	//カメラがどの動きをするか
 	if (m_CameraType == Title) {
 		TitleCamera();
@@ -18,8 +17,11 @@ void CameraWork::Update(DebugCamera* camera) {
 	else if (m_CameraType == Normal) {
 		NormalCamera();
 	}
-	else {
+	else if(m_CameraType == BossApp) {
 		AppCamera();
+	}
+	else {
+		EndCamera();
 	}
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
@@ -133,146 +135,89 @@ void CameraWork::NormalCamera() {
 }
 //ボス登場時のカメラ
 void CameraWork::AppCamera() {
-	if (m_Timer <= 710) {
-		m_Timer++;
+	if (m_AppTimer <= 710) {
+		m_AppTimer++;
 	}
 	//カメラを移動する
-	if (m_AppCameraNumber == No) {
-		if (m_Timer == 1) {
+	if (m_AppCameraNumber == AppNo) {
+		if (m_AppTimer == 1) {
 			m_eyePos = { 10.0f,20.0f,10.0f };
 			m_targetPos = { 0.0f,5.0f,0.0f };
 		}
 
-		if (m_Timer == 10) {
+		if (m_AppTimer == 10) {
 			m_Frame = 0.0f;
-			m_AppCameraNumber = Camera1;
+			m_AppCameraNumber = AppCamera1;
 		}
 	}
-	else if (m_AppCameraNumber == Camera1) {
+	else if (m_AppCameraNumber == AppCamera1) {
 		AppCameraMove({ -10.0f, 20.0f,10.0f },
 					{ 0.0f,5.0f,0.0f },0.0025f);
 
-		if (m_Timer == 200) {
+		if (m_AppTimer == 200) {
 			m_Frame = 0.0f;
-			m_AppCameraNumber = Camera2;
+			m_AppCameraNumber = AppCamera2;
 		}
 	}
 
-	else if (m_AppCameraNumber == Camera2) {
+	else if (m_AppCameraNumber == AppCamera2) {
 		AppCameraMove({ 0.0f, 10.0f,-20.0f },
 			{ 0.0f,18.0f,0.0f }, 0.0025f);
 
-		if (m_Timer == 700) {
+		if (m_AppTimer == 700) {
 			m_Frame = 0.0f;
-			m_AppCameraNumber = Camera3;
+			m_AppCameraNumber = AppCamera3;
 		}
 	}
-	else if (m_AppCameraNumber == Camera3) {
+	else if (m_AppCameraNumber == AppCamera3) {
 		AppCameraMove({ 0.0f, 22.0f,0.0f },
 			{ 0.0f,27.0f,20.0f }, 0.008f);
 	}
+}
+//ボス終了時のカメラ(回転するような動き)
+void CameraWork::EndCamera() {
+	if (m_EndTimer <= 800) {
+		m_EndTimer++;
+	}
 
-	//XMFLOAT3 m_PlayerPos = player->GetPosition();
-	//XMFLOAT3 bossPos = interboss->GetPosition();
-	////フレームでカメラの目標を変更する
-	//m_Timer++;
-	//if (m_Timer == 10) {
-	//	m_Frame = 0.0f;
-	//	m_AppCameraNumber = Camera1;
-	//}
-	////最初のカメラ
-	//if (m_AppCameraNumber == No) {
-	//	//カメラの位置調整
-	//	if (m_PlayerPos.x >= 27.0f && m_PlayerPos.x <= 270.0f) {
-	//		m_eyePos.x = m_PlayerPos.x;
-	//		m_targetPos.x = m_PlayerPos.x;
-	//	}
-	//	else {
-	//		if (m_PlayerPos.x < 27.0f) {
-	//			m_eyePos.x = 27.0f;
-	//			m_targetPos.x = 27.0f;
-	//		}
-	//		else if (m_PlayerPos.x > 270.0f) {
-	//			m_eyePos.x = 270.0f;
-	//			m_targetPos.x = 270.0f;
-	//		}
-	//	}
-	//	if (m_PlayerPos.y >= -280.0f && m_PlayerPos.y <= -13.5f) {
-	//		m_targetPos.y = m_PlayerPos.y;
-	//		m_eyePos.y = m_PlayerPos.y;
-	//	}
-	//	else {
-	//		/*	if (m_PlayerPos.y < -280.0f) {
-	//				m_targetPos.y = -280.0f;
-	//				m_eyePos.y = -280.0f;
-	//			}
-	//			else if (m_PlayerPos.y > -13.5f) {
-	//				m_targetPos.y = -13.5f;
-	//				m_eyePos.y = -13.5f;
-	//			}*/
-	//	}
-	//	m_eyePos.z = m_PlayerPos.z - (30.0f - player->GetCameraDistance());
-	//	m_targetPos.z = m_PlayerPos.z;
-	//}
-	////まず左上
-	//else if (m_AppCameraNumber == Camera1) {
-	//	AppCameraMove({ 158.0f, -100.0f,player->GetPosition().z - 30.0f },
-	//		{ 158.0f, -100.0f,player->GetPosition().z },0.008f);
-	//}
-	////まず右上
-	//else if (m_AppCameraNumber == Camera2) {
-	//	AppCameraMove({ 240.0f, -100.0f,m_PlayerPos.z - 30.0f },
-	//		{ 240.0f, -100.0f,m_PlayerPos.z }, 0.008f);
-	//}
-	////まず右下
-	//else if (m_AppCameraNumber == Camera3) {
-	//	AppCameraMove({ 240.0f, -152.0f,m_PlayerPos.z - 30.0f },
-	//		{ 240.0f, -152.0f,m_PlayerPos.z }, 0.008f);
-	//}
-	////真ん中による
-	//else if (m_AppCameraNumber == Camera4) {
-	//	AppCameraMove({ bossPos.x,  bossPos.y,0.0f },
-	//		{ bossPos.x,  bossPos.y,30.0f }, 0.008f);
-	//}
-	////真ん中引き
-	//else if (m_AppCameraNumber == Camera5) {
-	//	AppCameraMove({bossPos.x, bossPos.y, m_PlayerPos.z - 30.0f },
-	//		{ bossPos.x,  bossPos.y,m_PlayerPos.z }, 0.008f);
-	//}
-	////ボスを見る
-	//else if (m_AppCameraNumber == Camera6) {
-	//	AppCameraMove({ m_PlayerPos.x,m_PlayerPos.y,m_PlayerPos.z - 30.0f },
-	//		{ m_PlayerPos.x,m_PlayerPos.y,m_PlayerPos.z }, 0.008f);
-	//}
-	////カメラが戻る
-	//else {
-	//	m_Frame = 0.0f;
-	//	m_AppCameraNumber = No;
-	//	m_EndApp = true;
-	//}
-	//m_TitleCameraScale = 30.0f;
-	//m_TitleCameraSpeed += 0.1f;
-	////円運動の計算
-	//m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
-	//m_TitleCameraCircleX = cosf(m_TitleCameraRadius) * m_TitleCameraScale;
-	//m_TitleCameraCircleZ = sinf(m_TitleCameraRadius) * m_TitleCameraScale;
-	//m_eyePos.x = m_TitleCameraCircleX;
-	//m_eyePos.z = m_TitleCameraCircleZ;
-	//m_eyePos.y = 20.0f;
-	//m_targetPos = { 0.0f,10.0f,0.0f };
+	if (m_EndCameraNumber == EndNo) {
+		if (m_EndTimer == 1) {
+			m_EndCameraSpeed = 300.0f;
+			m_EndCameraScale = 25.0f;
+			m_AfterEndCameraSpeed = 635.0f;
+			m_AfterEndCameraScale = m_EndCameraScale;
+			m_Frame = 0.0f;
+			m_EndCameraNumber = EndCamera1;
+		}
+	}
+	else if (m_EndCameraNumber == EndCamera1) {
+		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.001f);
+		if (m_EndTimer == 520) {
+			m_AfterEndCameraSpeed = m_EndCameraSpeed;
+			m_AfterEndCameraScale = 80.0f;
+			m_Frame = 0.0f;
+			m_EndCameraNumber = EndCamera2;
+		}
+	}
+	else if (m_EndCameraNumber == EndCamera2) {
+		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.005f);
+	}
+	//円運動の計算
+	m_EndCameraRadius = m_EndCameraSpeed * m_PI / 180.0f;
+	m_EndCameraCircleX = cosf(m_EndCameraRadius) * m_EndCameraScale;
+	m_EndCameraCircleZ = sinf(m_EndCameraRadius) * m_EndCameraScale;
+	m_eyePos.x = m_EndCameraCircleX;
+	m_eyePos.z = m_EndCameraCircleZ + 20.0f;
+	m_eyePos.y = 10.0f;
+	m_targetPos = {0.0f,8.0f,20.0f};
 }
 //ImGuiの描画
 void CameraWork::ImGuiDraw() {
-	//ImGui::Begin("CameraWork");
-	//ImGui::SliderFloat("eyeX", &m_eyePos.x, 360, 0);
-	//ImGui::SliderFloat("eyeY", &m_eyePos.y, 360, 0);
-	//ImGui::SliderFloat("eyeZ", &m_eyePos.z, 360, 0);
-	//ImGui::SliderFloat("targetX", &m_targetPos.x, 360, 0);
-	//ImGui::SliderFloat("targetY", &m_targetPos.y, 360, 0);
-	//ImGui::SliderFloat("targetZ", &m_targetPos.z, 360, 0);
-	//ImGui::Text("Timer:%d", m_Timer);
-	//ImGui::Text("m_AppCameraNumber:%d", m_AppCameraNumber);
-	//ImGui::End();
+	ImGui::Begin("CameraWork");
+	ImGui::SliderFloat("EndSpeed", &m_EndCameraSpeed, 720, 0);
+	ImGui::SliderFloat("EndScale", &m_EndCameraScale, 360, 0);
+	ImGui::Text("EndTimer:%d", m_EndTimer);
+	ImGui::End();
 }
 //右のスティック
 void CameraWork::RightStickCamera() {
@@ -323,8 +268,6 @@ void CameraWork::AppCameraMove(XMFLOAT3 AfterEye, XMFLOAT3 AfterTarget, float Ad
 		m_Frame += AddFrame;
 	}
 	else {
-		m_AfterEye = AfterEye;
-		m_AfterTarget = AfterTarget;
 		m_Frame = 1.0f;
 	}
 
@@ -339,4 +282,19 @@ Ease(In,Cubic,m_Frame,m_targetPos.x,AfterTarget.x),
 Ease(In,Cubic,m_Frame,m_targetPos.y,AfterTarget.y),
 	Ease(In,Cubic,m_Frame,m_targetPos.z,AfterTarget.z)
 	};
+}
+//ボス終了シーンのカメラの動き
+void CameraWork::EndCameraMove(float AfterSpeed, float AfterScale, float AddFrame) {
+	if (m_Frame < 1.0f)
+	{
+		m_Frame += AddFrame;
+	}
+	else {
+		m_AfterEndCameraSpeed = AfterSpeed;
+		m_AfterEndCameraScale = AfterScale;
+		m_Frame = 1.0f;
+	}
+
+	m_EndCameraSpeed = Ease(In, Cubic, m_Frame, m_EndCameraSpeed, m_AfterEndCameraSpeed);
+	m_EndCameraScale = Ease(In, Cubic, m_Frame, m_EndCameraScale, m_AfterEndCameraScale);
 }

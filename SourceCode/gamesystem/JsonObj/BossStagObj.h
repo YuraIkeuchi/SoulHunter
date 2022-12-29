@@ -9,7 +9,7 @@
 struct JsonData;
 
 using namespace std;         //  名前空間指定
-class BossAppObj {
+class BossStagObj {
 public:
 protected:
 	// DirectX::を省略
@@ -20,7 +20,8 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void Initialize();
-	void Update();
+	void AppUpdate();
+	void EndUpdate();
 	void Finalize();
 	const void BackDraw();
 	const void FrontDraw();
@@ -28,8 +29,9 @@ public:
 public:
 	//gettersetter
 	bool GetApp() { return  m_App; }
-	//gettersetter
+
 	int GetAppTimer() { return  m_AppTimer; }
+	int GetEndTimer() { return  m_EndTimer; }
 
 	void SetApp(bool m_App) { this->m_App = m_App; }
 	void SetEndApp(bool m_EndApp) { this->m_EndApp = m_EndApp; }
@@ -46,10 +48,13 @@ private:
 	//スプライト
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
+	unique_ptr<ParticleTex> particletex = nullptr;
 	//その他変数
 	bool m_AppStart = false;//登場スタート
 	int m_AppTimer = 0;//時間
+	int m_EndTimer = 0;//時間
 	bool m_EndApp = false;//登場終了
 	bool m_App = false;//登場の間はtrue
+	int m_ParticleCount = 0;//パーティクルの生成までのフレーム
 	
 };

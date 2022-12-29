@@ -55,23 +55,6 @@ bool InterEnemy::Collision() {
 
 	return true;
 }
-//敵がダメージ食らう(必殺技)
-bool InterEnemy::SpecialCollide() {
-	bool l_SpecialAlive = playereffect->GetSpecialAlive();
-	XMFLOAT3 l_SpecialPos = playereffect->GetSpecialPosition();
-	float l_SpecialRadius = playereffect->GetSpecialRadius();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_SpecialRadius, l_SpecialPos.x, l_SpecialPos.y, l_SpecialRadius)
-		&& (m_HP > 0) && (l_SpecialAlive)) {
-		m_HP = 0;
-		m_EffectArgment = true;
-		return true;
-	}
-	else {
-		return false;
-	}
-
-	return true;
-}
 //プレイヤーがダメージ食らう
 bool InterEnemy::PlayerCollide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();

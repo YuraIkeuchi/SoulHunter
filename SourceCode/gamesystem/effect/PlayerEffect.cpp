@@ -27,12 +27,6 @@ void PlayerEffect::Initialize() {
 		m_DamageAlive[i] = false;
 	}
 
-	IKETexture* SpecialEffecttexture_ = IKETexture::Create(ImageManager::SpecialEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
-	SpecialEffecttexture_->TextureCreate();
-	SpecialEffecttexture_->SetScale(m_SpecialEffectscale);
-	SpecialEffecttexture.reset(SpecialEffecttexture_);
-
-
 	IKETexture* HitEffectTexture_;
 	HitEffectTexture_ = IKETexture::Create(ImageManager::HitEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	HitEffectTexture_->TextureCreate();
@@ -75,20 +69,6 @@ void PlayerEffect::Update() {
 		damagetex[i]->SetScale(m_DamageEffectscale[i]);
 	}
 
-	//必殺技
-	SpecialEffectSet();
-	if (m_SpecialAlive) {
-		m_SpecialEffectscale.x += 0.2f;
-		m_SpecialEffectscale.y += 0.2f;
-		m_SpecialEffectscale.z += 0.2f;
-		m_SpecialRadius += 0.5f;
-		if (m_SpecialEffectscale.x >= 10.0f) {
-			m_SpecialAlive = false;
-			player->SetSpecialEffect(false);
-			m_SpecialEffectscale = { 0.0f,0.0f,0.0f };
-			m_SpecialRadius = 0.0f;
-		}
-	}
 	//ヒットエフェクト
 	SetHitEffect();
 	if (m_HitEffect) {
@@ -97,21 +77,12 @@ void PlayerEffect::Update() {
 	HitEffectTexture->SetPosition(m_HitPos);
 	HitEffectTexture->SetScale(m_HitScale);
 	HitEffectTexture->SetColor(m_HitColor);
-	if (m_SpecialAlive) {
-		SpecialEffecttexture->Update();
-	}
-	SpecialEffecttexture->SetPosition(m_SpecialEffectpos);
-	SpecialEffecttexture->SetScale(m_SpecialEffectscale);
 }
 //描画
 const void PlayerEffect::Draw() {
 	IKETexture::PreDraw(1);
 	if (m_DushAlive) {
 		DushEffecttexture->Draw();
-	}
-
-	if (m_SpecialAlive) {
-		SpecialEffecttexture->Draw();
 	}
 
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
@@ -138,19 +109,7 @@ void PlayerEffect::DushEffectSet() {
 		DushEffecttexture->SetPosition(m_DushEffectpos);
 	}
 }
-//必殺技のエフェクト
-void PlayerEffect::SpecialEffectSet() {
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	bool l_Special = player->GetSpecialEffect();
 
-	if (!m_SpecialAlive && l_Special) {
-		this->m_SpecialEffectpos.x = m_PlayerPos.x;
-		this->m_SpecialEffectpos.y = m_PlayerPos.y;
-		this->m_SpecialEffectpos.z = m_PlayerPos.z - 10.0f;
-		m_SpecialAlive = true;
-		SpecialEffecttexture->SetPosition(m_SpecialEffectpos);
-	}
-}
 //ダメージ食らった時のエフェクト
 void PlayerEffect::DamageEffectSet() {
 	//エフェクトの発生

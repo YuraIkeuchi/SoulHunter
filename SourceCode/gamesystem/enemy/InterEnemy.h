@@ -190,8 +190,6 @@ public:
 
 	bool BulletCollision();//弾との当たり判定
 
-	bool SpecialCollide();//必殺技との当たり判定
-
 	bool PlayerCollide();//プレイヤーがダメージを食らう当たり判定
 
 	void DamageAct();//ダメージを受けた時の動き
