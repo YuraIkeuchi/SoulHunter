@@ -129,7 +129,7 @@ void FirstStage::NormalUpdate() {
 	//ûôÇÃìG
 	EnemyUpdate(m_ThornEnemys);
 	//âHÇÃìG
-	EnemyUpdate(m_WingEnemys);
+	EnemyUpdate(m_BoundEnemys);
 	//íπÇÃìG
 	EnemyUpdate(m_BirdEnemys);
 	//ûôÇÃOBJ
@@ -157,8 +157,8 @@ void FirstStage::NormalUpdate() {
 		}
 	}
 	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_WingEnemyCount; j++) {
-			wingplayersoul[i][j]->Update(m_WingEnemys[j]);
+		for (int j = 0; j < m_BoundEnemyCount; j++) {
+			wingplayersoul[i][j]->Update(m_BoundEnemys[j]);
 		}
 	}
 
@@ -313,7 +313,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	//ìGÇÃï`âÊ
 	EnemyDraw(m_Enemys, dxCommon);
 	EnemyDraw(m_ThornEnemys, dxCommon);
-	EnemyDraw(m_WingEnemys, dxCommon);
+	EnemyDraw(m_BoundEnemys, dxCommon);
 	EnemyDraw(m_BirdEnemys, dxCommon);
 	//ûôÇÃOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
@@ -341,7 +341,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	}
 
 	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_WingEnemyCount; j++) {
+		for (int j = 0; j < m_BoundEnemyCount; j++) {
 			wingplayersoul[i][j]->Draw();
 		}
 	}
@@ -423,19 +423,19 @@ void FirstStage::AllDelete() {
 	//óvëfëSçÌèú
 	EnemyFinalize(m_Enemys);
 	EnemyFinalize(m_ThornEnemys);
-	EnemyFinalize(m_WingEnemys);
+	EnemyFinalize(m_BoundEnemys);
 	EnemyFinalize(m_BirdEnemys);
 	player->Finalize();
 	m_Enemys.clear();
 	m_ThornEnemys.clear();
-	m_WingEnemys.clear();
+	m_BoundEnemys.clear();
 	m_BirdEnemys.clear();
 	m_ThornObjs.clear();
 	m_BackRocks.clear();
 	m_BackBoxs.clear();
 	m_NormalEnemyCount = 0;
 	m_ThornObjCount = 0;
-	m_WingEnemyCount = 0;
+	m_BoundEnemyCount = 0;
 	m_EnemyCount = 0;
 	m_BackObjCount = 0;
 }
@@ -505,11 +505,11 @@ void FirstStage::LightSet() {
 		}
 	}
 
-	for (InterEnemy* enemy : m_WingEnemys) {
-		for (int i = 0; i < m_WingEnemy_Num; i++) {
+	for (InterEnemy* enemy : m_BoundEnemys) {
+		for (int i = 0; i < m_BoundEnemy_Num; i++) {
 			if (enemy != nullptr) {
 				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3({ m_WingEnemys[i]->GetPosition().x,  m_WingEnemys[i]->GetPosition().y,  m_WingEnemys[i]->GetPosition().z }));
+				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3({ m_BoundEnemys[i]->GetPosition().x,  m_BoundEnemys[i]->GetPosition().y,  m_BoundEnemys[i]->GetPosition().z }));
 				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3(circleShadowAtten));
 				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
 			}
@@ -519,19 +519,19 @@ void FirstStage::LightSet() {
 	for (InterEnemy* enemy : m_BirdEnemys) {
 		for (int i = 0; i < m_BirdEnemy_Num; i++) {
 			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT3({ m_BirdEnemys[i]->GetPosition().x, m_BirdEnemys[i]->GetPosition().y,  m_BirdEnemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
+				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3({ m_BirdEnemys[i]->GetPosition().x, m_BirdEnemys[i]->GetPosition().y,  m_BirdEnemys[i]->GetPosition().z }));
+				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3(circleShadowAtten));
+				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
 			}
 		}
 	}
 
 	if (StageNumber == BossMap) {
-		lightGroup->SetCircleShadowDir((m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num + m_BirdEnemy_Num) + 1, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightGroup->SetCircleShadowCasterPos((m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num + m_BirdEnemy_Num) + 1, XMFLOAT3({ firstboss->GetPosition().x, firstboss->GetPosition().y, firstboss->GetPosition().z }));
-		lightGroup->SetCircleShadowAtten((m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num + m_BirdEnemy_Num) + 1,XMFLOAT3(circleShadowAtten));
-		lightGroup->SetCircleShadowFactorAngle((m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num + m_BirdEnemy_Num) + 1,XMFLOAT2(circleShadowFactorAngle));
+		lightGroup->SetCircleShadowDir((m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num + m_BirdEnemy_Num) + 1, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+		lightGroup->SetCircleShadowCasterPos((m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num + m_BirdEnemy_Num) + 1, XMFLOAT3({ firstboss->GetPosition().x, firstboss->GetPosition().y, firstboss->GetPosition().z }));
+		lightGroup->SetCircleShadowAtten((m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num + m_BirdEnemy_Num) + 1,XMFLOAT3(circleShadowAtten));
+		lightGroup->SetCircleShadowFactorAngle((m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num + m_BirdEnemy_Num) + 1,XMFLOAT2(circleShadowFactorAngle));
 	}
 }
 //É{ÉXïîâÆÇÃèàóù

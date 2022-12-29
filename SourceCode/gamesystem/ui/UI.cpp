@@ -73,13 +73,7 @@ void UI::Update(InterBoss* boss) {
 	m_HP = player->GetHP();
 	//ç∞
 	m_Soul = player->GetSoulCount();
-	m_AfterSoulSize = {(float)(m_Soul * 9.6f),64.0f };
-	/*m_SoulSize = {
-	Ease(In,Quad,0.5f,(float)SoulSprite->GetSize().x,(float)m_AfterSoulSize.x),
-	Ease(In,Quint,0.5f,(float)SoulSprite->GetSize().y,(float)m_AfterSoulSize.y),
-	};*/
 
-	//SoulSprite->SetSize(m_SoulSize);
 	//É{ÉXÇÃHP
 	for (int i = 0; i < SoulSprite.size(); i++) {
 		const int SoulCount = 72;

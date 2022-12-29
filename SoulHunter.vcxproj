@@ -328,7 +328,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\ChestEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\EnemyEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\effect\JumpEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\MarkEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
@@ -336,7 +336,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornObj.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\enemy\WingEnemy.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\enemy\BoundEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp" />
@@ -454,7 +454,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\ChestEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\EnemyEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h" />
-    <ClInclude Include="SourceCode\gamesystem\effect\JumpEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\MarkEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
@@ -462,7 +462,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornObj.h" />
-    <ClInclude Include="SourceCode\gamesystem\enemy\WingEnemy.h" />
+    <ClInclude Include="SourceCode\gamesystem\enemy\BoundEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h" />

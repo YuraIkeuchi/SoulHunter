@@ -26,7 +26,7 @@ private:
 	unique_ptr<InterBoss> interboss = nullptr;
 	array<unique_ptr<IKESprite>,HP_Max> PlayerHpSprite;//プレイヤーのHP
 	unique_ptr<IKESprite> BossHpSprite;//ボスのHP
-	array<unique_ptr<IKESprite>, 72> SoulSprite;//プレイヤーのスタミナ
+	array<unique_ptr<IKESprite>, 72> SoulSprite;//プレイヤーのMP
 	unique_ptr<IKESprite> SoulGageSprite;//プレイヤーのスタミナの枠
 	array<unique_ptr<IKESprite>, WingUI_Max> WingUiTex;
 	//変数
@@ -35,6 +35,7 @@ private:
 	float m_BossHP = 0.0f;
 	int m_JumpCount = 0;
 	float m_AddPower = 0.0f;
+	float m_DrawSoul = 0.0f;
 	XMFLOAT3 m_JumpUiPos = {0.0f,0.0f,0.0f};
 	//UIのサイズ
 	XMFLOAT2 m_HPSize = { 0.0f,0.0f };

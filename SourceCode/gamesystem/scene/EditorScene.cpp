@@ -229,7 +229,7 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	//ìGÇÃï`âÊ
 	EnemyDraw(m_Enemys, dxCommon);
 	EnemyDraw(m_ThornEnemys, dxCommon);
-	EnemyDraw(m_WingEnemys, dxCommon);
+	EnemyDraw(m_BoundEnemys, dxCommon);
 	EnemyDraw(m_BirdEnemys, dxCommon);
 
 	//ûôÇÃOBJ
@@ -335,7 +335,7 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 		if (ImGui::Button("EnemySave", ImVec2(90, 50))) {
 			m_EditorSave = true;
 			m_Enemy_Num = m_NormalEnemyCount;
-			m_WingEnemy_Num = m_WingEnemyCount;
+			m_BoundEnemy_Num = m_BoundEnemyCount;
 			m_BirdEnemy_Num = m_BirdEnemyCount;
 			m_ThornObj_Num = m_ThornObjCount;
 
@@ -415,12 +415,12 @@ void EditorScene::StageMapChange(int StageNumber) {
 void EditorScene::EnemyDelete() {
 	m_Enemys.clear();
 	m_ThornEnemys.clear();
-	m_WingEnemys.clear();
+	m_BoundEnemys.clear();
 	m_BirdEnemys.clear();
 	m_ThornObjs.clear();
 	m_NormalEnemyCount = 0;
 	m_ThornObjCount = 0;
-	m_WingEnemyCount = 0;
+	m_BoundEnemyCount = 0;
 	m_EnemyCount = 0;
 }
 //óvëfëSçÌèú(îwåiOBJ)
@@ -551,7 +551,7 @@ void EditorScene::AllUpdate() {
 	//ûôÇÃìG
 	EnemyUpdate(m_ThornEnemys);
 	//âHÇÃìG
-	EnemyUpdate(m_WingEnemys);
+	EnemyUpdate(m_BoundEnemys);
 	//íπÇÃìG
 	EnemyUpdate(m_BirdEnemys);
 	//ûôÇÃOBJ
@@ -659,11 +659,11 @@ void EditorScene::LightSet() {
 		}
 	}
 
-	for (InterEnemy* enemy : m_WingEnemys) {
-		for (int i = 0; i < m_WingEnemy_Num; i++) {
+	for (InterEnemy* enemy : m_BoundEnemys) {
+		for (int i = 0; i < m_BoundEnemy_Num; i++) {
 			if (enemy != nullptr) {
 				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3({ m_WingEnemys[i]->GetPosition().x,  m_WingEnemys[i]->GetPosition().y,  m_WingEnemys[i]->GetPosition().z }));
+				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3({ m_BoundEnemys[i]->GetPosition().x,  m_BoundEnemys[i]->GetPosition().y,  m_BoundEnemys[i]->GetPosition().z }));
 				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3(circleShadowAtten));
 				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
 			}
@@ -673,10 +673,10 @@ void EditorScene::LightSet() {
 	for (InterEnemy* enemy : m_BirdEnemys) {
 		for (int i = 0; i < m_BirdEnemy_Num; i++) {
 			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT3({ m_BirdEnemys[i]->GetPosition().x, m_BirdEnemys[i]->GetPosition().y,  m_BirdEnemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num + m_WingEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
+				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3({ m_BirdEnemys[i]->GetPosition().x, m_BirdEnemys[i]->GetPosition().y,  m_BirdEnemys[i]->GetPosition().z }));
+				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3(circleShadowAtten));
+				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
 			}
 		}
 	}
@@ -748,8 +748,8 @@ void EditorScene::EditorUpdate() {
 		}
 		//âHÇÃìG
 		else if (imguieditor->GetEnemyType() == Wing) {
-			enemyedit->WingEnemyArgment(m_WingEnemys, player, playerbullet, playereffect, block, hitstop);
-			m_WingEnemyCount++;
+			enemyedit->BoundEnemyArgment(m_BoundEnemys, player, playerbullet, playereffect, block, hitstop);
+			m_BoundEnemyCount++;
 		}
 		//íπÇÃìG
 		else {
@@ -802,9 +802,9 @@ void EditorScene::EditorUpdate() {
 			m_ThornEnemys.pop_back();
 		}
 		//âH
-		else if (imguieditor->GetEnemyType() == Wing && m_WingEnemys.size() > 0) {
-			m_WingEnemys.pop_back();
-			m_WingEnemyCount--;
+		else if (imguieditor->GetEnemyType() == Wing && m_BoundEnemys.size() > 0) {
+			m_BoundEnemys.pop_back();
+			m_BoundEnemyCount--;
 		}
 		//íπ
 		else if (imguieditor->GetEnemyType() == Bird && m_BirdEnemys.size() > 0) {

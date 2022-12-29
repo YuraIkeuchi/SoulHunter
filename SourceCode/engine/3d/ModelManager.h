@@ -36,7 +36,7 @@ public:
 	//FBX‚Ì–¼‘O
 	enum FBXName {
 		NormalEnemy,
-		WingEnemy,
+		BoundEnemy,
 		PlayerFBX,
 		BossFBX,
 		BirdEnemy,

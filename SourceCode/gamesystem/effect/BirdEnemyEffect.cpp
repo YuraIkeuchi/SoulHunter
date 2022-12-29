@@ -1,9 +1,9 @@
-#include "JumpEffect.h"
+#include "BirdEnemyEffect.h"
 #include"Easing.h"
 #include"ImageManager.h"
 using namespace DirectX;
 //読み込み
-JumpEffect::JumpEffect() {
+BirdEnemyEffect::BirdEnemyEffect() {
 	IKETexture* JumpDamageEffect_[JumpEffect_Max];
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		JumpDamageEffect_[i] = IKETexture::Create(ImageManager::WingEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
@@ -14,7 +14,7 @@ JumpEffect::JumpEffect() {
 	}
 }
 //初期化
-void JumpEffect::Initialize() {
+void BirdEnemyEffect::Initialize() {
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		m_Effect[i] = false;
 		m_Birth[i] = false;
@@ -27,11 +27,11 @@ void JumpEffect::Initialize() {
 	}
 }
 //解放
-void JumpEffect::Finalize() {
+void BirdEnemyEffect::Finalize() {
 
 }
 //更新
-void JumpEffect::Update(const XMFLOAT3& pos) {
+void BirdEnemyEffect::Update(const XMFLOAT3& pos) {
 	SetEffect(pos);
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		if (m_Effect[i]) {
@@ -45,9 +45,9 @@ void JumpEffect::Update(const XMFLOAT3& pos) {
 	}
 }
 //描画
-void JumpEffect::Draw() {
-	//bool JumpEffect = Jump->GetEffect();
-	/*ImGui::Begin("JumpEffect");
+void BirdEnemyEffect::Draw() {
+	//bool BirdEnemyEffect = Jump->GetEffect();
+	/*ImGui::Begin("BirdEnemyEffect");
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		ImGui::Text("m_Effect::%d", m_Birth[i]);
 	}
@@ -60,7 +60,7 @@ void JumpEffect::Draw() {
 	}
 }
 //エフェクトの動き
-void JumpEffect::SetEffect(const XMFLOAT3& pos) {
+void BirdEnemyEffect::SetEffect(const XMFLOAT3& pos) {
 	//エフェクトの発生
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		//ここで飛ばす方向を決める

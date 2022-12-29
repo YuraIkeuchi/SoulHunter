@@ -161,5 +161,10 @@ void PlayerSoul::Move() {
 			Ease(In,Cubic,m_Frame,m_pos.y,m_AfterPos.y),
 			Ease(In,Cubic,m_Frame,m_pos.z,m_AfterPos.z)
 		};
+		m_scale = {
+			Ease(In,Cubic,m_Frame,m_scale.x,0.05f),
+			Ease(In,Cubic,m_Frame,m_scale.y,0.05f),
+			Ease(In,Cubic,m_Frame,m_scale.z,0.05f)
+		};
 	}
 }

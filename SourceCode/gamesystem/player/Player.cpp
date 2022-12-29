@@ -44,10 +44,6 @@ bool Player::Initialize()
 	particleheal_->Initialize();
 	particleheal.reset(particleheal_);
 
-	/*PlayerWing* playerwing_ = new PlayerWing();
-	playerwing_->Initialize();
-	playerwing.reset(playerwing_);*/
-
 	return true;
 }
 //変数の初期化
@@ -100,8 +96,7 @@ void Player::Update()
 			PlayerDamage();
 			//復活処理
 			ResPornPlayer();
-			//エフェクト発生
-			JumpArgment();
+		
 			AttackArgment();
 		}
 		else {
@@ -194,12 +189,7 @@ void Player::EffectUpdate() {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-	//エフェクト関係
-	for (JumpEffect* jumpeffect : jumpeffects) {
-		if (jumpeffect != nullptr) {
-			jumpeffect->Update(m_Position);
-		}
-	}
+
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Update();
@@ -327,7 +317,7 @@ void Player::PlayerJump() {
 		m_ParticleCount = 0;
 		m_WingDeleteCount = 0;
 		m_AddPower = 0.8f;
-		m_JumpArgment = true;
+	
 		if (m_JumpCount == 1) {
 			PlayerAnimetion(2, 2);
 		}
@@ -342,11 +332,6 @@ void Player::PlayerJump() {
 			m_JumpRot = true;
 			m_RotFrame = 0.0f;
 		}
-		////ジャンプ回数でプレイヤーの羽が変化する
-		//playerwing->SetAnimation(true);
-		//playerwing->SetEaseStart(true);
-		//playerwing->SetFrame(0.0f);
-		//playerwing->SetAfterScale({ 0.005f,0.005f,0.005f });
 	}
 
 	//四回目はジャンプ時回転する
@@ -717,16 +702,6 @@ void Player::PlayerDamage() {
 	}
 
 }
-//エフェクト生成
-void Player::JumpArgment() {
-	if (m_JumpArgment) {
-		JumpEffect* newJumpEffect;
-		newJumpEffect = new JumpEffect();
-		newJumpEffect->Initialize();
-		jumpeffects.push_back(newJumpEffect);
-		m_JumpArgment = false;
-	}
-}
 //上に同じ
 void Player::AttackArgment() {
 	if (m_AttackArgment) {
@@ -755,12 +730,6 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Text("m_Attack:%f", m_Rotation.x);
 	ImGui::End();
 
-	//エフェクト関係
-	for (JumpEffect* jumpeffect : jumpeffects) {
-		if (jumpeffect != nullptr) {
-			jumpeffect->Draw();
-		}
-	}
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Draw();
@@ -791,7 +760,6 @@ void Player::InitPlayer(int StageNumber) {
 	m_AddPower = 0.0f;
 	m_FlashCount = 0;
 	m_Interval = 0;
-	jumpeffects.clear();
 	attackeffects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
