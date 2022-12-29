@@ -9,9 +9,9 @@
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //シーンを変えるときのクラス
-class BossAppChange {
+class BossSceneChange {
 public:
-	BossAppChange();
+	BossSceneChange();
 	void Update();//更新
 	void Finalize();//解放
 	const void Draw();//描画

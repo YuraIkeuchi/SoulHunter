@@ -10,6 +10,7 @@ public:
 	void End() override;//ボス死亡
 	void specialDraw(DirectXCommon* dxCommon) override;//このシーンのみの描画
 	void specialDrawApp() override;//このシーンのみの描画
+	void specialDrawEnd() override;//このシーンのみの描画
 	void App() override;//ボス登場
 	void DrawOutArea();//アウトラインの描画
 	void NotAttack();//攻撃していない

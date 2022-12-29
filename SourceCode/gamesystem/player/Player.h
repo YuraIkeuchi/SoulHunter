@@ -115,9 +115,12 @@ public:
 	void IntroductionUpdate(int Timer);
 	void IntroductionDraw(DirectXCommon* dxCommon);
 
-	//ボスシーンのための処理
+	//ボス登場シーンのための処理
 	void BossAppUpdate(int Timer);
 	void BossAppDraw(DirectXCommon* dxCommon);
+	//ボス終了シーンのための処理
+	void BossEndUpdate(int Timer);
+	void BossEndDraw(DirectXCommon* dxCommon);
 public:
 	//getter setter
 	const XMFLOAT3& GetAttackPos() { return  m_AttackPos; }

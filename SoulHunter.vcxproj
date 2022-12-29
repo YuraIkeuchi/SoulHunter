@@ -339,6 +339,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\BoundEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\BossAppObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\BossEndObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
@@ -357,7 +358,7 @@
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerWing.cpp" />
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\scenechange\BossAppChange.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\scenechange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp" />
@@ -465,6 +466,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\BoundEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\BossAppObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\BossEndObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
@@ -483,7 +485,7 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerWing.h" />
     <ClInclude Include="SourceCode\gamesystem\save\Save.h" />
-    <ClInclude Include="SourceCode\gamesystem\scenechange\BossAppChange.h" />
+    <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\scenechange.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h" />

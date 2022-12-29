@@ -92,6 +92,7 @@ void FirstBoss::Spec() {
 				fireball->Update();
 			}
 		}
+		m_fbxObject->SetScale(m_Scale);
 		m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 		Fbx_SetParam();
 	}
@@ -122,6 +123,18 @@ void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
 }
 //各ボス特有の描画
 void FirstBoss::specialDrawApp() {
+	//ImGui::Begin("Boss");
+	//ImGui::Text("Timer:%d", m_AppTimer);
+	//ImGui::Text("PosX:%f", m_Position.x);
+	//ImGui::Text("PosY:%f", m_Position.y);
+	//ImGui::Text("PosZ:%f", m_Position.z);
+	//ImGui::Text("RotX:%f", m_Rotation.x);
+	//ImGui::Text("RotY:%f", m_Rotation.y);
+	//ImGui::Text("RotZ:%f", m_Rotation.z);
+	//ImGui::End();
+}
+//各ボス特有の描画
+void FirstBoss::specialDrawEnd() {
 	//ImGui::Begin("Boss");
 	//ImGui::Text("Timer:%d", m_AppTimer);
 	//ImGui::Text("PosX:%f", m_Position.x);
@@ -205,14 +218,16 @@ void FirstBoss::App() {
 void FirstBoss::End() {
 	m_Rotation.y += 5.0f;
 	if (m_Scale.x > 0.0f) {
-		m_Scale.x -= 0.02f;
-		m_Scale.y -= 0.02f;
-		m_Scale.z -= 0.02f;
+		m_Scale.x -= 0.0001f;
+		m_Scale.y -= 0.0001f;
+		m_Scale.z -= 0.0001f;
 	}
 	else {
 		m_Scale = { 0.0f,0.0f,0.0f };
 	}
-
+	m_fbxObject->SetScale(m_Scale);
+	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+	Fbx_SetParam();
 	//enemyobj->SetScale(m_Scale);
 	//enemyobj->SetRotation(m_rot);
 }

@@ -195,3 +195,17 @@ void InterBoss::AppDraw(DirectXCommon* dxCommon) {
 	//ボスごとのオブジェクトの描画
 	specialDrawApp();
 }
+//ボス登場シーン更新
+void InterBoss::EndUpdate() {
+	End();
+}
+//ボス登場シーン描画
+void InterBoss::EndDraw(DirectXCommon* dxCommon) {
+	//ボスの描画
+	IKEObject3d::PreDraw();
+	if (m_Alive) {
+		Fbx_Draw(dxCommon);
+	}
+	//ボスごとのオブジェクトの描画
+	specialDrawEnd();
+}

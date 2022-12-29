@@ -1007,7 +1007,7 @@ void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();
 }
-//ボスシーンの更新
+//ボス登場シーンの更新
 void Player::BossAppUpdate(int Timer) {
 	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
@@ -1015,6 +1015,18 @@ void Player::BossAppUpdate(int Timer) {
 }
 
 void Player::BossAppDraw(DirectXCommon* dxCommon) {
+	//FollowObj_Draw();
+	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
+}
+//ボス終了シーンの更新
+void Player::BossEndUpdate(int Timer) {
+	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
+	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
+	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+}
+
+void Player::BossEndDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();

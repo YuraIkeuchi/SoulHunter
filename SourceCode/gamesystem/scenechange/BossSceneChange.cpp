@@ -1,4 +1,4 @@
-#include "BossAppChange.h"
+#include "BossSceneChange.h"
 #include "ImageManager.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -9,9 +9,9 @@ using XMFLOAT3 = DirectX::XMFLOAT3;
 using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
-XMFLOAT4 BossAppChange::s_color = { 1.0f,1.0f,1.0f,0.0f };
+XMFLOAT4 BossSceneChange::s_color = { 1.0f,1.0f,1.0f,0.0f };
 
-BossAppChange::BossAppChange() {
+BossSceneChange::BossSceneChange() {
 	//死んだときに暗くなるようのやつ
 	IKESprite* change_;
 	change_ = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
@@ -19,11 +19,11 @@ BossAppChange::BossAppChange() {
 	change.reset(change_);
 }
 //更新
-void BossAppChange::Update() {
+void BossSceneChange::Update() {
 	change->SetColor(s_color);
 }
 //描画
-const void BossAppChange::Draw() {
+const void BossSceneChange::Draw() {
 	/*ImGui::Begin("filter");
 	ImGui::Text("%d", m_AddStartChange);
 	ImGui::Text("%d", m_SubStartChange);
@@ -33,11 +33,11 @@ const void BossAppChange::Draw() {
 	change->Draw();
 }
 
-void BossAppChange::Finalize() {
+void BossSceneChange::Finalize() {
 
 }
 //暗くなる処理
-bool BossAppChange::AddBlack(float AddPower) {
+bool BossSceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
 		if (s_color.w < 1.0f) {
 			s_color.w += AddPower;
@@ -52,7 +52,7 @@ bool BossAppChange::AddBlack(float AddPower) {
 	return false;
 }
 //明るくなる処理
-bool BossAppChange::SubBlack(float SubPower) {
+bool BossSceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
 		if (s_color.w > 0.0f) {
 			s_color.w -= SubPower;

@@ -107,10 +107,10 @@ void BaseScene::EnemyInitialize() {
 			normalplayersoul[i][j]->SetBlock(block);
 			normalplayersoul[i][j]->SetPlayer(player);
 
-			wingplayersoul[i][j] = new PlayerSoul();
-			wingplayersoul[i][j]->Initialize();
-			wingplayersoul[i][j]->SetBlock(block);
-			wingplayersoul[i][j]->SetPlayer(player);
+			boundplayersoul[i][j] = new PlayerSoul();
+			boundplayersoul[i][j]->Initialize();
+			boundplayersoul[i][j]->SetBlock(block);
+			boundplayersoul[i][j]->SetPlayer(player);
 
 			birdplayersoul[i][j] = new PlayerSoul();
 			birdplayersoul[i][j]->Initialize();

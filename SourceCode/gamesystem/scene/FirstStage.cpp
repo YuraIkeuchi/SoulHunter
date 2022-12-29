@@ -64,7 +64,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BGMStart = true;
 
 	bossappobj->Initialize();
-	bossappchange = new BossAppChange();
+	bossscenechange = new BossSceneChange();
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
@@ -158,7 +158,7 @@ void FirstStage::NormalUpdate() {
 	}
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_BoundEnemyCount; j++) {
-			wingplayersoul[i][j]->Update(m_BoundEnemys[j]);
+			boundplayersoul[i][j]->Update(m_BoundEnemys[j]);
 		}
 	}
 
@@ -264,7 +264,7 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	mapchange->Draw();
 	scenechange->Draw();
-	bossappchange->Draw();
+	bossscenechange->Draw();
 	BlackFilter->Draw();
 	IKESprite::PostDraw();
 }
@@ -342,7 +342,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_BoundEnemyCount; j++) {
-			wingplayersoul[i][j]->Draw();
+			boundplayersoul[i][j]->Draw();
 		}
 	}
 
@@ -446,8 +446,8 @@ void FirstStage::AllUpdate() {
 	scenechange->SubBlack(0.05f);
 	mapchange->Update();
 	mapchange->SubBlack();
-	bossappchange->Update();
-	bossappchange->SubBlack(0.08f);
+	bossscenechange->Update();
+	bossscenechange->SubBlack(0.08f);
 	camerawork->Update(camera);
 }
 //ライトの位置
@@ -551,17 +551,17 @@ void FirstStage::BossRoomUpdate() {
 
 			//一定フレームでボス戦に入る
 			if (bossappobj->GetAppTimer() == 800) {
-				bossappchange->SetAddStartChange(true);
+				bossscenechange->SetAddStartChange(true);
 			}
 			//ボタンでも行ける
-			if (input->TriggerButton(input->Button_A) && !bossappchange->GetSubStartChange()) {
-				bossappchange->SetAddStartChange(true);
+			if (input->TriggerButton(input->Button_A) && !bossscenechange->GetSubStartChange()) {
+				bossscenechange->SetAddStartChange(true);
 				bossappobj->SetEndApp(true);
 			}
 
 			//こっからボス戦
-			if (bossappchange->AddBlack(0.04f)) {
-				bossappchange->SetSubStartChange(true);
+			if (bossscenechange->AddBlack(0.04f)) {
+				bossscenechange->SetSubStartChange(true);
 				bossappobj->SetApp(false);
 				Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 				firstboss->SetMovie(false);

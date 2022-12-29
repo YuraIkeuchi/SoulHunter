@@ -198,7 +198,7 @@ public:
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
 	//魂クラス
 	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* wingplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
 	//エディタ関係
 	//エディタのタイプ
@@ -228,7 +228,7 @@ public:
 	enum EnemyType {
 		Normal,
 		Thorn,
-		Wing,
+		Bound,
 		Bird,
 	};
 	int m_NormalEnemyCount = 0;//ザコ敵の数

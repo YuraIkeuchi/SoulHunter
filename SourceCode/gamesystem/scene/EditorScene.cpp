@@ -747,7 +747,7 @@ void EditorScene::EditorUpdate() {
 			enemyedit->ThornEnemyArgment(m_ThornEnemys, player, playerbullet, playereffect, hitstop);
 		}
 		//‰H‚Ì“G
-		else if (imguieditor->GetEnemyType() == Wing) {
+		else if (imguieditor->GetEnemyType() == Bound) {
 			enemyedit->BoundEnemyArgment(m_BoundEnemys, player, playerbullet, playereffect, block, hitstop);
 			m_BoundEnemyCount++;
 		}
@@ -802,7 +802,7 @@ void EditorScene::EditorUpdate() {
 			m_ThornEnemys.pop_back();
 		}
 		//‰H
-		else if (imguieditor->GetEnemyType() == Wing && m_BoundEnemys.size() > 0) {
+		else if (imguieditor->GetEnemyType() == Bound && m_BoundEnemys.size() > 0) {
 			m_BoundEnemys.pop_back();
 			m_BoundEnemyCount--;
 		}

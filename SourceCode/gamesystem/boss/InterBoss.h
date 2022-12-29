@@ -49,10 +49,14 @@ public:
 	void Update();
 	//描画
 	void Draw(DirectXCommon* dxCommon);
-	//更新
+	//登場シーン更新
 	void AppUpdate();
-	//描画
+	//登場シーン描画
 	void AppDraw(DirectXCommon* dxCommon);
+	//終了シーン更新
+	void EndUpdate();
+	//終了シーン描画
+	void EndDraw(DirectXCommon* dxCommon);
 	virtual void App() = 0;//ボス出現モーション
 
 	virtual void Spec() = 0;//ボス特有の処理
@@ -60,6 +64,7 @@ public:
 	virtual void End() = 0;//ボス特有の処理
 	virtual void specialDraw(DirectXCommon* dxCommon) = 0;//ボス特有の描画
 	virtual void specialDrawApp() = 0;//ボス特有の描画
+	virtual void specialDrawEnd() = 0;//ボス特有の描画
 
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
@@ -87,7 +92,7 @@ protected:
 	//あたり範囲
 	float m_HitRadius = 0.0f;
 	//HP
-	float m_HP = 40.0f;
+	float m_HP = 1.0f;
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム

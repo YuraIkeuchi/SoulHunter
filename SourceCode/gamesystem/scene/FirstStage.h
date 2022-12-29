@@ -2,7 +2,7 @@
 #include "BaseScene.h"
 #include <array>       // ヘッダファイルインクルード
 #include "BossAppObj.h"
-#include "BossAppChange.h"
+#include "BossSceneChange.h"
 using namespace std;         //  名前空間指定
 
 //ゲームプレイシーン
@@ -48,5 +48,5 @@ private:
 	//ボス登場シーンのクラス
 	BossAppObj* bossappobj = nullptr;
 	//ボス登場シーンの画面暗転
-	BossAppChange* bossappchange = nullptr;
+	BossSceneChange* bossscenechange = nullptr;
 };
