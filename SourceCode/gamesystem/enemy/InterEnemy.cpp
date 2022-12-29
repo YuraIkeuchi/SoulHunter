@@ -190,6 +190,9 @@ void InterEnemy::DamageAct() {
 		m_TargetTimer = 0;
 		m_Speed = 0.0f;
 		m_Effect = true;
+		if (m_EnemyType == Bird) {
+			m_BirdEffectArgment = true;
+		}
 		//“G‚ª’µ‚Ë•Ô‚é
 		if (player->GetPosition().x > m_Position.x) {
 			m_HitDir = HitRight;
@@ -224,6 +227,10 @@ void InterEnemy::DamageAct() {
 		m_TargetTimer = 0;
 		m_Speed = 0.0f;
 		m_Effect = true;
+		if (m_EnemyType == Bird) {
+			m_BirdEffectArgment = true;
+		}
+	
 		//“G‚ª’µ‚Ë•Ô‚é
 		if (playerbullet->GetPosition().x > m_Position.x) {
 			m_HitDir = HitRight;
@@ -305,6 +312,16 @@ void InterEnemy::ArgEffect() {
 		newEffect->Initialize();
 		enemyeffects.push_back(newEffect);
 		m_EffectArgment = false;
+	}
+}
+//‰HƒGƒtƒFƒNƒg¶¬
+void InterEnemy::BirdArgment() {
+	if (m_BirdEffectArgment) {
+		BirdEnemyEffect* newBirdEnemyEffect;
+		newBirdEnemyEffect = new BirdEnemyEffect();
+		newBirdEnemyEffect->Initialize();
+		birdenemyeffects.push_back(newBirdEnemyEffect);
+		m_BirdEffectArgment = false;
 	}
 }
 //°‚Ì¶¬

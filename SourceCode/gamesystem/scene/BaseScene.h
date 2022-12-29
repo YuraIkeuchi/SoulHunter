@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "ThornEnemy.h"
 #include "BirdEnemy.h"
-#include "WingEnemy.h"
+#include "BoundEnemy.h"
 #include "ResPornEnemy.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
@@ -53,7 +53,6 @@
 using namespace std;         //  –¼‘O‹óŠÔw’è
 class CollisionManager;
 class Player;
-class TouchableObject;
 //‘O•ûéŒ¾
 class SceneManager;
 
@@ -96,7 +95,7 @@ public:
 	//™‚Ì“G
 	void ThornEnemySpecity(const char* vsShaderName);
 	//‰H‚Ì“G
-	void WingEnemySpecity(const char* vsShaderName);
+	void BoundEnemySpecity(const char* vsShaderName);
 	//’¹‚Ì“G
 	void BirdEnemySpecity(const char* vsShaderName);
 	//™‚ÌOBJ
@@ -221,7 +220,7 @@ public:
 	//ƒUƒR“G
 	std::vector<InterEnemy*> m_Enemys;
 	std::vector<InterEnemy*> m_ThornEnemys;
-	std::vector<InterEnemy*> m_WingEnemys;
+	std::vector<InterEnemy*> m_BoundEnemys;
 	std::vector<InterEnemy*> m_BirdEnemys;
 	std::vector<ThornObj*> m_ThornObjs;
 
@@ -233,19 +232,19 @@ public:
 		Bird,
 	};
 	int m_NormalEnemyCount = 0;//ƒUƒR“G‚Ì”
-	int m_WingEnemyCount = 0;//ƒUƒR“G‚Ì”
+	int m_BoundEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_BirdEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_ThornObjCount = 0;//ƒUƒR“G‚Ì”
 	int m_EnemyCount = 0;
 	int StartStage;
 	std::vector<XMFLOAT3>m_EnemyPosition;
 	std::vector<XMFLOAT3>m_ThornEnemyPosition;
-	std::vector<XMFLOAT3>m_WingEnemyPosition;
+	std::vector<XMFLOAT3>m_BoundEnemyPosition;
 	std::vector<XMFLOAT3>m_BirdEnemyPosition;
 	std::vector<XMFLOAT3>m_ThornObjPosition;
 	std::vector<XMFLOAT3> m_EnemyStartPos;
 	std::vector<XMFLOAT3> m_ThornEnemyStartPos;
-	std::vector<XMFLOAT3> m_WingEnemyStartPos;
+	std::vector<XMFLOAT3> m_BoundEnemyStartPos;
 	std::vector<XMFLOAT3> m_BirdEnemyStartPos;
 	std::vector<XMFLOAT3>m_ThornObjStartPos;
 	std::vector<float> m_EnemyAngle;
@@ -346,9 +345,9 @@ public:
 	std::stringstream m_ThornEnemyPopcom;
 	std::string m_ThornEnemyLine;
 	//‰H‚Ì“G
-	std::ifstream m_WingEnemyFile;
-	std::stringstream m_WingEnemyPopcom;
-	std::string m_WingEnemyLine;
+	std::ifstream m_BoundEnemyFile;
+	std::stringstream m_BoundEnemyPopcom;
+	std::string m_BoundEnemyLine;
 	//’¹‚Ì“G
 	std::ifstream m_BirdEnemyFile;
 	std::stringstream m_BirdEnemyPopcom;
@@ -375,7 +374,7 @@ public:
 	std::string m_GameLine;
 	int m_Enemy_Num;
 	int m_ThornEnemy_Num;
-	int m_WingEnemy_Num;
+	int m_BoundEnemy_Num;
 	int m_BirdEnemy_Num;
 	int m_ThornObj_Num;
 	int m_BackObj_Num;

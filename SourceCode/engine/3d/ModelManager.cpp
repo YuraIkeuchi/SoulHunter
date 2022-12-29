@@ -30,7 +30,7 @@ void ModelManager::Initialize() {
 	LoadModel(Sword, "Sword");
 	LoadFBXModel(NormalEnemy, "MooshEnemy");
 	LoadFBXModel(BirdEnemy, "bat_move");
-	LoadFBXModel(WingEnemy, "RabbitFBX");
+	LoadFBXModel(BoundEnemy, "RabbitFBX");
 	LoadFBXModel(PlayerFBX, "PlayerFBXNew");
 	LoadFBXModel(BossFBX, "DragonFBX");
 	LoadFBXModel(PlayerWing, "WingFBX");

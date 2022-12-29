@@ -228,7 +228,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornEnemy.cpp">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\enemy\WingEnemy.cpp">
+    <ClCompile Include="SourceCode\gamesystem\enemy\BoundEnemy.cpp">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp">
@@ -375,9 +375,6 @@
     <ClCompile Include="SourceCode\gamesystem\effect\AttackEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\JumpEffect.cpp">
-      <Filter>SourceCords\gamesystem\effect\Player</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
@@ -428,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\boss\FireBall.cpp">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,7 +593,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornEnemy.h">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\enemy\WingEnemy.h">
+    <ClInclude Include="SourceCode\gamesystem\enemy\BoundEnemy.h">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h">
@@ -743,9 +743,6 @@
     <ClInclude Include="SourceCode\gamesystem\effect\AttackEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\JumpEffect.h">
-      <Filter>SourceCords\gamesystem\effect\Player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
@@ -802,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\boss\FireBall.h">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

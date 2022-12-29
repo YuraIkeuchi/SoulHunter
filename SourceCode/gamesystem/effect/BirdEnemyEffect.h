@@ -8,7 +8,7 @@
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //ジャンプしたときのエフェクト
-class JumpEffect {
+class BirdEnemyEffect {
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -18,7 +18,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	JumpEffect();
+	BirdEnemyEffect();
 
 	void Initialize();
 	void Finalize();

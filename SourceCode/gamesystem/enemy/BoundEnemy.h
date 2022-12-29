@@ -2,9 +2,9 @@
 #include"InterEnemy.h"
 using namespace std;         //  –¼‘O‹óŠÔw’è
 //’µ‚Ë‚é“G
-class WingEnemy :public InterEnemy {
+class BoundEnemy :public InterEnemy {
 public:
-	WingEnemy();
+	BoundEnemy();
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	//void SetPlayerEffect(PlayerEffect* playereffect) { this->playereffect.reset(playereffect); }
 	bool Initialize() override;//‰Šú‰»

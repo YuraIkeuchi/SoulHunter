@@ -105,7 +105,7 @@ const void ImGuiEditor::EditorImGuiDraw() {
 				m_EnemyType = Thorn;
 			}
 
-			if (ImGui::Button("WingEnemy", ImVec2(90, 50))) {
+			if (ImGui::Button("BoundEnemy", ImVec2(90, 50))) {
 				m_EnemyArgment = true;
 				m_EnemyType = Wing;
 			}
@@ -129,7 +129,7 @@ const void ImGuiEditor::EditorImGuiDraw() {
 				m_EnemyType = Thorn;
 			}
 
-			if (ImGui::Button("DeleteWingEnemy", ImVec2(90, 50))) {
+			if (ImGui::Button("DeleteBoundEnemy", ImVec2(90, 50))) {
 				m_DeleteEnemy = true;
 				m_EnemyType = Wing;
 			}

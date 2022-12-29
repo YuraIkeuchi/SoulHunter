@@ -11,9 +11,7 @@
 #include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
-#include "JumpEffect.h"
 #include "AttackEffect.h"
-#include "PlayerWing.h"
 #include "VariableCommon.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -75,8 +73,7 @@ public:
 	void PlayerHeal();
 	//ダメージ
 	void PlayerDamage();
-	//エフェクト発生
-	void JumpArgment();
+	//攻撃エフェクト
 	void AttackArgment();
 	//ゴール後の動き
 	void GoalMove();
@@ -174,9 +171,7 @@ private:
 	//クラス
 	unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<Block> block = nullptr;
-	std::vector<JumpEffect*> jumpeffects;
 	std::vector<AttackEffect*> attackeffects;
-	unique_ptr<PlayerWing> playerwing = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
 	//生きているかどうか
@@ -215,8 +210,7 @@ private:
 	//ジャンプ時の動きの変数
 	bool m_JumpRot = false;
 	float m_RotFrame = 0.0f;
-	//ジャンプ時のエフェクト発生条件
-	bool m_JumpArgment = false;
+
 	//向いている向き
 	float m_Velocity = 0.0f;
 	int m_PlayerDir = 0;

@@ -62,6 +62,8 @@ void BirdEnemy::Action() {
 
 	//消える
 	VanishEnemy();
+	//エフェクト発生
+	BirdArgment();
 	if (m_Alive && UpdateCollide()) {
 		//当たり判定景
 		PlayerCollide();
@@ -73,6 +75,12 @@ void BirdEnemy::Action() {
 	for (EnemyEffect* enemyeffect : enemyeffects) {
 		if (enemyeffect != nullptr) {
 			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		}
+	}
+	//エフェクト関係
+	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+		if (birdenemyeffect != nullptr) {
+			birdenemyeffect->Update(m_Position);
 		}
 	}
 	ParticleUpdate();
@@ -90,6 +98,13 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 	for (EnemyEffect* enemyeffect : enemyeffects) {
 		if (enemyeffect != nullptr) {
 			enemyeffect->Draw();
+		}
+	}
+
+	//エフェクト関係
+	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+		if (birdenemyeffect != nullptr) {
+			birdenemyeffect->Draw();
 		}
 	}
 	particletex->Draw();

@@ -29,19 +29,19 @@ void EnemyEdit::ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* playe
 	enemy.push_back(newThornEnemy);
 }
 //’µ‚Ë‚é“G‚Ì¶¬
-void EnemyEdit::WingEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
+void EnemyEdit::BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
 	PlayerEffect* playereffect, Block* block, HitStop* hitstop) {
-	InterEnemy* newWingEnemy;
-	newWingEnemy = new WingEnemy();
-	newWingEnemy->Initialize();
-	newWingEnemy->SetPlayer(player);
-	newWingEnemy->SetBlock(block);
-	newWingEnemy->SetHitStop(hitstop);
-	newWingEnemy->SetPlayerBullet(playerbullet);
-	newWingEnemy->SetPlayerEffect(playereffect);
-	newWingEnemy->SetPosition(player->GetPosition());
-	newWingEnemy->SetStartPos(player->GetPosition());
-	enemy.push_back(newWingEnemy);
+	InterEnemy* newBoundEnemy;
+	newBoundEnemy = new BoundEnemy();
+	newBoundEnemy->Initialize();
+	newBoundEnemy->SetPlayer(player);
+	newBoundEnemy->SetBlock(block);
+	newBoundEnemy->SetHitStop(hitstop);
+	newBoundEnemy->SetPlayerBullet(playerbullet);
+	newBoundEnemy->SetPlayerEffect(playereffect);
+	newBoundEnemy->SetPosition(player->GetPosition());
+	newBoundEnemy->SetStartPos(player->GetPosition());
+	enemy.push_back(newBoundEnemy);
 }
 //”ò‚Ô“G‚Ì¶¬
 void EnemyEdit::BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,

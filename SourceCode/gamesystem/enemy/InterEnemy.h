@@ -7,6 +7,7 @@
 #include "PlayerBullet.h"
 #include "PlayerEffect.h"
 #include "EnemyEffect.h"
+#include "BirdEnemyEffect.h"
 #include "IKEFBXModel.h"
 #include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
@@ -69,6 +70,7 @@ protected:
 	unique_ptr<PlayerEffect> playereffect = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
+	std::vector<BirdEnemyEffect*> birdenemyeffects;
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<HitStop> hitstop =nullptr;
 	//座標やスケールなど
@@ -153,6 +155,8 @@ protected:
 	bool m_Disolve = false;
 	//死んだときのモーション
 	bool m_DeathMotion = false;
+	//ジャンプ時のエフェクト発生条件
+	bool m_BirdEffectArgment = false;
 	
 public:
 	virtual ~InterEnemy() = default;
@@ -211,4 +215,6 @@ public:
 	//パーティクル関係
 	void ParticleInit();
 	void ParticleUpdate();
+	//エフェクト発生
+	void BirdArgment();
 };

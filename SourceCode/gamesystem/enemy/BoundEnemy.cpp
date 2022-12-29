@@ -1,15 +1,15 @@
-#include "WingEnemy.h"
+#include "BoundEnemy.h"
 #include"Collision.h"
 #include "ModelManager.h"
 #include "ParticleManager.h"
 using namespace DirectX;
 
-WingEnemy::WingEnemy() {
-	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::WingEnemy);
+BoundEnemy::BoundEnemy() {
+	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BoundEnemy);
 	ParticleInit();
 }
 //初期化
-bool WingEnemy::Initialize() {
+bool BoundEnemy::Initialize() {
 	m_ChangeColor = true;
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.03f, 0.03f, 0.03f };
@@ -33,7 +33,7 @@ bool WingEnemy::Initialize() {
 	return true;
 }
 //更新
-void WingEnemy::Action() {
+void BoundEnemy::Action() {
 	m_OldPos = m_Position;
 
 	//マップチップとの当たり判定
@@ -75,7 +75,7 @@ void WingEnemy::Action() {
 	ParticleUpdate();
 }
 //描画
-void WingEnemy::Draw(DirectXCommon* dxCommon) {
+void BoundEnemy::Draw(DirectXCommon* dxCommon) {
 	/*ImGui::Begin("Enemy");
 ImGui::Text("m_Disolve : %f", m_AddPower);
 ImGui::End();*/
@@ -91,11 +91,11 @@ ImGui::End();*/
 	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
-void WingEnemy::Pause() {
+void BoundEnemy::Pause() {
 	m_fbxObject->Update(false, 1, m_AnimationStop);
 }
 //行動
-void WingEnemy::Move() {
+void BoundEnemy::Move() {
 	if (m_Jump && m_HP > 0) {
 		m_AddPower = 0.5f;
 		m_Jump = false;
@@ -127,6 +127,6 @@ void WingEnemy::Move() {
 	m_Position.x += m_Speed;
 }
 //解放
-void WingEnemy::Finalize() {
+void BoundEnemy::Finalize() {
 	//enemyeffects.pop_back();
 }

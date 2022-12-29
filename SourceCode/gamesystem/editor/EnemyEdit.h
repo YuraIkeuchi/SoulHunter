@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "ThornEnemy.h"
 #include "BirdEnemy.h"
-#include "WingEnemy.h"
+#include "BoundEnemy.h"
 #include "Player.h"
 #include "PlayerBullet.h"
 #include "PlayerEffect.h"
@@ -23,7 +23,7 @@ public://äeìGÇÃê∂ê¨(à¯êîÇ™ëΩÇ¢ÇÃÇ≈å„ÅXèCê≥Ç∑ÇÈ)
 	PlayerEffect* playereffect,Block* block, HitStop* hitstop);
 	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
 		PlayerEffect* playereffect, HitStop* hitstop);
-	void WingEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
+	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
 		PlayerEffect* playereffect, Block* block, HitStop* hitstop);
 	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
 		PlayerEffect* playereffect, Block* block, HitStop* hitstop);
