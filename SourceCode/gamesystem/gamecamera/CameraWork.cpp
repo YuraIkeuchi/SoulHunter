@@ -209,7 +209,7 @@ void CameraWork::EndCamera() {
 	m_eyePos.x = m_EndCameraCircleX;
 	m_eyePos.z = m_EndCameraCircleZ + 20.0f;
 	m_eyePos.y = 10.0f;
-	m_targetPos = interboss->GetPosition();
+	m_targetPos = {0.0f,8.0f,20.0f};
 }
 //ImGui‚Ì•`‰æ
 void CameraWork::ImGuiDraw() {

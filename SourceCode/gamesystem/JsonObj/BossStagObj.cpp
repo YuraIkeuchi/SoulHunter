@@ -62,6 +62,11 @@ void BossStagObj::Initialize() {
 	SkipSprite_->SetAnchorPoint({ 0.5f,0.0f });
 	SkipSprite_->SetPosition({ 1000.0f,620.0f });
 	SkipSprite.reset(SkipSprite_);
+	//パーティクル
+	ParticleTex* particletex_;
+	particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 
 }
 //更新
@@ -79,7 +84,7 @@ void BossStagObj::AppUpdate() {
 			m_EndApp = true;
 		}
 	}
-	
+
 	//Json用
 	for (auto& object : objects) {
 		object->Update();
@@ -91,26 +96,43 @@ void BossStagObj::EndUpdate() {
 	for (auto& object : objects) {
 		object->Update();
 	}
+	m_ParticleCount++;
+	if (m_ParticleCount > 2) {
+		m_ParticleCount = 0;
+	}
+	//パーティクル
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	particletex->SetStartScale(0.5f);
+	particletex->SetParticleBreak(true);
+	particletex->SetParticleBillboard(true);
+	particletex->Update({ 0.0f,8.0f,20.0f }, m_ParticleCount, 2, 2);
 }
 //前面描画
 const void BossStagObj::FrontDraw() {
-}
-//背景描画
-const void BossStagObj::BackDraw() {
-	ImGui::Begin("BossApp");
-	ImGui::Text("m_EndTimer:%d", m_EndTimer);
-	ImGui::End();
-	//Json用
-	for (auto& object : objects) {
-		object->Draw();
-	}
-
+	//パーティクルの描画
+	IKEObject3d::PreDraw();
+	particletex->Draw();
+	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	for (int i = 0; i < CurtainSprite.size(); i++) {
 		CurtainSprite[i]->Draw();
 	}
 	SkipSprite->Draw();
 	IKESprite::PostDraw();
+
+}
+//背景描画
+const void BossStagObj::BackDraw() {
+	ImGui::Begin("BossApp");
+	ImGui::Text("m_EndTimer:%d", m_EndTimer);
+	ImGui::End();
+
+	IKEObject3d::PreDraw();
+	//Json用
+	for (auto& object : objects) {
+		object->Draw();
+	}
+	IKEObject3d::PostDraw();
 }
 //解放
 void BossStagObj::Finalize() {

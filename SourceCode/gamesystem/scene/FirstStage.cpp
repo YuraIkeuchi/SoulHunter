@@ -264,6 +264,9 @@ void FirstStage::Finalize()
 }
 //モデルの描画
 void FirstStage::ModelDraw(DirectXCommon* dxCommon) {
+	if (m_BossNumber == BossApp || m_BossNumber == BossEnd) {
+		bossstagobj->BackDraw();
+	}
 }
 //後ろの描画
 void FirstStage::BackDraw(DirectXCommon* dxCommon)
@@ -385,15 +388,13 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
 	firstboss->AppDraw(dxCommon);
 	player->BossAppDraw(dxCommon);
-	bossstagobj->BackDraw();
+	bossstagobj->FrontDraw();
 }
 //ボス終了シーンの描画
 void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
 	firstboss->EndDraw(dxCommon);
 	player->BossEndDraw(dxCommon);
-	bossstagobj->BackDraw();
-	// 3Dオブジェクト描画後処理
-	IKEObject3d::PostDraw();
+	bossstagobj->FrontDraw();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {

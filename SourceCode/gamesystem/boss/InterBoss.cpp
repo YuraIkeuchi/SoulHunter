@@ -53,6 +53,12 @@ void InterBoss::Update() {
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
+	/*ImGui::Begin("Boss");
+	ImGui::Text("Timer : %d", m_MovieTimer);
+	ImGui::Text("Scale.x : %f", m_Scale.x);
+	ImGui::End();*/
+	//ボスの描画
+	IKEObject3d::PreDraw();
 	if (m_Alive) {
 		Fbx_Draw(dxCommon);
 	}
@@ -157,6 +163,8 @@ void InterBoss::AppUpdate() {
 }
 //ボス登場シーン描画
 void InterBoss::AppDraw(DirectXCommon* dxCommon) {
+	//ボスの描画
+	IKEObject3d::PreDraw();
 	if (m_Alive) {
 		Fbx_Draw(dxCommon);
 	}
@@ -167,18 +175,12 @@ void InterBoss::AppDraw(DirectXCommon* dxCommon) {
 void InterBoss::EndUpdate() {
 	End();
 
-	m_ParticleCount++;
-	//パーティクル
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	particletex->SetParticleBreak(true);
-	particletex->SetParticleBillboard(true);
-	particletex->Update({0.0f,8.0f,0.0f}, m_ParticleCount, 1, 2);
 }
 //ボス登場シーン描画
 void InterBoss::EndDraw(DirectXCommon* dxCommon) {
+	//ボスの描画
+	IKEObject3d::PreDraw();
 	Fbx_Draw(dxCommon);
 	//ボスごとのオブジェクトの描画
 	specialDrawEnd();
-	//パーティクルの描画
-	particletex->Draw();
 }

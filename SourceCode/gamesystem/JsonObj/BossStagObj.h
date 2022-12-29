@@ -48,11 +48,13 @@ private:
 	//スプライト
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
+	unique_ptr<ParticleTex> particletex = nullptr;
 	//その他変数
 	bool m_AppStart = false;//登場スタート
 	int m_AppTimer = 0;//時間
 	int m_EndTimer = 0;//時間
 	bool m_EndApp = false;//登場終了
 	bool m_App = false;//登場の間はtrue
+	int m_ParticleCount = 0;//パーティクルの生成までのフレーム
 	
 };
