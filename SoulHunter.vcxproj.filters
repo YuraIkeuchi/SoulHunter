@@ -888,9 +888,6 @@
     <Filter Include="SourceCords\gamesystem\player">
       <UniqueIdentifier>{36dc49c4-871c-4674-94ac-5a69629d70a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\playerhelp">
-      <UniqueIdentifier>{3c5d3d23-ea84-4a90-b10d-6c338fe14260}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\save">
       <UniqueIdentifier>{87886716-c993-40a0-85d5-8b6185914c02}</UniqueIdentifier>
     </Filter>

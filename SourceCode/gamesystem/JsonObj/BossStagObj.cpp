@@ -65,7 +65,7 @@ void BossStagObj::Initialize() {
 
 }
 //更新
-void BossStagObj::Update() {
+void BossStagObj::AppUpdate() {
 	//pos = player->GetPosition();
 	//ボス登場フラグが立ったらタイマーが動く
 	if (m_AppStart && !m_EndApp) {
@@ -84,19 +84,22 @@ void BossStagObj::Update() {
 	for (auto& object : objects) {
 		object->Update();
 	}
-
+}
+void BossStagObj::EndUpdate() {
+	m_EndTimer++;
+	//Json用
+	for (auto& object : objects) {
+		object->Update();
+	}
 }
 //前面描画
 const void BossStagObj::FrontDraw() {
 }
 //背景描画
 const void BossStagObj::BackDraw() {
-	/*ImGui::Begin("BossApp");
-	ImGui::Text("m_App:%d", m_App);
-	ImGui::Text("m_AppTimer:%d", m_AppTimer);
-	ImGui::Text("m_End:%d", m_EndApp);
-	ImGui::Text("m_AppStart:%d", m_AppStart);
-	ImGui::End();*/
+	ImGui::Begin("BossApp");
+	ImGui::Text("m_EndTimer:%d", m_EndTimer);
+	ImGui::End();
 	//Json用
 	for (auto& object : objects) {
 		object->Draw();

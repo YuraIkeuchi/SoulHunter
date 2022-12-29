@@ -7,7 +7,6 @@ CameraWork::CameraWork() {
 }
 //更新
 void CameraWork::Update(DebugCamera* camera) {
-	
 	//カメラがどの動きをするか
 	if (m_CameraType == Title) {
 		TitleCamera();
@@ -177,7 +176,7 @@ void CameraWork::AppCamera() {
 }
 //ボス終了時のカメラ(回転するような動き)
 void CameraWork::EndCamera() {
-	if (m_EndTimer <= 500) {
+	if (m_EndTimer <= 800) {
 		m_EndTimer++;
 	}
 
@@ -186,12 +185,22 @@ void CameraWork::EndCamera() {
 			m_EndCameraSpeed = 300.0f;
 			m_EndCameraScale = 25.0f;
 			m_AfterEndCameraSpeed = 635.0f;
+			m_AfterEndCameraScale = m_EndCameraScale;
 			m_Frame = 0.0f;
 			m_EndCameraNumber = EndCamera1;
 		}
 	}
 	else if (m_EndCameraNumber == EndCamera1) {
-
+		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.001f);
+		if (m_EndTimer == 520) {
+			m_AfterEndCameraSpeed = m_EndCameraSpeed;
+			m_AfterEndCameraScale = 80.0f;
+			m_Frame = 0.0f;
+			m_EndCameraNumber = EndCamera2;
+		}
+	}
+	else if (m_EndCameraNumber == EndCamera2) {
+		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.005f);
 	}
 	//円運動の計算
 	m_EndCameraRadius = m_EndCameraSpeed * m_PI / 180.0f;
@@ -207,6 +216,7 @@ void CameraWork::ImGuiDraw() {
 	ImGui::Begin("CameraWork");
 	ImGui::SliderFloat("EndSpeed", &m_EndCameraSpeed, 720, 0);
 	ImGui::SliderFloat("EndScale", &m_EndCameraScale, 360, 0);
+	ImGui::Text("EndTimer:%d", m_EndTimer);
 	ImGui::End();
 }
 //右のスティック
@@ -258,8 +268,6 @@ void CameraWork::AppCameraMove(XMFLOAT3 AfterEye, XMFLOAT3 AfterTarget, float Ad
 		m_Frame += AddFrame;
 	}
 	else {
-		m_AfterEye = AfterEye;
-		m_AfterTarget = AfterTarget;
 		m_Frame = 1.0f;
 	}
 
@@ -274,4 +282,19 @@ Ease(In,Cubic,m_Frame,m_targetPos.x,AfterTarget.x),
 Ease(In,Cubic,m_Frame,m_targetPos.y,AfterTarget.y),
 	Ease(In,Cubic,m_Frame,m_targetPos.z,AfterTarget.z)
 	};
+}
+//ボス終了シーンのカメラの動き
+void CameraWork::EndCameraMove(float AfterSpeed, float AfterScale, float AddFrame) {
+	if (m_Frame < 1.0f)
+	{
+		m_Frame += AddFrame;
+	}
+	else {
+		m_AfterEndCameraSpeed = AfterSpeed;
+		m_AfterEndCameraScale = AfterScale;
+		m_Frame = 1.0f;
+	}
+
+	m_EndCameraSpeed = Ease(In, Cubic, m_Frame, m_EndCameraSpeed, m_AfterEndCameraSpeed);
+	m_EndCameraScale = Ease(In, Cubic, m_Frame, m_EndCameraScale, m_AfterEndCameraScale);
 }

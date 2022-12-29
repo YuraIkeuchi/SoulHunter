@@ -120,7 +120,6 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 			enemyeffect->Draw();
 		}
 	}
-	IKETexture::PreDraw(1);
 	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない

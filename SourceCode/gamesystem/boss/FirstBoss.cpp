@@ -144,6 +144,7 @@ void FirstBoss::specialDrawEnd() {
 	//ImGui::Text("RotY:%f", m_Rotation.y);
 	//ImGui::Text("RotZ:%f", m_Rotation.z);
 	//ImGui::End();
+
 }
 //登場ムービー
 void FirstBoss::App() {
@@ -233,14 +234,13 @@ void FirstBoss::Dead() {
 }
 //ボス終了
 void FirstBoss::End() {
-	m_Scale = { 0.03f,0.03f,0.03f };
+	m_Scale = { 0.01f,0.01f,0.01f };
 	m_Position = { 0.0f,10.0f,20.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	Fbx_SetParam();
-	//enemyobj->SetScale(m_Scale);
-	//enemyobj->SetRotation(m_rot);
+
 }
 //突き刺してくる攻撃のエリア表示
 void FirstBoss::DrawOutArea() {

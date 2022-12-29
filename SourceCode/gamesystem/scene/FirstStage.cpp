@@ -215,14 +215,14 @@ void FirstStage::NormalUpdate() {
 //ボス登場の更新
 void FirstStage::BossAppUpdate() {
 	player->BossAppUpdate(1);
-	bossstagobj->Update();
+	bossstagobj->AppUpdate();
 	firstboss->AppUpdate();
 }
 //ボス終了の更新
 void FirstStage::BossEndUpdate() {
 	player->BossEndUpdate(1);
 	firstboss->EndUpdate();
-	bossstagobj->Update();
+	bossstagobj->EndUpdate();
 }
 //描画
 void FirstStage::Draw(DirectXCommon* dxCommon)
@@ -392,6 +392,8 @@ void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
 	firstboss->EndDraw(dxCommon);
 	player->BossEndDraw(dxCommon);
 	bossstagobj->BackDraw();
+	// 3Dオブジェクト描画後処理
+	IKEObject3d::PostDraw();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {
@@ -627,6 +629,14 @@ void FirstStage::BossRoomUpdate() {
 		}
 		else if (m_BossNumber == BossEnd) {
 			camerawork->SetCameraType(4);
+			//一定フレームでボス戦に入る
+			if (bossstagobj->GetEndTimer() == 590) {
+				scenechange->SetAddStartChange(true);
+			}
+			//ボタンでも行ける
+			if (input->TriggerButton(input->Button_A) && !bossscenechange->GetSubStartChange()) {
+				scenechange->SetAddStartChange(true);
+			}
 		}
 	}
 	else {

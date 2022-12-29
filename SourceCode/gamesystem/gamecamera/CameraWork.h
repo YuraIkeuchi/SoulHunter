@@ -26,7 +26,7 @@ public:
 	void AppCamera();//ボス登場時のカメラ
 	void AppCameraMove(XMFLOAT3 m_AfterEye, XMFLOAT3 m_AfterTarget,float AddFrame);//上のやつの動き
 	void EndCamera();//ボス登場時のカメラ
-	void EndCameraMove(float m_AfterSpeed, float m_AfterScale, float AddFrame);//上のやつの動き
+	void EndCameraMove(float AfterSpeed, float AfterScale, float AddFrame);//上のやつの動き
 	void ImGuiDraw();//ImGui
 
 	void SetPlayer(Player* player) { this->player.reset(player); }
