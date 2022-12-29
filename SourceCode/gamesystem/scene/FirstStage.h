@@ -1,9 +1,8 @@
 #pragma once
 #include "BaseScene.h"
 #include <array>       // ヘッダファイルインクルード
-#include "BossAppObj.h"
+#include "BossStagObj.h"
 #include "BossSceneChange.h"
-#include "BossEndObj.h"
 using namespace std;         //  名前空間指定
 
 //ゲームプレイシーン
@@ -49,9 +48,7 @@ public:
 	void GoalHit();
 private:
 	//ボス登場シーンのクラス
-	unique_ptr<BossAppObj> bossappobj = nullptr;
-	//ボス終了シーンのクラス
-	unique_ptr<BossEndObj> bossendobj = nullptr;
+	unique_ptr<BossStagObj> bossstagobj = nullptr;
 	//ボス登場シーンの画面暗転
 	unique_ptr<BossSceneChange> bossscenechange = nullptr;
 };

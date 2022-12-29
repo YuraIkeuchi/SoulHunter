@@ -1,11 +1,11 @@
-#include "BossAppObj.h"
+#include "BossStagObj.h"
 #include "ModelManager.h"
 #include "imgui.h"
 #include "JsonLoader.h"
 #include "ImageManager.h"
 using namespace DirectX;
 //初期化
-void BossAppObj::Initialize() {
+void BossStagObj::Initialize() {
 
 	jsonData = JsonLoader::LoadFile("BossApp");
 
@@ -65,7 +65,7 @@ void BossAppObj::Initialize() {
 
 }
 //更新
-void BossAppObj::Update() {
+void BossStagObj::Update() {
 	//pos = player->GetPosition();
 	//ボス登場フラグが立ったらタイマーが動く
 	if (m_AppStart && !m_EndApp) {
@@ -87,10 +87,10 @@ void BossAppObj::Update() {
 
 }
 //前面描画
-const void BossAppObj::FrontDraw() {
+const void BossStagObj::FrontDraw() {
 }
 //背景描画
-const void BossAppObj::BackDraw() {
+const void BossStagObj::BackDraw() {
 	/*ImGui::Begin("BossApp");
 	ImGui::Text("m_App:%d", m_App);
 	ImGui::Text("m_AppTimer:%d", m_AppTimer);
@@ -110,6 +110,6 @@ const void BossAppObj::BackDraw() {
 	IKESprite::PostDraw();
 }
 //解放
-void BossAppObj::Finalize() {
+void BossStagObj::Finalize() {
 
 }

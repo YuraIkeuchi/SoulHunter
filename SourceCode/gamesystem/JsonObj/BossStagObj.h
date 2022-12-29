@@ -9,7 +9,7 @@
 struct JsonData;
 
 using namespace std;         //  –¼‘O‹óŠÔw’è
-class BossAppObj {
+class BossStagObj {
 public:
 protected:
 	// DirectX::‚ğÈ—ª
