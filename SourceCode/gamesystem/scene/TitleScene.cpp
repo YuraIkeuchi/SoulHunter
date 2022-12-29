@@ -58,8 +58,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	ParticleManager::GetInstance()->Update();
 	Input* input = Input::GetInstance();
 	lightGroup->Update();
-	//m_PlayerPos = player->GetPosition();
-	//backtex->Update();
 	titleobj->Update();
 	//ƒJƒƒ‰‚ÌˆÊ’u’²®
 	camerawork->Update(camera);

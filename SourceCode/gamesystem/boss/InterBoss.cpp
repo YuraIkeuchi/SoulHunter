@@ -14,7 +14,7 @@ void InterBoss::Update() {
 				Spec();
 			}
 			else {
-				End();
+				Dead();
 			}
 		}
 	}
@@ -203,9 +203,7 @@ void InterBoss::EndUpdate() {
 void InterBoss::EndDraw(DirectXCommon* dxCommon) {
 	//ボスの描画
 	IKEObject3d::PreDraw();
-	if (m_Alive) {
-		Fbx_Draw(dxCommon);
-	}
+	Fbx_Draw(dxCommon);
 	//ボスごとのオブジェクトの描画
 	specialDrawEnd();
 }

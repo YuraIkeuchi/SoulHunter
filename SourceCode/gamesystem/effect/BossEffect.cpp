@@ -11,7 +11,7 @@ using namespace DirectX;
 BossEffect::BossEffect() {
 	IKETexture* ParticleEffect_[Effect_Max];
 	for (int i = 0; i < ParticleEffect.size(); i++) {
-		ParticleEffect_[i] = IKETexture::Create(ImageManager::ParticleEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+		ParticleEffect_[i] = IKETexture::Create(ImageManager::DamageEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		ParticleEffect_[i]->TextureCreate();
 		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_Scale[i] = { 0.0f,0.0f,0.0f };

@@ -3,6 +3,7 @@
 #include <array>       // ヘッダファイルインクルード
 #include "BossAppObj.h"
 #include "BossSceneChange.h"
+#include "BossEndObj.h"
 using namespace std;         //  名前空間指定
 
 //ゲームプレイシーン
@@ -24,8 +25,10 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void NormalDraw(DirectXCommon* dxCommon);//普通の描画
 	void BossAppDraw(DirectXCommon* dxCommon);//ボス登場シーンの描画
+	void BossEndDraw(DirectXCommon* dxCommon);//ボス登場シーンの描画
 	void NormalUpdate();//普通の更新
-	void BossAppUpdate();//ボス登場シーンの描画
+	void BossAppUpdate();//ボス登場シーンの更新
+	void BossEndUpdate();//ボス終了シーンの更新
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	
 	//要素全削除
@@ -46,7 +49,9 @@ public:
 	void GoalHit();
 private:
 	//ボス登場シーンのクラス
-	BossAppObj* bossappobj = nullptr;
+	unique_ptr<BossAppObj> bossappobj = nullptr;
+	//ボス終了シーンのクラス
+	unique_ptr<BossEndObj> bossendobj = nullptr;
 	//ボス登場シーンの画面暗転
-	BossSceneChange* bossscenechange = nullptr;
+	unique_ptr<BossSceneChange> bossscenechange = nullptr;
 };

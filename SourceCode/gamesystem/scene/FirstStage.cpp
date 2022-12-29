@@ -26,7 +26,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	firstboss = new FirstBoss();
 	camerawork = new CameraWork();
 	hitstop = new HitStop();
-	bossappobj = new BossAppObj();
+	
 	//bossappobj->SetAppStart(true);
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
@@ -63,18 +63,36 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	LoadObjParam(StageNumber);
 	BGMStart = true;
 
-	bossappobj->Initialize();
-	bossscenechange = new BossSceneChange();
+	//ボスシーンのためのもの
+	BossAppObj* bossappobj_;
+	bossappobj_ = new BossAppObj();
+	bossappobj_->Initialize();
+	bossappobj.reset(bossappobj_);
+	
+	BossEndObj* bossendobj_;
+	bossendobj_ = new BossEndObj();
+	bossendobj_->Initialize();
+	bossendobj.reset(bossendobj_);
+
+	BossSceneChange* bossscenechange_;
+	bossscenechange_ = new BossSceneChange();
+	bossscenechange.reset(bossscenechange_);
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
 {
-	
-	if (!bossappobj->GetApp()) {
+	//ボス登場シーンの更新
+	if (m_BossNumber == BossApp) {
+		BossAppUpdate();
+	}
+	else if (m_BossNumber == BossEnd) {
+		//ボスを倒した後の更新
+		BossEndUpdate();
+	}
+	else {
+		//普通の処理の更新
 		NormalUpdate();
 	}
-	
-	BossAppUpdate();
 	//各クラス更新
 	AllUpdate();
 	//光の配置
@@ -199,9 +217,17 @@ void FirstStage::NormalUpdate() {
 		ui->Update();
 	}
 }
-//ボス部屋の更新
+//ボス登場の更新
 void FirstStage::BossAppUpdate() {
+	player->BossAppUpdate(1);
 	bossappobj->Update();
+	firstboss->AppUpdate();
+}
+//ボス終了の更新
+void FirstStage::BossEndUpdate() {
+	player->BossEndUpdate(1);
+	firstboss->EndUpdate();
+	bossendobj->Update();
 }
 //描画
 void FirstStage::Draw(DirectXCommon* dxCommon)
@@ -253,11 +279,14 @@ void FirstStage::BackDraw(DirectXCommon* dxCommon)
 //ポストエフェクトがかからない
 void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	//ボス登場シーンかどうかで描画を決める
-	if (!bossappobj->GetApp()) {
-		NormalDraw(dxCommon);
+	if (m_BossNumber == BossApp) {
+		BossAppDraw(dxCommon);
+	}
+	else if (m_BossNumber == BossEnd) {
+		BossEndDraw(dxCommon);
 	}
 	else {
-		BossAppDraw(dxCommon);
+		NormalDraw(dxCommon);
 	}
 
 	//
@@ -282,12 +311,6 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	/*{
-		ImGui::Begin("Load");
-		ImGui::Text("m_RockNum:%d", m_BackRock_Num);
-		ImGui::Text("m_TorchNum:%d", m_BackTorch_Num);
-		ImGui::End();
-	}*/
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
@@ -364,11 +387,17 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	message->ExplainDraw();
 	IKESprite::PostDraw();
 }
-//ボスシーンの描画
+//ボス登場シーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
 	firstboss->AppDraw(dxCommon);
 	player->BossAppDraw(dxCommon);
 	bossappobj->BackDraw();
+}
+//ボス終了シーンの描画
+void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
+	firstboss->EndDraw(dxCommon);
+	player->BossEndDraw(dxCommon);
+	bossendobj->BackDraw();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {
@@ -542,13 +571,12 @@ void FirstStage::BossRoomUpdate() {
 		Audio::GetInstance()->StopWave(0);
 		firstboss->SetAlive(true);
 		//ボス登場
-		if (bossappobj->GetApp()) {
+		if (m_BossNumber == BossApp) {
 			//カメラワークやプレイヤーの挙動
 			camerawork->SetCameraType(3);
 			firstboss->SetMovie(true);
 			player->SetMovie(true);
-			player->BossAppUpdate(1);
-
+		
 			//一定フレームでボス戦に入る
 			if (bossappobj->GetAppTimer() == 800) {
 				bossscenechange->SetAddStartChange(true);
@@ -570,13 +598,10 @@ void FirstStage::BossRoomUpdate() {
 				firstboss->BattleInitialize();
 			}
 			
-			firstboss->AppUpdate();
 		}
-		else {
+		else if(m_BossNumber == BossBattle) {
 			//ボスバトル
-			if (firstboss->GetDeathTimer() > 200) {
-				scenechange->SetAddStartChange(true);
-			}
+			//ランダムで敵が出現する
 			if (respornenemy->GetEnemyArgment()) {
 				InterEnemy* newEnemy;
 				newEnemy = new Enemy();
@@ -595,6 +620,19 @@ void FirstStage::BossRoomUpdate() {
 			if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
 				firstboss->Update();
 			}
+
+			//ボスを倒したあとの処理
+			if (firstboss->GetDeathTimer() > 100) {
+				bossscenechange->SetAddStartChange(true);
+				Audio::GetInstance()->StopWave(1);
+			}
+			if (bossscenechange->AddBlack(0.04f)) {
+				m_BossNumber = BossEnd;
+				bossscenechange->SetSubStartChange(true);
+			}
+		}
+		else if (m_BossNumber == BossEnd) {
+			camerawork->SetCameraType(0);
 		}
 	}
 	else {
@@ -604,7 +642,6 @@ void FirstStage::BossRoomUpdate() {
 }
 //シーン変更など
 void FirstStage::ChangeUpdate() {
-
 	//死んだときも戻される
 	if (player->GetHP() < 1) {
 		scenechange->SetAddStartChange(true);
@@ -732,6 +769,7 @@ void FirstStage::GoalHit() {
 		minimap->ResetBlock();
 		mapchange->SetSubStartChange(true);
 		if (StageNumber == BossMap) {
+			m_BossNumber = BossApp;
 			bossappobj->SetAppStart(true);
 		}
 	}

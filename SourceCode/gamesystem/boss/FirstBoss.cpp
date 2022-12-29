@@ -215,7 +215,7 @@ void FirstBoss::App() {
 	}
 }
 //“|‚µ‚½Œã‚Ì“®‚«
-void FirstBoss::End() {
+void FirstBoss::Dead() {
 	m_Rotation.y += 5.0f;
 	if (m_Scale.x > 0.0f) {
 		m_Scale.x -= 0.0001f;
@@ -225,6 +225,16 @@ void FirstBoss::End() {
 	else {
 		m_Scale = { 0.0f,0.0f,0.0f };
 	}
+	m_fbxObject->SetScale(m_Scale);
+	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+	Fbx_SetParam();
+	//enemyobj->SetScale(m_Scale);
+	//enemyobj->SetRotation(m_rot);
+}
+//ƒ{ƒXI—¹
+void FirstBoss::End() {
+	m_Scale = { 0.01f,0.01f,0.01f };
+	m_Position = { 0.0f,8.0f,10.0f };
 	m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	Fbx_SetParam();

@@ -11,7 +11,7 @@ using namespace DirectX;
 EnemyEffect::EnemyEffect() {
 	IKETexture* ParticleEffect_[Effect_Max];
 	for (int i = 0; i < ParticleEffect.size(); i++) {
-		ParticleEffect_[i] = IKETexture::Create(ImageManager::ParticleEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+		ParticleEffect_[i] = IKETexture::Create(ImageManager::DamageEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		ParticleEffect_[i]->TextureCreate();
 		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
@@ -62,7 +62,7 @@ void EnemyEffect::Draw() {
 	ImGui::End();*/
 	IKETexture::PreDraw(1);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
-		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.5f)) {
+		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.4f)) {
 			ParticleEffect[i]->Draw();
 		}
 	}
@@ -84,7 +84,7 @@ void EnemyEffect::SetEffect(const XMFLOAT3& pos, bool& Effect,int HitDir) {
 					(float)(rand() % 100 - 50) / 1000,
 					0.0f,
 					};
-			m_AddScale[i] = (float)(rand() % 20 + 20) / 800;
+			m_AddScale[i] = (float)(rand() % 20 + 20) / 1000;
 			m_Scale[i] = { 0.0f,0.0f,0.0f };
 			m_Color[i] = { 1.0f,0.5f,0.0f,1.0f };
 			m_ScaleChange[i] = false;
@@ -98,7 +98,7 @@ void EnemyEffect::SetEffect(const XMFLOAT3& pos, bool& Effect,int HitDir) {
 			if (!m_ScaleChange[i]) {
 				m_Scale[i] = { m_Scale[i].x + m_AddScale[i],m_Scale[i].y + m_AddScale[i], m_Scale[i].z + m_AddScale[i] };
 
-				if (m_Scale[i].x >= 0.5f) {
+				if (m_Scale[i].x >= 0.3f) {
 					m_ScaleChange[i] = true;
 				}
 			}
