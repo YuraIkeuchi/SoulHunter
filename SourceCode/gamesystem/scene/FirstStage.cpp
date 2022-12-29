@@ -301,7 +301,6 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 	{
 		int App = camerawork->GetCameraNumber();
-		float frame = camerawork->GetFrame();
 		ImGui::Begin("GamePlay");
 		ImGui::SetWindowPos(ImVec2(1000, 150));
 		ImGui::SetWindowSize(ImVec2(280, 150));
@@ -632,7 +631,7 @@ void FirstStage::BossRoomUpdate() {
 			}
 		}
 		else if (m_BossNumber == BossEnd) {
-			camerawork->SetCameraType(0);
+			camerawork->SetCameraType(4);
 		}
 	}
 	else {

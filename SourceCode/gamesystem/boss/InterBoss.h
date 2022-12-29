@@ -70,7 +70,6 @@ public:
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
 	bool BulletCollision();//弾との当たり判定;
-	bool SpecialCollide();//必殺技の当たり判定
 	void ArgEffect();//エフェクトの生成
 	//void Pause(const int& Timer);
 protected:
@@ -107,7 +106,6 @@ protected:
 	int m_MoveCount = 0;//何回行動したか
 	bool m_Alive = false;//生きてますか
 	bool m_BulletHit = false;//弾がヒットしたか
-	bool m_SpecialHit = false;//必殺技の当たり判定
 	bool m_Movie = false;//ムービー中かどうか
 	int m_MovieTimer = 0;//ムービーの時間
 	bool m_AppMove = false;//登場シーン

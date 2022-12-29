@@ -6,7 +6,6 @@ void InterBoss::Update() {
 	collidePlayer();
 	collideBoss();
 	BulletCollision();
-	SpecialCollide();
 	//ボスの行動
 	if (!pause->GetIsPause()) {
 		if (!m_Movie) {
@@ -36,11 +35,7 @@ void InterBoss::Update() {
 	if (!playerbullet->GetAlive()) {
 		m_BulletHit = false;
 	}
-	//必殺技があたったかどうか
-	if (!player->GetSpecialEffect()) {
-		m_SpecialHit = false;
-	}
-	
+
 	//エフェクトの生成
 	ArgEffect();
 	//エフェクトの更新
@@ -144,25 +139,6 @@ bool InterBoss::BulletCollision() {
 		else {
 			m_HitDir = HitLeft;
 		}
-		return true;
-	}
-	else {
-		return false;
-	}
-
-	return true;
-}
-//敵がダメージ食らう(必殺技)
-bool InterBoss::SpecialCollide() {
-	bool l_SpecialAlive = playereffect->GetSpecialAlive();
-	XMFLOAT3 l_SpecialPos = playereffect->GetSpecialPosition();
-	float l_SpecialRadius = playereffect->GetSpecialRadius();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_SpecialRadius, l_SpecialPos.x, l_SpecialPos.y, l_SpecialRadius)
-		&& (m_HP > 0) && (l_SpecialAlive) && (!m_SpecialHit)) {
-		m_HP -= 5;
-		m_EffectArgment = true;
-		m_SpecialHit = true;
-		m_Effect = true;
 		return true;
 	}
 	else {

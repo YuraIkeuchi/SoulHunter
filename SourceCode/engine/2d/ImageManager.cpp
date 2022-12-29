@@ -41,11 +41,9 @@ void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(DamageEffect, L"Resources/2d/effect/effect2.png");
 	IKETexture::LoadTexture(NormalEffect, L"Resources/2d/effect/NormalEffect.png");
 	IKETexture::LoadTexture(SmokeTex, L"Resources/2d/effect/hootEffect.png");
-	IKETexture::LoadTexture(SpecialEffect, L"Resources/2d/effect/SpecialAttack.png");
 	IKETexture::LoadTexture(HealEffect, L"Resources/2d/effect/HealEffect.png");
 	IKETexture::LoadTexture(HitEffect, L"Resources/2d/effect/HitEffect3.png");
 	IKETexture::LoadTexture(TutorialTex, L"Resources/2d/text/textpoint.png");
-	IKETexture::LoadTexture(PlayerSoul, L"Resources/2d/effect/PlayerSoul.png");
 	IKETexture::LoadTexture(ChestTex, L"Resources/2d/text/textpoint.png");
 	IKETexture::LoadTexture(WingEffect, L"Resources/2d/effect/Wing3.png");
 	IKETexture::LoadTexture(LightTex, L"Resources/2d/sceneback/BackLight.png");

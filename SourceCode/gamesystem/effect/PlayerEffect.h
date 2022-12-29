@@ -29,12 +29,6 @@ public:
 
 	bool GetDushAlive() { return  m_DushAlive; }
 
-	const XMFLOAT3& GetSpecialPosition() { return  m_SpecialEffectpos; }
-
-	bool GetSpecialAlive() { return  m_SpecialAlive; }
-
-	float GetSpecialRadius() { return  m_SpecialRadius; }
-	
 	void SetDushAlive(bool DushAlive) { this->m_DushAlive = DushAlive; }
 
 	void SetDushEffectPosition(const XMFLOAT3& DushEffectpos) { this->m_DushEffectpos = DushEffectpos; }
@@ -46,8 +40,6 @@ public:
 	void DamageEffectSet();
 	//ヒットエフェクト
 	void SetHitEffect();
-	//必殺技時のエフェクトセット
-	void SpecialEffectSet();
 
 private:
 	//クラス
@@ -68,13 +60,6 @@ private:
 	array<XMFLOAT3, DamageEffect_Max> m_DamageEffectscale;//大きさ
 	array<XMFLOAT3, DamageEffect_Max> m_BoundPower;//加わる力
 	array<bool, DamageEffect_Max> m_DamageAlive;//生存
-	
-	//必殺技のエフェクト
-	unique_ptr<IKETexture> SpecialEffecttexture = nullptr;
-	XMFLOAT3 m_SpecialEffectpos = { 0.0f,0.0f,0.0f };//座標
-	XMFLOAT4 m_SpecialEffectcolor = { 0.0f,0.0f,0.0f,1.0f };//色
-	XMFLOAT3 m_SpecialEffectscale = { 0.0f,0.0f,0.0f };//大きさ
-	bool m_SpecialAlive = false;//生存
 	//ヒットエフェクト
 	unique_ptr<IKETexture> HitEffectTexture;
 	//ヒットエフェクト変数

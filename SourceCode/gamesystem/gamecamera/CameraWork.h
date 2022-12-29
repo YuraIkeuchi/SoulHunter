@@ -25,6 +25,8 @@ public:
 	void RightStickCamera();//右スティックで動かすカメラ
 	void AppCamera();//ボス登場時のカメラ
 	void AppCameraMove(XMFLOAT3 m_AfterEye, XMFLOAT3 m_AfterTarget,float AddFrame);//上のやつの動き
+	void EndCamera();//ボス登場時のカメラ
+	void EndCameraMove(float m_AfterSpeed, float m_AfterScale, float AddFrame);//上のやつの動き
 	void ImGuiDraw();//ImGui
 
 	void SetPlayer(Player* player) { this->player.reset(player); }
@@ -34,8 +36,7 @@ public:
 	void SetCameraType(int m_CameraType) { this->m_CameraType = m_CameraType; }
 	void SetIntroTimer(int m_IntroTimer) { this->m_IntroTimer = m_IntroTimer; }
 	int GetCameraNumber() { return  m_AppCameraNumber; }
-	bool GetEndApp() { return  m_EndApp; }
-	float GetFrame() { return  m_Frame; }
+
 private:
 	//クラス
 	unique_ptr<Player> player;
@@ -53,12 +54,24 @@ private:
 	float m_PI = 3.14f;
 	float m_TitleCameraRadius = 0.0f;
 	float m_TitleCameraSpeed = 0.0f;
-	float m_TitleCameraScale = 0.0f;// LaneNumと一緒に変えること
+	float m_TitleCameraScale = 0.0f;
 	float m_TitleCameraCircleX = 0.0f;
 	float m_TitleCameraCircleZ = 0.0f;
+
+	//ボス終了シーンの変数
+	float m_EndCameraRadius = 0.0f;
+	float m_EndCameraSpeed = 0.0f;
+	float m_EndCameraScale = 0.0f;
+	float m_EndCameraCircleX = 0.0f;
+	float m_EndCameraCircleZ = 0.0f;
+	float m_AfterEndCameraSpeed = 0.0f;
+	float m_AfterEndCameraScale = 0.0f;
 	//ボスシーンのカメラの動き
 	int m_AppCameraNumber = 0;//登場シーンのカメラ番号
-	int m_Timer = 0;//タイマー
+	int m_AppTimer = 0;//タイマー
+	//ボスシーンのカメラの動き
+	int m_EndCameraNumber = 0;//登場シーンのカメラ番号
+	int m_EndTimer = 0;//タイマー
 	bool m_EndApp = false;//登場シーンが終わったか
 
 	//右スティックで動かす物
@@ -73,14 +86,17 @@ private:
 		DownCamera,
 	};
 	enum AppCamera {
-		No,
-		Camera1,
-		Camera2,
-		Camera3,
-		Camera4,
-		Camera5,
-		Camera6,
-		Camera7,
+		AppNo,
+		AppCamera1,
+		AppCamera2,
+		AppCamera3,
+	};
+
+	enum EndCamera {
+		EndNo,
+		EndCamera1,
+		EndCamera2,
+		EndCamera3,
 	};
 	//カメラのタイプ
 	int m_CameraType = 0;
@@ -88,11 +104,13 @@ private:
 		Title,
 		Introduction,
 		Normal,
-		BossAPP,
+		BossApp,
+		BossEnd,
 	};
 
 	//導入シーン
 	int m_IntroTimer = 0;
 	bool m_IntEyeStart = false;
 	bool m_IntTargetStart = false;
+
 };

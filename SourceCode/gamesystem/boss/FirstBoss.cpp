@@ -233,8 +233,9 @@ void FirstBoss::Dead() {
 }
 //ƒ{ƒXI—¹
 void FirstBoss::End() {
-	m_Scale = { 0.01f,0.01f,0.01f };
-	m_Position = { 0.0f,8.0f,10.0f };
+	m_Scale = { 0.03f,0.03f,0.03f };
+	m_Position = { 0.0f,10.0f,20.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	Fbx_SetParam();

@@ -72,5 +72,5 @@ private:
 	array<int, Particle_Max> m_Number;
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
 	//unique_ptr<Player> player;
-	int m_NormalParticleCount = 80;
+	int m_NormalParticleCount = 40;
 };

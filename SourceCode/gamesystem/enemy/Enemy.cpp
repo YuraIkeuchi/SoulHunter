@@ -90,7 +90,6 @@ void Enemy::Action() {
 	if (m_Alive && UpdateCollide()) {
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		//“–‚½‚è”»’è
-		SpecialCollide();
 		PlayerCollide();
 		Fbx_SetParam();
 	}
