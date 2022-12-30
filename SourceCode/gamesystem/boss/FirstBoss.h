@@ -37,8 +37,11 @@ private:
 	int m_AnimeTimer = 0;
 	int m_AnimeSpeed = 1;
 	bool m_AnimationStop = false;
+	//登場シーン
 	int m_AppTimer = 0;
 	int m_AppNumber = 0;
+	//終了シーン
+	int m_EndTimer = 0;
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
 	enum AppNumber {
