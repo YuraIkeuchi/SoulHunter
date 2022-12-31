@@ -235,22 +235,6 @@ void FirstBoss::Dead() {
 }
 //É{ÉXèIóπ
 void FirstBoss::End() {
-	m_EndTimer++;
-	if (520 <= m_EndTimer) {
-		if (m_Addcolor.x <= 1.0f) {
-			m_Addcolor.x += 0.01f;
-			m_Addcolor.y += 0.01f;
-			m_Addcolor.z += 0.01f;
-		}
-		else {
-			m_Addcolor.x = 1.0f;
-			m_Addcolor.y = 1.0f;
-			m_Addcolor.z = 1.0f;
-		}
-		if (m_AddDisolve < 2.0f) {
-			m_AddDisolve += 0.01f;
-		}
-	}
 	m_Scale = { 0.03f,0.03f,0.03f };
 	m_Position = { 0.0f,10.0f,20.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };

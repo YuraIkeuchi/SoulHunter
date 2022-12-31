@@ -394,6 +394,7 @@ void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
 void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
 	firstboss->EndDraw(dxCommon);
 	player->BossEndDraw(dxCommon);
+	camerawork->EndDraw();
 	bossstagobj->FrontDraw();
 }
 //マップ初期化とそれに合わせた初期化
@@ -630,8 +631,8 @@ void FirstStage::BossRoomUpdate() {
 		}
 		else if (m_BossNumber == BossEnd) {
 			camerawork->SetCameraType(4);
-			//一定フレームでボス戦に入る
-			if (bossstagobj->GetEndTimer() == 590) {
+			//一定フレームでタイトルに戻る
+			if (bossstagobj->GetEndTimer() == 670) {
 				scenechange->SetAddStartChange(true);
 			}
 			//ボタンでも行ける

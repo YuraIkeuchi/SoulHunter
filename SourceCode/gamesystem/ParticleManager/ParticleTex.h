@@ -38,6 +38,8 @@ public:
 	void ChestParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer);
 
 	void SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer);
+
+	void BossEndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer);
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
@@ -91,5 +93,6 @@ private:
 		End,
 		Chest,
 		Save,
+		BossEnd,
 	};
 };

@@ -20,7 +20,7 @@ void BossEndParticle::Initialize() {
 	}
 }
 //ä‚ÇÃï˚ÇÃçXêV
-void BossEndParticle::ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer, int ThornDir) {
+void BossEndParticle::ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	DownRockParticle(StartPos, Timer, TargetTimer);
 	for (int i = 0; i < particleobj.size(); i++) {
 		particleobj[i]->SetPosition(m_RockPos[i]);
@@ -70,6 +70,7 @@ void BossEndParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int 
 
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_RockAlive[i]) {
+			m_RockPos[i].z = StartPos.z;
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x += m_RockAddPower[i].x;

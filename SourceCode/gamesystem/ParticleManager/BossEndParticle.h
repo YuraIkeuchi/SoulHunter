@@ -1,6 +1,5 @@
 #pragma once
 #include "IKETexture.h"
-#include "AllArray.h"
 #include "IKEModel.h"
 #include "IkeObject3d.h"
 #include <array>   
@@ -29,7 +28,7 @@ public:
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer, int ThornDir);
+	void ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer);
 	void DownRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer);
 	/// <summary>
 	/// 描画
@@ -41,7 +40,7 @@ public:
 	//gettersetter
 private:
 	//定数
-	static const int BossEndParticle_Max = 20;//パーティクルの数
+	static const int BossEndParticle_Max = 40;//パーティクルの数
 private:
 	array<unique_ptr <IKEObject3d>, BossEndParticle_Max> particleobj;
 	IKEModel* model = nullptr;
