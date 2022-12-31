@@ -131,13 +131,10 @@ void Message::TexMove() {
 	//sin波によって上下に動く
 	m_Angle += 1.0f;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
-
-	for (int i = 0; i < SkillMax; i++) {
-		if (m_Hit) {
-			m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_LetterPos.y + 3.0f);
-			m_TexPosition.x = m_LetterPos.x;
-			m_TexPosition.z = m_LetterPos.z;
-		}
+	if (m_Hit) {
+		m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_LetterPos.y + 3.0f);
+		m_TexPosition.x = m_LetterPos.x;
+		m_TexPosition.z = m_LetterPos.z;
 	}
 
 	ReadTex->SetPosition(m_TexPosition);
@@ -237,7 +234,7 @@ bool Message::LetterExplainRead() {
 	}
 	//一定のフレームがおわったらこの処理が終わる
 	else {
-		for (int i = 0; i < DushExplain_Max; i++) {
+		for (int i = 0; i < DushLetter_Max; i++) {
 			m_DushDraw[i] = false;
 		}
 		//説明文が終わると同時にマップを開く

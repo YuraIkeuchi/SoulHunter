@@ -45,6 +45,9 @@ public:
 	void Draw();
 
 	void ImGuiDraw();
+private:
+	//定数
+	static const int Particle_Max = 40;//パーティクルの数
 public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 	void SetParticleType(int m_ParticleType) { this->m_ParticleType = m_ParticleType; }

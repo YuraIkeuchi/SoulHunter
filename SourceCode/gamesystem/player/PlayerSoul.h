@@ -8,7 +8,6 @@
 #include "IKETexture.h"
 #include "Player.h"
 #include "Block.h"
-#include "AllArray.h"
 #include "ParticleSoul.h"
 #include <array>   
 #include <memory> 

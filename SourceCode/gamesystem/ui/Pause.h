@@ -3,7 +3,6 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "AllArray.h"
 #include "Audio.h"
 #include "VolumManager.h"
 #include "Player.h"
@@ -40,6 +39,9 @@ public:
 	void SetIsPause(bool IsPause) { this->m_IsPause = IsPause; }
 	void SetPauseNumber(int m_PauseNumber) { this->m_PauseNumber = m_PauseNumber; }
 private:
+	//定数
+	static const int Pause_Max = 3;//ポーズの数
+private:
 	//継承元のクラス
 	unique_ptr<SkillPause> skillpause = nullptr;
 	unique_ptr<Option> option = nullptr;
@@ -50,7 +52,6 @@ private:
 	unique_ptr<IKESprite> PauseSprite;
 	array<unique_ptr<IKESprite>, Pause_Max> PausePartsSprite;
 	//変数
-
 	array<XMFLOAT2, Pause_Max> m_PartsPos;//座標
 	array<XMFLOAT2, Pause_Max> m_PartsSize;//大きさ
 	//sin波に使うもの

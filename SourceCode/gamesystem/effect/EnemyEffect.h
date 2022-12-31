@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include "IKESprite.h"
 #include "IKETexture.h"
-#include "AllArray.h"
 #include "VariableCommon.h"
 #include <array>   
 #include <memory> 
@@ -25,6 +24,9 @@ public:
 	void Draw();
 	void SetEffect(const XMFLOAT3& pos, bool& Effect,int HitDir);
 	void SetHitEffect(const XMFLOAT3& pos, bool& Effect);
+private:
+	//定数
+	static const int Effect_Max = 20;//エフェクトの数
 public:
 	//getter setter
 private:

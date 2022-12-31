@@ -1,7 +1,6 @@
 #pragma once
 #include "IKESprite.h"
 #include "IKETexture.h"
-#include "AllArray.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
@@ -24,6 +23,9 @@ public:
 	void Update(XMFLOAT3 StartPos,XMFLOAT3 TargetPos,int ChestState);//更新
 	void Draw();//描画
 	void EffectMove(XMFLOAT3 StartPos, XMFLOAT3 TargetPos, int ChestState);//エフェクトの動き
+private:
+	//定数
+	static const int ChestEffect_Max = 10;//パーティクルの数
 private:
 	//テクスチャ
 	array<unique_ptr<IKETexture>, ChestEffect_Max> chesteffect;

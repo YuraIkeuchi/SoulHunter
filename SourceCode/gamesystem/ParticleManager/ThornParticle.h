@@ -1,6 +1,5 @@
 #pragma once
 #include "IKETexture.h"
-#include "AllArray.h"
 #include "IKEModel.h"
 #include "IkeObject3d.h"
 #include <array>   
@@ -46,6 +45,10 @@ public:
 	void Draw();
 
 	void ImGuiDraw();
+private:
+	//定数
+	static const int ThornParticleTex_Max = 15;//パーティクルの数
+	static const int ThornParticleObj_Max = 15;//パーティクルの数
 public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 private:

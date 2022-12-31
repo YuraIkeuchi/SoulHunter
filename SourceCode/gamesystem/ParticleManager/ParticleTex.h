@@ -1,7 +1,5 @@
 #pragma once
 #include "IKETexture.h"
-#include "AllArray.h"
-
 #include <array>   
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -53,6 +51,9 @@ public:
 	void SetParticleBillboard(bool m_ParticleBillboard) { this->m_ParticleBillboard = m_ParticleBillboard; }
 	void SetStartScale(float m_StartScale) { this->m_StartScale = m_StartScale; }
 	void SetAddScale(float m_AddScale) { this->m_AddScale = m_AddScale; }
+private:
+	//定数
+	static const int ParticleTex_Max = 40;//パーティクルの数
 private:
 	//テクスチャ
 	array<unique_ptr <IKETexture>, ParticleTex_Max> particletex;

@@ -2,7 +2,6 @@
 #include"IKESprite.h"
 #include"Player.h"
 #include "InterBoss.h"
-#include "AllArray.h"
 #include "PlayerSkill.h"
 //UIのクラス
 class UI {
@@ -21,6 +20,9 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
+	//定数
+	static const int HP_Max = 5;//HPの数
+private:
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<PlayerSkill> playerskill = nullptr;
 	unique_ptr<InterBoss> interboss = nullptr;
@@ -28,7 +30,6 @@ private:
 	unique_ptr<IKESprite> BossHpSprite;//ボスのHP
 	array<unique_ptr<IKESprite>, 72> SoulSprite;//プレイヤーのMP
 	unique_ptr<IKESprite> SoulGageSprite;//プレイヤーのスタミナの枠
-	array<unique_ptr<IKESprite>, WingUI_Max> WingUiTex;
 	//変数
 	int m_HP = 0;
 	float m_Soul = 0.0f;

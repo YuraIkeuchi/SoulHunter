@@ -3,7 +3,6 @@
 #include "PlayerSkill.h"
 #include"Pause.h"
 #include"MiniMap.h"
-#include "AllArray.h"
 #include "MarkEffect.h"
 #include "VariableCommon.h"
 #include "IKESprite.h"
@@ -38,6 +37,9 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+private:
+	//定数
+	static const int DushLetter_Max = 3;//アニメーションの数
 public:
 	//getter
 

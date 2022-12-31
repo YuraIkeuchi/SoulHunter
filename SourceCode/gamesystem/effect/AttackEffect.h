@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include "IKESprite.h"
 #include "IKETexture.h"
-#include "AllArray.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード

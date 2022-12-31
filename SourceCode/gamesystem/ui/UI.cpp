@@ -54,14 +54,7 @@ UI::UI(Player* player, InterBoss* boss) {
 	SoulGageSprite_ = IKESprite::Create(3, { 0.0f,0.0f });
 	SoulGageSprite_->SetPosition({ 32.0f,32.0f });
 	SoulGageSprite.reset(SoulGageSprite_);
-	//ジャンプ回数
-	IKESprite* WingUiTex_[WingUI_Max];
-	for (std::size_t i = 0; i < WingUiTex.size(); i++) {
-		WingUiTex_[i] = IKESprite::Create(4, { 0.0f,0.0f });
-		WingUiTex_[i]->SetSize({ 96.0f,96.0f });
-		WingUiTex_[i]->SetPosition({ (30.0f * i) + 1050.0f,0.0f });
-		WingUiTex[i].reset(WingUiTex_[i]);
-	}
+	
 	//this->player = player;
 	//ボスのHP
 	if (boss) {
@@ -132,10 +125,7 @@ const void UI::Draw() {
 		}
 	}
 	SoulGageSprite->Draw();
-	for (int i = 0; i < WingUI_Max - m_JumpCount; i++) {
-		//WingUiTex[i]->Draw();
-	}
-	
+
 	if (interboss && playerskill->GetUseLibra() && interboss->GetAlive()) {
 		BossHpSprite->Draw();
 	}

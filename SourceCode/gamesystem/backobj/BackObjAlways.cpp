@@ -1,6 +1,5 @@
 #include "BackObjAlways.h"
 #include "ModelManager.h"
-#include "ImageManager.h"
 //‰Šú‰»
 void BackObjAlways::Initialize() {
 

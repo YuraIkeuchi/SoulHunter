@@ -13,10 +13,10 @@ using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
 //静的メンバ変数の実態
-bool SkillPause::m_SetSkill[SetMax] = { false };
-XMFLOAT2 SkillPause::m_SkillPos[SkillMax] = {};
-XMFLOAT2 SkillPause::m_SetSkillPos[SetMax] = {};
-int SkillPause::m_SkillName[SetMax] = { 0 };
+bool SkillPause::m_SetSkill[Set_Max] = { false };
+XMFLOAT2 SkillPause::m_SkillPos[Skill_Max] = {};
+XMFLOAT2 SkillPause::m_SetSkillPos[Set_Max] = {};
+int SkillPause::m_SkillName[Set_Max] = { 0 };
 //読み込み
 SkillPause::SkillPause() {
 	CompassPause* compasspause_;
@@ -52,18 +52,18 @@ SkillPause::SkillPause() {
 	select_->SetSize({ 96.0f,96.0f });
 	select.reset(select_);
 	//手に入るスキルの数
-	IKESprite* NoItemSprite_[SkillMax];
-	for (int i = 0; i < SkillMax; i++) {
+	IKESprite* NoItemSprite_[Skill_Max];
+	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite_[i] = IKESprite::Create(ImageManager::NoItem, { 0.0f,0.0f });
 		NoItemSprite_[i]->SetSize({ 48.0f,48.0f });
 		NoItemSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
 	}
 	
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite[i].reset(NoItemSprite_[i]);
 	}
 
-	IKESprite* SetSkillSprite_[SetMax];
+	IKESprite* SetSkillSprite_[Set_Max];
 	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
 		SetSkillSprite_[i] = IKESprite::Create(ImageManager::NoItem, { 0.0f,0.0f });
 		SetSkillSprite_[i]->SetSize({ 48.0f,48.0f });
@@ -73,12 +73,12 @@ SkillPause::SkillPause() {
 	}
 
 	//スキルの說明
-	IKESprite* ExplainSprite_[SkillMax];
+	IKESprite* ExplainSprite_[Skill_Max];
 	ExplainSprite_[0] = IKESprite::Create(ImageManager::LibraExplain, { 0.0f,0.0f });
 	ExplainSprite_[1] = IKESprite::Create(ImageManager::DushExplain, { 0.0f,0.0f });
 	ExplainSprite_[2] = IKESprite::Create(ImageManager::CompassExplain, { 0.0f,0.0f });
 	ExplainSprite_[3] = IKESprite::Create(ImageManager::HealExplain, { 0.0f,0.0f });
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		ExplainSprite_[i]->SetPosition({ 770.0f,200.0f });
 		ExplainSprite[i].reset(ExplainSprite_[i]);
 	}
@@ -135,7 +135,7 @@ void SkillPause::Update() {
 	//色指定
 	PauseSprite->SetColor(m_SkillColor);
 	select->SetColor(m_SkillColor);
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite[i]->SetColor(m_SkillColor);
 		ExplainSprite[i]->SetColor(m_SkillColor);
 	}
@@ -165,7 +165,7 @@ const void SkillPause::Draw() {
 		SetSkillSprite[i]->Draw();
 	}
 
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite[i]->Draw();
 	}
 	//スキル取得状況によって変わる
@@ -240,7 +240,7 @@ const void SkillPause::Draw() {
 void SkillPause::Finalize() {
 	//delete PauseSprite;
 	//delete select;
-	//for (int i = 0; i < SkillMax; i++) {
+	//for (int i = 0; i < Skill_Max; i++) {
 	//	delete SkillSprite[i];
 	//}
 	//for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
@@ -249,7 +249,7 @@ void SkillPause::Finalize() {
 }
 //スキルのリセット
 void SkillPause::ResetSkillPause() {
-	for (int i = 0; i < SetMax; i++) {
+	for (int i = 0; i < Set_Max; i++) {
 		m_SetSkill[i] = false;
 		m_SkillName[i] = None;
 	}
@@ -286,7 +286,7 @@ void SkillPause::SelectSkill() {
 		if (input->TriggerButton(input->Button_A) && m_SkillColor.w == 1.0f) {
 			//ライブラスキル
 			if (m_SelectNumber == 0 && playerskill->GetLibraSkill() && !playerskill->GetUseLibra()) {
-				for (int i = 0; i < SetMax; i++) {
+				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
@@ -300,7 +300,7 @@ void SkillPause::SelectSkill() {
 			}
 			//ダッシュスキル
 			if (m_SelectNumber == 1 && playerskill->GetDushSkill() && !playerskill->GetUseDush()) {
-				for (int i = 0; i < SetMax; i++) {
+				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
@@ -314,7 +314,7 @@ void SkillPause::SelectSkill() {
 			}
 			//コンパススキル
 			else if (m_SelectNumber == 2 && playerskill->GetCompassSkill() && !playerskill->GetUseCompass()) {
-				for (int i = 0; i < SetMax; i++) {
+				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
@@ -328,7 +328,7 @@ void SkillPause::SelectSkill() {
 			}
 			//ヒールスキル
 			else if (m_SelectNumber == 3 && playerskill->GetHealSkill() && !playerskill->GetUseHeal()) {
-				for (int i = 0; i < SetMax; i++) {
+				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;

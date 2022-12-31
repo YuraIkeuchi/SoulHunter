@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "Audio.h"
 #include "VolumManager.h"
-#include "AllArray.h"
 #include "CompassPause.h"
 #include "LibraPause.h"
 #include "DushPause.h"
@@ -33,6 +32,10 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+private:
+	//定数
+	static const int Set_Max = 2;//セットできるスキル
+	static const int Skill_Max = 4;//スキルの数
 
 public:
 	//getter
@@ -51,21 +54,15 @@ private:
 	//スプライト
 	unique_ptr<IKESprite> PauseSprite = nullptr;
 	unique_ptr<IKESprite> select = nullptr;
-	//array<IKESprite*, SkillMax> SkillSprite;
-	//static array<XMFLOAT2, SkillMax> SkillPos;
-	static XMFLOAT2 m_SkillPos[SkillMax];
-	array<unique_ptr<IKESprite>, SkillMax> NoItemSprite;
-	array<unique_ptr<IKESprite>, SkillMax> ExplainSprite;
-	array<unique_ptr<IKESprite>, SetMax> SetSkillSprite;
-	//IKESprite* SetSkillSprite[SetMax];
-	//static array<XMFLOAT2, SetMax> SetSkillPos;
-	static XMFLOAT2 m_SetSkillPos[SetMax];
-	static bool m_SetSkill[SetMax];
-	static int m_SkillName[SetMax];
-
-	//static array<bool, SetMax> SetSkill;
-	//static array<int, SetMax> SkillName;
-	array<XMFLOAT2, SetMax> m_AfterSkillPos;
+	array<unique_ptr<IKESprite>, Skill_Max> NoItemSprite;
+	array<unique_ptr<IKESprite>, Skill_Max> ExplainSprite;
+	array<unique_ptr<IKESprite>, Set_Max> SetSkillSprite;
+	//変数
+	static XMFLOAT2 m_SkillPos[Skill_Max];
+	static XMFLOAT2 m_SetSkillPos[Set_Max];
+	static bool m_SetSkill[Set_Max];
+	static int m_SkillName[Set_Max];
+	array<XMFLOAT2, Set_Max> m_AfterSkillPos;
 	int m_SelectNumber = 0;
 	int m_SelectDir;
 	XMFLOAT2 m_SelectPos = { 0.0f,0.0f };
