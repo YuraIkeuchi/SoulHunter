@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "IKETexture.h"
 #include "IKESprite.h"
-#include "AllArray.h"
 #include "ParticleTex.h"
 #include "MarkEffect.h"
 #include "VariableCommon.h" 
@@ -38,6 +37,9 @@ public:
 	void TexMove();
 	//アニメーション
 	void SaveAnime();
+private:
+	//定数
+	static const int SaveSprite_Max = 4;//アニメーションの数
 public:
 	//getter
 	const XMFLOAT3& GetPosition() { return  m_Position; }

@@ -4,6 +4,10 @@
 CameraWork::CameraWork() {
 	m_eyePos = { 0.0f,15.0f,-10.0f };
 	m_targetPos = { 0.0f,0.0f,0.0f };
+	BossEndParticle* endparticle_;
+	endparticle_ = new BossEndParticle();
+	endparticle_->Initialize();
+	endparticle.reset(endparticle_);
 }
 //更新
 void CameraWork::Update(DebugCamera* camera) {
@@ -200,7 +204,22 @@ void CameraWork::EndCamera() {
 		}
 	}
 	else if (m_EndCameraNumber == EndCamera2) {
-		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.005f);
+		m_ParticleCount++;
+		//徐々にパーティクルを出す
+		if (m_EndCameraScale < 50.0f) {
+			m_TargetCount = 6;
+			if (m_ParticleCount > 6) {
+				m_ParticleCount = 0;
+			}
+		}
+		else {
+			m_TargetCount = 2;
+			if (m_ParticleCount > 2) {
+				m_ParticleCount = 0;
+			}
+		}
+	
+		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.0025f);
 	}
 	//円運動の計算
 	m_EndCameraRadius = m_EndCameraSpeed * m_PI / 180.0f;
@@ -210,14 +229,20 @@ void CameraWork::EndCamera() {
 	m_eyePos.z = m_EndCameraCircleZ + 20.0f;
 	m_eyePos.y = 10.0f;
 	m_targetPos = {0.0f,8.0f,20.0f};
+
+	endparticle->ObjUpdate({ m_eyePos.x,m_eyePos.y + 2.0f,m_eyePos.z + 3.0f }, m_ParticleCount, m_TargetCount);
 }
 //ImGuiの描画
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("CameraWork");
-	ImGui::SliderFloat("EndSpeed", &m_EndCameraSpeed, 720, 0);
-	ImGui::SliderFloat("EndScale", &m_EndCameraScale, 360, 0);
-	ImGui::Text("EndTimer:%d", m_EndTimer);
+	ImGui::SliderFloat("m_eyePos.x", &m_eyePos.x, 360, -360);
+	ImGui::SliderFloat("m_eyePos.y", &m_eyePos.y, 360, -360);
+	ImGui::SliderFloat("m_eyePos.z", &m_eyePos.z, 360, -360);
+	ImGui::Text("m_ParticleCount:%d", m_ParticleCount);
 	ImGui::End();
+}
+void CameraWork::EndDraw() {
+	endparticle->Draw();
 }
 //右のスティック
 void CameraWork::RightStickCamera() {

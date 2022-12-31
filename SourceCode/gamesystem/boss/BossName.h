@@ -1,6 +1,5 @@
 #pragma once
 #include"IKESprite.h"
-#include "AllArray.h"
 #include "VariableCommon.h" 
 #include <memory>
 #include <list> // ヘッダファイルインクルード

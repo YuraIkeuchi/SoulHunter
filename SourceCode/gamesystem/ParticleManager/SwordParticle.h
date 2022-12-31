@@ -1,8 +1,6 @@
 #pragma once
 #include "IKEModel.h"
 #include "IKEObject3d.h"
-#include "AllArray.h"
-
 #include <array>   
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -53,6 +51,9 @@ public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 	void SetShaderChange(bool m_ShaderChange) { this->m_ShaderChange = m_ShaderChange; }
 private:
+	//定数
+	static const int Particle_Max = 40;//パーティクルの数
+private:
 
 	IKEModel* model = nullptr;
 	array<unique_ptr <IKEObject3d>, Particle_Max> object;
@@ -71,6 +72,4 @@ private:
 	array<float, Particle_Max> m_power;
 	array<int, Particle_Max> m_Number;
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
-	//unique_ptr<Player> player;
-	int m_NormalParticleCount = 40;
 };

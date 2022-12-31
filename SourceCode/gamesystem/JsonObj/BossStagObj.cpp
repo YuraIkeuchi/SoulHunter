@@ -105,7 +105,7 @@ void BossStagObj::EndUpdate() {
 	particletex->SetStartScale(0.5f);
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
-	particletex->Update({ 0.0f,8.0f,20.0f }, m_ParticleCount, 2, 2);
+	particletex->Update({ 0.0f,8.0f,20.0f }, m_ParticleCount, 2, 5);
 }
 //‘O–Ê•`‰æ
 const void BossStagObj::FrontDraw() {

@@ -3,7 +3,6 @@
 #include "PlayerSkill.h"
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "AllArray.h"
 #include "VariableCommon.h"
 #include "IKESprite.h"
 #include "IKETexture.h"
@@ -41,6 +40,13 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+private:
+	//定数
+	static const int Skill_Max = 4;//スキルの数
+	static const int CompassExplain_Max = 4;//説明文の数(コンパス)
+	static const int LibraExplain_Max = 4;//説明文の数(天秤座)
+	static const int DushExplain_Max = 4;//説明文の数(ダッシュ)
+	static const int HealExplain_Max = 4;//説明文の数(ヒール)
 public:
 	//getter
 	
@@ -48,15 +54,15 @@ private:
 	//クラス
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<PlayerSkill> playerskill = nullptr;
-	array<unique_ptr<ParticleTex>, SkillMax> particletex;
-	array<unique_ptr<ChestEffect>, SkillMax> chesteffect;
+	array<unique_ptr<ParticleTex>, Skill_Max> particletex;
+	array<unique_ptr<ChestEffect>, Skill_Max> chesteffect;
 	//絶対に必要なOBJ
 	//開いてる宝箱
 	IKEModel* modelOpenChest = nullptr;
-	array<unique_ptr <IKEObject3d>,SkillMax> objOpenChest;
+	array<unique_ptr <IKEObject3d>,Skill_Max> objOpenChest;
 	//閉じている宝箱
 	IKEModel* modelCloseChest = nullptr;
-	array<unique_ptr <IKEObject3d>,SkillMax> objCloseChest;
+	array<unique_ptr <IKEObject3d>,Skill_Max> objCloseChest;
 	//スプライト
 	array<unique_ptr<IKESprite>, CompassExplain_Max> CompassExplain;
 	array<unique_ptr<IKESprite>, LibraExplain_Max> LibraExplain;
@@ -66,16 +72,16 @@ private:
 	//テクスチャ
 	unique_ptr<IKETexture> chestTex = nullptr;
 	//パーティクル関係
-	array<int,SkillMax> m_ParticleCount;//パーティクルの出る間隔
-	array<XMFLOAT3, SkillMax> m_ParticlePos;//パーティクルの位置
+	array<int,Skill_Max> m_ParticleCount;//パーティクルの出る間隔
+	array<XMFLOAT3, Skill_Max> m_ParticlePos;//パーティクルの位置
 	//その他変数
 	//宝箱自体の変数
-	array<XMFLOAT3, SkillMax> m_ChestPos;//宝箱の座標
-	array<XMFLOAT4, SkillMax> m_CloseColor;//色
-	array<XMFLOAT4, SkillMax> m_OpenColor;
-	array<bool, SkillMax> m_Alive;//生存フラグ
-	array<bool, SkillMax> m_Hit;//当たり判定
-	array<int,SkillMax> m_ChestState;//宝箱の上歌い
+	array<XMFLOAT3, Skill_Max> m_ChestPos;//宝箱の座標
+	array<XMFLOAT4, Skill_Max> m_CloseColor;//色
+	array<XMFLOAT4, Skill_Max> m_OpenColor;
+	array<bool, Skill_Max> m_Alive;//生存フラグ
+	array<bool, Skill_Max> m_Hit;//当たり判定
+	array<int,Skill_Max> m_ChestState;//宝箱の上歌い
 	//開けた後のスキルの説明関係の変数
 	bool m_Explain = false;
 	int m_ExplainTimer = 0;
@@ -109,7 +115,7 @@ private:
 	array<XMFLOAT2, HealExplain_Max> m_AfterHealTexPos;
 	array<float, HealExplain_Max> m_HealTexframe;
 	//どのテキストがテキストが出るか
-	array<bool, SkillMax> m_ReadText;
+	array<bool, Skill_Max> m_ReadText;
 	//宝箱を開けるテキストの変数関係
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;

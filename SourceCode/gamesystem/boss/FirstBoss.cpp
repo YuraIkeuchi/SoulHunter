@@ -27,6 +27,7 @@ FirstBoss::FirstBoss() {
 	fbxobject_->SetModel(m_fbxModel);
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
+	m_ChangeColor = true;
 }
 
 bool FirstBoss::Initialize() {
@@ -240,7 +241,6 @@ void FirstBoss::End() {
 	m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	Fbx_SetParam();
-
 }
 //“Ë‚«h‚µ‚Ä‚­‚éUŒ‚‚ÌƒGƒŠƒA•\¦
 void FirstBoss::DrawOutArea() {

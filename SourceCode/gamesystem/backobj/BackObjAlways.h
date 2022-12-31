@@ -1,7 +1,6 @@
 #pragma once
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "AllArray.h"
 #include "VariableCommon.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -20,6 +19,9 @@ public:
 	void Update();//更新
 	const void Draw();//描画
 	void InitRock(int StageNumber);//ステージごとの配置
+private:
+	//定数
+	static const int BackRock_Max = 11;//OBJの数
 private:
 	//OBJ
 	IKEModel* modelskydome = nullptr;

@@ -180,7 +180,9 @@ void InterBoss::EndUpdate() {
 void InterBoss::EndDraw(DirectXCommon* dxCommon) {
 	//ボスの描画
 	IKEObject3d::PreDraw();
-	Fbx_Draw(dxCommon);
+	if (m_Addcolor.x != 1.0f) {
+		Fbx_Draw(dxCommon);
+	}
 	//ボスごとのオブジェクトの描画
 	specialDrawEnd();
 }

@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include "IKESprite.h"
 #include "IKETexture.h"
-#include "AllArray.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
@@ -26,6 +25,9 @@ public:
 	void Update(const XMFLOAT3& pos);
 	void Draw();
 	void SetEffect(const XMFLOAT3& pos);
+private:
+	//定数
+	static const int JumpEffect_Max = 5;//エフェクトの数
 
 public:
 	//getter setter

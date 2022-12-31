@@ -285,6 +285,7 @@
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp" />
@@ -384,7 +385,6 @@
     <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\InterBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\ResPornEnemy.h" />
-    <ClInclude Include="SourceCode\gamesystem\Common\AllArray.h" />
     <ClInclude Include="SourceCode\gamesystem\Common\VariableCommon.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\EnemyEdit.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\ImGuiEditor.h" />
@@ -409,6 +409,7 @@
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h" />
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h" />

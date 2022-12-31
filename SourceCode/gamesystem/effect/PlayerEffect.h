@@ -3,7 +3,6 @@
 #include "IKESprite.h"
 #include "IKETexture.h"
 #include "Player.h"
-#include "AllArray.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
@@ -40,7 +39,9 @@ public:
 	void DamageEffectSet();
 	//ヒットエフェクト
 	void SetHitEffect();
-
+private:
+	//定数
+	static const int DamageEffect_Max = 20;//エフェクトの数
 private:
 	//クラス
 	unique_ptr<Player> player = nullptr;

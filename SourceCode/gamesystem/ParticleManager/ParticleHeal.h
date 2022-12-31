@@ -1,6 +1,5 @@
 #pragma once
 #include "IKETexture.h"
-#include "AllArray.h"
 #include <array>   
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -38,6 +37,9 @@ public:
 
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 	void SetHeal(bool m_Heal) { this->m_Heal = m_Heal; }
+private:
+	//定数
+	static const int ParticleHeal_Max = 25;//パーティクルの数
 private:
 	//テクスチャ
 	unique_ptr<IKETexture> healeffecttex;

@@ -24,7 +24,7 @@ void SwordParticle::Initialize() {
 
 void SwordParticle::Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix) {
 	NormalParticle(Timer, TargetTimer, matrix);
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < object.size(); i++) {
 		object[i]->SetPosition(m_pos[i]);
 		object[i]->SetScale(m_scale[i]);
 		object[i]->SetColor(m_StartColor);
@@ -36,7 +36,7 @@ void SwordParticle::Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATR
 
 void SwordParticle::Draw() {
 	IKEObject3d::PreDraw();
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < object.size(); i++) {
 		if (m_Alive[i]) {
 			object[i]->Draw();
 		}
@@ -74,7 +74,7 @@ void SwordParticle::ChangeShader(int DrawNumber) {
 
 void SwordParticle::NormalParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
 	
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < object.size(); i++) {
 		if (m_Alive[i]) {
 			m_pos[i].x += (cos(m_angle[i]) * m_speed[i].x);
 			m_pos[i].y += (sin(m_angle[i]) * m_speed[i].y);
@@ -104,7 +104,7 @@ void SwordParticle::NormalParticle(int Timer, int TargetTimer, XMMATRIX matrix) 
 }
 void SwordParticle::SetMatrix(XMMATRIX matrix)
 {
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < object.size(); i++) {
 		if (!m_Alive[i]) {
 			object[i]->AddMatrix(matrix);
 		}
@@ -113,7 +113,7 @@ void SwordParticle::SetMatrix(XMMATRIX matrix)
 
 void SwordParticle::SetParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < object.size(); i++) {
 			if (!m_Alive[i]) {
 				object[i]->AddMatrix(matrix);
 				//パーティクルを出す

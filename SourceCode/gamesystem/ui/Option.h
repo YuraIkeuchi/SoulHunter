@@ -2,7 +2,7 @@
 #include "IKESprite.h"
 #include "VolumManager.h"
 #include "Audio.h"
-#include "AllArray.h"
+#include "VariableCommon.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
@@ -30,6 +30,9 @@ public:
 	void SetReturnOption(bool m_ReturnOption) { this->m_ReturnOption = m_ReturnOption; }
 	void SetVolumChange(bool m_VolumChange) { this->m_VolumChange = m_VolumChange; }
 	void SetChangeColorType(int m_ColorChangeType) { this->m_ColorChangeType = m_ColorChangeType; }
+private:
+	//定数
+	static const int Option_Max = 2;//オプションの数
 private:
 	//クラス
 	//スプライト

@@ -31,7 +31,6 @@
 #include "BackLight.h"
 #include "TutorialText.h"
 #include "VolumManager.h"
-#include "AllArray.h"
 #include "ThornObj.h"
 #include "CameraWork.h"
 #include "SceneChange.h"
@@ -128,6 +127,11 @@ public:
 	void BackObjUpdate(std::vector<BackObjCommon*> objs);
 	//背景OBJの描画
 	void BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon);
+protected:
+	//定数
+	static const int Soul_Max = 3;//ソウルの最大数
+	static const int Enemy_Max = 20;//敵の最大数
+	static const int Tutorial_Max = 5;//チュートリアルの数
 public:
 	///ゲームシーン用
 	DebugCamera* camera = nullptr;

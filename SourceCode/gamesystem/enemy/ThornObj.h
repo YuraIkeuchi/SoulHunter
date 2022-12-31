@@ -1,7 +1,6 @@
 #pragma once
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "AllArray.h"
 #include "Player.h"
 #include "ObjCommon.h"
 #include "DirectXCommon.h"

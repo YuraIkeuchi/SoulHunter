@@ -1,8 +1,6 @@
 #pragma once
 #include "IKEModel.h"
 #include "IKETexture.h"
-#include "AllArray.h"
-
 #include <array>   
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -38,6 +36,8 @@ public:
 	void Draw();
 
 	void ImGuiDraw();
+private://定数
+	static const int ParticleSoul_Max = 25;//パーティクルの数
 public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 	void SetParticleType(int m_ParticleType) { this->m_ParticleType = m_ParticleType; }

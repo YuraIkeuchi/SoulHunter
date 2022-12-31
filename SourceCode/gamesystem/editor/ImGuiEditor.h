@@ -1,7 +1,6 @@
 #pragma once
 #include "IKEObject3d.h"
 #include "IKEModel.h"
-#include "AllArray.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 #include <array>
@@ -22,6 +21,9 @@ public:
 	const void ObjDraw();
 	//敵関係のImGui
 	const void EditorImGuiDraw();
+private:
+	//定数
+	static const int BackObj_Max = 3;//スキルの数
 
 public://setter getter（多い）
 	//getter

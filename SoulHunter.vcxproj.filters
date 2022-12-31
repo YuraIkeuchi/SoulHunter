@@ -396,6 +396,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -734,9 +737,6 @@
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>SourceCords\gamesystem\gamecamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\Common\AllArray.h">
-      <Filter>SourceCords\gamesystem\Common</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\Common\VariableCommon.h">
       <Filter>SourceCords\gamesystem\Common</Filter>
     </ClInclude>
@@ -763,6 +763,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "InterBoss.h"
 #include "DebugCamera.h"
+#include "BossEndParticle.h"
 #include "Camera.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
@@ -28,7 +29,7 @@ public:
 	void EndCamera();//ボス登場時のカメラ
 	void EndCameraMove(float AfterSpeed, float AfterScale, float AddFrame);//上のやつの動き
 	void ImGuiDraw();//ImGui
-
+	void EndDraw();//
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	void SetInterBoss(InterBoss* interboss) { this->interboss.reset(interboss); }
 public:
@@ -41,6 +42,7 @@ private:
 	//クラス
 	unique_ptr<Player> player;
 	unique_ptr<InterBoss> interboss;
+	unique_ptr<BossEndParticle> endparticle;
 	//イージングの変数
 	float m_Frame = 0.0f;
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
@@ -113,4 +115,7 @@ private:
 	bool m_IntEyeStart = false;
 	bool m_IntTargetStart = false;
 
+	//最後のパーティクルの時の変数
+	int m_ParticleCount = 0;
+	int m_TargetCount = 3;
 };

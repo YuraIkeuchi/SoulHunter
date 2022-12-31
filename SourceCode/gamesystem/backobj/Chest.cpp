@@ -18,8 +18,8 @@ Chest::Chest() {
 	modelCloseChest = ModelManager::GetInstance()->GetModel(ModelManager::CloseChest);
 	modelOpenChest = ModelManager::GetInstance()->GetModel(ModelManager::OpenChest);
 
-	IKEObject3d* objCloseChest_[SkillMax];
-	for (int i = 0; i < SkillMax; i++) {
+	IKEObject3d* objCloseChest_[Skill_Max];
+	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest_[i] = new IKEObject3d();
 		objCloseChest_[i] = IKEObject3d::Create();
 		m_CloseColor[i] = { 1.0f,1.0f,1.0f,1.0f };
@@ -30,8 +30,8 @@ Chest::Chest() {
 		m_ReadText[i] = false;
 	}
 
-	IKEObject3d* objOpenChest_[SkillMax];
-	for (int i = 0; i < SkillMax; i++) {
+	IKEObject3d* objOpenChest_[Skill_Max];
+	for (int i = 0; i < Skill_Max; i++) {
 		objOpenChest_[i] = new IKEObject3d();
 		objOpenChest_[i] = IKEObject3d::Create();
 		objOpenChest_[i]->SetModel(modelOpenChest);
@@ -42,15 +42,15 @@ Chest::Chest() {
 	}
 
 	//パーティクル
-	ParticleTex* particletex_[SkillMax];
-	for (int i = 0; i < SkillMax; i++) {
+	ParticleTex* particletex_[Skill_Max];
+	for (int i = 0; i < Skill_Max; i++) {
 		particletex_[i] = new ParticleTex();
 		particletex_[i]->Initialize();
 		particletex[i].reset(particletex_[i]);
 	}
 	//開けた時のエフェクト
-	ChestEffect* chesteffect_[SkillMax];
-	for (int i = 0; i < SkillMax; i++) {
+	ChestEffect* chesteffect_[Skill_Max];
+	for (int i = 0; i < Skill_Max; i++) {
 		chesteffect_[i] = new ChestEffect();
 		chesteffect_[i]->Initialize();
 		chesteffect[i].reset(chesteffect_[i]);
@@ -148,7 +148,7 @@ void Chest::Update() {
 	//宝箱を開けるテキストの動き
 	TexMove();
 	//Obj関係
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest[i]->SetPosition(m_ChestPos[i]);
 		objCloseChest[i]->SetColor(m_CloseColor[i]);
 		objCloseChest[i]->Update();
@@ -157,7 +157,7 @@ void Chest::Update() {
 		objOpenChest[i]->Update();
 	}
 	//パーティクル関係
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		particletex[i]->SetParticleBreak(true);
 		if (m_ChestState[i] == Open && m_Alive[i]) {
 			m_ParticleCount[i]++;
@@ -202,7 +202,7 @@ const void Chest::Draw() {
 	//ImGui::End();
 	//宝箱の描画
 	IKEObject3d::PreDraw();
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (m_Alive[i]) {
 			if (m_ChestState[i] == Close) {
 				objCloseChest[i]->Draw();
@@ -213,7 +213,7 @@ const void Chest::Draw() {
 		}
 	}
 
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		particletex[i]->Draw();
 		if (m_Hit[i]) {
 			chesteffect[i]->Draw();
@@ -222,7 +222,7 @@ const void Chest::Draw() {
 
 	//テキスト
 	IKETexture::PreDraw(1);
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (m_Hit[i] && m_ChestState[i] == Close) {
 			chestTex->Draw();
 		}
@@ -281,7 +281,7 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Heal] = false;
 	}
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest[i]->SetPosition(m_ChestPos[i]);
 		objOpenChest[i]->SetPosition(m_ChestPos[i]);
 	}
@@ -290,7 +290,7 @@ void Chest::InitChest(int StageNumber) {
 //当たり判定
 bool Chest::Collide() {
 	XMFLOAT3 l_plaPos = player->GetPosition();
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f, m_ChestPos[i].x, m_ChestPos[i].y, 3.0f) && m_Alive[i]
 			&& player->GetAddPower() == 0.0f) {
 			m_Hit[i] = true;
@@ -311,7 +311,7 @@ void Chest::TexMove() {
 	m_Angle += 1.0f;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
 
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (m_Hit[i]) {
 			m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (objCloseChest[i]->GetPosition().y + 7.0f);
 			m_TexPosition.x = objCloseChest[i]->GetPosition().x;
@@ -354,7 +354,7 @@ void Chest::OpenChest() {
 	}
 
 	//説明が入るようになる
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ReadText[i]) {
 			m_Explain = true;
 			player->SetReadText(true);
@@ -384,7 +384,7 @@ void Chest::OpenChest() {
 	}
 
 	//宝箱の形態が変わる
-	for (int i = 0; i < SkillMax; i++) {
+	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ChestState[i] == Open) {
 			if (m_CloseColor[i].w > m_ColorMin) {
 				m_CloseColor[i].w -= 0.1f;

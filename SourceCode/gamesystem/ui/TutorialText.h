@@ -4,7 +4,6 @@
 #include"Player.h"
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "AllArray.h"
 #include "VariableCommon.h"
 #include <list> // ヘッダファイルインクルード
 #include <array>
@@ -34,6 +33,10 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+private:
+	//定数
+	static const int Tutorial_Max = 5;//チュートリアルの数
+	static const int TutorialAnime_Max = 2;//チュートリアルのアニメの数
 public:
 	//getter
 	const XMFLOAT3& GetPosition() { return m_BoardPosition; }
