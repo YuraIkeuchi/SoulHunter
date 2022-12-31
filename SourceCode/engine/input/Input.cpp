@@ -161,7 +161,7 @@ Input::MouseMove Input::GetMouseMove()
 
 	return tmp;
 }
-
+//左スティック
 bool Input::LeftTiltStick(const int& stick)
 {
 	
@@ -186,11 +186,15 @@ bool Input::LeftTiltStick(const int& stick)
 	{
 		return true;
 	}
-	//posX = (float)gamePadState.lX;
-	//posY = (float)gamePadState.lY;
+	posX = (float)gamePadState.lX;
+	posY = (float)gamePadState.lY;
+
+	DWORD length = 1000;//原点から最小、最大までの長さ
+	x_vec = ((float)gamePadState.lX - unresponsive_range) / (length - unresponsive_range);
+	y_vec = ((float)gamePadState.lY - unresponsive_range) / (length - unresponsive_range);
 	return false;
 }
-
+//左スティック(トリガー)
 bool Input::LeftTriggerStick(const int& stick)
 {
 	//左
@@ -216,7 +220,7 @@ bool Input::LeftTriggerStick(const int& stick)
 
 	return false;
 }
-
+//右スティック
 bool Input::RightTiltStick(const int& stick)
 {
 	unresponsive_range = 600;
@@ -245,7 +249,7 @@ bool Input::RightTiltStick(const int& stick)
 
 	return false;
 }
-
+//右スティック(トリガー)
 bool Input::RightTriggerStick(const int& stick)
 {
 	unresponsive_range = 600;
@@ -272,9 +276,7 @@ bool Input::RightTriggerStick(const int& stick)
 
 	return false;
 }
-
-
-
+//ボタン
 bool Input::PushButton(const int& Button)
 {
 	for (int i = 0; i < 32; i++)
@@ -334,7 +336,7 @@ bool Input::PushButton(const int& Button)
 
 	return false;
 }
-
+//ボタン(トリガー)
 bool Input::TriggerButton(const int& Button)
 {
 	for (int i = 0; i < 32; i++)
@@ -400,7 +402,7 @@ bool Input::TriggerButton(const int& Button)
 
 	return false;
 }
-
+//十字キー
 bool Input::PushCrossKey(const int& CrossKey)
 {
 	if (gamePadState.rgdwPOV[0] != 0xFFFFFFFF)
@@ -451,7 +453,7 @@ bool Input::PushCrossKey(const int& CrossKey)
 
 	return false;
 }
-
+//十字キー(トリガー)
 bool Input::TriggerCrossKey(const int& CrossKey)
 {
 	if (gamePadState.rgdwPOV[0] != 0xFFFFFFFF && oldGamePadState.rgdwPOV[0] == 0xFFFFFFFF)
@@ -502,7 +504,7 @@ bool Input::TriggerCrossKey(const int& CrossKey)
 
 	return false;
 }
-
+//開放
 void Input::Finalize() {
 	devGamePad.Reset();
 	devkeyboard.Reset();

@@ -24,8 +24,11 @@ void CameraWork::Update(DebugCamera* camera) {
 	else if(m_CameraType == BossApp) {
 		AppCamera();
 	}
-	else {
+	else if(m_CameraType == BossEnd) {
 		EndCamera();
+	}
+	else {
+		ClearCamera();
 	}
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
@@ -232,13 +235,20 @@ void CameraWork::EndCamera() {
 
 	endparticle->ObjUpdate({ m_eyePos.x,m_eyePos.y + 2.0f,m_eyePos.z + 3.0f }, m_ParticleCount, m_TargetCount);
 }
+//ƒNƒŠƒAŽž‚ÌƒJƒƒ‰
+void CameraWork::ClearCamera() {
+	m_eyePos = { 5.0f,player->GetPosition().y + 5.0f,player->GetPosition().z + 7.0f };
+	m_targetPos = player->GetPosition();
+}
 //ImGui‚Ì•`‰æ
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("CameraWork");
 	ImGui::SliderFloat("m_eyePos.x", &m_eyePos.x, 360, -360);
 	ImGui::SliderFloat("m_eyePos.y", &m_eyePos.y, 360, -360);
 	ImGui::SliderFloat("m_eyePos.z", &m_eyePos.z, 360, -360);
-	ImGui::Text("m_ParticleCount:%d", m_ParticleCount);
+	ImGui::SliderFloat("m_targetPos.x", &m_targetPos.x, 360, -360);
+	ImGui::SliderFloat("m_targetPos.y", &m_targetPos.y, 360, -360);
+	ImGui::SliderFloat("m_targetPos.z", &m_targetPos.z, 360, -360);
 	ImGui::End();
 }
 void CameraWork::EndDraw() {

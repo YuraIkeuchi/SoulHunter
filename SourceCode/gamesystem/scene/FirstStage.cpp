@@ -675,7 +675,7 @@ void FirstStage::ChangeUpdate() {
 				m_GameLoop = true;
 			}
 			else {
-				SceneManager::GetInstance()->ChangeScene("TITLE");
+				SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
 				m_GameLoop = true;
 			}
 		}

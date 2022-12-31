@@ -1,7 +1,6 @@
 #pragma once
 #include "IKEModel.h"
 #include "IKEObject3d.h"
-#include "AllArray.h"
 
 #include <array>   
 #include <memory>

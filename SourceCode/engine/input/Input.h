@@ -65,10 +65,10 @@ public:
 	bool PushCrossKey(const int& CrossKey);
 	bool TriggerCrossKey(const int& CrossKey);
 public: // メンバ関数
-	const LONG& GetPositionX() { return  gamePadState.lRx; }
-	const LONG& GetPositionY() { return  gamePadState.lRy; }
 	const float& GetPosX() { return posX; }
 	const float& GetPosY() { return posY; }
+	const float& GetVecX() { return x_vec; }
+	const float& GetVecY() { return y_vec; }
 private://メンバ変数
 	//キーボードのデパイス
 	ComPtr<IDirectInputDevice8> devkeyboard;
@@ -89,6 +89,8 @@ private://メンバ変数
 	LONG unresponsive_range2 = 200;
 	float posX = 0;
 	float posY = 0;
+	float x_vec = 0.0f;
+	float y_vec = 0.0f;
 private:
 	WinApp* winApp = nullptr;
 };

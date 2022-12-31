@@ -65,7 +65,6 @@ void Player::Update()
 {
 	//手のボーン取得
 	m_HandMat = m_fbxObject->GetWorldMat();
-	Input* input = Input::GetInstance();
 	//m_Object->Update();
 	m_OldPlayerPos = m_Position;
 	//ムービー中は一部挙動は出来ない
@@ -130,8 +129,6 @@ void Player::Update()
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	m_fbxObject->SetDisolve(Disolve);
 
-	//羽関係
-	WingUpdate();
 	//エフェクトの更新
 	EffectUpdate();
 }
@@ -192,21 +189,6 @@ void Player::EffectUpdate() {
 		}
 	}
 }
-//羽関係
-void Player::WingUpdate() {
-	//m_WingPosition = m_Position;
-	////羽
-	//if (m_PlayerDir == Left) {
-	//	playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
-	//	playerwing->SetDir(0);
-	//}
-	//else {
-	//	playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
-	//	playerwing->SetDir(1);
-	//}
-
-	//playerwing->Update();
-}
 //プレイヤーの移動
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
@@ -254,6 +236,8 @@ void Player::PlayerMove() {
 	m_Position.x += m_Velocity;
 	particletex->SetParticleBreak(true);
 
+	m_inputX = input->GetVecX();
+	m_inputY = input->GetVecY();
 	//歩きアニメーション
 	WalkAnimation();
 
@@ -662,10 +646,12 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
+
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Attack:%f", m_Rotation.x);
+	ImGui::Text("inputX:%f", m_inputX);
+	ImGui::Text("inputY:%f", m_inputY);
 	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -902,20 +888,12 @@ void Player::ResetSkill() {
 }
 //導入シーンの更新
 void Player::IntroductionUpdate(int Timer) {
-	m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
-	m_HandMat = m_fbxObject->GetWorldMat();
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
 		m_Position = { 0.0f,2.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
-	//パーティクル
-	//if (m_SwordParticleCount < 3) {
-	//	m_SwordParticleCount++;
-	//}
-	//else {
-	//	m_SwordParticleCount = 0;
-	//}
+
 	//一定時間立ったら前にすすむ
 	if (Timer >= 100) {
 		m_Position.z -= 0.3f;
@@ -932,12 +910,8 @@ void Player::IntroductionUpdate(int Timer) {
 	}
 
 	//剣の更新
-	SwordUpdate();
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
-
-	
-	//FollowObj_SetParam(m_HandMat);
 }
 //導入シーンの描画
 void Player::IntroductionDraw(DirectXCommon* dxCommon) {
@@ -969,6 +943,37 @@ void Player::BossEndUpdate(int Timer) {
 }
 
 void Player::BossEndDraw(DirectXCommon* dxCommon) {
+	//FollowObj_Draw();
+	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
+}
+
+//クリアシーンの更新
+void Player::ClearUpdate(int Timer) {
+	//フレーム数で動きが決まる
+	if (Timer == 1) {
+		m_Position = { 0.0f,10.0f,-50.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
+	//一定時間立ったら前にすすむ
+	if (Timer >= 100) {
+		m_Position.z += 0.2f;
+	}
+
+	m_AnimeTimer++;
+
+	if (m_AnimeTimer == 1) {
+		//アニメーションのためのやつ
+		m_AnimeLoop = true;
+		m_Number = 1;
+		m_AnimeSpeed = 1;
+		m_fbxObject->PlayAnimation(m_Number);
+	}
+	Fbx_SetParam();
+	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+}
+//導入シーンの描画
+void Player::ClearDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();

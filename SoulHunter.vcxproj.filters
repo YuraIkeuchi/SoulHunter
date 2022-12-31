@@ -399,6 +399,9 @@
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\ClearObj.cpp">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -766,6 +769,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\ClearObj.h">
+      <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
