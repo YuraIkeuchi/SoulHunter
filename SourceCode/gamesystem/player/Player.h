@@ -48,8 +48,6 @@ public:
 	void SwordUpdate();
 	//エフェクトの更新
 	void EffectUpdate();
-	//羽関係
-	void WingUpdate();
 	//プレイヤーの挙動
 	//移動
 	void PlayerMove();
@@ -308,5 +306,8 @@ private:
 	};
 	XMFLOAT3 m_WingPosition = { 0.0f,0.0f,0.0f };
 	int m_WingDeleteCount = 0;
+
+	float m_inputX = 0.0f;
+	float m_inputY = 0.0f;
 };
 

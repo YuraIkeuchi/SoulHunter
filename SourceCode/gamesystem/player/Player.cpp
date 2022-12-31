@@ -65,7 +65,6 @@ void Player::Update()
 {
 	//手のボーン取得
 	m_HandMat = m_fbxObject->GetWorldMat();
-	Input* input = Input::GetInstance();
 	//m_Object->Update();
 	m_OldPlayerPos = m_Position;
 	//ムービー中は一部挙動は出来ない
@@ -130,8 +129,6 @@ void Player::Update()
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	m_fbxObject->SetDisolve(Disolve);
 
-	//羽関係
-	WingUpdate();
 	//エフェクトの更新
 	EffectUpdate();
 }
@@ -192,21 +189,6 @@ void Player::EffectUpdate() {
 		}
 	}
 }
-//羽関係
-void Player::WingUpdate() {
-	//m_WingPosition = m_Position;
-	////羽
-	//if (m_PlayerDir == Left) {
-	//	playerwing->SetPosition({ m_Position.x,m_Position.y,m_Position.z });
-	//	playerwing->SetDir(0);
-	//}
-	//else {
-	//	playerwing->SetPosition({ m_Position.x,m_WingPosition.y,m_Position.z });
-	//	playerwing->SetDir(1);
-	//}
-
-	//playerwing->Update();
-}
 //プレイヤーの移動
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
@@ -254,6 +236,8 @@ void Player::PlayerMove() {
 	m_Position.x += m_Velocity;
 	particletex->SetParticleBreak(true);
 
+	m_inputX = input->GetVecX();
+	m_inputY = input->GetVecY();
 	//歩きアニメーション
 	WalkAnimation();
 
@@ -662,10 +646,12 @@ void Player::GoalMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
+
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Attack:%f", m_Rotation.x);
+	ImGui::Text("inputX:%f", m_inputX);
+	ImGui::Text("inputY:%f", m_inputY);
 	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
