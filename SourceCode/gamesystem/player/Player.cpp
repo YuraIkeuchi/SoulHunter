@@ -888,20 +888,12 @@ void Player::ResetSkill() {
 }
 //導入シーンの更新
 void Player::IntroductionUpdate(int Timer) {
-	m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
-	m_HandMat = m_fbxObject->GetWorldMat();
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
 		m_Position = { 0.0f,2.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
-	//パーティクル
-	//if (m_SwordParticleCount < 3) {
-	//	m_SwordParticleCount++;
-	//}
-	//else {
-	//	m_SwordParticleCount = 0;
-	//}
+
 	//一定時間立ったら前にすすむ
 	if (Timer >= 100) {
 		m_Position.z -= 0.3f;
@@ -918,12 +910,8 @@ void Player::IntroductionUpdate(int Timer) {
 	}
 
 	//剣の更新
-	SwordUpdate();
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
-
-	
-	//FollowObj_SetParam(m_HandMat);
 }
 //導入シーンの描画
 void Player::IntroductionDraw(DirectXCommon* dxCommon) {
@@ -955,6 +943,37 @@ void Player::BossEndUpdate(int Timer) {
 }
 
 void Player::BossEndDraw(DirectXCommon* dxCommon) {
+	//FollowObj_Draw();
+	Fbx_Draw(dxCommon);
+	//FollowObj_Draw();
+}
+
+//クリアシーンの更新
+void Player::ClearUpdate(int Timer) {
+	//フレーム数で動きが決まる
+	if (Timer == 1) {
+		m_Position = { 0.0f,10.0f,-50.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
+	//一定時間立ったら前にすすむ
+	if (Timer >= 100) {
+		m_Position.z += 0.2f;
+	}
+
+	m_AnimeTimer++;
+
+	if (m_AnimeTimer == 1) {
+		//アニメーションのためのやつ
+		m_AnimeLoop = true;
+		m_Number = 1;
+		m_AnimeSpeed = 1;
+		m_fbxObject->PlayAnimation(m_Number);
+	}
+	Fbx_SetParam();
+	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
+}
+//導入シーンの描画
+void Player::ClearDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();

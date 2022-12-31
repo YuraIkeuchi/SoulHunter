@@ -117,6 +117,9 @@ public:
 	//ボス終了シーンのための処理
 	void BossEndUpdate(int Timer);
 	void BossEndDraw(DirectXCommon* dxCommon);
+	//クリアシーンのための処理
+	void ClearUpdate(int Timer);
+	void ClearDraw(DirectXCommon* dxCommon);
 public:
 	//getter setter
 	const XMFLOAT3& GetAttackPos() { return  m_AttackPos; }

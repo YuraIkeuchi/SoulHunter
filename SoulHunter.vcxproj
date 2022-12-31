@@ -281,6 +281,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\BoundEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\BossStagObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\JsonObj\ClearObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
@@ -405,6 +406,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\BoundEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\BossStagObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\JsonObj\ClearObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h" />
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />

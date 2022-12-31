@@ -1,6 +1,5 @@
 #include "IntroductionObj.h"
 #include "ModelManager.h"
-#include "ImageManager.h"
 #include "JsonLoader.h"
 using namespace DirectX;
 //‰Šú‰»

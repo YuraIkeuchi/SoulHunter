@@ -28,6 +28,7 @@ public:
 	void AppCameraMove(XMFLOAT3 m_AfterEye, XMFLOAT3 m_AfterTarget,float AddFrame);//上のやつの動き
 	void EndCamera();//ボス登場時のカメラ
 	void EndCameraMove(float AfterSpeed, float AfterScale, float AddFrame);//上のやつの動き
+	void ClearCamera();//普通のカメラ(プレイヤーに追従)
 	void ImGuiDraw();//ImGui
 	void EndDraw();//
 	void SetPlayer(Player* player) { this->player.reset(player); }
@@ -108,6 +109,7 @@ private:
 		Normal,
 		BossApp,
 		BossEnd,
+		Clear,
 	};
 
 	//導入シーン
