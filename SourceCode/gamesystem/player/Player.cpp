@@ -952,13 +952,14 @@ void Player::BossEndDraw(DirectXCommon* dxCommon) {
 void Player::ClearUpdate(int Timer) {
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
-		m_Position = { 0.0f,10.0f,-50.0f };
+		m_Position = { 5.0f,5.0f,-250.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
-	//一定時間立ったら前にすすむ
-	if (Timer >= 100) {
-		m_Position.z += 0.2f;
-	}
+	m_Position.z += 0.3f;
+	////一定時間立ったら前にすすむ
+	//if (Timer >= 100) {
+	//	
+	//}
 
 	m_AnimeTimer++;
 
@@ -974,6 +975,14 @@ void Player::ClearUpdate(int Timer) {
 }
 //導入シーンの描画
 void Player::ClearDraw(DirectXCommon* dxCommon) {
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("inputX:%f", m_Position.x);
+	ImGui::Text("inputY:%f", m_Position.y);
+	ImGui::Text("inputZ:%f", m_Position.z);
+	ImGui::End();
+
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();

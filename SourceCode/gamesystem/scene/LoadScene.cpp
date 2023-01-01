@@ -101,7 +101,7 @@ void LoadScene::Update(DirectXCommon* dxCommon) {
 
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
-		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
 	}
 
 	loadsprite[m_LoadNumber]->SetColor(m_color);

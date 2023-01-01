@@ -237,7 +237,15 @@ void CameraWork::EndCamera() {
 }
 //ƒNƒŠƒAŽž‚ÌƒJƒƒ‰
 void CameraWork::ClearCamera() {
-	m_eyePos = { 5.0f,player->GetPosition().y + 5.0f,player->GetPosition().z + 7.0f };
+	m_ClearTimer++;
+	//if (m_ClearTimer == 1) {
+	//
+	//}
+
+	//if (m_ClearTimer <= 200 && m_ClearTimer >= 2) {
+	//	m_eyePos.z += 0.2f;
+	//}
+	m_eyePos = { 5.0f,player->GetPosition().y,player->GetPosition().z + 7.0f };
 	m_targetPos = player->GetPosition();
 }
 //ImGui‚Ì•`‰æ

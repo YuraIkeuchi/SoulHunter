@@ -120,4 +120,6 @@ private:
 	//最後のパーティクルの時の変数
 	int m_ParticleCount = 0;
 	int m_TargetCount = 3;
+	//クリア時の変数
+	int m_ClearTimer = 0;
 };

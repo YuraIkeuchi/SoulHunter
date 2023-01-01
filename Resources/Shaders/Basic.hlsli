@@ -32,7 +32,7 @@ struct DirLight
 };
 
 // ì_åıåπÇÃêî
-static const int POINTLIGHT_NUM = 30;
+static const int POINTLIGHT_NUM = 80;
 
 struct PointLight
 {
@@ -56,7 +56,7 @@ struct SpotLight
 };
 
 // ä€âeÇÃêî
-static const int CIRCLESHADOW_NUM = 50;
+static const int CIRCLESHADOW_NUM = 80;
 
 struct CircleShadow
 {

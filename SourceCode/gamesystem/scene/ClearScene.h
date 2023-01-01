@@ -29,6 +29,7 @@ private://メンバ変数
 	unique_ptr<IKESprite> IntroSprite;
 	//タイマー
 	int m_Timer = 0;
+	int m_ResetTimer = 500;
 	//ポストエフェクトの値
 	float m_Sepia = 0.0f;
 	//フレーム
@@ -36,5 +37,7 @@ private://メンバ変数
 	//色
 	XMFLOAT4 m_TextColor = { 1.0f,1.0f,1.0f,0.0f };
 	int m_ChangeTimer = 0;
+	//ライトの変数
+	XMFLOAT3 m_LightPos = { 0.0f,0.0f,0.0f };
 };
 

@@ -46,6 +46,8 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	player = new Player();
 	player->Initialize();
 	player->StateInitialize();
+	//ライト
+	m_LightPos = { 5.0f,5.0f,-80.0f };
 
 	//プレイヤーが必要
 	camerawork->SetPlayer(player);
@@ -68,6 +70,10 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
+	///ポイントライト
+	lightGroup->SetPointLightPos(0, m_LightPos);
+	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
+	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 	clearobj->Update(m_Timer);
 	//カメラの位置調整
 	camerawork->Update(camera);
@@ -231,7 +237,17 @@ void ClearScene::ChangePostEffect(int PostType) {
 }
 //演出
 void ClearScene::Movie() {
-	if (m_Timer == 300) {
+
+	m_ResetTimer++;
+
+	if (m_ResetTimer == 100) {
+		clearobj->SetTorchPos({ 0.0f,2.0f,player->GetPosition().z + 10.0f });
+		m_ResetTimer = 0;
+	}
+	
+	if (m_Timer == 2500) {
 		scenechange->SetAddStartChange(true);
 	}
+
+
 }
