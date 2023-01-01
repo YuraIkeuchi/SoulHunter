@@ -29,7 +29,7 @@ private://メンバ変数
 	unique_ptr<IKESprite> IntroSprite;
 	//タイマー
 	int m_Timer = 0;
-	int m_ResetTimer = 500;
+	int m_ResetTimer = 0;
 	//ポストエフェクトの値
 	float m_Sepia = 0.0f;
 	//フレーム

@@ -53,9 +53,9 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	camerawork->SetPlayer(player);
 
 	//ライト
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
+	//lightGroup->SetDirLightActive(0, true);
+	//lightGroup->SetDirLightActive(1, true);
+	//lightGroup->SetDirLightActive(2, true);
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {
@@ -71,7 +71,7 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
 	///ポイントライト
-	lightGroup->SetPointLightPos(0, m_LightPos);
+	lightGroup->SetPointLightPos(0, { clearobj->GetTorchPos().x, -5.0f, clearobj->GetTorchPos().z});
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 	clearobj->Update(m_Timer);
@@ -173,9 +173,10 @@ void ClearScene::GameDraw(DirectXCommon* dxCommon)
 //ImGui描画
 void ClearScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	////FPSManager::GetInstance()->ImGuiDraw();
-	//ImGui::Begin("Introduce");
-	//ImGui::Text("Timer:%d",m_Timer);
-	//ImGui::End();
+	ImGui::Begin("Clear");
+	ImGui::Text("Timer:%d",m_Timer);
+	ImGui::Text("ResetTimer:%d", m_ResetTimer);
+	ImGui::End();
 }
 //解放
 void ClearScene::Finalize() {
@@ -241,13 +242,11 @@ void ClearScene::Movie() {
 	m_ResetTimer++;
 
 	if (m_ResetTimer == 100) {
-		clearobj->SetTorchPos({ 0.0f,2.0f,player->GetPosition().z + 10.0f });
+		clearobj->SetTorchPos({ 0.0f,-5.0f,player->GetPosition().z + 10.0f });
 		m_ResetTimer = 0;
 	}
 	
 	if (m_Timer == 2500) {
 		scenechange->SetAddStartChange(true);
 	}
-
-
 }

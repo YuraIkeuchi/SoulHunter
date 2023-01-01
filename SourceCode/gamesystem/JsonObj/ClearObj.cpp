@@ -44,7 +44,7 @@ void ClearObj::Initialize() {
 			newObject->SetScale(scale);
 
 			newObject->SetTiling(50.0f);
-			newObject->SetFog(true);
+			//newObject->SetFog(true);
 			// ”z—ñ‚É“o˜^
 			objects.push_back(newObject);
 		}
@@ -53,7 +53,7 @@ void ClearObj::Initialize() {
 	IKEObject3d* objtorch_ = new IKEObject3d();
 	objtorch_ = IKEObject3d::Create();
 	objtorch_->SetModel(modeltorch);
-	objtorch_->SetScale({ 3.5f,3.5f,3.5f });
+	objtorch_->SetScale({ 5.5f,5.5f,5.5f });
 	objtorch.reset(objtorch_);
 }
 //XV
