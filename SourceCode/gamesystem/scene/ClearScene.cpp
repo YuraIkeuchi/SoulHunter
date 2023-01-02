@@ -238,14 +238,33 @@ void ClearScene::ChangePostEffect(int PostType) {
 }
 //演出
 void ClearScene::Movie() {
-
-	m_ResetTimer++;
-
-	if (m_ResetTimer == 100) {
-		clearobj->SetTorchPos({ 0.0f,-5.0f,player->GetPosition().z + 10.0f });
-		m_ResetTimer = 0;
-	}
 	
+	//一定時間立つと画面が暗くなる
+	if (m_Timer == 100) {
+		PlayPostEffect = true;
+	}
+
+	//セピアカラーになる
+	if (PlayPostEffect) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.005f;
+		}
+		else {
+			m_Frame = 1.0f;
+		}
+
+		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, 0.1f);
+
+		if (m_Frame == 1.0f) {
+			if (m_TextColor.w < 1.0f) {
+				m_TextColor.w += 0.01f;
+			}
+			else {
+				m_TextColor.w = 1.0f;
+			}
+		}
+	}
+
 	if (m_Timer == 2500) {
 		scenechange->SetAddStartChange(true);
 	}

@@ -925,7 +925,6 @@ void Player::BossAppUpdate(int Timer) {
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
-
 void Player::BossAppDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
@@ -941,18 +940,16 @@ void Player::BossEndUpdate(int Timer) {
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
-
 void Player::BossEndDraw(DirectXCommon* dxCommon) {
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
 	//FollowObj_Draw();
 }
-
 //クリアシーンの更新
 void Player::ClearUpdate(int Timer) {
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
-		m_Position = { 5.0f,5.0f,-250.0f };
+		m_Position = { 0.0f,5.0f,-250.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	m_Position.z += 0.3f;
@@ -975,13 +972,13 @@ void Player::ClearUpdate(int Timer) {
 }
 //導入シーンの描画
 void Player::ClearDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("inputX:%f", m_Position.x);
-	ImGui::Text("inputY:%f", m_Position.y);
-	ImGui::Text("inputZ:%f", m_Position.z);
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("inputX:%f", m_Position.x);
+	//ImGui::Text("inputY:%f", m_Position.y);
+	//ImGui::Text("inputZ:%f", m_Position.z);
+	//ImGui::End();
 
 	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);

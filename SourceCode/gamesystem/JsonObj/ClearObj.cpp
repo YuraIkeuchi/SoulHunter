@@ -49,39 +49,23 @@ void ClearObj::Initialize() {
 			objects.push_back(newObject);
 		}
 	}
-
-	IKEObject3d* objtorch_ = new IKEObject3d();
-	objtorch_ = IKEObject3d::Create();
-	objtorch_->SetModel(modeltorch);
-	objtorch_->SetScale({ 5.5f,5.5f,5.5f });
-	objtorch.reset(objtorch_);
 }
 //XV
 void ClearObj::Update(int Timer) {
-
 	//Json—p
 	for (auto& object : objects) {
 		object->Update();
 	}
-
-	objtorch->SetPosition(m_TorchPos);
-	objtorch->Update();
 }
 //‘O–Ê•`‰æ
 const void ClearObj::FrontDraw() {
-	ImGui::Begin("torch");
-	ImGui::Text("torchX:%f", m_TorchPos.x);
-	ImGui::Text("torchY:%f", m_TorchPos.y);
-	ImGui::Text("torchZ:%f", m_TorchPos.z);
-	ImGui::End();
+	
 }
 //”wŒi•`‰æ
 const void ClearObj::BackDraw() {	//Json—p
 	for (auto& object : objects) {
 		object->Draw();
 	}
-
-	objtorch->Draw();
 }
 //‰ð•ú
 void ClearObj::Finalize() {
