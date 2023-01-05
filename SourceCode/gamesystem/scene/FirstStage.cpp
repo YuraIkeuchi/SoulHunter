@@ -5,12 +5,37 @@
 #include "ImageManager.h"
 #include "imgui.h"
 #include <Easing.h>
+//プレイシーンの初期化
+void FirstStage::PlaySceneInitialize() {
+	//プレイヤーのエフェクト
+	playereffect->Initialize();
+	playereffect->SetPlayer(player);
+
+	//魂
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < Enemy_Max; j++) {
+			normalplayersoul[i][j] = new PlayerSoul();
+			normalplayersoul[i][j]->Initialize();
+			normalplayersoul[i][j]->SetBlock(block);
+			normalplayersoul[i][j]->SetPlayer(player);
+
+			boundplayersoul[i][j] = new PlayerSoul();
+			boundplayersoul[i][j]->Initialize();
+			boundplayersoul[i][j]->SetBlock(block);
+			boundplayersoul[i][j]->SetPlayer(player);
+
+			birdplayersoul[i][j] = new PlayerSoul();
+			birdplayersoul[i][j]->Initialize();
+			birdplayersoul[i][j]->SetBlock(block);
+			birdplayersoul[i][j]->SetPlayer(player);
+		}
+	}
+}
 //初期化
 void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//最初にnewする
 	player = new Player();
-	playerbullet = new PlayerBullet();
 	playereffect = new PlayerEffect();
 	playerskill = new PlayerSkill();
 	skillpause = new SkillPause();
@@ -47,6 +72,8 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BackObjInitialize();
 	//プレイヤーの手助けになるものの初期化
 	HelperInitialize();
+	//プレイシーンの初期化
+	PlaySceneInitialize();
 	//シーン遷移
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
@@ -128,14 +155,6 @@ void FirstStage::NormalUpdate() {
 	else {
 		player->Pause();
 	}
-	//プレイヤーの弾の更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
-		playerbullet->Update();
-	}
-	else {
-		playerbullet->Pause();
-	}
-
 	//設置した敵の更新
 	//普通の敵
 	EnemyUpdate(m_Enemys);
@@ -348,11 +367,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		respornenemy->Draw();
 	}
 
-	//プレイヤーの描画
-	player->Draw(dxCommon);
-	playerbullet->Draw(dxCommon);
-	playereffect->Draw();
-
+	
 	//魂関係
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_NormalEnemyCount; j++) {
@@ -373,6 +388,10 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	}
 
 	playerskill->Draw();
+	//プレイヤーの描画
+	player->Draw(dxCommon);
+	playereffect->Draw();
+
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 
@@ -606,8 +625,6 @@ void FirstStage::BossRoomUpdate() {
 				newEnemy->Initialize();
 				newEnemy->SetPlayer(player);
 				newEnemy->SetBlock(block);
-				newEnemy->SetPlayerBullet(playerbullet);
-				newEnemy->SetPlayerEffect(playereffect);
 				newEnemy->SetPosition(respornenemy->GetResPornPosition());
 				m_Enemys.push_back(newEnemy);
 				m_NormalEnemyCount++;

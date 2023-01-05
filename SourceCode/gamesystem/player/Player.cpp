@@ -174,6 +174,8 @@ void Player::EffectUpdate() {
 			0 };
 
 	//ƒp[ƒeƒBƒNƒ‹ŠÖŒW
+	particletex->SetStartColor({ 1.0f,0.9f,0.8f,1.0f });
+	
 	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
 	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
 	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
@@ -476,27 +478,27 @@ void Player::PlayerDush() {
 }
 //’e‚ğ‘Å‚Â
 void Player::PlayerShot() {
-	Input* input = Input::GetInstance();
-	//UŒ‚
-	//UŒ‚‚ÌŒü‚«
-	if (input->TriggerButton(input->Button_A) && (!playerbullet->GetAlive()) && (m_SoulCount >= 10.0f)) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Decision.wav", VolumManager::GetInstance()->GetSEVolum());
-		m_SoulCount -= 10.0f;
-		playerbullet->SetAlive(true);
-		playerbullet->SetPosition(m_Position);
-		if (m_Rotation.y == 90.0f) {
-			playerbullet->SetAddSpeed(1.0f);
-		}
-		else {
-			playerbullet->SetAddSpeed(-1.0f);
-		}
-	}
+	//Input* input = Input::GetInstance();
+	////UŒ‚
+	////UŒ‚‚ÌŒü‚«
+	//if (input->TriggerButton(input->Button_A) && (!playerbullet->GetAlive()) && (m_SoulCount >= 10.0f)) {
+	//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Decision.wav", VolumManager::GetInstance()->GetSEVolum());
+	//	m_SoulCount -= 10.0f;
+	//	playerbullet->SetAlive(true);
+	//	playerbullet->SetPosition(m_Position);
+	//	if (m_Rotation.y == 90.0f) {
+	//		playerbullet->SetAddSpeed(1.0f);
+	//	}
+	//	else {
+	//		playerbullet->SetAddSpeed(-1.0f);
+	//	}
+	//}
 
-	m_BulletDistance = fabs(m_Position.x) - fabs(playerbullet->GetPosition().x);
-	m_BulletDistance = fabs(m_BulletDistance);
-	if ((playerbullet->GetAlive()) && (m_BulletDistance >= 80.0f)) {
-		playerbullet->SetAlive(false);
-	}
+	//m_BulletDistance = fabs(m_Position.x) - fabs(playerbullet->GetPosition().x);
+	//m_BulletDistance = fabs(m_BulletDistance);
+	//if ((playerbullet->GetAlive()) && (m_BulletDistance >= 80.0f)) {
+	//	playerbullet->SetAlive(false);
+	//}
 }
 //ƒvƒŒƒCƒ„[‚ÌHP‰ñ•œ
 void Player::PlayerHeal() {
@@ -617,7 +619,10 @@ void Player::PlayerDamage() {
 				m_BoundPower = 0.0f;
 				m_HitDir = 2;
 			}
-			m_Death = true;
+			if (!m_Death) {
+				m_HP -= 1;
+				m_Death = true;
+			}
 			PlayerAnimetion(4, 1);
 		}
 	
@@ -676,7 +681,10 @@ void Player::GoalMove() {
 bool Player::DeathMove() {
 	if (m_Death) {
 		m_DeathTimer++;
-
+		particletex->SetParticleBreak(true);
+		m_ParticleCount++;
+		m_ParticleNumber = 2;
+		m_ParticlePos = m_Position;
 		if (m_DeathTimer >= 100) {
 			return true;
 		}

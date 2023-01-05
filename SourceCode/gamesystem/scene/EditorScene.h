@@ -1,5 +1,8 @@
 #pragma once
 #include "BaseScene.h"
+#include "ImGuiEditor.h"
+#include "EnemyEdit.h"
+#include "ObjEdit.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
@@ -44,5 +47,9 @@ public:
 	void ChangeUpdate();
 	//エディタ関係
 	void EditorUpdate();
-public:
+private:
+	//エディタ
+	unique_ptr<ImGuiEditor> imguieditor;
+	EnemyEdit* enemyedit = nullptr;
+	ObjEdit* objedit = nullptr;
 };

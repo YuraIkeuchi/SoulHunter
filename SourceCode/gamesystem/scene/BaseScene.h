@@ -9,10 +9,7 @@
 #include "ResPornEnemy.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
-#include "PlayerEffect.h"
 #include "PlayerSkill.h"
-#include "PlayerSoul.h"
-#include "PlayerBullet.h"
 #include "ParticleManager.h"
 #include "Save.h"
 #include "UI.h"
@@ -26,6 +23,7 @@
 #include "BackObjCommon.h"
 #include "BackRock.h"
 #include "BackBox.h"
+#include "BackTorch.h"
 #include "MapChange.h"
 #include "BackObjAlways.h"
 #include "BackLight.h"
@@ -34,13 +32,9 @@
 #include "ThornObj.h"
 #include "CameraWork.h"
 #include "SceneChange.h"
-#include "ImGuiEditor.h"
 #include "FPSManager.h"
-#include "EnemyEdit.h"
-#include "ObjEdit.h"
 #include "Chest.h"
 #include "HitStop.h"
-
 #include <vector>
 #include<fstream>
 #include<string>
@@ -200,10 +194,7 @@ public:
 	//エフェクト関係
 	IKESprite* BlackFilter = nullptr;
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
-	//魂クラス
-	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
+
 	//エディタ関係
 	//エディタのタイプ
 
@@ -292,10 +283,6 @@ public:
 	//BGMスタート
 	bool BGMStart = false;
 	//各クラス
-	//エディタ
-	unique_ptr<ImGuiEditor> imguieditor;
-	EnemyEdit* enemyedit = nullptr;
-	ObjEdit* objedit = nullptr;
 	//プレイヤー
 	Player* player;
 	//ボス
@@ -304,8 +291,7 @@ public:
 	static Block* block;
 	//ポストエフェクト指定
 	PostEffect* postEffect = nullptr;
-	PlayerEffect* playereffect = nullptr;
-	PlayerBullet* playerbullet = nullptr;
+	
 	//ヒットストップ
 	HitStop* hitstop = false;
 	//シーン遷移のためのもの

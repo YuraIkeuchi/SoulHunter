@@ -3,6 +3,8 @@
 #include <array>       // ヘッダファイルインクルード
 #include "BossStagObj.h"
 #include "BossSceneChange.h"
+#include "PlayerEffect.h"
+#include "PlayerSoul.h"
 using namespace std;         //  名前空間指定
 
 //ゲームプレイシーン
@@ -17,6 +19,7 @@ public:
 	void Update(DirectXCommon* dxCommon) override;
 	//描画
 	void Draw(DirectXCommon* dxCommon) override;
+	void PlaySceneInitialize();//プレイシーンのみの初期化
 	//開放
 	void Finalize() override;
 	void ModelDraw(DirectXCommon* dxCommon);
@@ -51,4 +54,9 @@ private:
 	unique_ptr<BossStagObj> bossstagobj = nullptr;
 	//ボス登場シーンの画面暗転
 	unique_ptr<BossSceneChange> bossscenechange = nullptr;
+	//魂クラス
+	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
+	PlayerEffect* playereffect = nullptr;
 };

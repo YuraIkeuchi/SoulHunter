@@ -3,8 +3,6 @@
 #include "DirectXCommon.h"
 #include "Player.h"
 #include "Pause.h"
-#include "PlayerEffect.h"
-#include "PlayerBullet.h"
 #include "IKETexture.h"
 #include "ParticleTex.h"
 #include "BossEffect.h"
@@ -26,8 +24,6 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetPlayerEffect(PlayerEffect* playereffect) { this->playereffect.reset(playereffect); }
-	void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
 	void SetPause(Pause* pause) { this->pause.reset(pause); }
 	
 	//gettersetter
@@ -69,17 +65,14 @@ public:
 
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
-	bool BulletCollision();//弾との当たり判定;
 	void ArgEffect();//エフェクトの生成
 	//void Pause(const int& Timer);
 protected:
 	//各クラス
 	std::vector<BossEffect*> bosseffects;
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<BossName> bossname = nullptr;
 	unique_ptr<ParticleTex> particletex = nullptr;
-	unique_ptr<PlayerEffect> playereffect = nullptr;
 	unique_ptr<Pause> pause = nullptr;
 
 	//座標や回転

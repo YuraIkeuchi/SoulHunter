@@ -5,7 +5,6 @@
 #include "IKEFBXModel.h"
 #include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
-#include "PlayerBullet.h"
 #include "ParticleTex.h"
 #include "VolumManager.h"
 #include "ParticleHeal.h"
@@ -21,7 +20,6 @@ class Player :
 	public ObjCommon
 {
 public:
-	void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 	Player();
 
@@ -171,7 +169,6 @@ private:
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
-	unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<AttackEffect*> attackeffects;
 	//プレイモードか
