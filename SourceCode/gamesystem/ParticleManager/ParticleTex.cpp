@@ -301,7 +301,7 @@ void ParticleTex::ChestParticle(const XMFLOAT3& StartPos, int Timer, int TargetT
 //セーブのパーティクル
 void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 0;
+	m_DrawCount = 1;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < m_NormalParticleCount; i++) {

@@ -699,7 +699,7 @@ void FirstStage::ChangeUpdate() {
 			Audio::GetInstance()->StopWave(0);
 			Audio::GetInstance()->StopWave(1);
 			if (player->GetHP() < 1) {
-				SceneManager::GetInstance()->ChangeScene("GAMEOVER");
+				SceneManager::GetInstance()->ChangeScene("TITLE");
 				m_GameLoop = true;
 			}
 			else {

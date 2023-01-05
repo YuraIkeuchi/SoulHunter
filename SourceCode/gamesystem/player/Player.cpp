@@ -54,7 +54,14 @@ void Player::StateInitialize() {
 	m_Scale = { 3.0f, 3.0f, 3.0f };
 	m_Position = { 20.0f,-100.0f,0.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_HP = 1;
+	m_AddDisolve = 0.0f;
+	m_Addcolor = { 0.0f,0.0f,0.0f,1.0f };
+	m_HP = 3;
+	m_Interval = 0;
+	m_FlashCount = 0;
+	m_Death = false;
+	m_RespornTimer = 0;
+	m_Alive = true;
 	//プレイヤー関係
 	m_OldPlayerPos = { 0, 0, 0 };
 	m_Radius.x = 1.0f * m_Scale.x;
@@ -714,13 +721,11 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
-	ImGui::Text("Gravity:%f", m_Gravity);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("ShakeX:%f", m_ShakePos.x);
-	ImGui::Text("ShakeY:%f", m_ShakePos.y);
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("m_Alive:%d", m_Alive);
+	ImGui::Text("m_PosX:%f", m_Position.x);
+	ImGui::Text("m_PosY:%f", m_Position.y);
+	ImGui::Text("m_ResPosX:%f", m_RespornPos.x);
+	ImGui::Text("m_ResPosY:%f", m_RespornPos.y);
 	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -919,6 +924,8 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 	m_Position = StartPos;
 	//m_Object->SetPosition(m_Position);
 	m_fbxObject->SetPosition(m_Position);
+	block->SetThornDir(0);
+	block->SetThornHit(false);
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
@@ -1045,15 +1052,5 @@ void Player::ClearUpdate(int Timer) {
 }
 //導入シーンの描画
 void Player::ClearDraw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("inputX:%f", m_Position.x);
-	//ImGui::Text("inputY:%f", m_Position.y);
-	//ImGui::Text("inputZ:%f", m_Position.z);
-	//ImGui::End();
-
-	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
 }
