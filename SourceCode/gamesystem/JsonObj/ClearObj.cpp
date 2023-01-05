@@ -1,7 +1,11 @@
 #include "ClearObj.h"
 #include "ModelManager.h"
 #include "JsonLoader.h"
+#include "imgui.h"
 using namespace DirectX;
+ClearObj::ClearObj() {
+	modeltorch = ModelManager::GetInstance()->GetModel(ModelManager::BackTorch);
+}
 //‰Šú‰»
 void ClearObj::Initialize() {
 	
@@ -39,8 +43,8 @@ void ClearObj::Initialize() {
 			DirectX::XMStoreFloat3(&scale, objectData.scaling);
 			newObject->SetScale(scale);
 
-			newObject->SetTiling(20.0f);
-			newObject->SetFog(true);
+			newObject->SetTiling(50.0f);
+			//newObject->SetFog(true);
 			// ”z—ñ‚É“o˜^
 			objects.push_back(newObject);
 		}
@@ -48,7 +52,6 @@ void ClearObj::Initialize() {
 }
 //XV
 void ClearObj::Update(int Timer) {
-
 	//Json—p
 	for (auto& object : objects) {
 		object->Update();
@@ -56,7 +59,7 @@ void ClearObj::Update(int Timer) {
 }
 //‘O–Ê•`‰æ
 const void ClearObj::FrontDraw() {
-
+	
 }
 //”wŒi•`‰æ
 const void ClearObj::BackDraw() {	//Json—p

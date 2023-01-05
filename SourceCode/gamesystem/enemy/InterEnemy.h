@@ -1,11 +1,8 @@
 #pragma once
-#include <DirectXMath.h>
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include "Block.h"
 #include "Player.h"
-#include "PlayerBullet.h"
-#include "PlayerEffect.h"
 #include "EnemyEffect.h"
 #include "BirdEnemyEffect.h"
 #include "IKEFBXModel.h"
@@ -30,8 +27,7 @@ protected:
 
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
-	void SetPlayerEffect(PlayerEffect* playereffect) { this->playereffect.reset(playereffect); }
+	//void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
 	void SetHitStop(HitStop* hitstop) { this->hitstop.reset(hitstop); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 
@@ -66,8 +62,7 @@ public:
 protected:
 	//クラス
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<PlayerBullet> playerbullet = nullptr;
-	unique_ptr<PlayerEffect> playereffect = nullptr;
+	//unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	std::vector<BirdEnemyEffect*> birdenemyeffects;
@@ -188,8 +183,6 @@ public:
 
 	bool Collision();//普通の当たり判定
 
-	bool BulletCollision();//弾との当たり判定
-
 	bool PlayerCollide();//プレイヤーがダメージを食らう当たり判定
 
 	void DamageAct();//ダメージを受けた時の動き
@@ -209,7 +202,6 @@ public:
 
 	void ArgSoul();//エフェクト生成
 
-	void ResetBullet();//弾のリセット
 	//パーティクル関係
 	void ParticleInit();
 	void ParticleUpdate();

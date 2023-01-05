@@ -60,19 +60,11 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 }
 //プレイヤー関係の初期化
 void BaseScene::PlayerInitialize() {
-	//プレイヤーの弾
-	playerbullet->Initialize();
-	playerbullet->SetBlock(block);
-
 	//プレイヤー
 	player->Initialize();
 	player->StateInitialize();
-	player->SetPlayerBullet(playerbullet);
 	player->SetBlock(block);
-	//プレイヤーのエフェクト
-	playereffect->Initialize();
-	playereffect->SetPlayer(player);
-
+	
 	//スキル配置
 	playerskill = new PlayerSkill();
 	playerskill->Initialize();
@@ -91,33 +83,12 @@ void BaseScene::CameraInitialize() {
 void BaseScene::EnemyInitialize() {
 	//ボス
 	firstboss->SetPlayer(player);
-	firstboss->SetPlayerEffect(playereffect);
-	firstboss->SetPlayerBullet(playerbullet);
 	firstboss->SetPause(pause);
 	firstboss->Initialize();
 
 	//リスポーン関係(敵)
 	respornenemy->Initialize();
 
-	//魂
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < Enemy_Max; j++) {
-			normalplayersoul[i][j] = new PlayerSoul();
-			normalplayersoul[i][j]->Initialize();
-			normalplayersoul[i][j]->SetBlock(block);
-			normalplayersoul[i][j]->SetPlayer(player);
-
-			boundplayersoul[i][j] = new PlayerSoul();
-			boundplayersoul[i][j]->Initialize();
-			boundplayersoul[i][j]->SetBlock(block);
-			boundplayersoul[i][j]->SetPlayer(player);
-
-			birdplayersoul[i][j] = new PlayerSoul();
-			birdplayersoul[i][j]->Initialize();
-			birdplayersoul[i][j]->SetBlock(block);
-			birdplayersoul[i][j]->SetPlayer(player);
-		}
-	}
 }
 //ポーズの初期化
 void BaseScene::PauseInitialize() {
@@ -493,8 +464,6 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_Enemys[i]->SetPlayer(player);
 		m_Enemys[i]->SetBlock(block);
 		m_Enemys[i]->SetHitStop(hitstop);
-		m_Enemys[i]->SetPlayerBullet(playerbullet);
-		m_Enemys[i]->SetPlayerEffect(playereffect);
 		m_Enemys[i]->SetPosition(m_EnemyStartPos[i]);
 		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + 2, true);
@@ -560,8 +529,6 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_ThornEnemys[i]->Initialize();
 		m_ThornEnemys[i]->SetPlayer(player);
 		m_ThornEnemys[i]->SetHitStop(hitstop);
-		m_ThornEnemys[i]->SetPlayerEffect(playereffect);
-		m_ThornEnemys[i]->SetPlayerBullet(playerbullet);
 		m_ThornEnemys[i]->SetThornPos(m_SetThornEnemyPosY[i]);
 		m_ThornEnemys[i]->SetAngle(m_EnemyAngle[i]);
 		m_ThornEnemys[i]->SetPosition({ m_ThornEnemyStartPos[i].x,0.0f,m_ThornEnemyStartPos[i].z });
@@ -622,8 +589,6 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_BoundEnemys[i]->SetPlayer(player);
 		m_BoundEnemys[i]->SetBlock(block);
 		m_BoundEnemys[i]->SetHitStop(hitstop);
-		m_BoundEnemys[i]->SetPlayerBullet(playerbullet);
-		m_BoundEnemys[i]->SetPlayerEffect(playereffect);
 		m_BoundEnemys[i]->SetPosition(m_BoundEnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num), true);
 	}
@@ -682,8 +647,6 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_BirdEnemys[i]->SetPlayer(player);
 		m_BirdEnemys[i]->SetBlock(block);
 		m_BirdEnemys[i]->SetHitStop(hitstop);
-		m_BirdEnemys[i]->SetPlayerBullet(playerbullet);
-		m_BirdEnemys[i]->SetPlayerEffect(playereffect);
 		m_BirdEnemys[i]->SetPosition(m_BirdEnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), true);
 	}

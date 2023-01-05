@@ -49,8 +49,6 @@ void BoundEnemy::Action() {
 
 	//ダメージ時の動き
 	DamageAct();
-	//弾のリセット
-	ResetBullet();
 	//パーティクル生成
 	BirthParticle();
 	//エフェクト関係

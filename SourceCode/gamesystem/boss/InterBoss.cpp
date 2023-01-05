@@ -5,7 +5,6 @@ void InterBoss::Update() {
 	//当たり判定
 	collidePlayer();
 	collideBoss();
-	BulletCollision();
 	//ボスの行動
 	if (!pause->GetIsPause()) {
 		if (!m_Movie) {
@@ -28,12 +27,6 @@ void InterBoss::Update() {
 		else {
 			m_ParticleCount = 0;
 		}
-	}
-
-
-	//技を一回しかくらわないように
-	if (!playerbullet->GetAlive()) {
-		m_BulletHit = false;
 	}
 
 	//エフェクトの生成
@@ -110,30 +103,6 @@ bool InterBoss::collideBoss() {
 		m_EffectArgment = true;
 		//どっちにあたったか
 		if (AttackPos.x > m_Position.x) {
-			m_HitDir = HitRight;
-		}
-		else {
-			m_HitDir = HitLeft;
-		}
-		return true;
-	}
-	else {
-		return false;
-	}
-
-	return true;
-}
-//敵がダメージ食らう(弾)
-bool InterBoss::BulletCollision() {
-	XMFLOAT3 bulletpos = playerbullet->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.5f, bulletpos.x, bulletpos.y, 1.5f) && (m_HP > 0)
-		&& (playerbullet->GetAlive()) && (!m_BulletHit)) {
-		m_HP -= 2;
-		m_Effect = true;
-		m_EffectArgment = true;
-		m_BulletHit = true;
-		//どっちにあたったか
-		if (bulletpos.x > m_Position.x) {
 			m_HitDir = HitRight;
 		}
 		else {

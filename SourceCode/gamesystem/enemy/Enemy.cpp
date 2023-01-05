@@ -77,8 +77,6 @@ void Enemy::Action() {
 	DeathMove();
 	//パーティクル生成
 	BirthParticle();
-	//弾のリセット
-	ResetBullet();
 	//ロックオン
 	LockOn();
 	//エフェクト関係

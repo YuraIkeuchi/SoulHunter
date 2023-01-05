@@ -12,23 +12,7 @@ void InterEnemy::Update() {
 void InterEnemy::Draw(DirectXCommon* dxCommon) {
 
 }
-//敵がダメージ食らう(弾)
-bool InterEnemy::BulletCollision() {
-	XMFLOAT3 bulletpos = playerbullet->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.5f, bulletpos.x, bulletpos.y, 1.5f) && (m_HP > 0)
-		&& (playerbullet->GetAlive()) && (!m_BulletHit)) {
-		m_HP -= 2;
-		m_Effect = true;
-		m_EffectArgment = true;
-		m_BulletHit = true;
-		return true;
-	}
-	else {
-		return false;
-	}
 
-	return true;
-}
 //敵がダメージ食らう
 bool InterEnemy::Collision() {
 
@@ -206,26 +190,6 @@ void InterEnemy::DamageAct() {
 		}
 	}
 
-	if (BulletCollision()) {
-		m_TargetTimer = 0;
-		m_Speed = 0.0f;
-		m_Effect = true;
-		if (m_EnemyType == Bird) {
-			m_BirdEffectArgment = true;
-		}
-	
-		//敵が跳ね返る
-		if (playerbullet->GetPosition().x > m_Position.x) {
-			m_HitDir = HitRight;
-			m_BoundPower.x = -0.5f;
-		}
-		else {
-			m_HitDir = HitLeft;
-			m_BoundPower.x = 0.5f;
-		}
-	}
-
-
 	//跳ね返り処理
 	if (m_EnemyType == Normal || m_EnemyType == Bird) {
 		if (m_HP > 0) {
@@ -258,12 +222,7 @@ void InterEnemy::DamageAct() {
 
 	m_Position.x += m_BoundPower.x;
 }
-//弾のリセット
-void InterEnemy::ResetBullet() {
-	if (!playerbullet->GetAlive()) {
-		m_BulletHit = false;
-	}
-}
+
 //パーティクルの初期化
 void InterEnemy::ParticleInit() {
 	//パーティクル

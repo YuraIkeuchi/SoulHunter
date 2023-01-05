@@ -51,8 +51,7 @@ void BirdEnemy::Action() {
 	DamageAct();
 	//死んだときの挙動
 	DeathMove();
-	//弾のリセット
-	ResetBullet();
+
 	//ロックオン
 	BirdLockOn();
 	//エフェクト関係

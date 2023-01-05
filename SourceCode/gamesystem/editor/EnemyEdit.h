@@ -5,7 +5,6 @@
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
 #include "Player.h"
-#include "PlayerBullet.h"
 #include "PlayerEffect.h"
 #include "Block.h"
 //エネミーのエディタクラス
@@ -19,14 +18,14 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public://各敵の生成(引数が多いので後々修正する)
-	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,Player* player,PlayerBullet* playerbullet,
-	PlayerEffect* playereffect,Block* block, HitStop* hitstop);
-	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
-		PlayerEffect* playereffect, HitStop* hitstop);
-	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
-		PlayerEffect* playereffect, Block* block, HitStop* hitstop);
-	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player, PlayerBullet* playerbullet,
-		PlayerEffect* playereffect, Block* block, HitStop* hitstop);
+	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,Player* player,
+	Block* block, HitStop* hitstop);
+	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+		HitStop* hitstop);
+	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+		Block* block, HitStop* hitstop);
+	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+		Block* block, HitStop* hitstop);
 private:
 	
 };

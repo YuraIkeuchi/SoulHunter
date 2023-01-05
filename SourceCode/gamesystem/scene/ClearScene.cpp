@@ -46,14 +46,16 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	player = new Player();
 	player->Initialize();
 	player->StateInitialize();
+	//ライト
+	m_LightPos = { 5.0f,5.0f,-80.0f };
 
 	//プレイヤーが必要
 	camerawork->SetPlayer(player);
 
 	//ライト
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
+	//lightGroup->SetDirLightActive(0, true);
+	//lightGroup->SetDirLightActive(1, true);
+	//lightGroup->SetDirLightActive(2, true);
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {
@@ -68,6 +70,10 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
+	///ポイントライト
+	lightGroup->SetPointLightPos(0, { clearobj->GetTorchPos().x, -5.0f, clearobj->GetTorchPos().z});
+	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
+	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 	clearobj->Update(m_Timer);
 	//カメラの位置調整
 	camerawork->Update(camera);
@@ -167,9 +173,10 @@ void ClearScene::GameDraw(DirectXCommon* dxCommon)
 //ImGui描画
 void ClearScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	////FPSManager::GetInstance()->ImGuiDraw();
-	//ImGui::Begin("Introduce");
-	//ImGui::Text("Timer:%d",m_Timer);
-	//ImGui::End();
+	ImGui::Begin("Clear");
+	ImGui::Text("Timer:%d",m_Timer);
+	ImGui::Text("ResetTimer:%d", m_ResetTimer);
+	ImGui::End();
 }
 //解放
 void ClearScene::Finalize() {
@@ -231,7 +238,34 @@ void ClearScene::ChangePostEffect(int PostType) {
 }
 //演出
 void ClearScene::Movie() {
-	if (m_Timer == 300) {
+	
+	//一定時間立つと画面が暗くなる
+	if (m_Timer == 100) {
+		PlayPostEffect = true;
+	}
+
+	//セピアカラーになる
+	if (PlayPostEffect) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.005f;
+		}
+		else {
+			m_Frame = 1.0f;
+		}
+
+		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, 0.1f);
+
+		if (m_Frame == 1.0f) {
+			if (m_TextColor.w < 1.0f) {
+				m_TextColor.w += 0.01f;
+			}
+			else {
+				m_TextColor.w = 1.0f;
+			}
+		}
+	}
+
+	if (m_Timer == 2500) {
 		scenechange->SetAddStartChange(true);
 	}
 }

@@ -1,17 +1,7 @@
 #include "EditorScene.h"
 #include "Audio.h"
 #include "Input.h"
-#include "DebugText.h"
 #include "SceneManager.h"
-#include "TitleScene.h"
-#include "IKEFbxLoader.h"
-#include"IKETexture.h"
-#include "SphereCollider.h"
-#include "CollisionManager.h"
-#include "Player.h"
-#include "TouchableObject.h"
-#include "MeshCollider.h"
-#include "ImageManager.h"
 #include "imgui.h"
 #include <Easing.h>
 //初期化
@@ -19,12 +9,8 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 {
 	//各クラスのnew
 	player = new Player();
-	playerbullet = new PlayerBullet();
-	//EditorSceneplayer = new EditorScenePlayer();
-	playereffect = new PlayerEffect();
 	playerskill = new PlayerSkill();
 	skillpause = new SkillPause();
-	//minimap = new MiniMap();
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
@@ -66,9 +52,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	spotLightDir[0] = 0;
 	spotLightDir[1] = 0;
 	spotLightDir[2] = 1;
-	//死んだときに暗くなるようのやつ
-	BlackFilter = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
-	BlackFilter->SetColor(BlackColor);
 	StartGame();
 	LoadEnemyParam(StageNumber);
 	LoadObjParam(StageNumber);
@@ -246,8 +229,6 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	message->Draw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
-	//プレイヤーの弾の更新
-	playerbullet->Draw(dxCommon);
 	//ImGuiのOBJの描画
 	imguieditor->ObjDraw();
 	//playereffect->Draw();
@@ -267,7 +248,6 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	chest->ExplainDraw();
 	message->ExplainDraw();
 	scenechange->Draw();
-	BlackFilter->Draw();
 	IKESprite::PostDraw();
 #pragma endregion
 }
@@ -537,14 +517,6 @@ void EditorScene::AllUpdate() {
 		player->Pause();
 	}
 
-	//弾の更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
-		playerbullet->Update();
-	}
-	else {
-		playerbullet->Pause();
-	}
-
 	//設置した敵の更新
 		//普通の敵
 	EnemyUpdate(m_Enemys);
@@ -576,10 +548,7 @@ void EditorScene::AllUpdate() {
 		tutorialtext[i]->Update(i);
 
 	}
-	//エフェクトの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
-		playereffect->Update();
-	}
+
 	//その他の更新
 	hitstop->Update();
 	ParticleManager::GetInstance()->Update();
@@ -595,10 +564,6 @@ void EditorScene::AllUpdate() {
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle && !hitstop->GetHitStop()) {
 		respornenemy->Update(firstboss);
 	}
-	//for (std::size_t i = 0; i < bosseffect.size(); i++) {
-	//	bosseffect[i]->Update(firstboss);
-	//}
-	BlackFilter->SetColor(BlackColor);
 	if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
 		firstboss->Update();
 		ui->Update(firstboss);
@@ -739,21 +704,21 @@ void EditorScene::EditorUpdate() {
 	if (imguieditor->GetEnemyArgment()) {
 		//普通
 		if (imguieditor->GetEnemyType() == Normal) {
-			enemyedit->NormalEnemyArgment(m_Enemys, player, playerbullet, playereffect, block, hitstop);
+			enemyedit->NormalEnemyArgment(m_Enemys, player, block, hitstop);
 			m_NormalEnemyCount++;
 		}
 		//棘のやつ
 		else if (imguieditor->GetEnemyType() == Thorn) {
-			enemyedit->ThornEnemyArgment(m_ThornEnemys, player, playerbullet, playereffect, hitstop);
+			enemyedit->ThornEnemyArgment(m_ThornEnemys, player,hitstop);
 		}
 		//羽の敵
 		else if (imguieditor->GetEnemyType() == Bound) {
-			enemyedit->BoundEnemyArgment(m_BoundEnemys, player, playerbullet, playereffect, block, hitstop);
+			enemyedit->BoundEnemyArgment(m_BoundEnemys, player,block, hitstop);
 			m_BoundEnemyCount++;
 		}
 		//鳥の敵
 		else {
-			enemyedit->BirdEnemyArgment(m_BirdEnemys, player, playerbullet, playereffect, block, hitstop);
+			enemyedit->BirdEnemyArgment(m_BirdEnemys, player,block, hitstop);
 			m_BirdEnemyCount++;
 		}
 		imguieditor->SetEnemyArgment(false);

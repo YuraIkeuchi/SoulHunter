@@ -5,7 +5,6 @@
 #include "IKEFBXModel.h"
 #include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
-#include "PlayerBullet.h"
 #include "ParticleTex.h"
 #include "VolumManager.h"
 #include "ParticleHeal.h"
@@ -21,7 +20,6 @@ class Player :
 	public ObjCommon
 {
 public:
-	void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 	Player();
 
@@ -73,6 +71,8 @@ public:
 	void AttackArgment();
 	//ゴール後の動き
 	void GoalMove();
+	//死んだ時の動き
+	bool DeathMove();
 	//プレイヤーが敵にあたった瞬間の判定
 	void PlayerHit(const XMFLOAT3& pos);
 	//プレイヤーが敵にあたった瞬間の判定
@@ -169,7 +169,6 @@ private:
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
-	unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<AttackEffect*> attackeffects;
 	//プレイモードか
@@ -307,10 +306,9 @@ private:
 		ArgSword,
 		DeleteSword,
 	};
-	XMFLOAT3 m_WingPosition = { 0.0f,0.0f,0.0f };
-	int m_WingDeleteCount = 0;
 
-	float m_inputX = 0.0f;
-	float m_inputY = 0.0f;
+	//死んだ動き
+	bool m_Death = false;
+	int m_DeathTimer = 0;
 };
 
