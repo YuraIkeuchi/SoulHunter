@@ -73,6 +73,8 @@ public:
 	void AttackArgment();
 	//ゴール後の動き
 	void GoalMove();
+	//死んだ時の動き
+	bool DeathMove();
 	//プレイヤーが敵にあたった瞬間の判定
 	void PlayerHit(const XMFLOAT3& pos);
 	//プレイヤーが敵にあたった瞬間の判定
@@ -307,10 +309,9 @@ private:
 		ArgSword,
 		DeleteSword,
 	};
-	XMFLOAT3 m_WingPosition = { 0.0f,0.0f,0.0f };
-	int m_WingDeleteCount = 0;
 
-	float m_inputX = 0.0f;
-	float m_inputY = 0.0f;
+	//死んだ動き
+	bool m_Death = false;
+	int m_DeathTimer = 0;
 };
 

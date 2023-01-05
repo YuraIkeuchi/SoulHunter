@@ -649,7 +649,7 @@ void FirstStage::BossRoomUpdate() {
 //ƒV[ƒ“•ÏX‚È‚Ç
 void FirstStage::ChangeUpdate() {
 	//Ž€‚ñ‚¾‚Æ‚«‚à–ß‚³‚ê‚é
-	if (player->GetHP() < 1) {
+	if (player->DeathMove()) {
 		scenechange->SetAddStartChange(true);
 	}
 
@@ -682,7 +682,7 @@ void FirstStage::ChangeUpdate() {
 	}
 
 	//”wŒi‚ªˆÃ‚­‚È‚é‚©‚Ç‚¤‚©
-	if (!player->GetAlive() && BlackColor.w < 1.0f) {
+	if (!player->GetAlive() && player->GetHP() >= 2 && BlackColor.w < 1.0f) {
 		BlackColor.w += 0.1f;
 	}
 	else if (player->GetAlive() && BlackColor.w > 0.0f) {

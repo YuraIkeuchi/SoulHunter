@@ -235,9 +235,6 @@ void Player::PlayerMove() {
 	}
 	m_Position.x += m_Velocity;
 	particletex->SetParticleBreak(true);
-
-	m_inputX = input->GetVecX();
-	m_inputY = input->GetVecY();
 	//歩きアニメーション
 	WalkAnimation();
 
@@ -295,7 +292,6 @@ void Player::PlayerJump() {
 		m_JumpCount++;
 		m_Jump = true;
 		m_ParticleCount = 0;
-		m_WingDeleteCount = 0;
 		m_AddPower = 0.8f;
 	
 		if (m_JumpCount == 1) {
@@ -330,13 +326,18 @@ void Player::PlayerJump() {
 }
 //プレイヤーの落下
 void Player::PlayerFall() {
+	if (m_HP != 0) {
+		m_Gravity = 0.02f;
+	}
+	else {
+		m_Gravity = 0.001f;
+	}
 	if (m_Jump) {
 		//ジャンプ処理
 	//ダッシュ中のときは重力がない
 		if (!m_Dush) {
 			m_AddPower -= m_Gravity;
 			m_Position.y += m_AddPower;
-			m_WingPosition.y += m_AddPower;
 		}
 
 		//壁との当たり判定
@@ -344,7 +345,6 @@ void Player::PlayerFall() {
 			m_AddPower) && m_Alive)
 		{
 			//初期化
-			m_Gravity = 0.02f;
 			m_Jump = false;
 			m_AddPower = 0.0f;
 		}
@@ -573,36 +573,64 @@ void Player::PlayerDamage() {
 	}
 	m_Position.x += m_BoundPower;
 
-	//復活処理
-	if (!m_Alive) {
-		m_RespornTimer++;
-		m_Rotation.z--;
-	}
 
 	//死んだときの判定
 	if (block->GetThornHit()) {
-		m_Alive = false;
-		if (block->GetThornDir() == 1) {
-			m_AddPower = 0.0f;
-			m_BoundPower = 0.0f;
+		if (m_HP >= 2) {
+			if (block->GetThornDir() == 1) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 0.0f;
+			}
+			else if (block->GetThornDir() == 2) {
+				m_AddPower = 0.7f;
+				m_BoundPower = 0.0f;
+			}
+			else if (block->GetThornDir() == 3) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 1.0f;
+				m_HitDir = 1;
+			}
+			else if (block->GetThornDir() == 4) {
+				m_AddPower = 0.0f;
+				m_BoundPower = -1.0f;
+				m_HitDir = 2;
+			}
+
+			m_Alive = false;
 		}
-		else if (block->GetThornDir() == 2) {
-			m_AddPower = 0.7f;
-			m_BoundPower = 0.0f;
+		else {
+			if (block->GetThornDir() == 1) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 0.0f;
+			}
+			else if (block->GetThornDir() == 2) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 0.0f;
+			}
+			else if (block->GetThornDir() == 3) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 0.0f;
+				m_HitDir = 1;
+			}
+			else if (block->GetThornDir() == 4) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 0.0f;
+				m_HitDir = 2;
+			}
+			m_Death = true;
+			PlayerAnimetion(4, 1);
 		}
-		else if (block->GetThornDir() == 3) {
-			m_AddPower = 0.0f;
-			m_BoundPower = 1.0f;
-			m_HitDir = 1;
-		}
-		else if (block->GetThornDir() == 4) {
-			m_AddPower = 0.0f;
-			m_BoundPower = -1.0f;
-			m_HitDir = 2;
-		}
+	
 		block->SetThornDir(0);
 		block->SetThornHit(false);
 	}
+
+	//復活処理
+	if (!m_Alive && m_HP >= 1) {
+		m_RespornTimer++;
+		m_Rotation.x--;
+	}
+
 
 	//棘にあたったときの動き
 	if (!m_Alive && m_RespornTimer == 1) {
@@ -644,14 +672,30 @@ void Player::GoalMove() {
 		m_Position.x -= 0.3f;
 	}
 }
+//ゴールの動き
+bool Player::DeathMove() {
+	if (m_Death) {
+		m_DeathTimer++;
+
+		if (m_DeathTimer >= 100) {
+			return true;
+		}
+	}
+
+	return false;
+}
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
 
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("inputX:%f", m_inputX);
-	ImGui::Text("inputY:%f", m_inputY);
+	ImGui::Text("Death:%d", m_Death);
+	ImGui::Text("DeathTimer:%d", m_DeathTimer);
+	ImGui::Text("HP:%d", m_HP);
+	ImGui::Text("m_RespornTimer:%d", m_RespornTimer);
+	ImGui::Text("m_Interval:%d", m_Interval);
+	ImGui::Text("Gravity:%f", m_Gravity);
 	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -840,7 +884,7 @@ void Player::ResPornPlayer() {
 			m_RespornTimer = 0;
 			m_Jump = false;
 			block->SetThornHit(false);
-			m_Rotation.z = 0.0f;
+			m_Rotation.x = 0.0f;
 			m_Position = m_RespornPos;
 		}
 	}
@@ -853,7 +897,7 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
-	PlayerAnimetion(4, 3);
+	PlayerAnimetion(9, 3);
 	m_Effect = true;
 	m_HP -= 1;
 	m_Interval = 100;
