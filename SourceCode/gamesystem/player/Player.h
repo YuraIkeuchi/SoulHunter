@@ -61,8 +61,6 @@ public:
 	void PlayerAttack();
 	//ダッシュ
 	void PlayerDush();
-	//弾を撃つ
-	void PlayerShot();
 	//HP回復
 	void PlayerHeal();
 	//ダメージ
@@ -265,7 +263,6 @@ private:
 	float m_CameraDistance = 0.0f;
 	//パーティクルのための変数
 	int m_ParticleNumber = 0;
-	float m_BulletDistance = 0.0f;
 	//提出用の攻撃タイプ
 	int m_AttackType = 0;
 	enum AttackType {

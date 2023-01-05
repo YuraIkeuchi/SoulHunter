@@ -69,7 +69,7 @@ void Player::Update()
 	m_OldPlayerPos = m_Position;
 	//ムービー中は一部挙動は出来ない
 	if (!m_Movie) {
-		if (m_GoalDir == No) {
+		if (m_GoalDir == No && !m_Death) {
 			//移動
 			PlayerMove();
 			//ジャンプ
@@ -79,11 +79,6 @@ void Player::Update()
 			//攻撃(剣)
 			if (m_AttackType == Sword && !m_CollideObj) {
 				PlayerAttack();
-			}
-
-			//弾を撃つ
-			else if (m_AttackType == Shot) {
-				PlayerShot();
 			}
 			//HP回復
 			PlayerHeal();
@@ -476,30 +471,6 @@ void Player::PlayerDush() {
 		}
 	}
 }
-//弾を打つ
-void Player::PlayerShot() {
-	//Input* input = Input::GetInstance();
-	////攻撃
-	////攻撃の向き
-	//if (input->TriggerButton(input->Button_A) && (!playerbullet->GetAlive()) && (m_SoulCount >= 10.0f)) {
-	//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Decision.wav", VolumManager::GetInstance()->GetSEVolum());
-	//	m_SoulCount -= 10.0f;
-	//	playerbullet->SetAlive(true);
-	//	playerbullet->SetPosition(m_Position);
-	//	if (m_Rotation.y == 90.0f) {
-	//		playerbullet->SetAddSpeed(1.0f);
-	//	}
-	//	else {
-	//		playerbullet->SetAddSpeed(-1.0f);
-	//	}
-	//}
-
-	//m_BulletDistance = fabs(m_Position.x) - fabs(playerbullet->GetPosition().x);
-	//m_BulletDistance = fabs(m_BulletDistance);
-	//if ((playerbullet->GetAlive()) && (m_BulletDistance >= 80.0f)) {
-	//	playerbullet->SetAlive(false);
-	//}
-}
 //プレイヤーのHP回復
 void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
@@ -553,7 +524,6 @@ void Player::PlayerHeal() {
 }
 //ダメージを食らう
 void Player::PlayerDamage() {
-
 	//ダメージ時の跳ね返り
 	if (m_HitDir == 1) {
 		if (m_BoundPower > 0.0f) {
@@ -597,8 +567,6 @@ void Player::PlayerDamage() {
 				m_BoundPower = -1.0f;
 				m_HitDir = 2;
 			}
-
-			m_Alive = false;
 		}
 		else {
 			if (block->GetThornDir() == 1) {
@@ -623,17 +591,18 @@ void Player::PlayerDamage() {
 				m_HP -= 1;
 				m_Death = true;
 			}
-			PlayerAnimetion(4, 1);
 		}
-	
+		m_Alive = false;
 		block->SetThornDir(0);
 		block->SetThornHit(false);
 	}
 
 	//復活処理
 	if (!m_Alive && m_HP >= 1) {
-		m_RespornTimer++;
-		m_Rotation.x--;
+		if (m_HP != 0) {
+			m_RespornTimer++;
+			m_Rotation.x--;
+		}
 	}
 
 
@@ -681,6 +650,9 @@ void Player::GoalMove() {
 bool Player::DeathMove() {
 	if (m_Death) {
 		m_DeathTimer++;
+		if (m_DeathTimer == 1) {
+			PlayerAnimetion(4, 1);
+		}
 		particletex->SetParticleBreak(true);
 		m_ParticleCount++;
 		m_ParticleNumber = 2;
@@ -917,6 +889,10 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	else {
 		m_BoundPower = -1.0f;
 		m_HitDir = 2;
+	}
+
+	if (m_HP == 0 && !m_Death) {
+		m_Death = true;
 	}
 }
 //プレイヤーが敵にあたった瞬間の判定

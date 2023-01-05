@@ -311,7 +311,6 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	mapchange->Draw();
 	scenechange->Draw();
 	bossscenechange->Draw();
-	BlackFilter->Draw();
 	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ
@@ -325,6 +324,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
 		}
+		ImGui::Text("color.w:%f", BlackColor.w);
 		ImGui::End();
 	}
 }
@@ -388,6 +388,11 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	}
 
 	playerskill->Draw();
+	IKESprite::PreDraw();
+	if (player->GetHP() == 0) {
+		BlackFilter->Draw();
+	}
+	IKESprite::PostDraw();
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	player->Draw(dxCommon);
 	playereffect->Draw();
@@ -397,10 +402,13 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 
 	//Š®‘S‚É‘O‚É‘‚­ƒXƒvƒ‰ƒCƒg
 	IKESprite::PreDraw();
-	ui->Draw();
-	pause->Draw();
-	chest->ExplainDraw();
-	message->ExplainDraw();
+	if (player->GetHP() != 0) {
+		ui->Draw();
+		pause->Draw();
+		chest->ExplainDraw();
+		message->ExplainDraw();
+		BlackFilter->Draw();
+	}
 	IKESprite::PostDraw();
 }
 //ƒ{ƒX“oêƒV[ƒ“‚Ì•`‰æ
@@ -699,7 +707,7 @@ void FirstStage::ChangeUpdate() {
 	}
 
 	//”wŒi‚ªˆÃ‚­‚È‚é‚©‚Ç‚¤‚©
-	if (!player->GetAlive() && player->GetHP() >= 2 && BlackColor.w < 1.0f) {
+	if (!player->GetAlive() && BlackColor.w < 1.0f) {
 		BlackColor.w += 0.1f;
 	}
 	else if (player->GetAlive() && BlackColor.w > 0.0f) {

@@ -32,7 +32,6 @@ FirstBoss::FirstBoss() {
 
 bool FirstBoss::Initialize() {
 	assert(player);
-	assert(playereffect);
 	m_Position = { 205.0f, -145.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
@@ -43,7 +42,6 @@ bool FirstBoss::Initialize() {
 
 bool FirstBoss::BattleInitialize() {
 	assert(player);
-	assert(playereffect);
 	m_Position = { 205.0f, -152.0f,0.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
