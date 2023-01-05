@@ -12,6 +12,7 @@
 #include "ObjCommon.h"
 #include "AttackEffect.h"
 #include "VariableCommon.h"
+#include "Shake.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -169,6 +170,7 @@ private:
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	std::vector<AttackEffect*> attackeffects;
+	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
 	//生きているかどうか
@@ -181,7 +183,7 @@ private:
 	//攻撃時のエフェクト発生条件
 	bool m_AttackArgment = false;
 	//HP
-	int m_HP = 5;
+	int m_HP = 0;
 	//無敵時間
 	int m_Interval = 0;
 	int m_FlashCount = 0;
@@ -307,5 +309,7 @@ private:
 	//死んだ動き
 	bool m_Death = false;
 	int m_DeathTimer = 0;
+	//シェイク用変数
+	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
 };
 

@@ -146,13 +146,11 @@ void PlayerEffect::DamageEffectSet() {
 					m_BoundPower[i].x = 0.0f;
 				}
 			}
-
 			
 			if (m_BoundPower[i].y < 0.2f) {
 				m_BoundPower[i].y += 0.025f;
 			}
-
-
+			
 			m_DamageEffectpos[i].x += m_BoundPower[i].x;
 			m_DamageEffectpos[i].y += m_BoundPower[i].y;
 			m_DamageEffectpos[i].z += m_BoundPower[i].z;

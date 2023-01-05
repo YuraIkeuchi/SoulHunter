@@ -330,64 +330,67 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
-	//ステージの描画
-	backobjalways->Draw();
-	block->Draw(m_PlayerPos);
-	if (StageNumber != BossMap) {
-		BackObjDraw(m_BackRocks, dxCommon);
-		BackObjDraw(m_BackBoxs, dxCommon);
-		BackObjDraw(m_BackTorchs, dxCommon);
-	}
-	backlight->Draw();
-	save->Draw();
-	//パーティクルの描画
-	particleMan->Draw(dxCommon->GetCmdList());
-	//チュートリアル
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->Draw();
-	}
-	//たからばこ
-	chest->Draw();
-	message->Draw();
-	//敵の描画
-	EnemyDraw(m_Enemys, dxCommon);
-	EnemyDraw(m_ThornEnemys, dxCommon);
-	EnemyDraw(m_BoundEnemys, dxCommon);
-	EnemyDraw(m_BirdEnemys, dxCommon);
-	//棘のOBJ
-	for (ThornObj* thornobj : m_ThornObjs) {
-		if (thornobj != nullptr) {
-			thornobj->Draw(dxCommon);
+	//画面が黒い間は描画されない
+	if (BlackColor.w <= 1.0f) {
+		//ステージの描画
+		backobjalways->Draw();
+		block->Draw(m_PlayerPos);
+		if (StageNumber != BossMap) {
+			BackObjDraw(m_BackRocks, dxCommon);
+			BackObjDraw(m_BackBoxs, dxCommon);
+			BackObjDraw(m_BackTorchs, dxCommon);
 		}
-	}
-
-	//ボスの描画
-	if (StageNumber == BossMap) {
-		firstboss->Draw(dxCommon);
-		respornenemy->Draw();
-	}
-
-	
-	//魂関係
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_NormalEnemyCount; j++) {
-			normalplayersoul[i][j]->Draw();
+		backlight->Draw();
+		save->Draw();
+		//パーティクルの描画
+		particleMan->Draw(dxCommon->GetCmdList());
+		//チュートリアル
+		for (int i = 0; i < tutorialtext.size(); i++) {
+			tutorialtext[i]->Draw();
 		}
-	}
-
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_BoundEnemyCount; j++) {
-			boundplayersoul[i][j]->Draw();
+		//たからばこ
+		chest->Draw();
+		message->Draw();
+		//敵の描画
+		EnemyDraw(m_Enemys, dxCommon);
+		EnemyDraw(m_ThornEnemys, dxCommon);
+		EnemyDraw(m_BoundEnemys, dxCommon);
+		EnemyDraw(m_BirdEnemys, dxCommon);
+		//棘のOBJ
+		for (ThornObj* thornobj : m_ThornObjs) {
+			if (thornobj != nullptr) {
+				thornobj->Draw(dxCommon);
+			}
 		}
-	}
 
-	for (int i = 0; i < Soul_Max; i++) {
-		for (int j = 0; j < m_BirdEnemyCount; j++) {
-			birdplayersoul[i][j]->Draw();
+		//ボスの描画
+		if (StageNumber == BossMap) {
+			firstboss->Draw(dxCommon);
+			respornenemy->Draw();
 		}
-	}
 
-	playerskill->Draw();
+
+		//魂関係
+		for (int i = 0; i < Soul_Max; i++) {
+			for (int j = 0; j < m_NormalEnemyCount; j++) {
+				normalplayersoul[i][j]->Draw();
+			}
+		}
+
+		for (int i = 0; i < Soul_Max; i++) {
+			for (int j = 0; j < m_BoundEnemyCount; j++) {
+				boundplayersoul[i][j]->Draw();
+			}
+		}
+
+		for (int i = 0; i < Soul_Max; i++) {
+			for (int j = 0; j < m_BirdEnemyCount; j++) {
+				birdplayersoul[i][j]->Draw();
+			}
+		}
+
+		playerskill->Draw();
+	}
 	IKESprite::PreDraw();
 	if (player->GetHP() == 0) {
 		BlackFilter->Draw();

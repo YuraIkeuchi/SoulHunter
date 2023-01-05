@@ -402,6 +402,9 @@
     <ClCompile Include="SourceCode\gamesystem\JsonObj\ClearObj.cpp">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
+      <Filter>SourceCords\engine\shake</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -773,6 +776,9 @@
     <ClInclude Include="SourceCode\gamesystem\JsonObj\ClearObj.h">
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\engine\shake\Shake.h">
+      <Filter>SourceCords\engine\shake</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -986,6 +992,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\JsonObj">
       <UniqueIdentifier>{e17ea6d3-67d8-43c2-980a-bbd86560e76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\engine\shake">
+      <UniqueIdentifier>{2a7ab0e4-35b2-424d-b2f9-dff4e3205eff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

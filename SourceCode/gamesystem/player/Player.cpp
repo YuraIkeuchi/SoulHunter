@@ -44,6 +44,9 @@ bool Player::Initialize()
 	particleheal_->Initialize();
 	particleheal.reset(particleheal_);
 
+	Shake* shake_ = new Shake();
+	shake.reset(shake_);
+
 	return true;
 }
 //変数の初期化
@@ -51,7 +54,7 @@ void Player::StateInitialize() {
 	m_Scale = { 3.0f, 3.0f, 3.0f };
 	m_Position = { 20.0f,-100.0f,0.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_HP = 5;
+	m_HP = 1;
 	//プレイヤー関係
 	m_OldPlayerPos = { 0, 0, 0 };
 	m_Radius.x = 1.0f * m_Scale.x;
@@ -589,6 +592,7 @@ void Player::PlayerDamage() {
 			}
 			if (!m_Death) {
 				m_HP -= 1;
+				m_Effect = true;
 				m_Death = true;
 			}
 		}
@@ -604,7 +608,6 @@ void Player::PlayerDamage() {
 			m_Rotation.x--;
 		}
 	}
-
 
 	//棘にあたったときの動き
 	if (!m_Alive && m_RespornTimer == 1) {
@@ -650,14 +653,55 @@ void Player::GoalMove() {
 bool Player::DeathMove() {
 	if (m_Death) {
 		m_DeathTimer++;
+		//最初にアニメーションが入る
 		if (m_DeathTimer == 1) {
 			PlayerAnimetion(4, 1);
 		}
+		//前を向く
+		if (m_DeathTimer >= 10) {
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.05f;
+			}
+			else {
+				m_Frame = m_FrameMax;
+			}
+
+			m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, 180.0f);
+		}
+
+		//シェイクする
+		if (m_DeathTimer == 150) {
+			shake->SetShakeStart(true);
+			m_ChangeColor = true;
+		}
+	
+		shake->ShakePos(m_ShakePos.x, 10, 5, 300,10);
+		shake->ShakePos(m_ShakePos.y, 10, 5, 300,10);
+		if (!shake->GetShakeStart()) {
+			m_ShakePos = { 0.0f,0.0f,0.0f };
+		}
+		else {
+			//シェイク始まったらパーティクル
+			m_ParticleCount++;
+			//ディゾルブで消す
+			if (m_Addcolor.x <= 1.0f) {
+				m_Addcolor.y += 0.01f;
+				m_Addcolor.z += 0.01f;
+			}
+			else {
+				m_Addcolor.y = 1.0f;
+				m_Addcolor.z = 1.0f;
+			}
+			if (m_AddDisolve < 2.0f) {
+				m_AddDisolve += 0.015f;
+			}
+		}
+		m_Position.x += m_ShakePos.x;
+		m_Position.y += m_ShakePos.y;
 		particletex->SetParticleBreak(true);
-		m_ParticleCount++;
 		m_ParticleNumber = 2;
 		m_ParticlePos = m_Position;
-		if (m_DeathTimer >= 100) {
+		if (m_AddDisolve >= 1.9f) {
 			return true;
 		}
 	}
@@ -670,12 +714,13 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("Death:%d", m_Death);
-	ImGui::Text("DeathTimer:%d", m_DeathTimer);
-	ImGui::Text("HP:%d", m_HP);
-	ImGui::Text("m_RespornTimer:%d", m_RespornTimer);
-	ImGui::Text("m_Interval:%d", m_Interval);
+	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
 	ImGui::Text("Gravity:%f", m_Gravity);
+	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("ShakeX:%f", m_ShakePos.x);
+	ImGui::Text("ShakeY:%f", m_ShakePos.y);
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -881,7 +926,6 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_Effect = true;
 	m_HP -= 1;
 	m_Interval = 100;
-	//m_Effect = true;
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = 1;//右側に弾かれる
@@ -893,6 +937,7 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 
 	if (m_HP == 0 && !m_Death) {
 		m_Death = true;
+		m_Alive = false;
 	}
 }
 //プレイヤーが敵にあたった瞬間の判定
