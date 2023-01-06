@@ -66,17 +66,24 @@ void ThornObj::Update() {
 			LeftMove();
 		}
 	}
-	Obj_SetParam();
-	//パーティクル関係
-	if (m_SmokeParticleCount >= 2) {
-		m_SmokeParticleCount = 0;
+	//更新範囲のときのみ
+	if (UpdateCollide()) {
+		Obj_SetParam();
+		//パーティクル関係
+		if (m_SmokeParticleCount >= 2) {
+			m_SmokeParticleCount = 0;
+		}
+		if (m_RockParticleCount >= 4) {
+			m_RockParticleCount = 0;
+		}
+		thornparticle->SetStartColor({ 1.0f,1.0f,1.0f,1.0f });
+		thornparticle->TexUpdate(m_SmokeParticlePos, m_SmokeParticleCount, 1, m_Dir);
+		thornparticle->ObjUpdate(m_RockParticlePos, m_RockParticleCount, 3, m_Dir);
 	}
-	if (m_RockParticleCount >= 4) {
+	else {
+		m_SmokeParticleCount = 0;
 		m_RockParticleCount = 0;
 	}
-	thornparticle->SetStartColor({ 1.0f,1.0f,1.0f,1.0f });
-	thornparticle->TexUpdate(m_SmokeParticlePos, m_SmokeParticleCount, 1, m_Dir);
-	thornparticle->ObjUpdate(m_RockParticlePos, m_RockParticleCount, 3, m_Dir);
 }
 
 //描画
@@ -87,8 +94,10 @@ void ThornObj::Update() {
 	ImGui::Text("m_SmokeParticleCount:%d", m_SmokeParticleCount);
 	ImGui::Text("m_RockParticleCount:%d", m_RockParticleCount);
 	ImGui::End();*/
-	thornparticle->Draw();
-	Obj_Draw();
+	 if (DrawCollide()) {
+		 thornparticle->Draw();
+		 Obj_Draw();
+	 }
 }
 
 void ThornObj::Pause() {
@@ -458,4 +467,26 @@ Ease(In,Cubic,m_Frame,m_Position.x,m_Afterpos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_Afterpos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_Afterpos.z)
 	};
+}
+//更新を範囲内に入った時のみ
+bool ThornObj::UpdateCollide() {
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 50.0f, m_PlayerPos.x, m_PlayerPos.y, 50.0f)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return true;
+}
+//描画を範囲内に入った時のみ
+bool ThornObj::DrawCollide() {
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 50.0f, m_PlayerPos.x, m_PlayerPos.y, 50.0f)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return true;
 }

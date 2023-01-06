@@ -21,15 +21,18 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	bool Initialize() override;;
-	void Update() override;;
+	bool Initialize() override;
+	void Update() override;
+	//‚»‚ê‚¼‚ê‚Ì•ûŒü‚Ì“®‚«
 	void UpMove();
 	void DownMove();
 	void RightMove();
 	void LeftMove();
 	void Pause();
 	void Finalize();
-	bool Collide();
+	bool Collide();//“–‚½‚è”»’è
+	bool UpdateCollide();//XV”ÍˆÍ
+	bool DrawCollide();//•`‰æ”ÍˆÍ
 	void Draw(DirectXCommon* dxCommon) override;;
 public:
 	const XMFLOAT3& GetThornPos() { return  m_ThornSetPos; }

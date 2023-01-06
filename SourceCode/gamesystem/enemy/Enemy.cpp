@@ -90,35 +90,30 @@ void Enemy::Action() {
 		//当たり判定
 		PlayerCollide();
 		Fbx_SetParam();
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+			}
 		}
+		ParticleUpdate();
 	}
-	ParticleUpdate();
+	else {
+		m_ParticleCount = 0;
+	}
 }
 //描画
 void Enemy::Draw(DirectXCommon* dxCommon) {
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
-	}
-	if (m_Alive) {
-	/*	ImGui::Begin("Enemy");
-		ImGui::Text("m_Rotation.x : %f", m_Rotation.x);
-		ImGui::Text("m_Rotation.y : %f", m_Rotation.y);
-		ImGui::Text("m_Rotation.z : %f", m_Rotation.z);
-		ImGui::Text("m_TargetTimer : %d", m_TargetTimer);
-		ImGui::End();*/
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
 		}
+		particletex->Draw();
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {

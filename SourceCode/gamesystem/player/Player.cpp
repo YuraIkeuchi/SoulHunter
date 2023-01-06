@@ -718,15 +718,15 @@ bool Player::DeathMove() {
 //•`‰æ
 void Player::Draw(DirectXCommon* dxCommon) {
 
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_Alive:%d", m_Alive);
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_ResPosX:%f", m_RespornPos.x);
-	ImGui::Text("m_ResPosY:%f", m_RespornPos.y);
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("m_Alive:%d", m_Alive);
+	//ImGui::Text("m_PosX:%f", m_Position.x);
+	//ImGui::Text("m_PosY:%f", m_Position.y);
+	//ImGui::Text("m_ResPosX:%f", m_RespornPos.x);
+	//ImGui::Text("m_ResPosY:%f", m_RespornPos.y);
+	//ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {

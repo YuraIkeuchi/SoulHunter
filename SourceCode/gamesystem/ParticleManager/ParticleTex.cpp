@@ -41,7 +41,7 @@ void ParticleTex::Update(const XMFLOAT3& StartPos, int Timer, int TargetTimer, i
 		BossEndParticle(StartPos, Timer, TargetTimer);
 	}
 
-	for (int i = 0; i < particletex.size(); i++) {
+	for (int i = m_DrawCount; i < particletex.size(); i++) {
 		particletex[i]->SetPosition(m_pos[i]);
 		particletex[i]->SetScale(m_scale[i]);
 		particletex[i]->SetColor(m_color[i]);
@@ -304,7 +304,7 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 	m_DrawCount = 1;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = m_DrawCount; i < m_NormalParticleCount; i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -322,7 +322,7 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = m_DrawCount; i < m_NormalParticleCount; i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.005f;
 			m_AddPower[i].y += 0.001f;

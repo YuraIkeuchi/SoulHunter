@@ -28,6 +28,8 @@ public:
 	void SetEffect(InterEnemy* enemy);
 	bool Collide();//“–‚½‚è”»’è
 	void Move();//°‚Ì“®‚«
+	bool UpdateCollide();//XV”ÍˆÍ
+	bool DrawCollide();//•`‰æ”ÍˆÍ
 private:
 	// DirectX::‚ğÈ—ª
 	using XMFLOAT2 = DirectX::XMFLOAT2;

@@ -68,20 +68,23 @@ void BirdEnemy::Action() {
 		PlayerCollide();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		Fbx_SetParam();
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+			}
 		}
-	}
-	//エフェクト関係
-	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
-		if (birdenemyeffect != nullptr) {
-			birdenemyeffect->Update(m_Position);
+		//エフェクト関係
+		for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+			if (birdenemyeffect != nullptr) {
+				birdenemyeffect->Update(m_Position);
+			}
 		}
+		ParticleUpdate();
 	}
-	ParticleUpdate();
+	else {
+		m_ParticleCount = 0;
+	}
 }
 //描画
 void BirdEnemy::Draw(DirectXCommon* dxCommon) {
@@ -91,21 +94,21 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 	ImGui::End();*/
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
 		}
-	}
 
-	//エフェクト関係
-	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
-		if (birdenemyeffect != nullptr) {
-			birdenemyeffect->Draw();
+		//エフェクト関係
+		for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+			if (birdenemyeffect != nullptr) {
+				birdenemyeffect->Draw();
+			}
 		}
+		particletex->Draw();
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {

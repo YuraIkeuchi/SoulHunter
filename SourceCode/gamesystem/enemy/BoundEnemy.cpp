@@ -61,30 +61,30 @@ void BoundEnemy::Action() {
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		PlayerCollide();
 		Fbx_SetParam();
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+			}
 		}
+		ParticleUpdate();
 	}
-	ParticleUpdate();
+	else {
+		m_ParticleCount = 0;
+	}
 }
 //描画
 void BoundEnemy::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Enemy");
-ImGui::Text("m_Disolve : %f", m_AddPower);
-ImGui::End();*/
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
 		}
+		particletex->Draw();
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BoundEnemy::Pause() {
