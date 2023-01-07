@@ -123,9 +123,9 @@ const void BossStagObj::FrontDraw() {
 }
 //”wŒi•`‰æ
 const void BossStagObj::BackDraw() {
-	ImGui::Begin("BossApp");
+	/*ImGui::Begin("BossApp");
 	ImGui::Text("m_EndTimer:%d", m_EndTimer);
-	ImGui::End();
+	ImGui::End();*/
 
 	IKEObject3d::PreDraw();
 	//Json—p

@@ -58,16 +58,23 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 		m_EndSoul = false;
 	}
 	Move();
-	if (m_Effect) {
-		soultex->Update();
-	}
-	soultex->SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	soultex->SetPosition(m_pos);
-	soultex->SetScale(m_scale);
 
-	particlesoul->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
-	particlesoul->SetParticleBreak(true);
-	particlesoul->Update({ m_pos.x,m_pos.y - 0.5f,m_pos.z }, m_ParticleCount, 10, 0);
+
+	if (UpdateCollide()) {
+		if (m_Effect) {
+			soultex->Update();
+		}
+		soultex->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		soultex->SetPosition(m_pos);
+		soultex->SetScale(m_scale);
+
+		particlesoul->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
+		particlesoul->SetParticleBreak(true);
+		particlesoul->Update({ m_pos.x,m_pos.y - 0.5f,m_pos.z }, m_ParticleCount, 10, 0);
+	}
+	else {
+		m_ParticleCount = 0;
+	}
 	//collider.center = XMVectorSet(pos.x,pos.y,pos.z,1);
 }
 //描画
@@ -78,10 +85,12 @@ void PlayerSoul::Draw() {
 	//ImGui::Text("m_endeffect::%d", m_EndSoul);
 	//ImGui::End();
 	IKETexture::PreDraw(1);
-	if (m_Effect) {
-		soultex->Draw();
+	if (DrawCollide()) {
+		if (m_Effect) {
+			soultex->Draw();
+		}
+		particlesoul->Draw();
 	}
-	particlesoul->Draw();
 	
 }
 //エフェクトの動き
@@ -167,4 +176,26 @@ void PlayerSoul::Move() {
 			Ease(In,Cubic,m_Frame,m_scale.z,0.05f)
 		};
 	}
+}
+//更新を範囲内に入った時のみ
+bool PlayerSoul::UpdateCollide() {
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	if (Collision::CircleCollision(m_pos.x, m_pos.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return true;
+}
+//描画を範囲内に入った時のみ
+bool PlayerSoul::DrawCollide() {
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	if (Collision::CircleCollision(m_pos.x, m_pos.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return true;
 }

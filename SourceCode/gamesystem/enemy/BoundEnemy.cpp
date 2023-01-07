@@ -36,52 +36,50 @@ bool BoundEnemy::Initialize() {
 void BoundEnemy::Action() {
 	m_OldPos = m_Position;
 
-	//マップチップとの当たり判定
-	if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
-		m_Gravity = 0.02f;
-		m_ParticleCount = 5.0f;
-		//初期化
-		m_Air = false;
-	}
-
-	//行動
-	Move();
-
-	//ダメージ時の動き
-	DamageAct();
-	//パーティクル生成
-	BirthParticle();
-	//エフェクト関係
-	ArgEffect();
-	//魂関係
-	ArgSoul();
-
-	VanishEnemy();
 	if (m_Alive && UpdateCollide()) {
+
+		//マップチップとの当たり判定
+		if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
+			m_Gravity = 0.02f;
+			m_ParticleCount = 5.0f;
+			//初期化
+			m_Air = false;
+		}
+
+		//行動
+		Move();
+
+		//ダメージ時の動き
+		DamageAct();
+		//パーティクル生成
+		BirthParticle();
+		//エフェクト関係
+		ArgEffect();
+		//魂関係
+		ArgSoul();
+
+		VanishEnemy();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		PlayerCollide();
 		Fbx_SetParam();
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+			}
 		}
 	}
 	ParticleUpdate();
 }
 //描画
 void BoundEnemy::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Enemy");
-ImGui::Text("m_Disolve : %f", m_AddPower);
-ImGui::End();*/
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
 		}
 	}
 	particletex->Draw();

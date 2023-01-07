@@ -250,14 +250,14 @@ void CameraWork::ClearCamera() {
 }
 //ImGui‚Ì•`‰æ
 void CameraWork::ImGuiDraw() {
-	ImGui::Begin("CameraWork");
-	ImGui::SliderFloat("m_eyePos.x", &m_eyePos.x, 360, -360);
-	ImGui::SliderFloat("m_eyePos.y", &m_eyePos.y, 360, -360);
-	ImGui::SliderFloat("m_eyePos.z", &m_eyePos.z, 360, -360);
-	ImGui::SliderFloat("m_targetPos.x", &m_targetPos.x, 360, -360);
-	ImGui::SliderFloat("m_targetPos.y", &m_targetPos.y, 360, -360);
-	ImGui::SliderFloat("m_targetPos.z", &m_targetPos.z, 360, -360);
-	ImGui::End();
+	//ImGui::Begin("CameraWork");
+	//ImGui::SliderFloat("m_eyePos.x", &m_eyePos.x, 360, -360);
+	//ImGui::SliderFloat("m_eyePos.y", &m_eyePos.y, 360, -360);
+	//ImGui::SliderFloat("m_eyePos.z", &m_eyePos.z, 360, -360);
+	//ImGui::SliderFloat("m_targetPos.x", &m_targetPos.x, 360, -360);
+	//ImGui::SliderFloat("m_targetPos.y", &m_targetPos.y, 360, -360);
+	//ImGui::SliderFloat("m_targetPos.z", &m_targetPos.z, 360, -360);
+	//ImGui::End();
 }
 void CameraWork::EndDraw() {
 	endparticle->Draw();

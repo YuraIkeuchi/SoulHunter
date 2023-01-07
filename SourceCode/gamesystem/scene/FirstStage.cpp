@@ -268,7 +268,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		//FPSManager::GetInstance()->ImGuiDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		//PostImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
@@ -324,7 +324,6 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
 		}
-		ImGui::Text("color.w:%f", BlackColor.w);
 		ImGui::End();
 	}
 }

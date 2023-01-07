@@ -5,8 +5,6 @@
 using namespace DirectX;	
 //初期化
 void TitleObj::Initialize() {
-	//パーティクル
-	m_ParticleCount = 0;
 	ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
 	particletex.reset(particletex_);
@@ -60,15 +58,14 @@ void TitleObj::Update() {
 	//炎のパーティクル
 	if (!m_StopParticle) {
 		m_ParticleCount++;
+		if (m_ParticleCount > 6) {
+			m_ParticleCount = 0;
+		}
 	}
 	else {
 		m_ParticleCount = 0;
 	}
 
-
-	if (m_ParticleCount > 6) {
-		m_ParticleCount = 0;
-	}
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 6, 4);
 	particletex->SetParticleBreak(true);

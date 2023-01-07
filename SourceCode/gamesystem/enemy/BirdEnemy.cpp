@@ -40,45 +40,46 @@ bool BirdEnemy::Initialize() {
 //更新
 void BirdEnemy::Action() {
 	m_OldPos = m_Position;
-	//マップにあたったとき回転が戻る
-	if (block->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
-		m_Rotation = { 0.0f,180.0f,0.0f };
-	}
-
-	//動き
-	Move();
-	//ダメージ時の動き
-	DamageAct();
-	//死んだときの挙動
-	DeathMove();
-
-	//ロックオン
-	BirdLockOn();
-	//エフェクト関係
-	ArgEffect();
-	//魂関係
-	ArgSoul();
-
-	//消える
-	VanishEnemy();
-	//エフェクト発生
-	BirdArgment();
+	
 	if (m_Alive && UpdateCollide()) {
+		//マップにあたったとき回転が戻る
+		if (block->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
+			m_Rotation = { 0.0f,180.0f,0.0f };
+		}
+
+		//動き
+		Move();
+		//ダメージ時の動き
+		DamageAct();
+		//死んだときの挙動
+		DeathMove();
+
+		//ロックオン
+		BirdLockOn();
+		//エフェクト関係
+		ArgEffect();
+		//魂関係
+		ArgSoul();
+
+		//消える
+		VanishEnemy();
+		//エフェクト発生
+		BirdArgment();
 		//当たり判定景
 		PlayerCollide();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		Fbx_SetParam();
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+			}
 		}
-	}
-	//エフェクト関係
-	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
-		if (birdenemyeffect != nullptr) {
-			birdenemyeffect->Update(m_Position);
+		//エフェクト関係
+		for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+			if (birdenemyeffect != nullptr) {
+				birdenemyeffect->Update(m_Position);
+			}
 		}
 	}
 	ParticleUpdate();
@@ -91,18 +92,18 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 	ImGui::End();*/
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
-	}
-	//エフェクト関係
-	for (EnemyEffect* enemyeffect : enemyeffects) {
-		if (enemyeffect != nullptr) {
-			enemyeffect->Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
 		}
-	}
 
-	//エフェクト関係
-	for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
-		if (birdenemyeffect != nullptr) {
-			birdenemyeffect->Draw();
+		//エフェクト関係
+		for (BirdEnemyEffect* birdenemyeffect : birdenemyeffects) {
+			if (birdenemyeffect != nullptr) {
+				birdenemyeffect->Draw();
+			}
 		}
 	}
 	particletex->Draw();
