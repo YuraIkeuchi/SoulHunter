@@ -40,30 +40,31 @@ bool BirdEnemy::Initialize() {
 //更新
 void BirdEnemy::Action() {
 	m_OldPos = m_Position;
-	//マップにあたったとき回転が戻る
-	if (block->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
-		m_Rotation = { 0.0f,180.0f,0.0f };
-	}
-
-	//動き
-	Move();
-	//ダメージ時の動き
-	DamageAct();
-	//死んだときの挙動
-	DeathMove();
-
-	//ロックオン
-	BirdLockOn();
-	//エフェクト関係
-	ArgEffect();
-	//魂関係
-	ArgSoul();
-
-	//消える
-	VanishEnemy();
-	//エフェクト発生
-	BirdArgment();
+	
 	if (m_Alive && UpdateCollide()) {
+		//マップにあたったとき回転が戻る
+		if (block->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
+			m_Rotation = { 0.0f,180.0f,0.0f };
+		}
+
+		//動き
+		Move();
+		//ダメージ時の動き
+		DamageAct();
+		//死んだときの挙動
+		DeathMove();
+
+		//ロックオン
+		BirdLockOn();
+		//エフェクト関係
+		ArgEffect();
+		//魂関係
+		ArgSoul();
+
+		//消える
+		VanishEnemy();
+		//エフェクト発生
+		BirdArgment();
 		//当たり判定景
 		PlayerCollide();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
@@ -80,11 +81,8 @@ void BirdEnemy::Action() {
 				birdenemyeffect->Update(m_Position);
 			}
 		}
-		ParticleUpdate();
 	}
-	else {
-		m_ParticleCount = 0;
-	}
+	ParticleUpdate();
 }
 //描画
 void BirdEnemy::Draw(DirectXCommon* dxCommon) {
@@ -107,8 +105,8 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 				birdenemyeffect->Draw();
 			}
 		}
-		particletex->Draw();
 	}
+	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {

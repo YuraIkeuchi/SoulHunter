@@ -39,68 +39,68 @@ void Enemy::Action() {
 
 	m_OldPos = m_Position;
 
-	//自然落下
-	if (!m_Jump) {
-		m_Air = true;
-		//下降度をマイナス
-		//ダッシュ中のときは重力がない
-		m_AddPower -= m_Gravity;
-		m_Position.y += m_AddPower;
-	}
-	//マップチップとの当たり判定
-	if (block->EnemyMapCollideCommon(m_Position,m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall,m_HP)){
-		m_OnGround = true;
-		m_Gravity = 0.02f;
-		//初期化
-		m_AddPower = 0;
-		m_Air = false;
-	}
-	//エネミーの左右移動
-	if (m_OnGround && m_HP >= 1) {
-		//プレイヤーをロックオンしていない
-		if (!m_Lock) {
-			Move();//普通の移動
-			m_TargetTimer = 0;
-		}
-		//プレイヤーをロックオンしている
-		else {
-			AttackExtra();//予備動作
-			Tackle();//突進してくる
-		}
-
-		
-	}
-
-	//ダメージ時の動き
-	DamageAct();
-	//死んだときの挙動
-	DeathMove();
-	//パーティクル生成
-	BirthParticle();
-	//ロックオン
-	LockOn();
-	//エフェクト関係
-	ArgEffect();
-	//魂関係
-	ArgSoul();
 	
-	VanishEnemy();
 	if (m_Alive && UpdateCollide()) {
+		//自然落下
+		if (!m_Jump) {
+			m_Air = true;
+			//下降度をマイナス
+			//ダッシュ中のときは重力がない
+			m_AddPower -= m_Gravity;
+			m_Position.y += m_AddPower;
+		}
+		//マップチップとの当たり判定
+		if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
+			m_OnGround = true;
+			m_Gravity = 0.02f;
+			//初期化
+			m_AddPower = 0;
+			m_Air = false;
+		}
+		//エネミーの左右移動
+		if (m_OnGround && m_HP >= 1) {
+			//プレイヤーをロックオンしていない
+			if (!m_Lock) {
+				Move();//普通の移動
+				m_TargetTimer = 0;
+			}
+			//プレイヤーをロックオンしている
+			else {
+				AttackExtra();//予備動作
+				Tackle();//突進してくる
+			}
+
+
+		}
+
+		//ダメージ時の動き
+		DamageAct();
+		//死んだときの挙動
+		DeathMove();
+		//パーティクル生成
+		BirthParticle();
+		//ロックオン
+		LockOn();
+		//エフェクト関係
+		ArgEffect();
+		//魂関係
+		ArgSoul();
+
+		VanishEnemy();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		//当たり判定
 		PlayerCollide();
 		Fbx_SetParam();
+	
 		//エフェクト関係
 		for (EnemyEffect* enemyeffect : enemyeffects) {
 			if (enemyeffect != nullptr) {
 				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
 			}
 		}
-		ParticleUpdate();
 	}
-	else {
-		m_ParticleCount = 0;
-	}
+
+	ParticleUpdate();
 }
 //描画
 void Enemy::Draw(DirectXCommon* dxCommon) {
@@ -112,8 +112,8 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 				enemyeffect->Draw();
 			}
 		}
-		particletex->Draw();
 	}
+	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {

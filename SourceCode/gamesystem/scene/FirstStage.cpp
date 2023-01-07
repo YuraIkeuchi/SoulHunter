@@ -267,8 +267,8 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		FPSManager::GetInstance()->ImGuiDraw();
-		ImGuiDraw(dxCommon);
+		//FPSManager::GetInstance()->ImGuiDraw();
+		//ImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		//PostImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
