@@ -29,7 +29,7 @@ FirstBoss::FirstBoss() {
 	m_fbxObject.reset(fbxobject_);
 	m_ChangeColor = true;
 }
-
+//初期化
 bool FirstBoss::Initialize() {
 	assert(player);
 	m_Position = { 205.0f, -145.0f,0.0f };
@@ -39,7 +39,7 @@ bool FirstBoss::Initialize() {
 
 	return true;
 }
-
+//バトル開始時の初期化
 bool FirstBoss::BattleInitialize() {
 	assert(player);
 	m_Position = { 205.0f, -152.0f,0.0f };

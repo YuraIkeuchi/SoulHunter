@@ -1,6 +1,5 @@
 #include "BackObjCommon.h"
 #include"Collision.h"
-#include "imgui.h"
 //更新
 void BackObjCommon::Update() {
 	//各オブジェのそれぞれのまとめ

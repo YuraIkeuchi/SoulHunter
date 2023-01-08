@@ -6,7 +6,6 @@
 #include "Audio.h"
 #include "VolumManager.h"
 #include "Input.h"
-#include "imgui.h"
 //モデル読み込みと初期化
 Chest::Chest() {
 	//スプライト読み込み
@@ -195,11 +194,6 @@ void Chest::Update() {
 }
 //描画
 const void Chest::Draw() {
-	//ImGui::Begin("chest");
-	//ImGui::Text("m_CompassTimer: % d", m_CompassTimer);
-	//ImGui::Text("m_HealTimer: % d", m_HealTimer);
-	//ImGui::Text("m_ReadText[Heal]: % d", m_ReadText[Heal]);
-	//ImGui::End();
 	//宝箱の描画
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < Skill_Max; i++) {

@@ -52,6 +52,14 @@ class SceneManager;
 //シーンインターフェース
 class BaseScene
 {
+protected:
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 public:
 	//仮想デストラクタ
 	virtual ~BaseScene() = default;
@@ -141,8 +149,6 @@ public:
 		Blur,
 		Mosaic,
 	};
-	//当たり判定 レイ
-	Ray ray;
 	IKETexture* titleTexture = nullptr;
 	//当たり判定
 	LightGroup* lightGroup = nullptr;

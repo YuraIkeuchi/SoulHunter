@@ -1,9 +1,4 @@
 #pragma once
-#pragma once
-#include "IKEObject3d.h"
-#include"IKEModel.h"
-#include "IKEFBXModel.h"
-#include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
 #include "ParticleTex.h"

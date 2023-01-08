@@ -5,7 +5,6 @@
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
 #include "Player.h"
-#include "PlayerEffect.h"
 #include "Block.h"
 //エネミーのエディタクラス
 class EnemyEdit {
