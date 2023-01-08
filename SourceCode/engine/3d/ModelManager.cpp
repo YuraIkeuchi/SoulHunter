@@ -12,7 +12,6 @@ ModelManager* ModelManager::GetInstance() {
 void ModelManager::Initialize() {
 	LoadModel(ThornEnemy, "thornenemy");
 	LoadModel(ThornObj, "thornobj");
-	LoadModel(FirstBoss, "firstboss");
 	LoadModel(NormalBlock, "RockBlock");
 	LoadModel(InBlock, "RockBlock2");
 	LoadModel(Toge, "Toge");

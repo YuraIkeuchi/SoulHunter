@@ -16,7 +16,6 @@ public:
 	enum ModelName {
 		ThornEnemy,
 		ThornObj,
-		FirstBoss,
 		NormalBlock,
 		InBlock,
 		Toge,

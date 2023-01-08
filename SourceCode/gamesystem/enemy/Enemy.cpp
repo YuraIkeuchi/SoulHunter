@@ -28,7 +28,7 @@ bool Enemy::Initialize() {
 	//敵の種類
 	m_EnemyType = Normal;
 	//X方向
-	m_Radius.x = 1.0f * 2.7f;
+	m_Radius.x = 1.4f * 2.7f;
 	//下方向
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 3;
@@ -36,10 +36,8 @@ bool Enemy::Initialize() {
 }
 //更新
 void Enemy::Action() {
-
 	m_OldPos = m_Position;
 
-	
 	if (m_Alive && UpdateCollide()) {
 		//自然落下
 		if (!m_Jump) {
@@ -95,7 +93,7 @@ void Enemy::Action() {
 		//エフェクト関係
 		for (EnemyEffect* enemyeffect : enemyeffects) {
 			if (enemyeffect != nullptr) {
-				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+				enemyeffect->Update(m_Position, m_Effect);
 			}
 		}
 	}

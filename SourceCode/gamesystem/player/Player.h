@@ -11,6 +11,7 @@
 #include "SwordParticle.h"
 #include "ObjCommon.h"
 #include "AttackEffect.h"
+#include "WallAttackEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
 #include <memory>
@@ -23,12 +24,6 @@ class Player :
 public:
 	void SetBlock(Block* block) { this->block.reset(block); }
 	Player();
-
-	/// <summary>
-	/// 3Dオブジェクト生成
-	/// </summary>
-	/// <returns></returns>
-	//static Player* Create(IKEModel* model = nullptr);
 
 public:
 
@@ -68,6 +63,8 @@ public:
 	void PlayerDamage();
 	//攻撃エフェクト
 	void AttackArgment();
+	//壁エフェクト
+	void WallArgment();
 	//ゴール後の動き
 	void GoalMove();
 	//死んだ時の動き
@@ -169,7 +166,8 @@ private:
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
-	std::vector<AttackEffect*> attackeffects;
+	vector<AttackEffect*> attackeffects;
+	vector<WallAttackEffect*>walleffects;
 	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
@@ -182,6 +180,8 @@ private:
 	int m_AttackTimer = 0;
 	//攻撃時のエフェクト発生条件
 	bool m_AttackArgment = false;
+	//攻撃が壁にあたった時のエフェクト発生条件
+	bool m_WallArgment = false;
 	//HP
 	int m_HP = 0;
 	//無敵時間

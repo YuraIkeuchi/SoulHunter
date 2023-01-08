@@ -405,6 +405,9 @@
     <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
       <Filter>SourceCords\engine\shake</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -632,9 +635,6 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
@@ -778,6 +778,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\shake\Shake.h">
       <Filter>SourceCords\engine\shake</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

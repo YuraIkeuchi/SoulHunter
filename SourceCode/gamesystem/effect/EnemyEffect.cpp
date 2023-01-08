@@ -2,7 +2,6 @@
 #include"Easing.h"
 #include"ImageManager.h"
 using namespace DirectX;
-
 //読み込み
 EnemyEffect::EnemyEffect() {
 	IKETexture* ParticleEffect_[Effect_Max];
@@ -33,8 +32,8 @@ void EnemyEffect::Initialize() {
 	}
 }
 //更新
-void EnemyEffect::Update(const XMFLOAT3& pos, bool& Effect, int HitDir) {
-	SetEffect(pos,Effect,HitDir);
+void EnemyEffect::Update(const XMFLOAT3& pos, bool& Effect) {
+	SetEffect(pos,Effect);
 	SetHitEffect(pos, Effect);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i]) {
@@ -69,7 +68,7 @@ void EnemyEffect::Draw() {
 	}
 }
 //エフェクトの動き
-void EnemyEffect::SetEffect(const XMFLOAT3& pos, bool& Effect,int HitDir) {
+void EnemyEffect::SetEffect(const XMFLOAT3& pos, bool& Effect) {
 	//エフェクトの発生
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		//

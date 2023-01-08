@@ -25,7 +25,7 @@ bool BoundEnemy::Initialize() {
 	m_fbxObject.reset(m_fbxObject_);
 	m_EnemyType = Wing;
 	//X方向
-	m_Radius.x = 1.0f * 2.7f;
+	m_Radius.x = 1.4f * 2.7f;
 	//下方向
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 4;
@@ -65,7 +65,7 @@ void BoundEnemy::Action() {
 		//エフェクト関係
 		for (EnemyEffect* enemyeffect : enemyeffects) {
 			if (enemyeffect != nullptr) {
-				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+				enemyeffect->Update(m_Position, m_Effect);
 			}
 		}
 	}

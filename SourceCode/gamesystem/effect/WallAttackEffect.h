@@ -1,12 +1,13 @@
 #pragma once
 #include <DirectXMath.h>
-#include "IKETexture.h"
+#include "IKEModel.h"
+#include "IkeObject3d.h"
 #include "VariableCommon.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
-class EnemyEffect {
+class WallAttackEffect {
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -15,23 +16,21 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	EnemyEffect();
+	WallAttackEffect();
 
 	void Initialize();
 	void Finalize();
-	void Update(const XMFLOAT3& pos, bool& Effect);
+	void Update(const XMFLOAT3& pos, int HitDir);
 	void Draw();
-	void SetEffect(const XMFLOAT3& pos, bool& Effect);
-	void SetHitEffect(const XMFLOAT3& pos, bool& Effect);
+	void SetEffect(const XMFLOAT3& pos,int HitDir);
 private:
 	//定数
-	static const int Effect_Max = 20;//エフェクトの数
+	static const int Effect_Max = 5;//エフェクトの数
 public:
 	//getter setter
 private:
-	//テクスチャ
-	array<unique_ptr<IKETexture>, Effect_Max> ParticleEffect;
-	unique_ptr<IKETexture> HitEffectTexture;
+	array<unique_ptr <IKEObject3d>, Effect_Max> particleobj;
+	IKEModel* model = nullptr;
 	//その他変数
 	//パーティクル変数
 	array<XMFLOAT3, Effect_Max> m_Pos;//座標
@@ -41,11 +40,6 @@ private:
 	array<float, Effect_Max> m_AddScale;
 	array<bool, Effect_Max> m_ScaleChange;//大きさの変更
 	array<bool, Effect_Max> m_Effect;//生存
+	array<float, Effect_Max> m_Gravity;//重力
 	bool m_DeleteEffect = false;//エフェクトが消えたか
-	//ヒットエフェクト変数
-	XMFLOAT3 m_HitPos = { 0.0f,0.0f,0.0f };//座標
-	XMFLOAT3 m_HitScale = { 0.0f,0.0f,0.0f };//大きさ
-	XMFLOAT4 m_HitColor = { 0.0f,0.0f,0.0f,0.0f };//色
-	bool m_HitEffect = false;//生存
-	bool m_DeleteHitEffect = false;//消えたかどうか
 };
