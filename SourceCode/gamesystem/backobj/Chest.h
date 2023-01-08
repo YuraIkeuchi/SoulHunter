@@ -16,7 +16,6 @@ class Chest {
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	void SetPlayerSkill(PlayerSkill* playerskill) { this->playerskill.reset(playerskill); }
-	//void SetTextBoard(TextBoard* textboard) { this->textboard.reset(textboard); }
 	Chest();
 	void Update();//更新
 	const void Draw();//描画

@@ -1,5 +1,6 @@
 #include "BossName.h"
 #include "ImageManager.h"
+#include "imgui.h"
 BossName::BossName() {
 	//Ž€‚ñ‚¾‚Æ‚«‚ÉˆÃ‚­‚È‚é‚æ‚¤‚Ì‚â‚Â
 	IKESprite* bossname_;
@@ -10,7 +11,6 @@ BossName::BossName() {
 }
 
 void BossName::Update() {
-
 	if (m_DrawName) {
 		if (m_AddStartChange) {
 			if (m_AlphaNumber == Add) {

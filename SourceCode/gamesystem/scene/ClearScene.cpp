@@ -34,10 +34,10 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	SkipSprite_->SetPosition({ 1000.0f,620.0f });
 	SkipSprite.reset(SkipSprite_);
 
-	IKESprite* IntroSprite_;
-	IntroSprite_ = IKESprite::Create(ImageManager::IntroText, { 0.0f,0.0f });
-	IntroSprite.reset(IntroSprite_);
-
+	IKESprite* ClearSprite_;
+	ClearSprite_ = IKESprite::Create(ImageManager::ClearText, { 0.0f,0.0f });
+	ClearSprite.reset(ClearSprite_);
+	ClearSprite->SetPosition(m_ClearPos);
 	//シーンチェンジ
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
@@ -51,11 +51,6 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 
 	//プレイヤーが必要
 	camerawork->SetPlayer(player);
-
-	//ライト
-	//lightGroup->SetDirLightActive(0, true);
-	//lightGroup->SetDirLightActive(1, true);
-	//lightGroup->SetDirLightActive(2, true);
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {
@@ -70,14 +65,10 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	///ポイントライト
-	lightGroup->SetPointLightPos(0, { clearobj->GetTorchPos().x, -5.0f, clearobj->GetTorchPos().z});
-	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
-	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 	clearobj->Update(m_Timer);
 	//カメラの位置調整
 	camerawork->Update(camera);
-	//camerawork->SetIntroTimer(m_Timer);
+	//camerawork->SetClearTimer(m_Timer);
 
 	if (input->TriggerButton(input->Button_A) && !scenechange->GetSubStartChange()) {
 		scenechange->SetAddStartChange(true);
@@ -92,7 +83,7 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	IntroSprite->SetColor(m_TextColor);
+	ClearSprite->SetPosition(m_ClearPos);
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
 	ChangePostEffect(PostType);
@@ -110,7 +101,7 @@ void ClearScene::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
 
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		//player->ImGuiDraw();
@@ -149,11 +140,11 @@ void ClearScene::FrontDraw() {
 	clearobj->FrontDraw();
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
+	ClearSprite->Draw();
 	for (int i = 0; i < CurtainSprite.size(); i++) {
 		CurtainSprite[i]->Draw();
 	}
 	SkipSprite->Draw();
-	IntroSprite->Draw();
 	scenechange->Draw();
 	IKESprite::PostDraw();
 }
@@ -175,7 +166,7 @@ void ClearScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	////FPSManager::GetInstance()->ImGuiDraw();
 	ImGui::Begin("Clear");
 	ImGui::Text("Timer:%d",m_Timer);
-	ImGui::Text("ResetTimer:%d", m_ResetTimer);
+	ImGui::Text("PosY:%f", m_ClearPos.y);
 	ImGui::End();
 }
 //解放
@@ -263,9 +254,11 @@ void ClearScene::Movie() {
 				m_TextColor.w = 1.0f;
 			}
 		}
+
+		m_ClearPos.y -= 1.0f;
 	}
 
-	if (m_Timer == 2500) {
+	if (m_Timer == 2000) {
 		scenechange->SetAddStartChange(true);
 	}
 }

@@ -1,10 +1,6 @@
 #include "BossEffect.h"
 #include"Easing.h"
-#include<sstream>
-#include <XorShift.h>
-#include<iomanip>
 #include"ImageManager.h"
-#include "ModelManager.h"
 using namespace DirectX;
 
 //ì«Ç›çûÇ›

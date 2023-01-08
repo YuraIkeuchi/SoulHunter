@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include "IKESprite.h"
 #include "IKETexture.h"
 #include "VariableCommon.h"
 #include <array>   

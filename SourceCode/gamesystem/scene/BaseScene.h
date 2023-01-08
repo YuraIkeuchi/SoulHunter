@@ -52,6 +52,14 @@ class SceneManager;
 //シーンインターフェース
 class BaseScene
 {
+protected:
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 public:
 	//仮想デストラクタ
 	virtual ~BaseScene() = default;
@@ -141,13 +149,10 @@ public:
 		Blur,
 		Mosaic,
 	};
-	//当たり判定 レイ
-	Ray ray;
-	IKETexture* titleTexture = nullptr;
-	//当たり判定
+	
+	//ライト
 	LightGroup* lightGroup = nullptr;
-	XMFLOAT3 m_EyePos = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 m_TargetPos = { 0.0f,0.0f,0.0f };
+
 	//ザコ敵
 	//エディタ関係
 	std::vector<std::vector<int>> map1; //マップチップ(1マップ)
@@ -158,9 +163,7 @@ public:
 	std::vector<std::vector<int>> map6; //マップチップ(6マップ)
 	std::vector<std::vector<int>> bossmap; //マップチップ(ボスマップ)
 	std::vector<std::vector<int>> tutorialmap; //マップチップ(チュートリアル)
-	//Player* player = nullptr;
-	CollisionManager* collsionManager = nullptr;
-	
+
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
 	float lightDir0[3] = { 0,0,1 };
@@ -190,11 +193,11 @@ public:
 	float circleShadowFactorAngle[2] = { 0.0f, 0.8f };
 	//ゲームループしたかどうか
 	static bool m_GameLoop;
+	//プレイヤーの位置
 	XMFLOAT3 m_PlayerPos;
 	//エフェクト関係
 	IKESprite* BlackFilter = nullptr;
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
-
 	//エディタ関係
 	//エディタのタイプ
 
@@ -371,8 +374,8 @@ public:
 	int m_BackRock_Num;
 	int m_BackBox_Num;
 	int m_BackTorch_Num;
-	//棘の向き
 
+	//棘の向き
 	enum ThornDir {
 		Up,
 		Down,

@@ -2,7 +2,6 @@
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include "Player.h"
-#include "IKETexture.h"
 #include "IKESprite.h"
 #include "ParticleTex.h"
 #include "MarkEffect.h"
@@ -62,7 +61,6 @@ private:
 	IKEModel* modelSave = nullptr;
 	unique_ptr <IKEObject3d> objSave;
 	//テクスチャやスプライト
-	unique_ptr<IKETexture> saveTex;
 	array<unique_ptr<IKESprite>, SaveSprite_Max> SaveSprite;
 	//座標
 	XMFLOAT3 m_Position = {0.0f,0.0f,0.0f};

@@ -28,7 +28,6 @@ void LoadScene::Initialize(DirectXCommon* dxCommon) {
 
 	const int NowLoadCount = 4;
 	IKESprite* nowsprite_[4];
-	//gaussian = new PostEffect();
 	for (int i = 0; i < 4; i++) {
 	nowsprite_[i] = IKESprite::Create(ImageManager::NowLoad1, { 0.0f,0.0f });
 		nowsprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -42,13 +41,10 @@ void LoadScene::Initialize(DirectXCommon* dxCommon) {
 		nowsprite[i].reset(nowsprite_[i]);
 	}
 
+	//カメラ関係
 	camerawork = new CameraWork();
-	// テクスチャ1番に読み込み
-	//Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/kadai_BGM.wav");
 
 	// カメラ注視点をセット
-	camera->SetEye(m_EyePos);
-	camera->SetTarget(m_TargetPos);
 	camerawork->SetPlayer(player);
 	spotLightDir[0] = 0;
 	spotLightDir[1] = 0;
@@ -183,14 +179,6 @@ void LoadScene::GameDraw(DirectXCommon* dxCommon)
 }
 //ImGuiの描画
 void LoadScene::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("camera");
-
-	ImGui::SliderFloat("eyeposition y", &m_EyePos.y, 100, -100);
-	ImGui::SliderFloat("eyeposition x", &m_EyePos.x, 100, -100);
-	ImGui::SliderFloat("eyeposition.z", &m_EyePos.z, 100, -100);
-	ImGui::SliderFloat("targetposition y", &m_TargetPos.y, 100, -100);
-	ImGui::SliderFloat("targetposition x", &m_TargetPos.x, 100, -100);
-	ImGui::End();
 }
 //解放
 void LoadScene::Finalize() {

@@ -2,7 +2,6 @@
 #include "ModelManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
-#include "Input.h"
 #include "Collision.h"
 //初期化
 void Save::Initialize() {
@@ -42,8 +41,6 @@ void Save::Initialize() {
 }
 //更新
 void Save::Update() {
-	Input* input = Input::GetInstance();
-	
 	//ボタンを押すとセーブできる
 	if (Collide() && m_SaveCount == 0) {
 		m_GameSave = true;

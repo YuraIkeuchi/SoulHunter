@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include"CollisionPrimitive.h"
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include "Player.h"

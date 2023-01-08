@@ -4,14 +4,6 @@
 #include "Collision.h"
 //“Ç‚Ýž‚Ý
 FireBall::FireBall() {
-	//m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Particle);
-	//IKEObject3d* m_Object_;
-	//m_Object_ = new IKEObject3d();
-	//m_Object_ = IKEObject3d::Create();
-	////obje3dci]->CreateGraphicsPipeline(L"Resources/shaders/BasicVS.hlsl", L"Resources/shaders/BasicPS.hlsl");
-	//m_Object_->SetModel(m_Model);
-	//m_Object_->SetLightEffect(false);
-	//m_Object.reset(m_Object_);
 	IKETexture* firetex_;
 	firetex_ = IKETexture::Create(ImageManager::ParticleEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	firetex_->TextureCreate();
@@ -22,12 +14,6 @@ FireBall::FireBall() {
 bool FireBall::Initialize() {
 	m_Scale = { 0.3f, 0.3f, 0.3f };
 	m_Color = { 1.0f,0.5f,0.0f,1.0f };
-	//m_Object->SetPosition(m_Position);
-	//m_Object->SetScale(m_Scale);
-	//ParticleObj* particleobj_ = new ParticleObj();
-	//particleobj_->Initialize();
-	//particleobj.reset(particleobj_);
-
 	ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
 	particletex.reset(particletex_);
