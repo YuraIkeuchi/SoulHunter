@@ -96,8 +96,9 @@ void Player::Update()
 			PlayerDamage();
 			//復活処理
 			ResPornPlayer();
-		
+			//エフェクト発生関係
 			AttackArgment();
+			WallArgment();
 		}
 		else {
 			//ゴール後の動き
@@ -193,6 +194,12 @@ void Player::EffectUpdate() {
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Update();
+		}
+	}
+
+	for (WallAttackEffect* walleffect : walleffects) {
+		if (walleffect != nullptr) {
+			walleffect->Update(m_AttackPos, m_PlayerDir);
 		}
 	}
 }
@@ -420,7 +427,7 @@ void Player::PlayerAttack() {
 			m_AttackArgment = true;
 			//攻撃時壁にあたった場合壁からパーティクルを出す
 			if (block->AttackMapCollideCommon(m_AttackPos, { 1.6f,0.8f }, m_AttackPos)) {
-				m_WallAttack++;
+				m_WallArgment = true;
 			}
 		}
 		m_AttackTimer++;
@@ -642,7 +649,7 @@ void Player::PlayerDamage() {
 	}
 
 }
-//上に同じ
+//エフェクト発生(攻撃)
 void Player::AttackArgment() {
 	if (m_AttackArgment) {
 		AttackEffect* newAttackEffect;
@@ -651,6 +658,16 @@ void Player::AttackArgment() {
 		newAttackEffect->SetEffect(m_AttackPos, m_PlayerDir);
 		attackeffects.push_back(newAttackEffect);
 		m_AttackArgment = false;
+	}
+}
+//壁にあたった時のエフェクト
+void Player::WallArgment() {
+	if (m_WallArgment) {
+		WallAttackEffect* newwallEffect;
+		newwallEffect = new WallAttackEffect();
+		newwallEffect->Initialize();
+		walleffects.push_back(newwallEffect);
+		m_WallArgment = false;
 	}
 }
 //ゴール後の動き
@@ -723,25 +740,33 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_WallAttack:%d", m_WallAttack);
+	ImGui::Text("m_PlayerDir:%d", m_PlayerDir);
 	ImGui::End();
 
+	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Draw();
 		}
 	}
 
+	for (WallAttackEffect* walleffect : walleffects) {
+		if (walleffect != nullptr) {
+			walleffect->Draw();
+		}
+	}
+
+	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
 		if (m_SwordColor.w >= 0.1f) {
 			FollowObj_Draw();
 		}
 		Fbx_Draw(dxCommon);
 	}
+	//パーティクルの描画
 	particleheal->Draw();
 	particletex->Draw();
 	swordparticle->Draw();
@@ -756,6 +781,7 @@ void Player::InitPlayer(int StageNumber) {
 	m_FlashCount = 0;
 	m_Interval = 0;
 	attackeffects.clear();
+	walleffects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-110.0,0.0f };

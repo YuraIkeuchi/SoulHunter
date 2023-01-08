@@ -95,7 +95,7 @@ void Enemy::Action() {
 		//エフェクト関係
 		for (EnemyEffect* enemyeffect : enemyeffects) {
 			if (enemyeffect != nullptr) {
-				enemyeffect->Update(m_Position, m_Effect, m_HitDir);
+				enemyeffect->Update(m_Position, m_Effect);
 			}
 		}
 	}

@@ -405,6 +405,9 @@
     <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
       <Filter>SourceCords\engine\shake</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -778,6 +781,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\shake\Shake.h">
       <Filter>SourceCords\engine\shake</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -274,6 +274,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\MarkEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp" />
@@ -400,6 +401,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\MarkEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h" />

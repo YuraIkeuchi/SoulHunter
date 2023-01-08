@@ -19,9 +19,9 @@ public:
 
 	void Initialize();
 	void Finalize();
-	void Update(const XMFLOAT3& pos, bool& Effect, int HitDir);
+	void Update(const XMFLOAT3& pos, bool& Effect);
 	void Draw();
-	void SetEffect(const XMFLOAT3& pos, bool& Effect,int HitDir);
+	void SetEffect(const XMFLOAT3& pos, bool& Effect);
 	void SetHitEffect(const XMFLOAT3& pos, bool& Effect);
 private:
 	//íËêî
