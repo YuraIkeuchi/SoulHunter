@@ -416,11 +416,16 @@ void Player::PlayerAttack() {
 		}
 		m_SwordParticleCount = 1;
 		//攻撃エフェクトの出現
-		if (m_AttackTimer == 8) {
+		if (m_AttackTimer == 6) {
 			m_AttackArgment = true;
+			//攻撃時壁にあたった場合壁からパーティクルを出す
+			if (block->AttackMapCollideCommon(m_AttackPos, { 1.6f,0.8f }, m_AttackPos)) {
+				m_WallAttack++;
+			}
 		}
 		m_AttackTimer++;
 		
+		//一定フレームで攻撃終了
 		if (m_AttackTimer >= 30) {
 			m_AttackTimer = 0;
 			m_Attack = false;
@@ -431,6 +436,7 @@ void Player::PlayerAttack() {
 			m_SwordParticleCount = 0;
 		}
 
+		//攻撃が地面で行われた場合砂煙が発生する
 		if (m_AddPower == 0.0f) {
 			m_FoodParticleCount += 0.25f;
 			m_FoodParticlePos = {
@@ -718,15 +724,11 @@ bool Player::DeathMove() {
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
 
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("m_Alive:%d", m_Alive);
-	//ImGui::Text("m_PosX:%f", m_Position.x);
-	//ImGui::Text("m_PosY:%f", m_Position.y);
-	//ImGui::Text("m_ResPosX:%f", m_RespornPos.x);
-	//ImGui::Text("m_ResPosY:%f", m_RespornPos.y);
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_WallAttack:%d", m_WallAttack);
+	ImGui::End();
 
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
@@ -734,20 +736,15 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 
-	//m_Object->Draw();
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
-		//Obj_Draw();
 		if (m_SwordColor.w >= 0.1f) {
 			FollowObj_Draw();
 		}
 		Fbx_Draw(dxCommon);
-		//playerwing->Draw(dxCommon);
 	}
 	particleheal->Draw();
 	particletex->Draw();
 	swordparticle->Draw();
-	//particleobj->ImGuiDraw();
-	//object1->Draw(dxCommon->GetCmdList());
 }
 //解放
 void Player::Finalize()

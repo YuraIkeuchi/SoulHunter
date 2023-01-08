@@ -311,5 +311,7 @@ private:
 	int m_DeathTimer = 0;
 	//シェイク用変数
 	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
+	//攻撃が壁にあたった時に出るエフェクト関係
+	int m_WallAttack = 0;
 };
 

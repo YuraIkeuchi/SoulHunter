@@ -1,8 +1,9 @@
 Wait,120
-StageNumber,4
-POP,175.801,-277.1,0
+StageNumber,7
+POP,40.4999,-280.4,0
 DushSkill,0
 LibraSkill,0
 CompassSkill,0
-HP,5
+HealSkill,0
+HP,3
 Soul,20

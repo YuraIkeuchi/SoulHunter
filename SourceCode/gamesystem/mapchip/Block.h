@@ -32,6 +32,8 @@ public:
 	//マップチップ当たり判定(プレイヤー)
 	bool PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 		const XMFLOAT3& old_pos, bool& is_jump,float& addPower);
+	//マップチップ当たり判定(攻撃)
+	bool AttackMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,const XMFLOAT3& old_pos);
 	//マップチップ当たり判定(敵)
 	bool EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 		const XMFLOAT3& old_pos, bool& is_jump,float& EnemyaddPower,int& touchWall,int& HP);
