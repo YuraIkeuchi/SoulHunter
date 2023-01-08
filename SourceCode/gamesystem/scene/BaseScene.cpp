@@ -26,16 +26,7 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	IKEObject3d::SetCamera(camera);
 	particleMan->SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
-	// カメラをセット
-	collsionManager = CollisionManager::GetInstance();
-
-	// 背景スプライト生成
-
-	//ポストエフェクト用テクスチャ読みこみ
-	//IKESprite::LoadTexture(100, L"Resources/2d/white1x1.png");
 	//ポストエフェクトの初期化
-	//(普通)
-	//postEffect = new PostEffect();
 	//(普通)
 	postEffect = new PostEffect();
 	postEffect->Initialize();
@@ -72,9 +63,6 @@ void BaseScene::PlayerInitialize() {
 }
 //カメラの初期化
 void BaseScene::CameraInitialize() {
-	// カメラ注視点をセット
-	camera->SetEye(m_EyePos);
-	camera->SetTarget(m_TargetPos);
 	//カメラの動き
 	camerawork->SetPlayer(player);
 	camerawork->SetInterBoss(firstboss);

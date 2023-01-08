@@ -98,17 +98,10 @@ void FirstBoss::Spec() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("Boss");
-	//ImGui::Text("m_FireState:%d", m_FireState);
-	//ImGui::Text("m_Cool:%d", m_CoolT);
-	//ImGui::Text("Frame:%f", m_Frame);
-	////ImGui::Text("PosX:%f", m_Position.x);
-	////ImGui::Text("PosY:%f", m_Position.y);
-	////ImGui::Text("PosZ:%f", m_Position.z);
-	////ImGui::Text("RotX:%f", m_Rotation.x);
-	////ImGui::Text("RotY:%f", m_Rotation.y);
-	////ImGui::Text("RotZ:%f", m_Rotation.z);
-	//ImGui::End();
+	ImGui::Begin("Boss");
+	ImGui::Text("m_AttackCount:%d", m_AttackCount);
+	ImGui::Text("m_Cool:%d", m_CoolT);
+	ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
