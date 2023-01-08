@@ -30,7 +30,7 @@ bool BirdEnemy::Initialize() {
 	//敵の種類
 	m_EnemyType = Bird;
 	//X方向
-	m_Radius.x = 1.0f * 2.7f;
+	m_Radius.x = 1.4f * 2.7f;
 	//下方向
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 5;
@@ -86,10 +86,6 @@ void BirdEnemy::Action() {
 }
 //描画
 void BirdEnemy::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Enemy");
-	ImGui::Text("m_Disolve : %f", m_AddPower);
-	ImGui::Text("m_Wall : %d", m_BirdTouchWall);
-	ImGui::End();*/
 	if (m_Alive && DrawCollide()) {
 		Fbx_Draw(dxCommon);
 		//エフェクト関係

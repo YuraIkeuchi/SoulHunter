@@ -28,7 +28,7 @@ bool Enemy::Initialize() {
 	//“G‚Ìí—Ş
 	m_EnemyType = Normal;
 	//X•ûŒü
-	m_Radius.x = 1.0f * 2.7f;
+	m_Radius.x = 1.4f * 2.7f;
 	//‰º•ûŒü
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 3;
@@ -36,10 +36,8 @@ bool Enemy::Initialize() {
 }
 //XV
 void Enemy::Action() {
-
 	m_OldPos = m_Position;
 
-	
 	if (m_Alive && UpdateCollide()) {
 		//©‘R—‰º
 		if (!m_Jump) {

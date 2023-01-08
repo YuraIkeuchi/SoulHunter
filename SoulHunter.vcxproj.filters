@@ -635,9 +635,6 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
@@ -784,6 +781,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

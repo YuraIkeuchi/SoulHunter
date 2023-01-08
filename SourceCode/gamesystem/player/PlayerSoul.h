@@ -28,6 +28,7 @@ public:
 	void SetEffect(InterEnemy* enemy);
 	bool Collide();//当たり判定
 	void Move();//魂の動き
+	void VanishSoul(InterEnemy* enemy);//魂が消える
 	bool UpdateCollide();//更新範囲
 	bool DrawCollide();//描画範囲
 private:
@@ -50,10 +51,11 @@ private:
 	unique_ptr<Player> player = nullptr;//
 	unique_ptr<Block> block = nullptr;
 	//変数
-	XMFLOAT3 m_pos;//座標
+	XMFLOAT3 m_Pos;//座標
 	XMFLOAT3 m_OldPos;//位置フレームずれた座標
 	XMFLOAT3 m_AfterPos = { 0.0f,0.0f,0.0f };//イージング後の座標
-	XMFLOAT3 m_scale = {0.0f,0.0f,0.0f};//大きさ
+	XMFLOAT3 m_Scale = {0.0f,0.0f,0.0f};//大きさ
+	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	float m_BoundPower = 0.0f;//飛びでた瞬間に加わる力
 	float m_AddPower = 0.0f;//加わる力
 	XMFLOAT2 m_Radius;//マップチップ当たり判定用の大きさ

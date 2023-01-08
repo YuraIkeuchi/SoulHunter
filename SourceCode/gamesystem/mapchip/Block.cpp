@@ -286,7 +286,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
-			
+
 				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
 				{
 					//â∫ÇÃìñÇΩÇËîªíË
@@ -317,11 +317,9 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						m_HitDown = false;
-						//touchLeft = true;
 						pos.x = l_MapPosX + l_RadiusX + radius.x;
 						if (is_jump == false)
 						{
-							//touchLeft = false;
 							l_IsHit = true;
 						}
 					}
@@ -329,11 +327,9 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
 					{
 						m_HitDown = false;
-						//touchRight = true;
 						pos.x = l_MapPosX - l_RadiusX - radius.x;
 						if (is_jump == false)
 						{
-							//touchRight = false;
 							l_IsHit = true;
 						}
 					}
@@ -345,28 +341,18 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
-			
+
 				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
 				{
 					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
-						//l_IsHit = true;
 						m_Down_Goal = true;
-						//cameraframe = 0.0f;
 					}
 					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Down_Goal = true;
-							//cameraframe = 0.0f;
-						}
-						else
-						{
-							//addPower = 0;
 						}
 					}
 					else {
@@ -378,25 +364,17 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						m_Down_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Down_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
 					{
 						m_Down_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Down_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else {
@@ -415,23 +393,13 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 				{
 					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
-						//l_IsHit = true;
 						m_Up_Goal = true;
-						//cameraframe = 0.0f;
 					}
 					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Up_Goal = true;
-							//cameraframe = 0.0f;
-						}
-						else
-						{
-							//addPower = 0;
 						}
 					}
 					else {
@@ -443,25 +411,17 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						m_Up_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Up_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
 					{
 						m_Up_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Up_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else {
@@ -473,66 +433,48 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			//ÉSÅ[ÉãÇ∆ÇÃìñÇΩÇËîªíË
 			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 5 && !m_Right_Goal && m_GoalType[h][w] == RightGoal)
 			{
-			l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
-			l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
-		
-			if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
-			{
-				if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
 				{
-					//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
-					//l_IsHit = true;
-					m_Right_Goal = true;
-					//cameraframe = 0.0f;
-				}
-				else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
-				{
-					//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
-					if (is_jump == false)
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
 					{
-						//l_IsHit = true;
 						m_Right_Goal = true;
-						//cameraframe = 0.0f;
 					}
-					else
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
 					{
-						//addPower = 0;
+						if (is_jump == false)
+						{
+							m_Right_Goal = true;
+						}
+					}
+					else {
+						m_Right_Goal = false;
 					}
 				}
-				else {
-					m_Right_Goal = false;
-				}
-			}
-			if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
-			{
-				if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
 				{
-					m_Right_Goal = true;
-					//cameraframe = 0.0f;
-					//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
-					if (is_jump == false)
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
-						//l_IsHit = true;
 						m_Right_Goal = true;
-						//cameraframe = 0.0f;
+						if (is_jump == false)
+						{
+							m_Right_Goal = true;
+						}
+					}
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_Right_Goal = true;
+						if (is_jump == false)
+						{
+							m_Right_Goal = true;
+						}
+					}
+					else {
+						m_Right_Goal = false;
 					}
 				}
-				else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
-				{
-					m_Right_Goal = true;
-					//cameraframe = 0.0f;
-					//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
-					if (is_jump == false)
-					{
-						l_IsHit = true;
-						m_Right_Goal = true;
-						//cameraframe = 0.0f;
-					}
-				}
-				else {
-					m_Right_Goal = false;
-				}
-			}
 			}
 
 			//ÉSÅ[ÉãÇ∆ÇÃìñÇΩÇËîªíË
@@ -540,28 +482,18 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
-			
+
 				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
 				{
 					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY + l_RadiusY + radius.l_MapPosY;
-						//l_IsHit = true;
 						m_Left_Goal = true;
-						//cameraframe = 0.0f;
 					}
 					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
 					{
-						//pos.l_MapPosY = l_MapPosY - l_RadiusY - radius.l_MapPosY;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Left_Goal = true;
-							//cameraframe = 0.0f;
-						}
-						else
-						{
-							//addPower = 0;
 						}
 					}
 					else {
@@ -573,25 +505,18 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						m_Left_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX + l_RadiusX + radius.l_MapPosX;
 						if (is_jump == false)
 						{
-							//l_IsHit = true;
 							m_Left_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
 					{
 						m_Left_Goal = true;
-						//cameraframe = 0.0f;
-						//pos.l_MapPosX = l_MapPosX - l_RadiusX - radius.l_MapPosX;
 						if (is_jump == false)
 						{
 							l_IsHit = true;
 							m_Left_Goal = true;
-							//cameraframe = 0.0f;
 						}
 					}
 					else {
@@ -602,72 +527,62 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 
 
 			//ûôÇ∆ÇÃìñÇΩÇËîªíË
-			else if ((MapChip::GetChipNum(w, h, stagemap[0]) == 7 || MapChip::GetChipNum(w, h, stagemap[0]) == 8 || 
-			MapChip::GetChipNum(w, h, stagemap[0]) == 9 || MapChip::GetChipNum(w, h, stagemap[0]) == 10)
-			&& objToge[h][w]->GetPosition().z != 1000.0f)
+			else if ((MapChip::GetChipNum(w, h, stagemap[0]) == 7 || MapChip::GetChipNum(w, h, stagemap[0]) == 8 ||
+				MapChip::GetChipNum(w, h, stagemap[0]) == 9 || MapChip::GetChipNum(w, h, stagemap[0]) == 10)
+				&& objToge[h][w]->GetPosition().z != 1000.0f)
 			{
-			l_MapPosX = objToge[h][w]->GetPosition().x;
-			l_MapPosY = objToge[h][w]->GetPosition().y;
+				l_MapPosX = objToge[h][w]->GetPosition().x;
+				l_MapPosY = objToge[h][w]->GetPosition().y;
 
-			if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
-			{
-				//â∫ÇÃìñÇΩÇËîªíË
-				if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
 				{
-					m_ThornDir = DownThorn;
-					m_ThornHit = true;
-					pos.y = l_MapPosY + l_RadiusUp + radius.y;
-					l_IsHit = true;
-				}
-				//è„ÇÃìñÇΩÇËîªíË
-				else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
-				{
-					m_ThornDir = UpThorn;
-					m_ThornHit = true;
-					pos.y = l_MapPosY - l_RadiusDown - radius.y;
-					if (is_jump == false)
+					//â∫ÇÃìñÇΩÇËîªíË
+					if (l_MapPosY + l_RadiusUp + radius.y > pos.y && l_MapPosY < old_pos.y)
 					{
-						l_IsHit = true;
-					}
-					else
-					{
-						//addPower = 0;
-					}
-				}
-			}
-			if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
-			{
-				//ç∂ÇÃìñÇΩÇËîªíË
-				if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
-				{
-					m_ThornDir = LeftThorn;
-					m_ThornHit = true;
-					//hit = 3;
-					//touchLeft = true;
-					pos.x = l_MapPosX + l_RadiusX + radius.x;
-					if (is_jump == false)
-					{
-						//touchLeft = false;
+						m_ThornDir = DownThorn;
 						m_ThornHit = true;
+						pos.y = l_MapPosY + l_RadiusUp + radius.y;
 						l_IsHit = true;
 					}
-				}
-				//âEÇÃìñÇΩÇËîªíË
-				else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
-				{
-					m_ThornDir = RightThorn;
-					m_ThornHit = true;
-					//hit = 4;
-					//touchRight = true;
-					pos.x = l_MapPosX - l_RadiusX - radius.x;
-					if (is_jump == false)
+					//è„ÇÃìñÇΩÇËîªíË
+					else if (l_MapPosY - l_RadiusDown - radius.y < pos.y && l_MapPosY > old_pos.y)
 					{
-						//touchRight = false;
+						m_ThornDir = UpThorn;
 						m_ThornHit = true;
-						l_IsHit = true;
+						pos.y = l_MapPosY - l_RadiusDown - radius.y;
+						if (is_jump == false)
+						{
+							l_IsHit = true;
+						}
 					}
 				}
-			}
+				if (pos.y <= l_MapPosY + l_RadiusUp && l_MapPosY - l_RadiusDown <= pos.y)
+				{
+					//ç∂ÇÃìñÇΩÇËîªíË
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						m_ThornDir = LeftThorn;
+						m_ThornHit = true;
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						if (is_jump == false)
+						{
+							m_ThornHit = true;
+							l_IsHit = true;
+						}
+					}
+					//âEÇÃìñÇΩÇËîªíË
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						m_ThornDir = RightThorn;
+						m_ThornHit = true;
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						if (is_jump == false)
+						{
+							m_ThornHit = true;
+							l_IsHit = true;
+						}
+					}
+				}
 			}
 
 		}

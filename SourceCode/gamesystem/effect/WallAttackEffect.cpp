@@ -15,6 +15,7 @@ void WallAttackEffect::Initialize() {
 		particleobj_[i] = IKEObject3d::Create();
 		particleobj_[i]->SetModel(model);
 		particleobj_[i]->SetLightEffect(false);
+		particleobj_[i]->SetColor({ 1.5f,1.5f,1.5f,1.5f });
 		particleobj[i].reset(particleobj_[i]);
 		m_Effect[i] = false;
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
@@ -36,7 +37,7 @@ void WallAttackEffect::Update(const XMFLOAT3& pos,int HitDir) {
 //•`‰æ
 void WallAttackEffect::Draw() {
 	ImGui::Begin("Walll");
-	ImGui::Text("Alive:%d", m_Effect[0]);
+	ImGui::Text("Alive:%f", m_Scale[0].x);
 	ImGui::End();
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
@@ -54,13 +55,17 @@ void WallAttackEffect::SetEffect(const XMFLOAT3& pos,int HitDir) {
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
 					(float)(rand() % 4 + 2) / 10,
-					(float)(rand() % 20 - 5) / 10,
+					(float)(rand() % 15 - 5) / 10,
 					0.0f,
 			};
 			if (HitDir == 0) {
 				m_BoundPower[i].x *= -1;
 			}
-			m_Scale[i] = { 0.3f,0.3f,0.3f };
+			m_Scale[i] = {
+					(float)(rand() % 2 + 2) / 10,
+					(float)(rand() % 2 + 2) / 10,
+					(float)(rand() % 2 + 2) / 10,
+			};
 			m_Effect[i] = true;
 		}
 

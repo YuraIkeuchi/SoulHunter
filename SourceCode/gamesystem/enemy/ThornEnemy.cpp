@@ -40,12 +40,6 @@ void ThornEnemy::Action() {
 }
 //•`‰æ
 void ThornEnemy::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Thorn");
-	ImGui::Text("m_AfterRot.x : %f", m_AfterRot.x);
-	ImGui::Text("m_Rotation.x : %f", m_Rotation.x);
-	ImGui::Text("m_RotNunmber : %d", m_RotNumber);
-	ImGui::Text("frame : %f", m_Frame);
-	ImGui::End();*/
 	IKEObject3d::PreDraw();
 	if (m_Alive && DrawCollide()) {
 		Obj_Draw();

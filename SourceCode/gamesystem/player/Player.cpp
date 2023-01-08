@@ -64,7 +64,7 @@ void Player::StateInitialize() {
 	m_Alive = true;
 	//ƒvƒŒƒCƒ„[ŠÖŒW
 	m_OldPlayerPos = { 0, 0, 0 };
-	m_Radius.x = 1.0f * m_Scale.x;
+	m_Radius.x = 1.3f * m_Scale.x;
 	m_Radius.y = 0.7f * m_Scale.y;
 	m_Jump = false;
 	m_AddPower = 0;
