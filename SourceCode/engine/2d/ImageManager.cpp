@@ -31,6 +31,7 @@ void ImageManager::Load2D() {
 	IKESprite::LoadTexture(Curtain, L"Resources/2d/sceneback/Curtain.png");
 	IKESprite::LoadTexture(SkipText, L"Resources/2d/sceneback/SkipText.png");
 	IKESprite::LoadTexture(IntroText, L"Resources/2d/sceneback/IntroText.png");
+	IKESprite::LoadTexture(ClearText, L"Resources/2d/sceneback/ClearText.png");
 }
 
 //テクスチャの読み込み

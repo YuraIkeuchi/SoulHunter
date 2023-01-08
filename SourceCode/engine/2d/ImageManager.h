@@ -39,6 +39,7 @@ public:
 		Curtain,
 		SkipText,
 		IntroText,
+		ClearText,
 	};
 	//テクスチャの名前
 	enum tex2dName {

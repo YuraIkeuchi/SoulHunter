@@ -26,7 +26,7 @@ private://メンバ変数
 	ClearObj* clearobj = nullptr;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
-	unique_ptr<IKESprite> IntroSprite;
+	unique_ptr<IKESprite> ClearSprite;
 	//タイマー
 	int m_Timer = 0;
 	int m_ResetTimer = 0;
@@ -36,6 +36,8 @@ private://メンバ変数
 	float m_Frame = 0.0f;
 	//色
 	XMFLOAT4 m_TextColor = { 1.0f,1.0f,1.0f,0.0f };
+	//座標
+	XMFLOAT2 m_ClearPos = { 0.0f,900.0f };
 	int m_ChangeTimer = 0;
 	//ライトの変数
 	XMFLOAT3 m_LightPos = { 0.0f,0.0f,0.0f };

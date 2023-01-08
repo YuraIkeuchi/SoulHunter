@@ -101,6 +101,7 @@ void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Boss");
 	ImGui::Text("m_AttackCount:%d", m_AttackCount);
 	ImGui::Text("m_Cool:%d", m_CoolT);
+	ImGui::Text("m_Active:%d", m_Active);
 	ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
@@ -276,7 +277,7 @@ void FirstBoss::NotAttack() {
 			m_AttackCount++;
 		}
 		else {
-			m_AttackCount += 5;
+			m_AttackCount += 1;
 		}
 
 		if (m_AttackCount == 5) {

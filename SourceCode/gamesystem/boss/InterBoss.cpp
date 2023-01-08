@@ -143,7 +143,6 @@ void InterBoss::AppDraw(DirectXCommon* dxCommon) {
 //ボス登場シーン更新
 void InterBoss::EndUpdate() {
 	End();
-
 }
 //ボス登場シーン描画
 void InterBoss::EndDraw(DirectXCommon* dxCommon) {

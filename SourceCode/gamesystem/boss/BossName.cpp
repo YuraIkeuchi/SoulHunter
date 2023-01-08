@@ -26,11 +26,6 @@ void BossName::Update() {
 }
 
 const void BossName::Draw() {
-	ImGui::Begin("BossName");
-	ImGui::Text("DrawName:%d", m_DrawName);
-	ImGui::Text("Alpha:%d", m_AlphaNumber);
-	ImGui::Text("%f", m_color.w);
-	ImGui::End();
 	IKESprite::PreDraw();
 	if (m_DrawName) {
 		bossname->Draw();
@@ -38,7 +33,6 @@ const void BossName::Draw() {
 }
 
 void BossName::AddColor() {
-
 	if (m_color.w < m_ColorMax) {
 		m_color.w += m_ChangeTexFrame;
 	}
