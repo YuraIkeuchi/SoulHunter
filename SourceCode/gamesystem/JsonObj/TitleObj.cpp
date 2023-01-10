@@ -58,7 +58,7 @@ void TitleObj::Update() {
 	//炎のパーティクル
 	if (!m_StopParticle) {
 		m_ParticleCount++;
-		if (m_ParticleCount > 6) {
+		if (m_ParticleCount > 4) {
 			m_ParticleCount = 0;
 		}
 	}
@@ -67,7 +67,7 @@ void TitleObj::Update() {
 	}
 
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 6, 4);
+	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 4, 4);
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
 	particletex->SetStartScale(0.5f);
@@ -76,6 +76,7 @@ void TitleObj::Update() {
 }
 //前面描画
 const void TitleObj::FrontDraw() {
+	//particletex->ImGuiDraw();
 	particletex->Draw();
 }
 //背景描画

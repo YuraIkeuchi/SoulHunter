@@ -12,11 +12,15 @@ void ParticleTex::Initialize() {
 		particletex_[i] = IKETexture::Create(ImageManager::ParticleEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		particletex_[i]->TextureCreate();
 		particletex_[i]->SetPosition({ 0.0f,90.0f,0.0f });
-		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_scale[i] = { 0.0f,0.0f,0.0f };
-		m_Alive[i] = false;
 		particletex_[i]->SetScale(m_scale[i]);
 		particletex[i].reset(particletex_[i]);
+		m_pos[i] = { 0.0f,0.0f,0.0f };
+		m_AddPower[i] = { 0.0f,0.0f,0.0f };
+		m_Angle[i] = 0.0f;
+		m_ScaleChange[i] = false;
+		m_speed[i] = { 0.0f,0.0f };
+		m_Alive[i] = false;
 	}
 }
 //更新
@@ -64,18 +68,15 @@ void ParticleTex::Draw() {
 }
 //IMGuiの描画
 void ParticleTex::ImGuiDraw() {
-	//ImGui::Begin("color");
-	//ImGui::SetWindowPos(ImVec2(0, 500));
-	//ImGui::SetWindowSize(ImVec2(280, 240));
-	//ImGui::SliderFloat("m_power[0].y", &m_power[0], 100, -100);
-	//ImGui::SliderFloat("m_scale[0].y", &m_scale[0].x, 100, -100);
-	//ImGui::SliderFloat("color.r", &m_color.x, 1, 0);
-	//ImGui::SliderFloat("color.g", &m_color.y, 1, 0);
-	//ImGui::SliderFloat("color.b", &m_color.z, 1, 0);
-	//ImGui::SliderFloat("color.a", &m_color.w, 1, 0);
-	//ImGui::Text("m_EndCount:%d", m_EndCount);
-	////ImGui::SliderInt("ParticleCount", &m_ParticleCount, 100, 1, "%d");
-	//ImGui::End();
+	ImGui::Begin("particle");
+	ImGui::SetWindowPos(ImVec2(0, 500));
+	ImGui::SetWindowSize(ImVec2(280, 240));
+	for (int i = 0; i < particletex.size(); i++) {
+		ImGui::Text("m_PosX[%d]:%f", i,m_pos[i].x);
+		ImGui::Text("m_PosY[%d]:%f", i,m_pos[i].y);
+		ImGui::Text("m_PosZ[%d]:%f", i,m_pos[i].z);
+	}
+	ImGui::End();
 }
 //普通のパーティクル
 void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
@@ -88,7 +89,7 @@ void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 				m_color[i] = m_StartColor;
 				m_Angle[i] = (float)(rand() % 360);
 				m_speed[i] = { 0.02f,0.02f };
-				m_pos[i] = { m_StartPos.x,m_StartPos.y,m_StartPos.z + m_AddPower[i].z };
+				m_pos[i] = { m_StartPos.x,m_StartPos.y,m_StartPos.z};
 				m_AddPower[i].y = 0.0f;
 				m_scale[i] = { m_StartScale,m_StartScale,m_StartScale };
 				m_Alive[i] = true;
@@ -305,7 +306,7 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 				m_color[i] = m_StartColor;
 				m_Angle[i] = (float)(rand() % 360);
 				m_speed[i] = { 0.03f,0.03f };
-				m_pos[i] = { m_StartPos.x,m_StartPos.y,m_StartPos.z + m_AddPower[i].z };
+				m_pos[i] = { m_StartPos.x,m_StartPos.y,m_StartPos.z};
 				m_AddPower[i].y = 0.0f;
 				m_scale[i] = { m_StartScale,m_StartScale,m_StartScale };
 				m_Alive[i] = true;
@@ -326,8 +327,6 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 			}
 			m_pos[i].y += float((sin(m_Angle[i])) * m_speed[i].y) + m_AddPower[i].y;
 			m_color[i].w -= 0.001f;
-			/*	m_speed[i].x += 0.05f;
-				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
 				m_scale[i].x += m_AddScale;
 				m_scale[i].y += m_AddScale;

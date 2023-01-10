@@ -12,6 +12,8 @@
 #include "ObjCommon.h"
 #include "AttackEffect.h"
 #include "WallAttackEffect.h"
+#include "PlayerDamageEffect.h"
+#include "PlayerDushEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
 #include <memory>
@@ -64,6 +66,10 @@ public:
 	//攻撃エフェクト
 	void AttackArgment();
 	//壁エフェクト
+	void DushArgment();
+	//ダッシュエフェクト
+	void DamageArgment();
+	//ダメージエフェクト
 	void WallArgment();
 	//ゴール後の動き
 	void GoalMove();
@@ -129,16 +135,13 @@ public:
 	bool GetUseLibra() { return  s_UseLibra; }
 	bool GetUseDush() { return  s_UseDush; }
 	bool GetUseHeal() { return  s_UseHeal; }
-	bool GetEffect() { return  m_Effect; }
 	int GetAttackTimer() { return  m_AttackTimer; }
-	bool GetDush() { return  m_Dush; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
 
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
-	void SetEffect(bool effect) { this->m_Effect = effect; }
 	void SetUseDush(bool UseDush) { this->s_UseDush = UseDush; }
 	void SetUseLibra(bool UseLibra) { this->s_UseLibra = UseLibra; }
 	void SetUseCompass(bool UseCompass) { this->s_UseCompass = UseCompass; }
@@ -166,6 +169,8 @@ private:
 	unique_ptr<Block> block = nullptr;
 	vector<AttackEffect*> attackeffects;
 	vector<WallAttackEffect*>walleffects;
+	vector<PlayerDushEffect*> dusheffects;
+	vector<PlayerDamageEffect*> damageeffects;
 	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
@@ -180,6 +185,10 @@ private:
 	bool m_AttackArgment = false;
 	//攻撃が壁にあたった時のエフェクト発生条件
 	bool m_WallArgment = false;
+	//ダッシュ時のエフェクト発生条件
+	bool m_DushArgment = false;
+	//ダメージエフェクト発生条件
+	bool m_DamageArgment = false;
 	//HP
 	int m_HP = 0;
 	//無敵時間
@@ -217,7 +226,7 @@ private:
 	};
 	//ダッシュ関係
 	bool m_Dush = false;
-	int m_DushTimer = 15;
+	int m_DushTimer = 10;
 	enum DushDir {
 		NoDush,
 		DushRight,
@@ -288,7 +297,7 @@ private:
 	XMMATRIX m_HandMat;
 	XMVECTOR m_VectorSwordPos;//剣の座標
 	XMFLOAT3 m_SwordPos;//剣の座標
-	XMFLOAT3 m_SwordRotation = { 60.0f,100.0f,0.0f };
+	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
 	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;

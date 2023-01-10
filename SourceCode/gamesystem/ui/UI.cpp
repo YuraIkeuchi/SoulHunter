@@ -127,8 +127,5 @@ const void UI::Draw() {
 }
 //‰ð•ú
 void UI::Finalize() {
-	//delete PlayerHpSprite;
-	//delete BossHpSprite;
-	//delete player;
-	//delete interboss;
+
 }

@@ -23,7 +23,7 @@ bool Player::Initialize()
 	IKEObject3d* m_FollowObject_ = new IKEObject3d();
 	m_FollowObject_ = IKEObject3d::Create();
 	m_FollowObject_->SetModel(m_FollowModel);
-	m_FollowObject_->SetScale({ 2.5f,2.5f,2.5f });
+	m_FollowObject_->SetScale({ 4.5f,4.5f,4.5f });
 	m_FollowObject.reset(m_FollowObject_);
 
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
@@ -99,6 +99,8 @@ void Player::Update()
 			//エフェクト発生関係
 			AttackArgment();
 			WallArgment();
+			DushArgment();
+			DamageArgment();
 		}
 		else {
 			//ゴール後の動き
@@ -200,6 +202,18 @@ void Player::EffectUpdate() {
 	for (WallAttackEffect* walleffect : walleffects) {
 		if (walleffect != nullptr) {
 			walleffect->Update(m_AttackPos, m_PlayerDir);
+		}
+	}
+
+	for (PlayerDushEffect* dusheffect : dusheffects) {
+		if (dusheffect != nullptr) {
+			dusheffect->Update(m_Position, m_Dush);
+		}
+	}
+
+	for (PlayerDamageEffect* damageeffect : damageeffects) {
+		if (damageeffect != nullptr) {
+			damageeffect->Update(m_Position, m_Effect);
 		}
 	}
 }
@@ -405,7 +419,7 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(Attack, 3);
+			PlayerAnimetion(Attack, 2);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -438,7 +452,7 @@ void Player::PlayerAttack() {
 		m_AttackTimer++;
 		
 		//一定フレームで攻撃終了
-		if (m_AttackTimer >= 30) {
+		if (m_AttackTimer >= 40) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -465,6 +479,7 @@ void Player::PlayerDush() {
 	//ダッシュ処理
 	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
 		if (input->TriggerButton(input->Button_RB)) {
+			m_DushArgment = true;
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_Dush = true;
@@ -479,7 +494,7 @@ void Player::PlayerDush() {
 				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
-			PlayerAnimetion(Dush, 2);
+			PlayerAnimetion(Dush, 4);
 		}
 	}
 
@@ -493,9 +508,10 @@ void Player::PlayerDush() {
 		}
 
 		if (m_DushTimer == 0) {
+			m_ParticleCount = 0;
 			m_DushDir = NoDush;
 			m_Dush = false;
-			m_DushTimer = 15;
+			m_DushTimer = 10;
 		}
 	}
 }
@@ -617,6 +633,7 @@ void Player::PlayerDamage() {
 				m_Death = true;
 			}
 		}
+		m_DamageArgment = true;
 		m_Alive = false;
 		block->SetThornDir(0);
 		block->SetThornHit(false);
@@ -669,6 +686,26 @@ void Player::WallArgment() {
 		newwallEffect->Initialize();
 		walleffects.push_back(newwallEffect);
 		m_WallArgment = false;
+	}
+}
+//エフェクト発生(ダッシュ)
+void Player::DushArgment() {
+	if (m_DushArgment) {
+		PlayerDushEffect* newDushEffect;
+		newDushEffect = new PlayerDushEffect();
+		newDushEffect->Initialize();
+		dusheffects.push_back(newDushEffect);
+		m_DushArgment = false;
+	}
+}
+//エフェクト発生(ダメージ)
+void Player::DamageArgment() {
+	if (m_DamageArgment) {
+		PlayerDamageEffect* newDamageEffect;
+		newDamageEffect = new PlayerDamageEffect();
+		newDamageEffect->Initialize();
+		damageeffects.push_back(newDamageEffect);
+		m_DamageArgment = false;
 	}
 }
 //ゴール後の動き
@@ -741,13 +778,20 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_AnimationStop:%d", m_AnimationStop);
-	ImGui::Text("MoveAnimation:%d", m_AnimationTimer.MoveAnimation);
-	ImGui::Text("m_AnimationType:%d", m_AnimationType);
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::SliderFloat("RotX", & m_SwordRotation.x, 0, 360);
+	//ImGui::SliderFloat("RotY", &m_SwordRotation.y, 0, 360);
+	//ImGui::SliderFloat("RotZ", &m_SwordRotation.z, 0, 360);
+	//ImGui::Text("m_Bone%d", m_fbxObject->GetBoneNumber());
+	//if (ImGui::Button("EnemyArg", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
+	//}
+	//if (ImGui::Button("EnemyDele", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
+	//}
+	//ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -759,6 +803,18 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	for (WallAttackEffect* walleffect : walleffects) {
 		if (walleffect != nullptr) {
 			walleffect->Draw();
+		}
+	}
+
+	for (PlayerDushEffect* dusheffect : dusheffects) {
+		if (dusheffect != nullptr) {
+			dusheffect->Draw();
+		}
+	}
+
+	for (PlayerDamageEffect* damageeffect : damageeffects) {
+		if (damageeffect != nullptr) {
+			damageeffect->Draw();
 		}
 	}
 
@@ -785,6 +841,8 @@ void Player::InitPlayer(int StageNumber) {
 	m_Interval = 0;
 	attackeffects.clear();
 	walleffects.clear();
+	dusheffects.clear();
+	damageeffects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-110.0,0.0f };
@@ -957,6 +1015,7 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 void Player::PlayerHit(const XMFLOAT3& pos) {
 	PlayerAnimetion(Damage, 3);
 	m_Effect = true;
+	m_DamageArgment = true;
 	m_HP -= 1;
 	m_Interval = 100;
 	if (m_Position.x > pos.x) {
@@ -975,7 +1034,6 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerThornHit(const XMFLOAT3& pos) {
-
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = 1;//右側に弾かれる
@@ -996,7 +1054,7 @@ void Player::ResetSkill() {
 void Player::IntroductionUpdate(int Timer) {
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
-		m_Position = { 0.0f,2.0f,30.0f };
+		m_Position = { 0.0f,2.2f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
 

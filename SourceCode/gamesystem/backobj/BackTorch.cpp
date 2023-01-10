@@ -27,13 +27,13 @@ void BackTorch::SetObj() {
 	object3d->SetScale(m_scale);
 
 	m_ParticleCount++;
-	if (m_ParticleCount > 6) {
+	if (m_ParticleCount > 4) {
 		m_ParticleCount = 0;
 	}
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->SetParticleBreak(true);
 	if (UpdateCollide()) {
-		particletex->Update({ m_pos.x,m_pos.y + 8.0f,m_pos.z }, m_ParticleCount, 6, 4);
+		particletex->Update({ m_pos.x,m_pos.y + 8.0f,m_pos.z }, m_ParticleCount, 4, 4);
 	}
 }
 //“Á•Ê‚È•`‰æ

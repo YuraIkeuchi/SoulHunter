@@ -51,7 +51,6 @@ void PlayerDushEffect::DushEffectSet(const XMFLOAT3& pos, bool& Effect) {
 			m_DushEffectscale = { 0.0f,0.0f,0.0f };
 			m_DeleteEffect = true;
 			m_DushAlive = false;
-			Effect = false;
 		}
 	}
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
 #include "IKETexture.h"
-#include "Player.h"
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -35,8 +34,6 @@ public:
 private:
 	
 private:
-	//クラス
-	unique_ptr<Player> player = nullptr;
 	//エフェクト関係
 	//ダッシュのエフェクト
 	unique_ptr<IKETexture> DushEffecttexture = nullptr;

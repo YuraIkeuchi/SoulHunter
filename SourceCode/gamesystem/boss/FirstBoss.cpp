@@ -98,11 +98,11 @@ void FirstBoss::Spec() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Boss");
+	/*ImGui::Begin("Boss");
 	ImGui::Text("m_AttackCount:%d", m_AttackCount);
 	ImGui::Text("m_Cool:%d", m_CoolT);
 	ImGui::Text("m_Active:%d", m_Active);
-	ImGui::End();
+	ImGui::End();*/
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
