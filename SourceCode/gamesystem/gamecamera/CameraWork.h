@@ -4,6 +4,7 @@
 #include "DebugCamera.h"
 #include "BossEndParticle.h"
 #include "Camera.h"
+#include "Shake.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -44,6 +45,7 @@ private:
 	unique_ptr<Player> player;
 	unique_ptr<InterBoss> interboss;
 	unique_ptr<BossEndParticle> endparticle;
+	unique_ptr<Shake> shake = nullptr;
 	//イージングの変数
 	float m_Frame = 0.0f;
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
@@ -122,4 +124,6 @@ private:
 	int m_TargetCount = 3;
 	//クリア時の変数
 	int m_ClearTimer = 0;
+	//シェイク用変数
+	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
 };

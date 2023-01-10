@@ -247,10 +247,10 @@
       <Filter>SourceCords\gamesystem\ui\TutoRial</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scenechange\scenechange.cpp">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp">
       <Filter>SourceCords\gamesystem\save</Filter>
@@ -345,7 +345,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\AttackEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDushEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\BossEffect.cpp">
@@ -388,7 +388,7 @@
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\boss\FireBall.cpp">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
@@ -407,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDamageEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -618,10 +621,10 @@
       <Filter>SourceCords\gamesystem\ui\TutoRial</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\scenechange.h">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\save\Save.h">
       <Filter>SourceCords\gamesystem\save</Filter>
@@ -716,7 +719,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\AttackEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDushEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\BossEffect.h">
@@ -762,7 +765,7 @@
       <Filter>SourceCords\gamesystem\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h">
-      <Filter>SourceCords\gamesystem\scenechange</Filter>
+      <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\boss\FireBall.h">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
@@ -784,6 +787,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
       <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -915,9 +921,6 @@
     <Filter Include="SourceCords\gamesystem\scene">
       <UniqueIdentifier>{4b8a529f-ad04-4e67-bd89-5140066db1ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\scenechange">
-      <UniqueIdentifier>{6b1cdae9-8eae-43b6-9011-3cc929ef6cd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\ui">
       <UniqueIdentifier>{bffb2868-7d52-4569-bff5-92477e29db90}</UniqueIdentifier>
     </Filter>
@@ -1001,6 +1004,9 @@
     </Filter>
     <Filter Include="SourceCords\engine\shake">
       <UniqueIdentifier>{2a7ab0e4-35b2-424d-b2f9-dff4e3205eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\scenechange">
+      <UniqueIdentifier>{6b1cdae9-8eae-43b6-9011-3cc929ef6cd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@
 #include <array>       // ヘッダファイルインクルード
 #include "BossStagObj.h"
 #include "BossSceneChange.h"
-#include "PlayerEffect.h"
 #include "PlayerSoul.h"
 using namespace std;         //  名前空間指定
 
@@ -58,5 +57,4 @@ private:
 	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
-	PlayerEffect* playereffect = nullptr;
 };

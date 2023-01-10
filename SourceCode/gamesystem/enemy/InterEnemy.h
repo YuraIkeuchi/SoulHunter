@@ -152,6 +152,9 @@ protected:
 	bool m_DeathMotion = false;
 	//ジャンプ時のエフェクト発生条件
 	bool m_BirdEffectArgment = false;
+	//ダメージフラグ
+	bool m_Damage = false;
+	int m_DamageTimer = 0;
 	
 public:
 	virtual ~InterEnemy() = default;

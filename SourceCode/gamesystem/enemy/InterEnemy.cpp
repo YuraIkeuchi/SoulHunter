@@ -28,6 +28,8 @@ bool InterEnemy::Collision() {
 	box.scale = { 6.5f,5.5f,8.5f };
 
 	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 5)) {
+		m_Damage = true;
+		m_DamageTimer = 50;
 		m_EffectArgment = true;
 		m_HP--;
 		m_Effect = true;
@@ -221,6 +223,15 @@ void InterEnemy::DamageAct() {
 
 
 	m_Position.x += m_BoundPower.x;
+
+	//ダメージのインターバル
+	if (m_Damage) {
+		m_DamageTimer--;
+		if (m_DamageTimer < 0) {
+			m_Damage = false;
+			m_DamageTimer = 0;
+		}
+	}
 }
 
 //パーティクルの初期化

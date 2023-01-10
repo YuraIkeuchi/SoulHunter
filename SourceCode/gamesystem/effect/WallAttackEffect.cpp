@@ -36,9 +36,9 @@ void WallAttackEffect::Update(const XMFLOAT3& pos,int HitDir) {
 }
 //•`‰æ
 void WallAttackEffect::Draw() {
-	ImGui::Begin("Walll");
+	/*ImGui::Begin("Walll");
 	ImGui::Text("Alive:%f", m_Scale[0].x);
-	ImGui::End();
+	ImGui::End();*/
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {
@@ -54,7 +54,7 @@ void WallAttackEffect::SetEffect(const XMFLOAT3& pos,int HitDir) {
 		if (!m_Effect[i] && !m_DeleteEffect) {
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 4 + 2) / 10,
+					(float)(rand() % 8 + 4) / 10,
 					(float)(rand() % 15 - 5) / 10,
 					0.0f,
 			};

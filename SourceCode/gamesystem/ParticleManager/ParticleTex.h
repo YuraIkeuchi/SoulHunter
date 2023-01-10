@@ -76,15 +76,9 @@ private:
 	array<int, ParticleTex_Max> m_Timer;//パーティクルの時間
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
 
-	//unique_ptr<Player> player;
-	//各パーティクルの数
-	int m_NormalParticleCount = 40;
-	int m_WideParticleCount = 10;
-
 	bool m_ParticleBreak = false;//パーティクルを個々にだすか
 	float m_StartScale = 0.1f;//始まりの大きさ
 	float m_AddScale = 0.02f;//大きさに加算する量
-	int m_DrawCount = 0;//描画数
 	int m_ParticleType = 0;//パーティクルのタイプ
 	bool m_ParticleBillboard = false;//ビルボード
 	enum Type {

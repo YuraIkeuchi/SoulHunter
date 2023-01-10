@@ -7,10 +7,6 @@
 #include <Easing.h>
 //プレイシーンの初期化
 void FirstStage::PlaySceneInitialize() {
-	//プレイヤーのエフェクト
-	playereffect->Initialize();
-	playereffect->SetPlayer(player);
-
 	//魂
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < Enemy_Max; j++) {
@@ -36,7 +32,6 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//最初にnewする
 	player = new Player();
-	playereffect = new PlayerEffect();
 	playerskill = new PlayerSkill();
 	skillpause = new SkillPause();
 	option = new Option();
@@ -204,10 +199,7 @@ void FirstStage::NormalUpdate() {
 		tutorialtext[i]->Update(i);
 
 	}
-	//エフェクトの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
-		playereffect->Update();
-	}
+
 	//その他の更新
 	hitstop->Update();
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
@@ -397,8 +389,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
-	playereffect->Draw();
-
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 

@@ -12,6 +12,8 @@
 #include "ObjCommon.h"
 #include "AttackEffect.h"
 #include "WallAttackEffect.h"
+#include "PlayerDamageEffect.h"
+#include "PlayerDushEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
 #include <memory>
@@ -64,6 +66,10 @@ public:
 	//攻撃エフェクト
 	void AttackArgment();
 	//壁エフェクト
+	void DushArgment();
+	//ダッシュエフェクト
+	void DamageArgment();
+	//ダメージエフェクト
 	void WallArgment();
 	//ゴール後の動き
 	void GoalMove();
@@ -121,26 +127,21 @@ public:
 	const XMFLOAT3& GetAttackPos() { return  m_AttackPos; }
 	bool GetAlive() { return  m_Alive; }
 	int GetHP() { return  m_HP; }
-	int GetJumpCount() { return  m_JumpCount; }
 	float GetSoulCount() { return  m_SoulCount; }
 	int GetInterVal() { return  m_Interval; }
-	float GetCameraDistance() { return  m_CameraDistance; }
 	float GetAddPower() { return  m_AddPower; }
 	float GetVelosity() { return  m_Velocity; }
 	bool GetUseCompass() { return  s_UseCompass; }
 	bool GetUseLibra() { return  s_UseLibra; }
 	bool GetUseDush() { return  s_UseDush; }
 	bool GetUseHeal() { return  s_UseHeal; }
-	bool GetEffect() { return  m_Effect; }
 	int GetAttackTimer() { return  m_AttackTimer; }
-	bool GetDush() { return  m_Dush; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
 
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
-	void SetEffect(bool effect) { this->m_Effect = effect; }
 	void SetUseDush(bool UseDush) { this->s_UseDush = UseDush; }
 	void SetUseLibra(bool UseLibra) { this->s_UseLibra = UseLibra; }
 	void SetUseCompass(bool UseCompass) { this->s_UseCompass = UseCompass; }
@@ -168,6 +169,8 @@ private:
 	unique_ptr<Block> block = nullptr;
 	vector<AttackEffect*> attackeffects;
 	vector<WallAttackEffect*>walleffects;
+	vector<PlayerDushEffect*> dusheffects;
+	vector<PlayerDamageEffect*> damageeffects;
 	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
@@ -182,6 +185,10 @@ private:
 	bool m_AttackArgment = false;
 	//攻撃が壁にあたった時のエフェクト発生条件
 	bool m_WallArgment = false;
+	//ダッシュ時のエフェクト発生条件
+	bool m_DushArgment = false;
+	//ダメージエフェクト発生条件
+	bool m_DamageArgment = false;
 	//HP
 	int m_HP = 0;
 	//無敵時間
@@ -219,7 +226,7 @@ private:
 	};
 	//ダッシュ関係
 	bool m_Dush = false;
-	int m_DushTimer = 15;
+	int m_DushTimer = 10;
 	enum DushDir {
 		NoDush,
 		DushRight,
@@ -254,15 +261,12 @@ private:
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
 	//アニメーション関係
-	int m_Number = 0;
+	int m_AnimationType = 0;
 	bool m_AnimeLoop = false;
-	int m_AnimeTimer = 0;
 	int m_AnimeSpeed = 1;
 	bool m_AnimationStop = false;
 	//必殺技
 	float m_Frame = 0.0f;
-	//必殺技時のカメラの距離
-	float m_CameraDistance = 0.0f;
 	//パーティクルのための変数
 	int m_ParticleNumber = 0;
 	//提出用の攻撃タイプ
@@ -293,7 +297,7 @@ private:
 	XMMATRIX m_HandMat;
 	XMVECTOR m_VectorSwordPos;//剣の座標
 	XMFLOAT3 m_SwordPos;//剣の座標
-	XMFLOAT3 m_SwordRotation = { 60.0f,100.0f,0.0f };
+	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
 	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;
@@ -311,5 +315,27 @@ private:
 	int m_DeathTimer = 0;
 	//シェイク用変数
 	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
+
+	//アニメーションタイマー用
+	struct AnimationTimer {
+		int MoveAnimation = 0;
+		int NotAnimation = 0;
+		int FallAnimation = 0;
+	};
+
+	AnimationTimer m_AnimationTimer;
+	enum AnimationType {
+		Attack,
+		Walk,
+		FirstJump,
+		Wait,
+		Death,
+		SecondJump,
+		ThirdJump,
+		FinalJump,
+		Dush,
+		Damage,
+		Fall
+	};
 };
 

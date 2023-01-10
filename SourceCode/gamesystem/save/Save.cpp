@@ -57,12 +57,12 @@ void Save::Update() {
 	if (m_Alive) {
 		m_ParticleCount++;
 	}
-	if (m_ParticleCount > 6) {
+	if (m_ParticleCount > 4) {
 		m_ParticleCount = 0;
 	}
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->SetParticleBreak(true);
-	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 6, 4);
+	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 4, 4);
 
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }

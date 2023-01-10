@@ -110,6 +110,10 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 				enemyeffect->Draw();
 			}
 		}
+
+		ImGui::Begin("Enemy");
+		ImGui::Text("RotX:%f", m_Rotation.x);
+		ImGui::End();
 	}
 	particletex->Draw();
 }

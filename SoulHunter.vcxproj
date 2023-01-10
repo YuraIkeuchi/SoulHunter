@@ -273,7 +273,8 @@
     <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\MarkEffect.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDamageEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDushEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
@@ -400,7 +401,8 @@
     <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\MarkEffect.h" />
-    <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDushEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />

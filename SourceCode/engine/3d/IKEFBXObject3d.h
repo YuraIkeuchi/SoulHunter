@@ -167,7 +167,7 @@ public:	//定数
 	FbxTime SetCurrent() { return currentTime = startTime; }
 	//ボーンの最大数
 	static const int MAX_BONES = 70;
-	int BoneNumber = 40;
+	int BoneNumber = 39;
 	//定数バッファ用データ構造体（スキニング）
 	struct ConstBufferDataSkin
 	{

@@ -23,7 +23,7 @@ bool Player::Initialize()
 	IKEObject3d* m_FollowObject_ = new IKEObject3d();
 	m_FollowObject_ = IKEObject3d::Create();
 	m_FollowObject_->SetModel(m_FollowModel);
-	m_FollowObject_->SetScale({ 2.5f,2.5f,2.5f });
+	m_FollowObject_->SetScale({ 4.5f,4.5f,4.5f });
 	m_FollowObject.reset(m_FollowObject_);
 
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
@@ -67,7 +67,7 @@ void Player::StateInitialize() {
 	m_Radius.x = 1.3f * m_Scale.x;
 	m_Radius.y = 0.7f * m_Scale.y;
 	m_Jump = false;
-	m_AddPower = 0;
+	m_AddPower = -0.01f;
 	m_Gravity = 0.02f;
 }
 //更新
@@ -99,6 +99,8 @@ void Player::Update()
 			//エフェクト発生関係
 			AttackArgment();
 			WallArgment();
+			DushArgment();
+			DamageArgment();
 		}
 		else {
 			//ゴール後の動き
@@ -202,6 +204,18 @@ void Player::EffectUpdate() {
 			walleffect->Update(m_AttackPos, m_PlayerDir);
 		}
 	}
+
+	for (PlayerDushEffect* dusheffect : dusheffects) {
+		if (dusheffect != nullptr) {
+			dusheffect->Update(m_Position, m_Dush);
+		}
+	}
+
+	for (PlayerDamageEffect* damageeffect : damageeffects) {
+		if (damageeffect != nullptr) {
+			damageeffect->Update(m_Position, m_Effect);
+		}
+	}
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -258,25 +272,29 @@ void Player::WalkAnimation() {
 	Input* input = Input::GetInstance();
 	//歩きモーション
 	if (input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left) && (m_HealType == NoHeal) && (m_AddPower == 0.0f)) {
-		if ((m_AnimeTimer < 3) && (m_JumpCount == 0) && (!m_AnimationStop)) {
-			m_AnimeTimer++;
+		if ((m_AnimationTimer.MoveAnimation < 3) && (m_JumpCount == 0) && (!m_AnimationStop)) {
+			m_AnimationTimer.MoveAnimation++;
+			m_AnimationTimer.NotAnimation = 0;
 		}
-		if (m_AnimeTimer == 1) {
+		if (m_AnimationTimer.MoveAnimation == 1) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
-			m_Number = 1;
+			m_AnimationType = Walk;
 			m_AnimeSpeed = 1;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_fbxObject->PlayAnimation(m_AnimationType);
 		}
 	}
 	//止まっている
 	else {
-		m_AnimeTimer = 0;
-		if (m_AnimeTimer == 0 && !m_AnimationStop) {
+		m_AnimationTimer.MoveAnimation = 0;
+		if (m_AddPower == 0.0f) {
+			m_AnimationTimer.NotAnimation++;
+		}
+		if (m_AnimationTimer.NotAnimation == 1 && !m_AnimationStop) {
 			m_AnimeLoop = true;
 			m_AnimeSpeed = 1;
-			m_Number = 3;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_AnimationType = Wait;
+			m_fbxObject->PlayAnimation(m_AnimationType);
 		}
 	}
 }
@@ -309,16 +327,16 @@ void Player::PlayerJump() {
 		m_AddPower = 0.8f;
 	
 		if (m_JumpCount == 1) {
-			PlayerAnimetion(2, 2);
+			PlayerAnimetion(FirstJump, 2);
 		}
 		else if (m_JumpCount == 2) {
-			PlayerAnimetion(5, 2);
+			PlayerAnimetion(SecondJump, 2);
 		}
 		else if (m_JumpCount == 3) {
-			PlayerAnimetion(6, 2);
+			PlayerAnimetion(ThirdJump, 2);
 		}
 		else if (m_JumpCount == 4) {
-			PlayerAnimetion(7, 2);
+			PlayerAnimetion(FinalJump, 2);
 			m_JumpRot = true;
 			m_RotFrame = 0.0f;
 		}
@@ -361,12 +379,19 @@ void Player::PlayerFall() {
 			//初期化
 			m_Jump = false;
 			m_AddPower = 0.0f;
+			m_AnimationTimer.FallAnimation = 0;
 		}
+
+		//空中アニメーション
+		/*m_AnimationTimer.FallAnimation++;
+		if (m_AnimationTimer.FallAnimation == 1) {
+			PlayerAnimetion(10, 1);
+		}*/
 	}
 	else {
 		m_Jump = true;
 	}
-
+	
 	//落下速度の限界
 	if (m_AddPower < -1.0f) {
 		m_AddPower = -1.0f;
@@ -394,20 +419,14 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(0, 2);
+			PlayerAnimetion(Attack, 2);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
 			m_SwordAfterAlpha = 1.0f;
-		/*	playerwing->SetEaseStart(true);
-			playerwing->SetFrame(0.0f);
-			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 		}
 		else {
-			m_AnimeLoop = true;
-			m_AnimeSpeed = 2;
-			m_Number = 3;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_fbxObject->StopAnimation();
 		}
 	}	
 	//攻撃のインターバル
@@ -433,7 +452,7 @@ void Player::PlayerAttack() {
 		m_AttackTimer++;
 		
 		//一定フレームで攻撃終了
-		if (m_AttackTimer >= 30) {
+		if (m_AttackTimer >= 40) {
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -460,6 +479,7 @@ void Player::PlayerDush() {
 	//ダッシュ処理
 	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
 		if (input->TriggerButton(input->Button_RB)) {
+			m_DushArgment = true;
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_Dush = true;
@@ -474,7 +494,7 @@ void Player::PlayerDush() {
 				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
-			PlayerAnimetion(8, 2);
+			PlayerAnimetion(Dush, 4);
 		}
 	}
 
@@ -488,9 +508,10 @@ void Player::PlayerDush() {
 		}
 
 		if (m_DushTimer == 0) {
+			m_ParticleCount = 0;
 			m_DushDir = NoDush;
 			m_Dush = false;
-			m_DushTimer = 15;
+			m_DushTimer = 10;
 		}
 	}
 }
@@ -505,7 +526,6 @@ void Player::PlayerHeal() {
 
 	if (m_HealType == InterVal) {
 		m_HealCount++;
-		m_CameraDistance += 0.1f;
 		m_HealTimer++;
 		if (m_HealTimer > 100) {
 			m_SoulCount -= 6.0f;
@@ -532,7 +552,6 @@ void Player::PlayerHeal() {
 		else {
 			m_HealType = NoHeal;
 		}
-		m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 0.0f);
 	}
 	else if (m_HealType == Fail) {
 		if (m_Frame < 1.0f) {
@@ -541,9 +560,7 @@ void Player::PlayerHeal() {
 		else {
 			m_HealType = NoHeal;
 		}
-		m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 0.0f);
 	}
-
 }
 //ダメージを食らう
 void Player::PlayerDamage() {
@@ -616,6 +633,7 @@ void Player::PlayerDamage() {
 				m_Death = true;
 			}
 		}
+		m_DamageArgment = true;
 		m_Alive = false;
 		block->SetThornDir(0);
 		block->SetThornHit(false);
@@ -670,6 +688,26 @@ void Player::WallArgment() {
 		m_WallArgment = false;
 	}
 }
+//エフェクト発生(ダッシュ)
+void Player::DushArgment() {
+	if (m_DushArgment) {
+		PlayerDushEffect* newDushEffect;
+		newDushEffect = new PlayerDushEffect();
+		newDushEffect->Initialize();
+		dusheffects.push_back(newDushEffect);
+		m_DushArgment = false;
+	}
+}
+//エフェクト発生(ダメージ)
+void Player::DamageArgment() {
+	if (m_DamageArgment) {
+		PlayerDamageEffect* newDamageEffect;
+		newDamageEffect = new PlayerDamageEffect();
+		newDamageEffect->Initialize();
+		damageeffects.push_back(newDamageEffect);
+		m_DamageArgment = false;
+	}
+}
 //ゴール後の動き
 void Player::GoalMove() {
 	if (m_GoalDir == RightGoal) {
@@ -685,7 +723,7 @@ bool Player::DeathMove() {
 		m_DeathTimer++;
 		//最初にアニメーションが入る
 		if (m_DeathTimer == 1) {
-			PlayerAnimetion(4, 1);
+			PlayerAnimetion(Death, 1);
 		}
 		//前を向く
 		if (m_DeathTimer >= 10) {
@@ -740,11 +778,20 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_PlayerDir:%d", m_PlayerDir);
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::SliderFloat("RotX", & m_SwordRotation.x, 0, 360);
+	//ImGui::SliderFloat("RotY", &m_SwordRotation.y, 0, 360);
+	//ImGui::SliderFloat("RotZ", &m_SwordRotation.z, 0, 360);
+	//ImGui::Text("m_Bone%d", m_fbxObject->GetBoneNumber());
+	//if (ImGui::Button("EnemyArg", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
+	//}
+	//if (ImGui::Button("EnemyDele", ImVec2(90, 50))) {
+	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
+	//}
+	//ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -756,6 +803,18 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	for (WallAttackEffect* walleffect : walleffects) {
 		if (walleffect != nullptr) {
 			walleffect->Draw();
+		}
+	}
+
+	for (PlayerDushEffect* dusheffect : dusheffects) {
+		if (dusheffect != nullptr) {
+			dusheffect->Draw();
+		}
+	}
+
+	for (PlayerDamageEffect* damageeffect : damageeffects) {
+		if (damageeffect != nullptr) {
+			damageeffect->Draw();
 		}
 	}
 
@@ -782,6 +841,8 @@ void Player::InitPlayer(int StageNumber) {
 	m_Interval = 0;
 	attackeffects.clear();
 	walleffects.clear();
+	dusheffects.clear();
+	damageeffects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-110.0,0.0f };
@@ -853,8 +914,8 @@ void Player::InitPlayer(int StageNumber) {
 
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 2;
-	m_Number = 3;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_AnimationType = 3;
+	m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //ポーズ開いたときはキャラが動かない
 void Player::Pause() {
@@ -911,12 +972,12 @@ void Player::BirthParticle() {
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
-	m_Number = Number;
+	m_AnimationType = Number;
 	m_AnimeLoop = false;
-	m_AnimeTimer = 0;
+	m_AnimationTimer.MoveAnimation = 0;
 	m_AnimeSpeed = AnimeSpeed;
 	m_AnimationStop = true;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //生き返った時の位置
 void Player::ResPornPlayer() {
@@ -952,8 +1013,9 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
-	PlayerAnimetion(9, 3);
+	PlayerAnimetion(Damage, 3);
 	m_Effect = true;
+	m_DamageArgment = true;
 	m_HP -= 1;
 	m_Interval = 100;
 	if (m_Position.x > pos.x) {
@@ -972,7 +1034,6 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerThornHit(const XMFLOAT3& pos) {
-
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = 1;//右側に弾かれる
@@ -993,7 +1054,7 @@ void Player::ResetSkill() {
 void Player::IntroductionUpdate(int Timer) {
 	//フレーム数で動きが決まる
 	if (Timer == 1) {
-		m_Position = { 0.0f,2.0f,30.0f };
+		m_Position = { 0.0f,2.2f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 	}
 
@@ -1002,14 +1063,14 @@ void Player::IntroductionUpdate(int Timer) {
 		m_Position.z -= 0.3f;
 	}
 
-	m_AnimeTimer++;
+	m_AnimationTimer.MoveAnimation++;
 	
-	if (m_AnimeTimer == 1) {
+	if (m_AnimationTimer.MoveAnimation == 1) {
 		//アニメーションのためのやつ
 		m_AnimeLoop = true;
-		m_Number = 1;
+		m_AnimationType = Walk;
 		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_Number);
+		m_fbxObject->PlayAnimation(m_AnimationType);
 	}
 
 	//剣の更新
@@ -1037,8 +1098,8 @@ void Player::BossAppDraw(DirectXCommon* dxCommon) {
 void Player::BossEndUpdate(int Timer) {
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 1;
-	m_Number = 3;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_AnimationType = Wait;
+	m_fbxObject->PlayAnimation(m_AnimationType);
 	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
@@ -1061,14 +1122,14 @@ void Player::ClearUpdate(int Timer) {
 	//	
 	//}
 
-	m_AnimeTimer++;
+	m_AnimationTimer.MoveAnimation++;
 
-	if (m_AnimeTimer == 1) {
+	if (m_AnimationTimer.MoveAnimation == 1) {
 		//アニメーションのためのやつ
 		m_AnimeLoop = true;
-		m_Number = 1;
+		m_AnimationType = 1;
 		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_Number);
+		m_fbxObject->PlayAnimation(m_AnimationType);
 	}
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);

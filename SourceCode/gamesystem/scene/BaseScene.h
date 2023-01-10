@@ -10,7 +10,6 @@
 #include "ParticleManager.h"
 #include "PostEffect.h"
 #include "PlayerSkill.h"
-#include "ParticleManager.h"
 #include "Save.h"
 #include "UI.h"
 #include "FirstBoss.h"
@@ -36,11 +35,11 @@
 #include "Chest.h"
 #include "HitStop.h"
 #include <vector>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<ostream>
-#include <iostream>
+//#include<fstream>
+//#include<string>
+//#include<sstream>
+//#include<ostream>
+//#include <iostream>
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
