@@ -57,6 +57,8 @@ public:
 	void PlayerFall();
 	//UŒ‚
 	void PlayerAttack();
+	//UŒ‚“–‚½‚è”»’è‚ğæ‚é‚©
+	bool CheckAttack();
 	//ƒ_ƒbƒVƒ…
 	void PlayerDush();
 	//HP‰ñ•œ

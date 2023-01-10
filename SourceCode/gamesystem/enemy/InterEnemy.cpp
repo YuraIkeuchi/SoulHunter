@@ -22,7 +22,7 @@ bool InterEnemy::Collision() {
 	OBB2.SetParam_Scl(player->GetSwordScale());
 	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage) {
+	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage && player->CheckAttack()) {
 		m_Damage = true;
 		m_DamageTimer = 50;
 		m_EffectArgment = true;

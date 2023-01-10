@@ -170,6 +170,7 @@ public:	//定数
 	//ボーンの最大数
 	static const int MAX_BONES = 70;
 	int BoneNumber = 39;
+	int m_FBXTimer = 0;
 	//定数バッファ用データ構造体（スキニング）
 	struct ConstBufferDataSkin
 	{

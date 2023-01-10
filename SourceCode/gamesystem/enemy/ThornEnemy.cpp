@@ -64,7 +64,7 @@ bool ThornEnemy::ThornCollision() {
 	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
 
-	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage) {
+	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage && player->CheckAttack()) {
 		m_Damage = true;
 		m_DamageTimer = 50;
 		player->PlayerThornHit(m_Position);

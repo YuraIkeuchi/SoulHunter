@@ -274,6 +274,7 @@ void IKEFBXObject3d::Update(bool Loop,int Speed,bool& Stop)
 			}
 		}
 	}
+
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);

@@ -477,6 +477,17 @@ void Player::PlayerAttack() {
 		}
 	}
 }
+//攻撃判定を取るか
+bool Player::CheckAttack() {
+
+	if ((m_Attack) && (m_AttackTimer >= 25 && m_AttackTimer <= 39)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return false;
+}
 //プレイヤーのダッシュ
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
@@ -791,6 +802,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Text("SwordScaleX:%f", m_SwordScale.x);
 	ImGui::Text("SwordScaleY:%f", m_SwordScale.y);
 	ImGui::Text("SwordScaleZ:%f", m_SwordScale.z);
+	ImGui::Text("Timer:%d", m_AttackTimer);
 	ImGui::End();
 
 	//エフェクトの描画

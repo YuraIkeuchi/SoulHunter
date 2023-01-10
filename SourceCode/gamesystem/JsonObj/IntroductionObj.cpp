@@ -129,6 +129,7 @@ void IntroductionObj::Update(int Timer) {
 		m_OffSet = 0.0f;
 	}
 	objskydome->Update();
+	objskydome->SetAddOffset(0.0005f);
 	//Json—p
 	for (auto& object : objects) {
 		object->Update();
