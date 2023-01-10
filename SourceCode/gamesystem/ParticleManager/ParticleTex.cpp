@@ -41,7 +41,7 @@ void ParticleTex::Update(const XMFLOAT3& StartPos, int Timer, int TargetTimer, i
 		BossEndParticle(StartPos, Timer, TargetTimer);
 	}
 
-	for (int i = m_DrawCount; i < particletex.size(); i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		particletex[i]->SetPosition(m_pos[i]);
 		particletex[i]->SetScale(m_scale[i]);
 		particletex[i]->SetColor(m_color[i]);
@@ -56,7 +56,7 @@ void ParticleTex::Update(const XMFLOAT3& StartPos, int Timer, int TargetTimer, i
 //描画
 void ParticleTex::Draw() {
 	IKETexture::PreDraw(1);
-	for (int i = m_DrawCount; i < particletex.size(); i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			particletex[i]->Draw();
 		}
@@ -80,10 +80,9 @@ void ParticleTex::ImGuiDraw() {
 //普通のパーティクル
 void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 0;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -101,7 +100,7 @@ void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.005f;
 			m_pos[i].x += float((cos(m_Angle[i])) * m_speed[i].x);
@@ -132,10 +131,9 @@ void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 //上方向に上がるパーティクル(主にタイトル)
 void ParticleTex::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 1;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -153,7 +151,7 @@ void ParticleTex::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_Timer[i]++;
 			if (m_Timer[i] % 30 == 0) {
@@ -190,10 +188,9 @@ void ParticleTex::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 //敵をたおした時のパーティクル
 void ParticleTex::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 0;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -210,7 +207,7 @@ void ParticleTex::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTim
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.01f;
 			m_pos[i].x += float((cos(m_Angle[i])) * m_speed[i].x);
@@ -250,10 +247,9 @@ void ParticleTex::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTim
 //宝箱のパーティクル
 void ParticleTex::ChestParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 0;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -272,7 +268,7 @@ void ParticleTex::ChestParticle(const XMFLOAT3& StartPos, int Timer, int TargetT
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.003f;
 			m_pos[i].x += float((cos(m_Angle[i])) * m_speed[i].x);
@@ -301,10 +297,9 @@ void ParticleTex::ChestParticle(const XMFLOAT3& StartPos, int Timer, int TargetT
 //セーブのパーティクル
 void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 1;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = m_DrawCount; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -322,7 +317,7 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 		}
 	}
 	//実際に動く
-	for (int i = m_DrawCount; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.005f;
 			m_AddPower[i].y += 0.001f;
@@ -357,10 +352,9 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 //ボスをたおした時のパーティクル
 void ParticleTex::BossEndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-	m_DrawCount = 0;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
-		for (int i = 0; i < m_NormalParticleCount; i++) {
+		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
 				m_color[i] = m_StartColor;
@@ -378,7 +372,7 @@ void ParticleTex::BossEndParticle(const XMFLOAT3& StartPos, int Timer, int Targe
 		}
 	}
 	//実際に動く
-	for (int i = 0; i < m_NormalParticleCount; i++) {
+	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
 			m_AddScale = 0.01f;
 			m_pos[i].x += float((cos(m_Angle[i])) * m_speed[i].x);

@@ -254,9 +254,8 @@ private:
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
 	//アニメーション関係
-	int m_Number = 0;
+	int m_AnimationType = 0;
 	bool m_AnimeLoop = false;
-	int m_AnimeTimer = 0;
 	int m_AnimeSpeed = 1;
 	bool m_AnimationStop = false;
 	//必殺技
@@ -311,5 +310,27 @@ private:
 	int m_DeathTimer = 0;
 	//シェイク用変数
 	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
+
+	//アニメーションタイマー用
+	struct AnimationTimer {
+		int MoveAnimation = 0;
+		int NotAnimation = 0;
+		int FallAnimation = 0;
+	};
+
+	AnimationTimer m_AnimationTimer;
+	enum AnimationType {
+		Attack,
+		Walk,
+		FirstJump,
+		Wait,
+		Death,
+		SecondJump,
+		ThirdJump,
+		FinalJump,
+		Dush,
+		Damage,
+		Fall
+	};
 };
 

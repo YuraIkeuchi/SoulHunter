@@ -286,7 +286,7 @@ bool Chest::Collide() {
 	XMFLOAT3 l_plaPos = player->GetPosition();
 	for (int i = 0; i < Skill_Max; i++) {
 		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f, m_ChestPos[i].x, m_ChestPos[i].y, 3.0f) && m_Alive[i]
-			&& player->GetAddPower() == 0.0f) {
+			&& m_ChestState[i] == Close && player->GetAddPower() == 0.0f) {
 			m_Hit[i] = true;
 			player->SetCollideChest(true);
 			break;

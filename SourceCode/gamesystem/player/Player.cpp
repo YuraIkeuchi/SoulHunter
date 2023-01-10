@@ -67,7 +67,7 @@ void Player::StateInitialize() {
 	m_Radius.x = 1.3f * m_Scale.x;
 	m_Radius.y = 0.7f * m_Scale.y;
 	m_Jump = false;
-	m_AddPower = 0;
+	m_AddPower = -0.01f;
 	m_Gravity = 0.02f;
 }
 //更新
@@ -258,25 +258,29 @@ void Player::WalkAnimation() {
 	Input* input = Input::GetInstance();
 	//歩きモーション
 	if (input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left) && (m_HealType == NoHeal) && (m_AddPower == 0.0f)) {
-		if ((m_AnimeTimer < 3) && (m_JumpCount == 0) && (!m_AnimationStop)) {
-			m_AnimeTimer++;
+		if ((m_AnimationTimer.MoveAnimation < 3) && (m_JumpCount == 0) && (!m_AnimationStop)) {
+			m_AnimationTimer.MoveAnimation++;
+			m_AnimationTimer.NotAnimation = 0;
 		}
-		if (m_AnimeTimer == 1) {
+		if (m_AnimationTimer.MoveAnimation == 1) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
-			m_Number = 1;
+			m_AnimationType = Walk;
 			m_AnimeSpeed = 1;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_fbxObject->PlayAnimation(m_AnimationType);
 		}
 	}
 	//止まっている
 	else {
-		m_AnimeTimer = 0;
-		if (m_AnimeTimer == 0 && !m_AnimationStop) {
+		m_AnimationTimer.MoveAnimation = 0;
+		if (m_AddPower == 0.0f) {
+			m_AnimationTimer.NotAnimation++;
+		}
+		if (m_AnimationTimer.NotAnimation == 1 && !m_AnimationStop) {
 			m_AnimeLoop = true;
 			m_AnimeSpeed = 1;
-			m_Number = 3;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_AnimationType = Wait;
+			m_fbxObject->PlayAnimation(m_AnimationType);
 		}
 	}
 }
@@ -309,16 +313,16 @@ void Player::PlayerJump() {
 		m_AddPower = 0.8f;
 	
 		if (m_JumpCount == 1) {
-			PlayerAnimetion(2, 2);
+			PlayerAnimetion(FirstJump, 2);
 		}
 		else if (m_JumpCount == 2) {
-			PlayerAnimetion(5, 2);
+			PlayerAnimetion(SecondJump, 2);
 		}
 		else if (m_JumpCount == 3) {
-			PlayerAnimetion(6, 2);
+			PlayerAnimetion(ThirdJump, 2);
 		}
 		else if (m_JumpCount == 4) {
-			PlayerAnimetion(7, 2);
+			PlayerAnimetion(FinalJump, 2);
 			m_JumpRot = true;
 			m_RotFrame = 0.0f;
 		}
@@ -361,12 +365,19 @@ void Player::PlayerFall() {
 			//初期化
 			m_Jump = false;
 			m_AddPower = 0.0f;
+			m_AnimationTimer.FallAnimation = 0;
 		}
+
+		//空中アニメーション
+		/*m_AnimationTimer.FallAnimation++;
+		if (m_AnimationTimer.FallAnimation == 1) {
+			PlayerAnimetion(10, 1);
+		}*/
 	}
 	else {
 		m_Jump = true;
 	}
-
+	
 	//落下速度の限界
 	if (m_AddPower < -1.0f) {
 		m_AddPower = -1.0f;
@@ -394,20 +405,14 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(0, 2);
+			PlayerAnimetion(Attack, 3);
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
 			m_SwordAfterAlpha = 1.0f;
-		/*	playerwing->SetEaseStart(true);
-			playerwing->SetFrame(0.0f);
-			playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 		}
 		else {
-			m_AnimeLoop = true;
-			m_AnimeSpeed = 2;
-			m_Number = 3;
-			m_fbxObject->PlayAnimation(m_Number);
+			m_fbxObject->StopAnimation();
 		}
 	}	
 	//攻撃のインターバル
@@ -474,7 +479,7 @@ void Player::PlayerDush() {
 				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
-			PlayerAnimetion(8, 2);
+			PlayerAnimetion(Dush, 2);
 		}
 	}
 
@@ -685,7 +690,7 @@ bool Player::DeathMove() {
 		m_DeathTimer++;
 		//最初にアニメーションが入る
 		if (m_DeathTimer == 1) {
-			PlayerAnimetion(4, 1);
+			PlayerAnimetion(Death, 1);
 		}
 		//前を向く
 		if (m_DeathTimer >= 10) {
@@ -740,11 +745,13 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
+	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_PlayerDir:%d", m_PlayerDir);
-	ImGui::End();*/
+	ImGui::Text("m_AnimationStop:%d", m_AnimationStop);
+	ImGui::Text("MoveAnimation:%d", m_AnimationTimer.MoveAnimation);
+	ImGui::Text("m_AnimationType:%d", m_AnimationType);
+	ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -853,8 +860,8 @@ void Player::InitPlayer(int StageNumber) {
 
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 2;
-	m_Number = 3;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_AnimationType = 3;
+	m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //ポーズ開いたときはキャラが動かない
 void Player::Pause() {
@@ -911,12 +918,12 @@ void Player::BirthParticle() {
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
-	m_Number = Number;
+	m_AnimationType = Number;
 	m_AnimeLoop = false;
-	m_AnimeTimer = 0;
+	m_AnimationTimer.MoveAnimation = 0;
 	m_AnimeSpeed = AnimeSpeed;
 	m_AnimationStop = true;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //生き返った時の位置
 void Player::ResPornPlayer() {
@@ -952,7 +959,7 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
-	PlayerAnimetion(9, 3);
+	PlayerAnimetion(Damage, 3);
 	m_Effect = true;
 	m_HP -= 1;
 	m_Interval = 100;
@@ -1002,14 +1009,14 @@ void Player::IntroductionUpdate(int Timer) {
 		m_Position.z -= 0.3f;
 	}
 
-	m_AnimeTimer++;
+	m_AnimationTimer.MoveAnimation++;
 	
-	if (m_AnimeTimer == 1) {
+	if (m_AnimationTimer.MoveAnimation == 1) {
 		//アニメーションのためのやつ
 		m_AnimeLoop = true;
-		m_Number = 1;
+		m_AnimationType = Walk;
 		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_Number);
+		m_fbxObject->PlayAnimation(m_AnimationType);
 	}
 
 	//剣の更新
@@ -1037,8 +1044,8 @@ void Player::BossAppDraw(DirectXCommon* dxCommon) {
 void Player::BossEndUpdate(int Timer) {
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 1;
-	m_Number = 3;
-	m_fbxObject->PlayAnimation(m_Number);
+	m_AnimationType = Wait;
+	m_fbxObject->PlayAnimation(m_AnimationType);
 	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
@@ -1061,14 +1068,14 @@ void Player::ClearUpdate(int Timer) {
 	//	
 	//}
 
-	m_AnimeTimer++;
+	m_AnimationTimer.MoveAnimation++;
 
-	if (m_AnimeTimer == 1) {
+	if (m_AnimationTimer.MoveAnimation == 1) {
 		//アニメーションのためのやつ
 		m_AnimeLoop = true;
-		m_Number = 1;
+		m_AnimationType = 1;
 		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_Number);
+		m_fbxObject->PlayAnimation(m_AnimationType);
 	}
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
