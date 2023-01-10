@@ -29,6 +29,16 @@ void InterBoss::Update() {
 		}
 	}
 
+
+	//ダメージのインターバル
+	if (m_Damage) {
+		m_DamageTimer--;
+		if (m_DamageTimer < 0) {
+			m_Damage = false;
+			m_DamageTimer = 0;
+		}
+	}
+
 	//エフェクトの生成
 	ArgEffect();
 	//エフェクトの更新
@@ -46,10 +56,9 @@ void InterBoss::Update() {
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Boss");
-	ImGui::Text("Timer : %d", m_MovieTimer);
-	ImGui::Text("Scale.x : %f", m_Scale.x);
-	ImGui::End();*/
+	ImGui::Begin("Boss");
+	ImGui::Text("HP : %f", m_HP);
+	ImGui::End();
 	//ボスの描画
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
@@ -85,29 +94,19 @@ bool InterBoss::collidePlayer() {
 }
 //ボスがダメージ食らう(通常攻撃)
 bool InterBoss::collideBoss() {
+	OBB1.SetParam_Pos(m_Position);
+	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
+	OBB2.SetParam_Pos(player->GetSwordPosition());
+	OBB2.SetParam_Scl(player->GetSwordScale());
+	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	XMFLOAT3 AttackPos = player->GetAttackPos();
-
-	//外積当たり判定
-	Sphere sphere;
-	sphere.center = { m_Position.x,m_Position.y,m_Position.z };
-	sphere.radius = 1;
-
-	Box box;
-	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
-	box.scale = { 6.5f,5.5f,8.5f };
-
-	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
+	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage) {
+		m_Damage = true;
+		m_DamageTimer = 50;
+		m_EffectArgment = true;
 		m_HP--;
 		m_Effect = true;
-		m_EffectArgment = true;
-		//どっちにあたったか
-		if (AttackPos.x > m_Position.x) {
-			m_HitDir = HitRight;
-		}
-		else {
-			m_HitDir = HitLeft;
-		}
 		return true;
 	}
 	else {

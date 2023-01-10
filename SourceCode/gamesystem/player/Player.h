@@ -124,7 +124,6 @@ public:
 	void ClearDraw(DirectXCommon* dxCommon);
 public:
 	//getter setter
-	const XMFLOAT3& GetAttackPos() { return  m_AttackPos; }
 	bool GetAlive() { return  m_Alive; }
 	int GetHP() { return  m_HP; }
 	float GetSoulCount() { return  m_SoulCount; }
@@ -135,9 +134,12 @@ public:
 	bool GetUseLibra() { return  s_UseLibra; }
 	bool GetUseDush() { return  s_UseDush; }
 	bool GetUseHeal() { return  s_UseHeal; }
-	int GetAttackTimer() { return  m_AttackTimer; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
+
+	const XMFLOAT3& GetSwordScale() { return  m_SwordScale; }
+	const XMFLOAT3& GetSwordPosition() { return  m_SwordPos; }
+	XMMATRIX GetSwordMatrot() { return m_SwordMatRot; }
 
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
@@ -148,7 +150,6 @@ public:
 	void SetUseHeal(bool UseHeal) { this->s_UseHeal = UseHeal; }
 	void SetChangeInterVal(bool m_ChangeInterVal) { this->m_ChangeInterVal = m_ChangeInterVal; }
 	void SetGoalDir(int m_GoalDir) { this->m_GoalDir = m_GoalDir; }
-	void SetCollideObj(bool m_CollideObj) { this->m_CollideObj = m_CollideObj; }
 	void SetCollideChest(bool m_CollideChest) { this->m_CollideChest = m_CollideChest; }
 	void SetMovie(bool m_Movie) { this->m_Movie = m_Movie; }
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
@@ -298,12 +299,14 @@ private:
 	XMVECTOR m_VectorSwordPos;//åïÇÃç¿ïW
 	XMFLOAT3 m_SwordPos;//åïÇÃç¿ïW
 	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
+	XMFLOAT3 m_SwordScale = { 0.0f,0.0f,0.0f };
 	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;
 	int m_SwordType = 0;
 	int m_SwordParticleNum = 0;
 	float m_SwordAfterAlpha = 0.0f;
+	XMMATRIX m_SwordMatRot;
 	enum SwordType {
 		NoSword,
 		ArgSword,

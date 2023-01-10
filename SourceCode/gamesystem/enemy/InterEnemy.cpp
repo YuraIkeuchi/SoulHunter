@@ -15,19 +15,14 @@ void InterEnemy::Draw(DirectXCommon* dxCommon) {
 
 //敵がダメージ食らう
 bool InterEnemy::Collision() {
+	OBB1.SetParam_Pos(m_Position);
+	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
+	OBB2.SetParam_Pos(player->GetSwordPosition());
+	OBB2.SetParam_Scl(player->GetSwordScale());
+	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	XMFLOAT3 AttackPos = player->GetAttackPos();
-	
-	//外積当たり判定
-	Sphere sphere;
-	sphere.center = { m_Position.x,m_Position.y,m_Position.z };
-	sphere.radius = 1;
-
-	Box box;
-	box.center = { AttackPos.x + 1.0f,AttackPos.y,AttackPos.z };
-	box.scale = { 6.5f,5.5f,8.5f };
-
-	if (Collision::CheckSphere2Box(sphere, box) && (m_HP > 0) && (player->GetAttackTimer() == 5)) {
+	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage) {
 		m_Damage = true;
 		m_DamageTimer = 50;
 		m_EffectArgment = true;
@@ -38,7 +33,7 @@ bool InterEnemy::Collision() {
 	else {
 		return false;
 	}
-
+	
 	return true;
 }
 //プレイヤーがダメージ食らう

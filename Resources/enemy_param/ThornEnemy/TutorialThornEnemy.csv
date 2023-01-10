@@ -1,1 +1,5 @@
-Enemy_Quantity2,0
+Enemy_Quantity2,1
+Wait,120
+ANGLE,378
+POSY,-284.459
+POP,38.1,-274.013,0

@@ -153,6 +153,8 @@ public: // ƒƒ“ƒoŠÖ”
 	//Šg‘åk¬‚Ìæ“¾
 	const XMFLOAT3& GetScale() { return scale; }
 	const XMMATRIX& GetMatWorld() { return matWorld; }
+	XMMATRIX GetMatrot() { return matRot; }
+	XMMATRIX GetMatScl() { return matScale; }
 
 	/// <summary>
 /// ƒ‚ƒfƒ‹‚ğæ“¾

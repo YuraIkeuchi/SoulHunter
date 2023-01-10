@@ -37,6 +37,15 @@ void ThornEnemy::Action() {
 		PlayerCollide();	
 		Obj_SetParam();
 	}
+
+	//ダメージのインターバル
+	if (m_Damage) {
+		m_DamageTimer--;
+		if (m_DamageTimer < 0) {
+			m_Damage = false;
+			m_DamageTimer = 0;
+		}
+	}
 }
 //描画
 void ThornEnemy::Draw(DirectXCommon* dxCommon) {
@@ -47,8 +56,17 @@ void ThornEnemy::Draw(DirectXCommon* dxCommon) {
 }
 //ダメージを受ける(この敵は受けない　弾かれる)
 bool ThornEnemy::ThornCollision() {
-	XMFLOAT3 AttackPos = player->GetAttackPos();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 2.5f, AttackPos.x, AttackPos.y, 2.5f) && (m_HP > 0) && (player->GetAttackTimer() == 2)) {
+	OBB1.SetParam_Pos(m_Position);
+	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Rot(m_Object->GetMatrot());
+	OBB2.SetParam_Pos(player->GetSwordPosition());
+	OBB2.SetParam_Scl(player->GetSwordScale());
+	OBB2.SetParam_Rot(player->GetSwordMatrot());
+
+
+	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage) {
+		m_Damage = true;
+		m_DamageTimer = 50;
 		player->PlayerThornHit(m_Position);
 		return true;
 	}

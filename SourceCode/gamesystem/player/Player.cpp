@@ -23,7 +23,7 @@ bool Player::Initialize()
 	IKEObject3d* m_FollowObject_ = new IKEObject3d();
 	m_FollowObject_ = IKEObject3d::Create();
 	m_FollowObject_->SetModel(m_FollowModel);
-	m_FollowObject_->SetScale({ 4.5f,4.5f,4.5f });
+	m_FollowObject_->SetScale(m_SwordScale);
 	m_FollowObject.reset(m_FollowObject_);
 
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
@@ -151,6 +151,7 @@ void Player::SwordUpdate() {
 	m_SwordPos.y = m_VectorSwordPos.m128_f32[1];
 	m_SwordPos.z = m_VectorSwordPos.m128_f32[2];
 	
+	m_SwordMatRot = m_FollowObject->GetMatrot();
 	if (m_SwordEase) {
 		if (m_SwordFrame < m_FrameMax) {
 			m_SwordFrame += 0.1f;
@@ -163,6 +164,7 @@ void Player::SwordUpdate() {
 		m_SwordColor.w = Ease(In, Cubic, m_SwordFrame, m_SwordColor.w, m_SwordAfterAlpha);
 	}
 	m_FollowObject->SetRotation(m_SwordRotation);
+	m_FollowObject->SetScale(m_SwordScale);
 	m_FollowObject->SetColor(m_SwordColor);
 	m_FollowObject->FollowUpdate(m_HandMat);
 }
@@ -413,6 +415,7 @@ void Player::PlayerAttack() {
 		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
+			m_SwordScale = { 4.5f,4.5f,4.5f };
 			if (m_Rotation.y == 90.0f) {
 				m_AttackPos = { m_Position.x + 4.0f,m_Position.y,m_Position.z };
 			}
@@ -460,6 +463,7 @@ void Player::PlayerAttack() {
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
 			m_SwordParticleCount = 0;
+			m_SwordScale = { 0.0f,0.0f,0.0f };
 		}
 
 		//攻撃が地面で行われた場合砂煙が発生する
@@ -778,20 +782,16 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::SliderFloat("RotX", & m_SwordRotation.x, 0, 360);
-	//ImGui::SliderFloat("RotY", &m_SwordRotation.y, 0, 360);
-	//ImGui::SliderFloat("RotZ", &m_SwordRotation.z, 0, 360);
-	//ImGui::Text("m_Bone%d", m_fbxObject->GetBoneNumber());
-	//if (ImGui::Button("EnemyArg", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() + 1);
-	//}
-	//if (ImGui::Button("EnemyDele", ImVec2(90, 50))) {
-	//	m_fbxObject->SetBoneNumber(m_fbxObject->GetBoneNumber() - 1);
-	//}
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("SwordPosX:%f", m_SwordPos.x);
+	ImGui::Text("SwordPosY:%f", m_SwordPos.y);
+	ImGui::Text("SwordPosZ:%f", m_SwordPos.z);
+	ImGui::Text("SwordScaleX:%f", m_SwordScale.x);
+	ImGui::Text("SwordScaleY:%f", m_SwordScale.y);
+	ImGui::Text("SwordScaleZ:%f", m_SwordScale.z);
+	ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {

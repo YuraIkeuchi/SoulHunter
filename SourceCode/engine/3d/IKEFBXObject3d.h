@@ -114,6 +114,8 @@ public:	//ƒƒ“ƒoŠÖ”
 	void SetChangeColor(bool ChangeColor) { this->ChangeColor = ChangeColor; }
 	void SetShadeSet(bool ShadeSet) { this->ShadeSet = ShadeSet; }
 	XMMATRIX GetWorldMat() { return WorldMat; }
+	XMMATRIX GetMatrot() { return matRot; }
+	XMMATRIX GetMatScl() { return matScale; }
 	const int GetBoneNumber() { return BoneNumber; }
 
 	void SetBoneNumber(int BoneNumber) { this->BoneNumber = BoneNumber; }

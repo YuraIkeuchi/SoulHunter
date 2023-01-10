@@ -37,7 +37,6 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	message = new Message();
 	save = new Save();
 	backobjalways = new BackObjAlways();
 	backlight = new BackLight();
@@ -140,11 +139,10 @@ void FirstStage::Update(DirectXCommon* dxCommon)
 }
 //普通の更新
 void FirstStage::NormalUpdate() {
-	message->Update();
 	block->Update(m_PlayerPos);
 
 	//プレイヤーの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
+	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
 		player->Update();
 	}
 	else {
@@ -162,7 +160,7 @@ void FirstStage::NormalUpdate() {
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
+			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
 				thornobj->Update();
 			}
 			else {
@@ -341,7 +339,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		//たからばこ
 		chest->Draw();
-		message->Draw();
 		//敵の描画
 		EnemyDraw(m_Enemys, dxCommon);
 		EnemyDraw(m_ThornEnemys, dxCommon);
@@ -398,7 +395,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		ui->Draw();
 		pause->Draw();
 		chest->ExplainDraw();
-		message->ExplainDraw();
 		BlackFilter->Draw();
 	}
 	IKESprite::PostDraw();
@@ -457,7 +453,6 @@ void FirstStage::MapInitialize() {
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
-		message->InitMessage(StageNumber);
 		chest->InitChest(StageNumber);
 		LoadObjParam(StageNumber);
 		StageChange = false;
