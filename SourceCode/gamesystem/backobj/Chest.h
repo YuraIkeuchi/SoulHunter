@@ -136,6 +136,6 @@ private:
 	//マジックナンバー解消のための変数
 	const float m_ChangeAlpha = 0.05f;//変化する透過度
 	const float m_ChangeTexFrame = 0.01f;//テキストの透過度
-	const int m_LibraTimerMax = 500;//ライブラのテキストのフレーム数
-	const int m_SkillTimerMax = 600;//その他のテキストのフレーム数
+	const int m_LibraTimerMax = 150;//ライブラのテキストのフレーム数
+	const int m_SkillTimerMax = 180;//その他のテキストのフレーム数
 };

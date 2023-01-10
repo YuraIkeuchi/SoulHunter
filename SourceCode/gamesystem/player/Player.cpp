@@ -740,11 +740,11 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
+	/*ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
 	ImGui::Text("m_PlayerDir:%d", m_PlayerDir);
-	ImGui::End();
+	ImGui::End();*/
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {

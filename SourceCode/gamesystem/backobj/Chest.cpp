@@ -245,11 +245,11 @@ void Chest::InitChest(int StageNumber) {
 	//ステージにスキルが有るかどうか
 	//コンパス
 	if (StageNumber == TutoRial) {
-		m_ChestPos[Compass] = { 230.0f,-190.0f,5.0f };
-		m_Alive[Compass] = true;
+		m_ChestPos[Dush] = { 230.0f,-190.0f,5.0f };
+		m_Alive[Dush] = true;
 	}
 	else {
-		m_Alive[Compass] = false;
+		m_Alive[Dush] = false;
 	}
 	//ライブラ
 	if (StageNumber == Map3) {
@@ -261,11 +261,11 @@ void Chest::InitChest(int StageNumber) {
 	}
 	//ダッシュ
 	if (StageNumber == Map6) {
-		m_ChestPos[Dush] = { 18.0f,-240.0f,5.0f };
-		m_Alive[Dush] = true;
+		m_ChestPos[Compass] = { 18.0f,-240.0f,5.0f };
+		m_Alive[Compass] = true;
 	}
 	else {
-		m_Alive[Dush] = false;
+		m_Alive[Compass] = false;
 	}
 	//ヒール
 	if (StageNumber == Map1) {
@@ -453,13 +453,21 @@ void Chest::Explain() {
 }
 //コンパススキルの説明文が出る
 bool Chest::CompassText() {
-
+	Input* input = Input::GetInstance();
 	if (m_ReadText[Compass]) {
 		m_CompassTimer++;
+		if (input->TriggerButton(input->Button_A) && m_CompassTimer >= 10) {
+			for (int i = 0; i < CompassExplain_Max; i++) {
+				m_CompassDraw[i] = false;
+			}
+			m_CompassTimer = 0;
+			m_ReadText[Compass] = false;
+			return true;
+		}
 	}
 	if (m_CompassTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < CompassExplain_Max; i++) {
-			if (m_CompassTimer % 100 == 0 && m_CompassTimer != 0) {
+			if (m_CompassTimer % 30 == 0 && m_CompassTimer != 0) {
 				if (!m_CompassDraw[i]) {
 					m_CompassDraw[i] = true;
 					m_CompassTexframe[i] = 0.0f;
@@ -492,25 +500,25 @@ bool Chest::CompassText() {
 			}
 		}
 	}
-	//一定のフレームがおわったらこの処理が終わる
-	else{
-		for (int i = 0; i < CompassExplain_Max; i++) {
-			m_CompassDraw[i] = false;
-		}
-		m_CompassTimer = 0;
-		m_ReadText[Compass] = false;
-		return true;
-	}
 	return false;
 }
 //ライブラスキルの説明文が出る
 bool Chest::LibraText() {
+	Input* input = Input::GetInstance();
 	if (m_ReadText[Libra]) {
 		m_LibraTimer++;
+		if (input->TriggerButton(input->Button_A) && m_LibraTimer >= 10) {
+			for (int i = 0; i < LibraExplain_Max; i++) {
+				m_LibraDraw[i] = false;
+			}
+			m_LibraTimer = 0;
+			m_ReadText[Libra] = false;
+			return true;
+		}
 	}
 	if (m_LibraTimer <= m_LibraTimerMax) {
 		for (int i = 0; i < LibraExplain_Max; i++) {
-			if (m_LibraTimer % 100 == 0 && m_LibraTimer != 0) {
+			if (m_LibraTimer % 30 == 0 && m_LibraTimer != 0) {
 				if (!m_LibraDraw[i]) {
 					m_LibraDraw[i] = true;
 					m_AfterLibraTexPos[i] = {
@@ -545,25 +553,26 @@ bool Chest::LibraText() {
 			}
 		}
 	}
-	//一定のフレームがおわったらこの処理が終わる
-	else {
-		for (int i = 0; i < LibraExplain_Max; i++) {
-			m_LibraDraw[i] = false;
-		}
-		m_LibraTimer = 0;
-		m_ReadText[Libra] = false;
-		return true;
-	}
 	return false;
 }
 //ダッシュスキルの説明文が出る
 bool Chest::DushText() {
+	Input* input = Input::GetInstance();
 	if (m_ReadText[Dush]) {
 		m_DushTimer++;
+		if (input->TriggerButton(input->Button_A) && m_DushTimer >= 10) {
+			for (int i = 0; i < DushExplain_Max; i++) {
+				m_DushDraw[i] = false;
+			}
+			m_DushTimer = 0;
+			m_ReadText[Dush] = false;
+			return true;
+		}
+
 	}
 	if (m_DushTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < DushExplain_Max; i++) {
-			if (m_DushTimer % 100 == 0 && m_DushTimer != 0) {
+			if (m_DushTimer % 30 == 0 && m_DushTimer != 0) {
 				if (!m_DushDraw[i]) {
 					m_DushDraw[i] = true;
 					m_AfterDushTexPos[i] = {
@@ -595,25 +604,26 @@ bool Chest::DushText() {
 			}
 		}
 	}
-	//一定のフレームがおわったらこの処理が終わる
-	else {
-		for (int i = 0; i < DushExplain_Max; i++) {
-			m_DushDraw[i] = false;
-		}
-		m_DushTimer = 0;
-		m_ReadText[Dush] = false;
-		return true;
-	}
 	return false;
 }
 //ヒールスキルの説明文が出る
 bool Chest::HealText() {
+	Input* input = Input::GetInstance();
 	if (m_ReadText[Heal]) {
 		m_HealTimer++;
+		if (input->TriggerButton(input->Button_A) && m_HealTimer >= 10) {
+			for (int i = 0; i < HealExplain_Max; i++) {
+				m_HealDraw[i] = false;
+			}
+			m_HealTimer = 0;
+			m_ReadText[Heal] = false;
+			return true;
+		}
+
 	}
 	if (m_HealTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < HealExplain_Max; i++) {
-			if (m_HealTimer % 100 == 0 && m_HealTimer != 0) {
+			if (m_HealTimer % 30 == 0 && m_HealTimer != 0) {
 				if (!m_HealDraw[i]) {
 					m_HealDraw[i] = true;
 					m_AfterHealTexPos[i] = {
@@ -644,15 +654,6 @@ bool Chest::HealText() {
 				};
 			}
 		}
-	}
-	//一定のフレームがおわったらこの処理が終わる
-	else {
-		for (int i = 0; i < HealExplain_Max; i++) {
-			m_HealDraw[i] = false;
-		}
-		m_HealTimer = 0;
-		m_ReadText[Heal] = false;
-		return true;
 	}
 	return false;
 }

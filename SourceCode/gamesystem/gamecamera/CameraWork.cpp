@@ -8,6 +8,9 @@ CameraWork::CameraWork() {
 	endparticle_ = new BossEndParticle();
 	endparticle_->Initialize();
 	endparticle.reset(endparticle_);
+
+	Shake* shake_ = new Shake();
+	shake.reset(shake_);
 }
 //更新
 void CameraWork::Update(DebugCamera* camera) {
@@ -221,16 +224,22 @@ void CameraWork::EndCamera() {
 				m_ParticleCount = 0;
 			}
 		}
-	
+
+		//カメラがシェイクする
+		shake->SetShakeStart(true);
+		shake->ShakePos(m_ShakePos.x, 14, 7, 500, 10);
+		shake->ShakePos(m_ShakePos.y, 14, 7, 500, 10);
+
 		EndCameraMove(m_AfterEndCameraSpeed, m_AfterEndCameraScale, 0.0025f);
 	}
+
 	//円運動の計算
 	m_EndCameraRadius = m_EndCameraSpeed * m_PI / 180.0f;
 	m_EndCameraCircleX = cosf(m_EndCameraRadius) * m_EndCameraScale;
 	m_EndCameraCircleZ = sinf(m_EndCameraRadius) * m_EndCameraScale;
-	m_eyePos.x = m_EndCameraCircleX;
+	m_eyePos.x = m_EndCameraCircleX + m_ShakePos.x;
 	m_eyePos.z = m_EndCameraCircleZ + 20.0f;
-	m_eyePos.y = 10.0f;
+	m_eyePos.y = 10.0f + m_ShakePos.y;
 	m_targetPos = {0.0f,8.0f,20.0f};
 
 	endparticle->ObjUpdate({ m_eyePos.x,m_eyePos.y + 2.0f,m_eyePos.z + 3.0f }, m_ParticleCount, m_TargetCount);

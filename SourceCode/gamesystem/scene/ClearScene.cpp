@@ -163,11 +163,11 @@ void ClearScene::GameDraw(DirectXCommon* dxCommon)
 }
 //ImGui•`‰æ
 void ClearScene::ImGuiDraw(DirectXCommon* dxCommon) {
-	////FPSManager::GetInstance()->ImGuiDraw();
-	ImGui::Begin("Clear");
-	ImGui::Text("Timer:%d",m_Timer);
-	ImGui::Text("PosY:%f", m_ClearPos.y);
-	ImGui::End();
+	//////FPSManager::GetInstance()->ImGuiDraw();
+	//ImGui::Begin("Clear");
+	//ImGui::Text("Timer:%d",m_Timer);
+	//ImGui::Text("PosY:%f", m_ClearPos.y);
+	//ImGui::End();
 }
 //‰ð•ú
 void ClearScene::Finalize() {

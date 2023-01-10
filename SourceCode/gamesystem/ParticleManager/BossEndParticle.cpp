@@ -55,7 +55,7 @@ void BossEndParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int 
 		for (int i = 0; i < particleobj.size(); i++) {
 			//”ò‚Î‚·•ûŒü‚ðƒ‰ƒ“ƒ_ƒ€‚ÅŒˆ‚ß‚é
 			if (!m_RockAlive[i]) {
-				m_Rockscale[i] = { 0.3f,0.3f,0.3f };
+				m_Rockscale[i] = { 0.5f,0.5f,0.5f };
 				m_RockRandPos[i].x = (float)(rand() % 6 - 3);
 				m_RockPos[i].x = StartPos.x + m_RockRandPos[i].x;
 				m_RockPos[i].y = StartPos.y;
