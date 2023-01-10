@@ -121,10 +121,8 @@ public:
 	const XMFLOAT3& GetAttackPos() { return  m_AttackPos; }
 	bool GetAlive() { return  m_Alive; }
 	int GetHP() { return  m_HP; }
-	int GetJumpCount() { return  m_JumpCount; }
 	float GetSoulCount() { return  m_SoulCount; }
 	int GetInterVal() { return  m_Interval; }
-	float GetCameraDistance() { return  m_CameraDistance; }
 	float GetAddPower() { return  m_AddPower; }
 	float GetVelosity() { return  m_Velocity; }
 	bool GetUseCompass() { return  s_UseCompass; }
@@ -260,8 +258,6 @@ private:
 	bool m_AnimationStop = false;
 	//必殺技
 	float m_Frame = 0.0f;
-	//必殺技時のカメラの距離
-	float m_CameraDistance = 0.0f;
 	//パーティクルのための変数
 	int m_ParticleNumber = 0;
 	//提出用の攻撃タイプ

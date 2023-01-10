@@ -86,9 +86,6 @@ void UI::Update(InterBoss* boss) {
 	Ease(In,Quint,0.5f,(float)BossHpSprite->GetSize().y,(float)m_AfterBossHPSize.y),
 	};
 	BossHpSprite->SetSize(m_BossHPSize);
-	//ジャンプ回数
-	m_JumpCount = player->GetJumpCount();
-
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
 		if (i >= m_HP) {
 			if (m_HPColor[i].w > 0.0f) {
@@ -113,8 +110,6 @@ void UI::Update(InterBoss* boss) {
 const void UI::Draw() {
 	
 	//プレイヤーのHP
-	
-	m_JumpCount = player->GetJumpCount();
 	IKESprite::PreDraw();
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
 		PlayerHpSprite[i]->Draw();

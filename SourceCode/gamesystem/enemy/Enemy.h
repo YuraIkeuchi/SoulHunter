@@ -6,7 +6,6 @@ class Enemy :public InterEnemy {
 public:
 	Enemy();
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	//void SetPlayerEffect(PlayerEffect* playereffect) { this->playereffect.reset(playereffect); }
 	bool Initialize() override;//‰Šú‰»
 	void Finalize() override;//ŠJ•ú
 	void Action()override;//XV

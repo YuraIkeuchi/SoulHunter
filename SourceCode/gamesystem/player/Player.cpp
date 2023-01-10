@@ -510,7 +510,6 @@ void Player::PlayerHeal() {
 
 	if (m_HealType == InterVal) {
 		m_HealCount++;
-		m_CameraDistance += 0.1f;
 		m_HealTimer++;
 		if (m_HealTimer > 100) {
 			m_SoulCount -= 6.0f;
@@ -537,7 +536,6 @@ void Player::PlayerHeal() {
 		else {
 			m_HealType = NoHeal;
 		}
-		m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 0.0f);
 	}
 	else if (m_HealType == Fail) {
 		if (m_Frame < 1.0f) {
@@ -546,9 +544,7 @@ void Player::PlayerHeal() {
 		else {
 			m_HealType = NoHeal;
 		}
-		m_CameraDistance = Ease(In, Quad, m_Frame, m_CameraDistance, 0.0f);
 	}
-
 }
 //ダメージを食らう
 void Player::PlayerDamage() {

@@ -1,28 +1,17 @@
-#include "PlayerEffect.h"
-#include"Collision.h"
+#include "PlayerDamageEffect.h"
 #include"Easing.h"
 #include"ImageManager.h"
 using namespace DirectX;
 //読み込み
-PlayerEffect::PlayerEffect() {
+PlayerDamageEffect::PlayerDamageEffect() {
 
 }
 //初期化
-void PlayerEffect::Initialize() {
-	//エフェクトの初期化
-	IKETexture* DushEffecttexture_ = IKETexture::Create(ImageManager::DushEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
-	DushEffecttexture_->TextureCreate();
-	//DushEffecttexture->SetRotation({ 90,0,0 });
-	DushEffecttexture_->SetScale(m_DushEffectscale);
-	DushEffecttexture.reset(DushEffecttexture_);
-
+void PlayerDamageEffect::Initialize() {
 	IKETexture* damagetex_[DamageEffect_Max];
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		damagetex_[i] = IKETexture::Create(ImageManager::ParticleEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		damagetex_[i]->TextureCreate();
-		//DushEffecttexture->SetRotation({ 90,0,0 });
-		//m_Scale = { 5.0f,5.0f,5.0f };
-		//damagetex_[i]->SetScale(m_Scale);
 		damagetex[i].reset(damagetex_[i]);
 		m_DamageAlive[i] = false;
 	}
@@ -34,33 +23,10 @@ void PlayerEffect::Initialize() {
 	HitEffectTexture.reset(HitEffectTexture_);
 }
 //更新
-void PlayerEffect::Update() {
+void PlayerDamageEffect::Update(const XMFLOAT3& pos, bool& Effect) {
 	//エフェクトの発生
-	//ダッシュ
-	if (m_DushAlive) {
-		m_DushEffectscale.x += 0.05f;
-		m_DushEffectscale.y += 0.05f;
-		m_DushEffectscale.z += 0.05f;
-		if (m_DushEffectscale.x >= 0.5f) {
-			//player->SetDush(false);
-			m_DushEffectscale = { 0.0f,0.0f,0.0f };
-		}
-
-		if (!player->GetDush()) {
-			m_DushAlive = false;
-		}
-	}
-	
-	//ダッシュ
-	DushEffectSet();
-	if (m_DushAlive) {
-		DushEffecttexture->Update();
-	}
-	DushEffecttexture->SetPosition(m_DushEffectpos);
-	DushEffecttexture->SetScale(m_DushEffectscale);
-
 	//ダメージ
-	DamageEffectSet();
+	DamageEffectSet(pos,Effect);
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		if (m_DamageAlive[i]) {
 			damagetex[i]->Update();
@@ -70,7 +36,7 @@ void PlayerEffect::Update() {
 	}
 
 	//ヒットエフェクト
-	SetHitEffect();
+	SetHitEffect(pos,Effect);
 	if (m_HitEffect) {
 		HitEffectTexture->Update();
 	}
@@ -79,12 +45,8 @@ void PlayerEffect::Update() {
 	HitEffectTexture->SetColor(m_HitColor);
 }
 //描画
-const void PlayerEffect::Draw() {
+const void PlayerDamageEffect::Draw() {
 	IKETexture::PreDraw(1);
-	if (m_DushAlive) {
-		DushEffecttexture->Draw();
-	}
-
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		if (m_DamageAlive[i]) {
 			damagetex[i]->Draw();
@@ -96,36 +58,21 @@ const void PlayerEffect::Draw() {
 		HitEffectTexture->Draw();
 	}
 }
-//ダッシュのエフェクト
-void PlayerEffect::DushEffectSet() {
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	bool Dush = player->GetDush();
-
-	if (!m_DushAlive && Dush) {
-		this->m_DushEffectpos.x = m_PlayerPos.x;
-		this->m_DushEffectpos.y = m_PlayerPos.y;
-		this->m_DushEffectpos.z = m_PlayerPos.z;
-		m_DushAlive = true;
-		DushEffecttexture->SetPosition(m_DushEffectpos);
-	}
-}
 
 //ダメージ食らった時のエフェクト
-void PlayerEffect::DamageEffectSet() {
-	//エフェクトの発生
-	bool playerEffect = player->GetEffect();
+void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos, bool& Effect) {
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		//エフェクトの発生
-		if (playerEffect == true && m_DamageAlive[i] == false) {
-			m_DamageEffectscale[i] = {0.3f,0.3f,0.3f};
-			damagetex[i]->SetColor({1.0f,0.9f,0.8f,1.0f});
+		if (m_DamageAlive[i] == false && Effect && !m_DeleteEffect) {
+			m_DamageEffectscale[i] = { 0.3f,0.3f,0.3f };
+			damagetex[i]->SetColor({ 1.0f,0.9f,0.8f,1.0f });
 			m_BoundPower[i].x = (float)(rand() % 10 + 5) / 10;
 			m_BoundPower[i].y = (float)(rand() % 20 - 10) / 10;
 			m_BoundPower[i].z = 0.0f;
 			if (i % 2 == 0) {
 				m_BoundPower[i].x *= -1.0f;
 			}
-			m_DamageEffectpos[i] = player->GetPosition();
+			m_DamageEffectpos[i] = pos;
 			m_DamageAlive[i] = true;
 		}
 		if (m_DamageAlive[i] == true) {
@@ -146,11 +93,11 @@ void PlayerEffect::DamageEffectSet() {
 					m_BoundPower[i].x = 0.0f;
 				}
 			}
-			
+
 			if (m_BoundPower[i].y < 0.2f) {
 				m_BoundPower[i].y += 0.025f;
 			}
-			
+
 			m_DamageEffectpos[i].x += m_BoundPower[i].x;
 			m_DamageEffectpos[i].y += m_BoundPower[i].y;
 			m_DamageEffectpos[i].z += m_BoundPower[i].z;
@@ -160,21 +107,19 @@ void PlayerEffect::DamageEffectSet() {
 			if (m_DamageEffectscale[i].x <= 0.0f) {
 				m_DamageEffectscale[i] = { 0.0f,0.0f,0.0f };
 				m_DamageAlive[i] = false;
-				m_DeleteHitEffect = false;
-				player->SetEffect(false);
+				m_DeleteEffect = false;
+				Effect = false;
 			}
 		}
 	}
 }
 //ヒットエフェクト
-void PlayerEffect::SetHitEffect() {
-	//エフェクトの発生
-	bool playerEffect = player->GetEffect();
+void PlayerDamageEffect::SetHitEffect(const XMFLOAT3& pos, bool& Effect) {
 	//エフェクト出現
-	if (m_HitEffect == false && playerEffect && !m_DeleteHitEffect) {
+	if (m_HitEffect == false && Effect && !m_DeleteHitEffect) {
 		m_HitScale = { 0.1f,0.1f,0.1f };
-		m_HitPos = player->GetPosition();
-		m_HitColor = { 2.0f,2.0f,2.0f,2.0f };
+		m_HitPos = pos;
+		m_HitColor = { 1.0f,1.0f,1.0f,1.0f };
 		m_HitEffect = true;
 	}
 

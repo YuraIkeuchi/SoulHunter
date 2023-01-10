@@ -345,7 +345,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\AttackEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDushEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\BossEffect.cpp">
@@ -407,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerDamageEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -716,7 +719,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\AttackEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDushEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\BossEffect.h">
@@ -784,6 +787,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
       <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

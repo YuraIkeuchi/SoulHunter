@@ -140,7 +140,7 @@ void CameraWork::NormalCamera() {
 		}
 	}
 	
-	m_eyePos.z = m_PlayerPos.z - (30.0f - player->GetCameraDistance());
+	m_eyePos.z = m_PlayerPos.z - (30.0f);
 	m_targetPos.z = m_PlayerPos.z;
 }
 //ƒ{ƒX“oê‚ÌƒJƒƒ‰
