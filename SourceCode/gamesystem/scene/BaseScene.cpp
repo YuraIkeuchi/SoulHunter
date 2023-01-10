@@ -111,11 +111,6 @@ void BaseScene::HelperInitialize() {
 	//ƒZ[ƒuŠÖŒW
 	save->Initialize();
 	save->SetPlayer(player);
-
-	message->SetPlayer(player);
-	message->SetPlayerSkill(playerskill);
-	message->SetPause(pause);
-	message->SetMiniMap(minimap);
 }
 //”wŒiOBJ‚Ì‰Šú‰»
 void BaseScene::BackObjInitialize() {

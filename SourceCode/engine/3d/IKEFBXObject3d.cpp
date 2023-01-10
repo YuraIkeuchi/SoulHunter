@@ -213,7 +213,6 @@ void IKEFBXObject3d::Initialize()
 
 void IKEFBXObject3d::Update(bool Loop,int Speed,bool& Stop)
 {
-	XMMATRIX matScale, matRot, matTrans;
 
 	//スケール、回転、平行移動行列の計算
 	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
@@ -275,6 +274,7 @@ void IKEFBXObject3d::Update(bool Loop,int Speed,bool& Stop)
 			}
 		}
 	}
+
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
@@ -295,8 +295,7 @@ void IKEFBXObject3d::Update(bool Loop,int Speed,bool& Stop)
 
 void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 {
-	XMMATRIX matScale, matRot, matTrans;
-
+	
 	//スケール、回転、平行移動行列の計算
 	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 	matRot = XMMatrixIdentity();
@@ -376,13 +375,7 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 	}
 
 	IKEFbxLoader::ConvertMatrixFromFbx(&WorldMat, bones[BoneNumber].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime));
-	//XMMATRIX matRot2 = XMMatrixIdentity();
-	//matRot2 *= XMMatrixRotationZ(XMConvertToRadians((float)PosNode2[0]));
-	//matRot2 *= XMMatrixRotationX(XMConvertToRadians((float)PosNode2[1]));
-	//matRot2 *= XMMatrixRotationY(XMConvertToRadians((float)PosNode2[2]));
 
-	//RotMat = matRot2;
-	//rot = hRot * matWorld;
 	WorldMat = WorldMat * matWorld;
 	constBuffSkin->Unmap(0, nullptr);
 }

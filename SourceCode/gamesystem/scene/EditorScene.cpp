@@ -14,7 +14,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	message = new Message();
 	save = new Save();
 	backobjalways = new BackObjAlways();
 	backlight = new BackLight();
@@ -226,7 +225,6 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	//たからばこ
 	chest->Draw();
-	message->Draw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
 	//ImGuiのOBJの描画
@@ -246,7 +244,6 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	mapchange->Draw();
 	pause->Draw();
 	chest->ExplainDraw();
-	message->ExplainDraw();
 	scenechange->Draw();
 	IKESprite::PostDraw();
 #pragma endregion
@@ -371,7 +368,6 @@ void EditorScene::MapInitialize() {
 			break;
 		}
 		save->InitSave(StageNumber);
-		message->InitMessage(StageNumber);
 		backobjalways->InitRock(StageNumber);
 		LoadEnemyParam(StageNumber);
 		for (int i = 0; i < tutorialtext.size(); i++) {
@@ -506,11 +502,10 @@ void EditorScene::AllUpdate() {
 	scenechange->SubBlack(0.05f);
 	mapchange->Update();
 	mapchange->SubBlack();
-	message->Update();
 	block->Update(m_PlayerPos);
 
 	//ぷれいやーの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
+	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
 		player->Editor();
 	}
 	else {
@@ -529,7 +524,7 @@ void EditorScene::AllUpdate() {
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && !message->GetExplain()) {
+			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
 				thornobj->Update();
 			}
 			else {

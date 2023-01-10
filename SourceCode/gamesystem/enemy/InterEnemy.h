@@ -12,6 +12,7 @@
 #include "HitStop.h"
 #include "VariableCommon.h"
 #include "ParticleTex.h"
+#include "CollisionPrimitive.h"
 #define DIRECTINPUT_VERSION 0x0800
 
 //敵基底
@@ -27,7 +28,6 @@ protected:
 
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	//void SetPlayerBullet(PlayerBullet* playerbullet) { this->playerbullet.reset(playerbullet); }
 	void SetHitStop(HitStop* hitstop) { this->hitstop.reset(hitstop); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 
@@ -62,12 +62,14 @@ public:
 protected:
 	//クラス
 	unique_ptr<Player> player = nullptr;
-	//unique_ptr<PlayerBullet> playerbullet = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	std::vector<BirdEnemyEffect*> birdenemyeffects;
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<HitStop> hitstop =nullptr;
+
+	OBB OBB1 = {};
+	OBB OBB2 = {};
 	//座標やスケールなど
 	//XMFLOAT3 scale = { 2.7f,2.7f,2.7f };
 	XMFLOAT3 fbxscale = { 0.03f,0.03f,0.03f };

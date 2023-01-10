@@ -18,7 +18,6 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "Message.h"
 #include "BackObjCommon.h"
 #include "BackRock.h"
 #include "BackBox.h"
@@ -35,11 +34,6 @@
 #include "Chest.h"
 #include "HitStop.h"
 #include <vector>
-//#include<fstream>
-//#include<string>
-//#include<sstream>
-//#include<ostream>
-//#include <iostream>
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -318,8 +312,6 @@ public:
 	//チュートリアルのテキスト
 	array<TutorialText*, Tutorial_Max> tutorialtext;
 	array<int, Tutorial_Max> CollideCount;
-	//手紙クラス
-	Message* message = nullptr;
 	//カメラワーククラス
 	CameraWork* camerawork = nullptr;
 	//セーブアンドロード用

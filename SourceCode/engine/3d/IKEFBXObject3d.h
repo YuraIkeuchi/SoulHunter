@@ -114,6 +114,8 @@ public:	//メンバ関数
 	void SetChangeColor(bool ChangeColor) { this->ChangeColor = ChangeColor; }
 	void SetShadeSet(bool ShadeSet) { this->ShadeSet = ShadeSet; }
 	XMMATRIX GetWorldMat() { return WorldMat; }
+	XMMATRIX GetMatrot() { return matRot; }
+	XMMATRIX GetMatScl() { return matScale; }
 	const int GetBoneNumber() { return BoneNumber; }
 
 	void SetBoneNumber(int BoneNumber) { this->BoneNumber = BoneNumber; }
@@ -168,6 +170,7 @@ public:	//定数
 	//ボーンの最大数
 	static const int MAX_BONES = 70;
 	int BoneNumber = 39;
+	int m_FBXTimer = 0;
 	//定数バッファ用データ構造体（スキニング）
 	struct ConstBufferDataSkin
 	{

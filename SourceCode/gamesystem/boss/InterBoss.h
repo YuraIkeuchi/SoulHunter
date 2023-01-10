@@ -9,6 +9,7 @@
 #include "BossName.h"
 #include "VariableCommon.h"
 #include "ObjCommon.h"
+#include "CollisionPrimitive.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 #define DIRECTINPUT_VERSION 0x0800
@@ -74,7 +75,8 @@ protected:
 	unique_ptr<BossName> bossname = nullptr;
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<Pause> pause = nullptr;
-
+	OBB OBB1 = {};
+	OBB OBB2 = {};
 	//座標や回転
 	const float PI = 3.14f;
 	XMFLOAT3 m_OldPos = { 0,0,0 };
@@ -85,7 +87,7 @@ protected:
 	//あたり範囲
 	float m_HitRadius = 0.0f;
 	//HP
-	float m_HP = 1.0f;
+	float m_HP = 20.0f;
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム
@@ -107,5 +109,8 @@ protected:
 	int m_ParticleCount = 0;//パーティクルの生成までのフレーム
 	
 	int m_HitDir;
+	//ダメージフラグ
+	bool m_Damage = false;
+	int m_DamageTimer = 0;
 };
 

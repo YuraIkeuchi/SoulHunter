@@ -38,5 +38,5 @@ private:
 	std::vector<IKEObject3d*> fogobjects;
 	std::vector<IKEObject3d*> groundobjects;
 	
-	float m_OffSet = 0.01f;
+	float m_OffSet = -0.01f;
 };
