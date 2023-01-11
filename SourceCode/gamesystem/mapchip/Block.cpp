@@ -232,15 +232,6 @@ void Block::MapCreate(int mapNumber, int StageNumber)
 				objInBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 7.5 });
 			}
 
-		/*	else {
-				objNormalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objToge[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objAirBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objLeftGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objRightGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objUpGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-				objDownGoalBlock[l_MapPosY][l_MapPosX]->SetPosition({ 1000.0f,1000.0f,1000.0f });
-			}*/
 		}
 	}
 }
@@ -591,7 +582,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 	return l_IsHit;
 }
 //攻撃の当たり判定
-bool Block::AttackMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, const XMFLOAT3& old_pos)
+bool Block::AttackMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 old_pos)
 {
 	//マップチップ
 	//X, Y

@@ -87,7 +87,7 @@ void Player::Update()
 			//ダッシュ
 			PlayerDush();
 			//攻撃(剣)
-			if (m_AttackType == Sword && !m_CollideObj) {
+			if (!m_CollideObj) {
 				PlayerAttack();
 			}
 			//HP回復
@@ -402,8 +402,6 @@ void Player::PlayerFall() {
 	//ジャンプ回数のリセット
 	if (m_AddPower == 0.0f && block->GetHitDown()) {
 		m_JumpCount = 0;
-	/*	playerwing->SetEaseStart(true);
-		playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 	}
 }
 //プレイヤーの攻撃
@@ -422,7 +420,12 @@ void Player::PlayerAttack() {
 			else if (m_Rotation.y == 270.0f) {
 				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
-			PlayerAnimetion(Attack, 2);
+			if (!m_SecondAttack) {
+				PlayerAnimetion(FirstAttack, 2);
+			}
+			else {
+				PlayerAnimetion(SecondAttack, 3);
+			}
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -434,10 +437,10 @@ void Player::PlayerAttack() {
 	}	
 	//攻撃のインターバル
 	if (m_Attack) {
-		if (m_AttackTimer <= 10) {
+		if (m_AttackTimer <= 25) {
 			m_SwordParticleNum = 1;
 		}
-		else if(m_AttackTimer >= 15 && m_AttackTimer <= 20) {
+		else if(m_AttackTimer >= 25 && m_AttackTimer <= 35) {
 			m_SwordParticleNum = 7;
 		}
 		else {
@@ -447,13 +450,13 @@ void Player::PlayerAttack() {
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 6) {
 			m_AttackArgment = true;
-			//攻撃時壁にあたった場合壁からパーティクルを出す
-			if (block->AttackMapCollideCommon(m_AttackPos, { 1.6f,0.8f }, m_AttackPos)) {
-				m_WallArgment = true;
-			}
 		}
 		m_AttackTimer++;
 		
+		//攻撃時壁にあたった場合壁からパーティクルを出す
+		if (block->AttackMapCollideCommon({m_AttackPos.x,m_SwordPos.y,m_AttackPos.z}, { 1.8f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }) && m_AttackTimer == 30) {
+			m_WallArgment = true;
+		}
 		//一定フレームで攻撃終了
 		if (m_AttackTimer >= 40) {
 			m_AttackTimer = 0;
@@ -464,6 +467,15 @@ void Player::PlayerAttack() {
 			m_SwordAfterAlpha = 0.0f;
 			m_SwordParticleCount = 0;
 			m_SwordScale = { 0.0f,0.0f,0.0f };
+			//攻撃一回目だったら2回目のフラグが立つ
+			if (!m_SecondAttack) {
+				m_SecondAttack = true;
+				m_SecondTimer = 0;
+			}
+			else {
+				m_SecondAttack = false;
+				m_SecondTimer = 0;
+			}
 		}
 
 		//攻撃が地面で行われた場合砂煙が発生する
@@ -476,6 +488,17 @@ void Player::PlayerAttack() {
 			};
 		}
 	}
+
+
+	//一定フレーム以内だったら2段階目の攻撃が出る
+	if (m_SecondAttack) {
+		m_SecondTimer++;
+		if (m_SecondTimer >= 20) {
+			m_SecondAttack = false;
+			m_SecondTimer = 0;
+		}
+	}
+
 }
 //攻撃判定を取るか
 bool Player::CheckAttack() {
@@ -796,13 +819,8 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("SwordPosX:%f", m_SwordPos.x);
-	ImGui::Text("SwordPosY:%f", m_SwordPos.y);
-	ImGui::Text("SwordPosZ:%f", m_SwordPos.z);
-	ImGui::Text("SwordScaleX:%f", m_SwordScale.x);
-	ImGui::Text("SwordScaleY:%f", m_SwordScale.y);
-	ImGui::Text("SwordScaleZ:%f", m_SwordScale.z);
-	ImGui::Text("Timer:%d", m_AttackTimer);
+	ImGui::Text("SecondTimer:%d", m_SecondTimer);
+	ImGui::Text("SecondAttack:%d", m_SecondAttack);
 	ImGui::End();
 
 	//エフェクトの描画
@@ -974,9 +992,6 @@ void Player::BirthParticle() {
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
 			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0.0f;
@@ -1102,9 +1117,7 @@ void Player::BossAppUpdate(int Timer) {
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
 void Player::BossAppDraw(DirectXCommon* dxCommon) {
-	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
 }
 //ボス終了シーンの更新
 void Player::BossEndUpdate(int Timer) {
@@ -1117,9 +1130,7 @@ void Player::BossEndUpdate(int Timer) {
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
 void Player::BossEndDraw(DirectXCommon* dxCommon) {
-	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
 }
 //クリアシーンの更新
 void Player::ClearUpdate(int Timer) {
@@ -1129,11 +1140,6 @@ void Player::ClearUpdate(int Timer) {
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	m_Position.z += 0.3f;
-	////一定時間立ったら前にすすむ
-	//if (Timer >= 100) {
-	//	
-	//}
-
 	m_AnimationTimer.MoveAnimation++;
 
 	if (m_AnimationTimer.MoveAnimation == 1) {

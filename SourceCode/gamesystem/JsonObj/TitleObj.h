@@ -27,6 +27,7 @@ public:
 
 public:
 	//gettersetter
+	const bool& GetStopParticle() { return m_StopParticle; }
 	void SetStopParticle(bool m_StopParticle) { this->m_StopParticle = m_StopParticle; }
 
 private:

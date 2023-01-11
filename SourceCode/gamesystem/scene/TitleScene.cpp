@@ -80,9 +80,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 
 	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
 		titleobj->SetStopParticle(true);
-		m_LightPos = { 0.0f,-20.0f,5.0f };
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
-		//expandchange->SetStartChange(true);
 		scenechange->SetAddStartChange(true);
 		if (m_TitleSelect == NewGame) {
 			m_GameLoad = false;
@@ -90,6 +88,13 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		else {
 			m_GameLoad = true;
 		}
+	}
+
+	//ƒ‰ƒCƒg‚ð™X‚É¬‚³‚­‚·‚é
+	if (titleobj->GetStopParticle() && pointLightAtten[0] <= 1.0f) {
+		pointLightAtten[0] += 0.0001f;
+		pointLightAtten[1] += 0.0001f;
+		pointLightAtten[2] += 0.0001f;
 	}
 
 	if (scenechange->AddBlack(0.01f)) {
@@ -125,30 +130,21 @@ void TitleScene::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-
 		//ImGuiDraw(dxCommon);
 		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		//ImGuiDraw(dxCommon);
 		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
