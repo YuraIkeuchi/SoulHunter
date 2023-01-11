@@ -73,7 +73,11 @@ void FirstBoss::Spec() {
 		}
 		else if (m_Action == 2) {
 			//炎の攻撃
-			FireAttack();
+			//FireAttack();
+		}
+		else if (m_Action == 3) {
+			//必殺アタック
+			SpecialAttack();
 		}
 	}
 	FireBallArgment();
@@ -334,7 +338,6 @@ void FirstBoss::BesideAttack() {
 		m_Frame = m_FrameMin;
 		m_Pat = 0;
 	}
-//
 }
 //突き刺してくる攻撃
 void FirstBoss::StabbingAttack() {
@@ -505,7 +508,7 @@ void FirstBoss::FireAttack() {
 			m_AfterRot = { 20.0f,270.0f,0.0f };
 		}
 		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.01f;
+			m_Frame += 0.05f;
 		}
 		else {
 			m_Frame = m_FrameMin;
@@ -552,6 +555,78 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
 m_Rotation.z,
 	};
+}
+//必殺アタック
+void FirstBoss::SpecialAttack() {
+	//アニメーションのためのやつ
+	m_AnimeLoop = true;
+	m_Number = 1;
+	m_AnimeSpeed = 1;
+	m_fbxObject->PlayAnimation(m_Number);
+	//攻撃の動き
+	if (m_Pat == 1) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,30.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 2) {
+		m_TargetCoolT = 50;
+		if (m_CoolT == 45) {
+			XMFLOAT3 position{};
+			position.x = (player->GetPosition().x - m_Position.x);
+			position.y = (player->GetPosition().y - m_Position.y);
+		}
+
+		if (m_CoolT == 49) {
+			double sb, sbx, sby;
+			sbx = player->GetPosition().x - m_Position.x;
+			sby = player->GetPosition().y - m_Position.y;
+			sb = sqrt(sbx * sbx + sby * sby);
+			speedX = sbx / sb * 2.0f;
+			speedY = sby / sb * 2.0f;
+		}
+		m_AfterPos = { 205.0f,-140.0f,30.0f };
+		m_AfterRot = { 45.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 3) {
+		//プレイヤーにスピード加算
+		m_Position.x += (float)speedX;
+		m_Position.y += (float)speedY;
+		m_Position.z -= 2.0f;
+		m_Rotation.z += 15.0f;
+
+		if (m_Position.z <= -60.0f) {
+			m_Frame = 0.0f;
+			m_Pat++;
+		}
+	}
+	else if (m_Pat == 4) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,-60.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 5) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 6) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else {
+		m_Angle = 280.0f;
+		m_Active = false;
+		m_AttackCount = 0;
+		m_Frame = m_FrameMin;
+		m_Pat = 0;
+	}
 }
 //エフェクト生成
 void FirstBoss::FireBallArgment() {

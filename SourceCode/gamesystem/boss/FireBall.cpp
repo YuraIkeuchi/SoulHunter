@@ -12,7 +12,7 @@ FireBall::FireBall() {
 }
 //‰Šú‰»
 bool FireBall::Initialize() {
-	m_Scale = { 0.3f, 0.3f, 0.3f };
+	m_Scale = { 0.4f, 0.4f, 0.4f };
 	m_Color = { 1.0f,0.5f,0.0f,1.0f };
 	ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
