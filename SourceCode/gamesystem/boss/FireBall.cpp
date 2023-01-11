@@ -51,11 +51,10 @@ void FireBall::Pause() {
 //•`‰æ
 void FireBall::Draw(DirectXCommon* dxCommon) {
 	IKETexture::PreDraw(1);
+	//ImGui::Begin("Ball");
+	//ImGui::Text("m_Alive:%d", m_Alive);
+	//ImGui::End();
 	if (m_Alive) {
-	/*ImGui::Begin("Ball");
-	ImGui::Text("m_Alive:%d", m_Alive);
-	ImGui::End();*/
-		//Obj_Draw();
 	firetex->Draw();
 	}
 	particletex->Draw();

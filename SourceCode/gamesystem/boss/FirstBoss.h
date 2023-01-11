@@ -19,6 +19,7 @@ public:
 	void StabbingAttack();//突き刺してくる攻撃
 	void FireAttack();//炎の攻撃
 	void SpecialAttack();//必殺アタック
+	void StateManager();//HPに応じたステータス
 	void FrameMove(XMFLOAT3 AfterPos, XMFLOAT3 AfterRot, float addframe,int TargetTimer);
 	void FireBallArgment();//炎の弾の発生
 	void AppBossMove(XMFLOAT3 AfterPos, float AddFrame);//ボス登場シーンのイージング関数(座標)

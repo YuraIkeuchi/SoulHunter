@@ -4,8 +4,8 @@
 //更新
 void InterBoss::Update() {
 	//当たり判定
-	//collidePlayer();
-	//collideBoss();
+	collidePlayer();
+	collideBoss();
 	BirthParticle();
 	//ボスの行動
 	if (!pause->GetIsPause()) {
@@ -58,9 +58,9 @@ void InterBoss::Update() {
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Boss");
+	/*ImGui::Begin("Boss");
 	ImGui::Text("HP : %f", m_HP);
-	ImGui::End();
+	ImGui::End();*/
 	//ボスの描画
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
@@ -82,10 +82,10 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //プレイヤーがダメージを食らう
 bool InterBoss::collidePlayer() {
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	XMFLOAT3 l_PlayerPos = player->GetPosition();
 	int playerhp = player->GetHP();
-	int Interval = player->GetInterVal();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y,m_HitRadius, m_PlayerPos.x, m_PlayerPos.y, m_HitRadius) && Interval == 0 && m_HP > 0) {
+	int l_Interval = player->GetInterVal();
+	if (Collision::SphereCollision(m_Position.x, m_Position.y,m_Position.z,m_HitRadius, l_PlayerPos.x, l_PlayerPos.y,l_PlayerPos.z, m_HitRadius) && l_Interval == 0 && m_HP > 0) {
 		player->PlayerHit(m_Position);
 		return true;
 	}
@@ -97,7 +97,7 @@ bool InterBoss::collidePlayer() {
 //ボスがダメージ食らう(通常攻撃)
 bool InterBoss::collideBoss() {
 	OBB1.SetParam_Pos(m_Position);
-	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Scl(m_OBBScale);
 	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
 	OBB2.SetParam_Pos(player->GetSwordPosition());
 	OBB2.SetParam_Scl(player->GetSwordScale());
@@ -107,7 +107,7 @@ bool InterBoss::collideBoss() {
 	if (player->GetRotation().y == 90.0f) {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 50;
+			m_DamageTimer = 20;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;
@@ -120,7 +120,7 @@ bool InterBoss::collideBoss() {
 	else {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 50;
+			m_DamageTimer = 20;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;

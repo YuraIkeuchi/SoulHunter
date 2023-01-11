@@ -524,7 +524,7 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive)) {
+	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive) && (s_UseDush)) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_DushArgment = true;
 			m_SoulCount -= 2.0f;
@@ -825,14 +825,14 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
+	/*ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::Text("PosZ:%f", m_Position.z);
 	ImGui::Text("m_AnimationType:%d", m_AnimationType);
-	ImGui::End();
+	ImGui::End();*/
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {

@@ -85,16 +85,17 @@ protected:
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_TargetPos = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_OBBScale = { 0.0f,0.0f,0.0f };
 	//あたり範囲
 	float m_HitRadius = 0.0f;
 	//HP
-	float m_HP = 1.0f;
+	float m_HP = 20.0f;
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム
 	float m_RotFrame = 0.0f;//フレーム
 	bool m_Active = false;//行動開始
-	int m_Action = 3;//攻撃の種類
+	int m_Action = 0;//攻撃の種類
 	int m_Pat = 0;//パターン
 	int m_Aiming = 0;//敵追従
 	int m_CoolT = 0;//クールタイム

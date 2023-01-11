@@ -68,7 +68,7 @@ void ParticleTex::Draw() {
 }
 //IMGuiの描画
 void ParticleTex::ImGuiDraw() {
-	ImGui::Begin("particle");
+	/*ImGui::Begin("particle");
 	ImGui::SetWindowPos(ImVec2(0, 500));
 	ImGui::SetWindowSize(ImVec2(280, 240));
 	for (int i = 0; i < particletex.size(); i++) {
@@ -76,7 +76,7 @@ void ParticleTex::ImGuiDraw() {
 		ImGui::Text("m_PosY[%d]:%f", i,m_pos[i].y);
 		ImGui::Text("m_PosZ[%d]:%f", i,m_pos[i].z);
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 //普通のパーティクル
 void ParticleTex::NormalParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
