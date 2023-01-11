@@ -1,10 +1,12 @@
 #include "InterBoss.h"
 #include"Collision.h"
+#include "ParticleManager.h"
 //更新
 void InterBoss::Update() {
 	//当たり判定
-	collidePlayer();
-	collideBoss();
+	//collidePlayer();
+	//collideBoss();
+	BirthParticle();
 	//ボスの行動
 	if (!pause->GetIsPause()) {
 		if (!m_Movie) {
@@ -168,4 +170,23 @@ void InterBoss::EndDraw(DirectXCommon* dxCommon) {
 	}
 	//ボスごとのオブジェクトの描画
 	specialDrawEnd();
+}
+//パーティクルが出てくる
+void InterBoss::BirthParticle() {
+	//m_PlayerPos = player->GetPosition();
+	if (m_FoodParticleCount >= 5 && m_Alive) {
+
+		for (int i = 0; i < m_ParticleNum; ++i) {
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = m_Position.z;
+			//const float rnd_sca = 0.1f;
+			//float sca{};
+			//sca = (float)rand() / RAND_MAX*rnd_sca;
+			ParticleManager::GetInstance()->Add(30, { m_ParticlePos.x + vel.x,(m_ParticlePos.y - 1.0f) + vel.y,m_ParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+		}
+		m_FoodParticleCount = 0;
+	}
 }

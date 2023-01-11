@@ -265,11 +265,7 @@ private:
 	bool m_CollideChest = false;
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
-	//アニメーション関係
-	int m_AnimationType = 0;
-	bool m_AnimeLoop = false;
-	int m_AnimeSpeed = 1;
-	bool m_AnimationStop = false;
+
 	//必殺技
 	float m_Frame = 0.0f;
 	//パーティクルのための変数

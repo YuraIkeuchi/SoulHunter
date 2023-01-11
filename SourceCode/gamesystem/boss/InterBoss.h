@@ -63,7 +63,8 @@ public:
 	virtual void specialDraw(DirectXCommon* dxCommon) = 0;//ボス特有の描画
 	virtual void specialDrawApp() = 0;//ボス特有の描画
 	virtual void specialDrawEnd() = 0;//ボス特有の描画
-
+	//パーティクル
+	void BirthParticle();
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
 	void ArgEffect();//エフェクトの生成
@@ -97,6 +98,7 @@ protected:
 	int m_Pat = 0;//パターン
 	int m_Aiming = 0;//敵追従
 	int m_CoolT = 0;//クールタイム
+	int m_TargetCoolT = 0;
 	int m_AttackCount = 0;//攻撃までの間
 	int m_MoveCount = 0;//何回行動したか
 	bool m_Alive = false;//生きてますか
@@ -112,5 +114,10 @@ protected:
 	//ダメージフラグ
 	bool m_Damage = false;
 	int m_DamageTimer = 0;
+
+	//パーティクル関係
+	int m_FoodParticleCount = 0;
+	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	int m_ParticleNum = 5;
 };
 

@@ -10,7 +10,7 @@ void ResPornEnemy::Initialize() {
 void  ResPornEnemy::Update(InterBoss* boss) {
 	//一定の時間立つと敵が出現する(パーティクルも出現する)
 	if (boss->GetHP() > 0) {
-		m_ResPornTimer++;
+		//m_ResPornTimer++;
 	}
 
 	//ここで出現

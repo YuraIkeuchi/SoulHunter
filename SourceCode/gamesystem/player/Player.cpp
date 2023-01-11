@@ -436,36 +436,38 @@ void Player::PlayerAttack() {
 	if (m_Attack) {
 		m_AttackTimer++;
 
-		if (m_AttackTimer <= 25) {
+		if (m_AttackTimer <= 20) {
 			m_SwordParticleNum = 1;
 		}
-		else if(m_AttackTimer >= 25 && m_AttackTimer <= 35) {
+		else if(m_AttackTimer >= 21 && m_AttackTimer <= 30) {
 			m_SwordParticleNum = 7;
 		}
 		else {
 			m_SwordParticleNum = 0;
 		}
 		m_SwordParticleCount = 1;
+
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 20) {
 			//攻撃範囲の設定
 			//攻撃の向き
 			//右向き
 			if (m_Rotation.y == 90.0f) {
-				m_AttackPos = { m_Position.x + 2.0f,m_Position.y,m_Position.z };
+				m_AttackPos = { m_Position.x + 4.0f,m_Position.y,m_Position.z };
 			}
 			//左向き
 			else if (m_Rotation.y == 270.0f) {
-				m_AttackPos = { m_Position.x - 2.0f,m_Position.y,m_Position.z };
+				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
 			}
 
 			//攻撃時壁にあたった場合壁からパーティクルを出す
-			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 2.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }) && m_AttackTimer == 30) {
+			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 5.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z })) {
 				m_WallArgment = true;
 			}
 		}
+
 		//一定フレームで攻撃終了
-		if (m_AttackTimer >= 40) {
+		if (m_AttackTimer >= 30) {
 			m_SecondTimer = 0;
 			m_AttackTimer = 0;
 			m_Attack = false;
@@ -501,7 +503,7 @@ void Player::PlayerAttack() {
 bool Player::CheckAttack() {
 	//攻撃モーションによって判定取るフレームが違う
 	if (m_AttackCount == 1) {
-		if ((m_Attack) && (m_AttackTimer >= 18 && m_AttackTimer <= 32)) {
+		if ((m_Attack) && (m_AttackTimer >= 18 && m_AttackTimer <= 30)) {
 			return true;
 		}
 		else {
@@ -509,7 +511,7 @@ bool Player::CheckAttack() {
 		}
 	}
 	else{
-		if ((m_Attack) && (m_AttackTimer >= 25 && m_AttackTimer <= 34)) {
+		if ((m_Attack) && (m_AttackTimer >= 22 && m_AttackTimer <= 30)) {
 			return true;
 		}
 		else {
@@ -826,6 +828,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosZ:%f", m_Position.z);
 	ImGui::Text("m_AnimationType:%d", m_AnimationType);
 	ImGui::End();
 

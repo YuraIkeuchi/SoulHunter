@@ -36,9 +36,9 @@ void WallAttackEffect::Update(const XMFLOAT3& pos,int HitDir) {
 }
 //•`‰æ
 void WallAttackEffect::Draw() {
-	/*ImGui::Begin("Walll");
+	ImGui::Begin("Walll");
 	ImGui::Text("Alive:%f", m_Scale[0].x);
-	ImGui::End();*/
+	ImGui::End();
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {
