@@ -48,18 +48,17 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 	Move();
 	//°‚ªÁ‚¦‚é
 	VanishSoul(enemy);
-
+	soultex->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	soultex->SetPosition(m_Pos);
+	soultex->SetScale(m_Scale);
+	soultex->SetColor(m_Color);
+	particlesoul->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
+	particlesoul->SetParticleBreak(true);
+	particlesoul->Update({ m_Pos.x,m_Pos.y - 0.5f,m_Pos.z }, m_ParticleCount, 10, 0);
 	if (UpdateCollide()) {
 		if (m_Effect) {
 			soultex->Update();
 		}
-		soultex->SetColor({ 1.0f,1.0f,1.0f,1.0f });
-		soultex->SetPosition(m_Pos);
-		soultex->SetScale(m_Scale);
-		soultex->SetColor(m_Color);
-		particlesoul->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
-		particlesoul->SetParticleBreak(true);
-		particlesoul->Update({ m_Pos.x,m_Pos.y - 0.5f,m_Pos.z }, m_ParticleCount, 10, 0);
 	}
 	else {
 		m_ParticleCount = 0;

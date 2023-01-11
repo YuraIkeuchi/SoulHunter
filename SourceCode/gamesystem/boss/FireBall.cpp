@@ -12,7 +12,7 @@ FireBall::FireBall() {
 }
 //‰Šú‰»
 bool FireBall::Initialize() {
-	m_Scale = { 0.3f, 0.3f, 0.3f };
+	m_Scale = { 0.4f, 0.4f, 0.4f };
 	m_Color = { 1.0f,0.5f,0.0f,1.0f };
 	ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
@@ -28,7 +28,7 @@ void FireBall::Update() {
 		firetex->Update();
 		//Obj_SetParam();
 	}
-	if (m_Position.x <= -140.0f || m_Position.x >= 250.0f) {
+	if ((m_Position.x <= -140.0f || m_Position.x >= 250.0f) || (m_Position.y <= -155.0f || m_Position.y >= -100.0f)) {
 		m_Alive = false;
 	}
 	firetex->SetColor({ 1.0f,0.5f,0.0f,1.0f });
@@ -51,11 +51,10 @@ void FireBall::Pause() {
 //•`‰æ
 void FireBall::Draw(DirectXCommon* dxCommon) {
 	IKETexture::PreDraw(1);
+	//ImGui::Begin("Ball");
+	//ImGui::Text("m_Alive:%d", m_Alive);
+	//ImGui::End();
 	if (m_Alive) {
-	/*ImGui::Begin("Ball");
-	ImGui::Text("m_Alive:%d", m_Alive);
-	ImGui::End();*/
-		//Obj_Draw();
 	firetex->Draw();
 	}
 	particletex->Draw();
@@ -69,6 +68,7 @@ void FireBall::Shot() {
 			m_ParticleCount = 0;
 		}
 		m_Position.x += m_AddSpeed;
+		m_Position.y += m_AddPowerY;
 	}
 	else {
 		m_ParticleCount = 0;

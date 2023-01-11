@@ -18,6 +18,9 @@ public:
 	void BesideAttack();//横移動
 	void StabbingAttack();//突き刺してくる攻撃
 	void FireAttack();//炎の攻撃
+	void SpecialAttack();//必殺アタック
+	void StateManager();//HPに応じたステータス
+	void FrameMove(XMFLOAT3 AfterPos, XMFLOAT3 AfterRot, float addframe,int TargetTimer);
 	void FireBallArgment();//炎の弾の発生
 	void AppBossMove(XMFLOAT3 AfterPos, float AddFrame);//ボス登場シーンのイージング関数(座標)
 	void AppBossRot(XMFLOAT3 AfterRot, float AddFrame);//ボス登場シーンのイージング関数(回転)
@@ -62,4 +65,12 @@ private:
 		ShotFire,
 		EndFire,
 	};
+
+	//炎の攻撃の変数
+	int m_FireTimer = 0;
+	int m_FireCount = 0;
+	float m_AddPowerY = -0.5f;
+	//必殺技の変数
+	double speedX = 0.0f;
+	double speedY = 0.0f;
 };

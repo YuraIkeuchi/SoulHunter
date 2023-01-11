@@ -64,6 +64,11 @@ protected:
 	XMFLOAT3 m_Scale;
 	XMFLOAT4 m_Color;
 	XMFLOAT4 m_Addcolor = { 0.0f,0.0f,0.0f,1.0f };
+	//アニメーション関係
+	int m_AnimationType = 0;
+	bool m_AnimeLoop = false;
+	int m_AnimeSpeed = 1;
+	bool m_AnimationStop = false;
 	bool m_ChangeColor = false;
 	float m_AddDisolve = 0.0f;
 };

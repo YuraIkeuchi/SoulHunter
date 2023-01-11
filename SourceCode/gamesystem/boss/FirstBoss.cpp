@@ -35,18 +35,19 @@ bool FirstBoss::Initialize() {
 	m_Position = { 205.0f, -145.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
-	m_HitRadius = 2.0f;
+	m_HitRadius = 1.8f;;
 
 	return true;
 }
 //バトル開始時の初期化
 bool FirstBoss::BattleInitialize() {
 	assert(player);
-	m_Position = { 205.0f, -152.0f,0.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Position = { 205.0f, -154.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
-	m_HitRadius = 3.0f;
+	m_OBBScale = { 0.1f,0.1f,0.1f };
+	m_HitRadius = 1.8f;;
 
 	return true;
 }
@@ -60,32 +61,38 @@ void FirstBoss::Spec() {
 		}
 		//攻撃していない
 		NotAttack();
+		m_HitRadius = 1.8f;;
 	}
 	else {
 		//行動開始
 		if (m_Action == 0) {
 			//横移動
-			BesideAttack();
-			
+			BesideAttack();	
+			m_HitRadius = 1.8f;;
 		}
 		else if (m_Action == 1) {
 			//突き刺してくる攻撃
 			StabbingAttack();
+			m_HitRadius = 1.8f;;
 		}
 		else if (m_Action == 2) {
 			//炎の攻撃
 			FireAttack();
+			m_HitRadius = 1.8f;;
+		}
+		else if (m_Action == 3) {
+			//必殺アタック
+			SpecialAttack();
 		}
 	}
 	FireBallArgment();
 	DrawOutArea();
-
 	//生きてる時しか更新しない
 	if (m_Alive) {
 		//エフェクト関係
 		for (FireBall* fireball : fireballs) {
 			if (fireball != nullptr) {
-				if (fireball->Collide(player->GetPosition())) {
+				if (fireball->Collide(player->GetPosition()) && player->GetInterVal() == 0) {
 					player->PlayerHit(m_Position);
 				}
 				fireball->Update();
@@ -98,11 +105,17 @@ void FirstBoss::Spec() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Boss");
-	ImGui::Text("m_AttackCount:%d", m_AttackCount);
-	ImGui::Text("m_Cool:%d", m_CoolT);
-	ImGui::Text("m_Active:%d", m_Active);
-	ImGui::End();*/
+	//ImGui::Begin("Boss");
+	///*ImGui::SliderFloat("PosX", &m_Position.x, 150, 250);
+	//ImGui::SliderFloat("PosY", &m_Position.y, -90, -150);
+	//ImGui::SliderFloat("PosZ", &m_Position.z, 30, -30);
+	//ImGui::SliderFloat("RotX", &m_Rotation.x, 360, -360);
+	//ImGui::SliderFloat("RotY", &m_Rotation.y, 360, -360);
+	//ImGui::SliderFloat("RotZ", &m_Rotation.z, 360, -360);*/
+	//ImGui::Text("HP:%f", m_HP);
+	//ImGui::Text("m_Action:%d", m_Action);
+	//ImGui::Text("m_AttackCount:%d", m_AttackCount);
+	//ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
@@ -116,27 +129,10 @@ void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
 }
 //各ボス特有の描画
 void FirstBoss::specialDrawApp() {
-	//ImGui::Begin("Boss");
-	//ImGui::Text("Timer:%d", m_AppTimer);
-	//ImGui::Text("PosX:%f", m_Position.x);
-	//ImGui::Text("PosY:%f", m_Position.y);
-	//ImGui::Text("PosZ:%f", m_Position.z);
-	//ImGui::Text("RotX:%f", m_Rotation.x);
-	//ImGui::Text("RotY:%f", m_Rotation.y);
-	//ImGui::Text("RotZ:%f", m_Rotation.z);
-	//ImGui::End();
+
 }
 //各ボス特有の描画
 void FirstBoss::specialDrawEnd() {
-	//ImGui::Begin("Boss");
-	//ImGui::Text("Timer:%d", m_AppTimer);
-	//ImGui::Text("PosX:%f", m_Position.x);
-	//ImGui::Text("PosY:%f", m_Position.y);
-	//ImGui::Text("PosZ:%f", m_Position.z);
-	//ImGui::Text("RotX:%f", m_Rotation.x);
-	//ImGui::Text("RotY:%f", m_Rotation.y);
-	//ImGui::Text("RotZ:%f", m_Rotation.z);
-	//ImGui::End();
 
 }
 //登場ムービー
@@ -261,25 +257,19 @@ void FirstBoss::DrawOutArea() {
 }
 //攻撃していない
 void FirstBoss::NotAttack() {
-	if (m_AttackCount > 250) {
+	if (m_AttackCount > 350) {
 		m_RandFire = rand() % 3;
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
+		m_Action = (rand() % 4);
 		m_Active = true;
 	}
 	else {
 		//sin波によって上下に動く
 		m_Angle += 1.0f;
 		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-152.0f);
-		//攻撃間のインターバル
-		if (m_HP >= 20.0f) {
-			m_AttackCount++;
-		}
-		else {
-			m_AttackCount += 1;
-		}
-
+		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-154.0f);
+		StateManager();
 		if (m_AttackCount == 5) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
@@ -296,34 +286,52 @@ void FirstBoss::BesideAttack() {
 	m_Number = 1;
 	m_AnimeSpeed = 1;
 	m_fbxObject->PlayAnimation(m_Number);
-	if (m_Frame < m_FrameMax) {
-		m_Frame += 0.01f;
-	}
-	else {
-		m_Frame = m_FrameMin;
-		m_Pat++;
-	}
-
+	m_ParticlePos = m_Position;
+	//攻撃の動き
 	if (m_Pat == 1) {
-		m_AfterPos.x = 159.0f;
-		m_AfterPos.y = -152.0f;
-		m_AfterRot = { 45.0f,270.0f,0.0f };
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 2) {
-		m_AfterPos.x = 203.0f;
-		m_AfterRot = { 0.0f,180.0f,0.0f };
+		m_TargetCoolT = 1;
+		m_AfterPos = { 250.0f,-105.0f,0.0f };
+		m_AfterRot = { 0.0f,270.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 3) {
-		m_AfterPos.x = 248.0f;
-		m_AfterRot = { 45.0f,90.0f,0.0f };
+		m_TargetCoolT = 100;
+		m_AfterPos = { 250.0f,-150.0f,0.0f };
+		m_AfterRot = { 45.0f,270.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
-		m_AfterPos.x = 203.0f;
-		m_AfterRot = { 0.0f,270.0f,0.0f };
+		m_TargetCoolT = 100;
+		m_FoodParticleCount += 3;
+		m_AfterPos = { 159.0f,-154.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,720.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
-	/*else if (m_Pat == 5) {
+	else if (m_Pat == 5) {
+		m_TargetCoolT = 1;
+		m_FoodParticleCount = 0;
+		m_AfterPos = { 159.0f,-96.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,720.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 6) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-96.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-	}*/
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 7) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
 	else {
 		m_Angle = 280.0f;
 		m_Active = false;
@@ -331,27 +339,18 @@ void FirstBoss::BesideAttack() {
 		m_Frame = m_FrameMin;
 		m_Pat = 0;
 	}
-//
-	m_Position = {
-Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-m_Position.z,
-	};
-	m_Rotation = {
-		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-m_Rotation.z,
-	};
 }
 //突き刺してくる攻撃
 void FirstBoss::StabbingAttack() {
-	if (m_MoveCount < 4) {
+	m_ParticlePos = m_Position;
+	if (m_MoveCount < 1) {
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		switch (m_Pat) {
+		//上に飛ぶ
 		case 1:	//アニメーションのためのやつ
 			m_AfterPos = {
 			m_Position.x,
-			-120.0f,
+			-110.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -366,6 +365,7 @@ void FirstBoss::StabbingAttack() {
 				m_OutPos = { m_TargetPos.x,m_Position.y,m_Position.z + 5 };
 				break;
 			}
+		//場所移動
 		case 2:
 			m_AfterPos = {
 			m_TargetPos.x,
@@ -383,10 +383,11 @@ void FirstBoss::StabbingAttack() {
 				m_Pat++;
 				break;
 			}
+		//落下
 		case 3:
 			m_AfterPos = {
 			m_Position.x,
-			-152.0f,
+			-154.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -397,6 +398,9 @@ void FirstBoss::StabbingAttack() {
 				m_Frame = m_FrameMax;
 				if (m_CoolT < 90) {
 					m_CoolT++;
+					if (m_CoolT <= 10) {
+						m_FoodParticleCount += 2;
+					}
 				}
 				else {
 					m_CoolT = 0;
@@ -413,11 +417,22 @@ void FirstBoss::StabbingAttack() {
 			
 		case 1:
 			m_AfterPos = {
-			223.0f,
-			-152.0f,
+			205.0f,
+			-154.0f,
 			m_Position.z
 			};
 			m_AfterRot = { 0.0f,270.0f,0.0f };
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.01f;
+				break;
+			}
+			else {
+				m_Pat++;
+				m_Frame = m_FrameMin;
+				break;
+			}
+		case 2:
+			m_AfterRot = { 0.0f,180.0f,0.0f };
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.01f;
 				break;
@@ -443,7 +458,7 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	m_Rotation = {
 		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
 Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-m_Rotation.z,
+Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 	};
 }
 //炎の攻撃
@@ -471,11 +486,11 @@ void FirstBoss::FireAttack() {
 	}
 	else if (m_FireState == Set1) {
 		if (m_RandFire == 0) {
-			m_AfterPos = { 159.0f,-152.0f,0.0f };
+			m_AfterPos = { 159.0f,-140.0f,0.0f };
 			m_AfterRot = { -20.0f,90.0f,0.0f };
 		}
 		else {
-			m_AfterPos = { 248.0f,-152.0f,0.0f };
+			m_AfterPos = { 248.0f,-140.0f,0.0f };
 			m_AfterRot = { -20.0f,270.0f,0.0f };
 		}
 		if (m_Frame < m_FrameMax) {
@@ -494,29 +509,29 @@ void FirstBoss::FireAttack() {
 			m_AfterRot = { 20.0f,270.0f,0.0f };
 		}
 		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.01f;
+			m_Frame += 0.05f;
 		}
 		else {
-			m_FireBallArgment = true;
 			m_Frame = m_FrameMin;
 			m_FireState = ShotFire;
 		}
 	}
 	else if (m_FireState == ShotFire) {
 		m_CoolT++;
+		if (m_CoolT % 15 == 0) {
+			m_AddPowerY += 0.2f;
+			m_FireBallArgment = true;
+		}
 		if (m_CoolT > 100) {
+			m_AddPowerY = -0.5f;
 			m_CoolT = 0;
 			m_Frame = m_FrameMin;
 			m_FireState = EndFire;
 		}
 	}
 	else {
-		m_AfterPos = {
-			223.0f,
-			-152.0f,
-			m_Position.z
-		};
-		m_AfterRot = { 0.0f,270.0f,0.0f };
+		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
 		}
@@ -536,8 +551,82 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	m_Rotation = {
 		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
 Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-m_Rotation.z,
+Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 	};
+}
+//必殺アタック
+void FirstBoss::SpecialAttack() {
+	//アニメーションのためのやつ
+	m_AnimeLoop = true;
+	m_Number = 1;
+	m_AnimeSpeed = 1;
+	m_fbxObject->PlayAnimation(m_Number);
+	//攻撃の動き
+	if (m_Pat == 1) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,30.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 2) {
+		m_TargetCoolT = 50;
+		if (m_CoolT == 45) {
+			XMFLOAT3 position{};
+			position.x = (player->GetPosition().x - m_Position.x);
+			position.y = (player->GetPosition().y - m_Position.y);
+		}
+
+		if (m_CoolT == 49) {
+			double sb, sbx, sby;
+			sbx = player->GetPosition().x - m_Position.x;
+			sby = player->GetPosition().y - m_Position.y;
+			sb = sqrt(sbx * sbx + sby * sby);
+			speedX = sbx / sb * 1.5f;
+			speedY = sby / sb * 1.5f;
+		}
+		m_AfterPos = { 205.0f,-140.0f,30.0f };
+		m_AfterRot = { 45.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 3) {
+		m_HitRadius = 6.0f;
+		//プレイヤーにスピード加算
+		m_Position.x += (float)speedX;
+		m_Position.y += (float)speedY;
+		m_Position.z -= 1.0f;
+		m_Rotation.z += 15.0f;
+
+		if (m_Position.z <= -60.0f) {
+			m_Frame = 0.0f;
+			m_Pat++;
+		}
+	}
+	else if (m_Pat == 4) {
+		m_HitRadius = 1.8f;;
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,-60.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 5) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-105.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else if (m_Pat == 6) {
+		m_TargetCoolT = 1;
+		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+	}
+	else {
+		m_Angle = 280.0f;
+		m_Active = false;
+		m_AttackCount = 0;
+		m_Frame = m_FrameMin;
+		m_Pat = 0;
+	}
 }
 //エフェクト生成
 void FirstBoss::FireBallArgment() {
@@ -546,6 +635,7 @@ void FirstBoss::FireBallArgment() {
 		newFireBall = new FireBall();
 		newFireBall->Initialize();
 		newFireBall->SetAlive(true);
+		newFireBall->SetAddPowerY(m_AddPowerY);
 		newFireBall->SetPosition({m_Position.x,m_Position.y + 1.5f,m_Position.z});
 		if (m_RandFire == 0) {
 			newFireBall->SetAddSpeed(0.5f);
@@ -592,4 +682,39 @@ Ease(In,Cubic,m_RotFrame,m_Rotation.x,AfterRot.x),
 Ease(In,Cubic,m_RotFrame,m_Rotation.y,AfterRot.y),
 	Ease(In,Cubic,m_RotFrame,m_Rotation.z,AfterRot.z)
 	};
+}
+//バトルのイージング関数
+void FirstBoss::FrameMove(XMFLOAT3 AfterPos, XMFLOAT3 AfterRot, float addframe,int TargetTimer) {
+
+	if (m_Frame < m_FrameMax) {
+		m_Frame += addframe;
+	}
+	else {
+		m_Frame = m_FrameMax;
+		m_CoolT++;
+		if (m_CoolT >= TargetTimer) {
+			m_Frame = m_FrameMin;
+			m_Pat++;
+			m_CoolT = 0;
+		}
+	}
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
+Ease(In,Cubic,m_Frame,m_Position.z,AfterPos.z),
+	};
+	m_Rotation = {
+		Ease(In,Cubic,m_Frame,m_Rotation.x,AfterRot.x),
+Ease(In,Cubic,m_Frame,m_Rotation.y,AfterRot.y),
+Ease(In,Cubic,m_Frame,m_Rotation.z,AfterRot.z),
+	};
+}
+//HPに応じたステータス
+void FirstBoss::StateManager() {
+	if (m_HP >= 10) {
+		m_AttackCount += 3;
+	}
+	else {
+		m_AttackCount += 5;
+	}
 }
