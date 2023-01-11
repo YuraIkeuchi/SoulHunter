@@ -69,11 +69,11 @@ void FirstBoss::Spec() {
 		}
 		else if (m_Action == 1) {
 			//“Ë‚«h‚µ‚Ä‚­‚éUŒ‚
-			StabbingAttack();
+			//StabbingAttack();
 		}
 		else if (m_Action == 2) {
 			//‰Š‚ÌUŒ‚
-			//FireAttack();
+			FireAttack();
 		}
 	}
 	FireBallArgment();
@@ -482,11 +482,11 @@ void FirstBoss::FireAttack() {
 	}
 	else if (m_FireState == Set1) {
 		if (m_RandFire == 0) {
-			m_AfterPos = { 159.0f,-154.0f,0.0f };
+			m_AfterPos = { 159.0f,-140.0f,0.0f };
 			m_AfterRot = { -20.0f,90.0f,0.0f };
 		}
 		else {
-			m_AfterPos = { 248.0f,-154.0f,0.0f };
+			m_AfterPos = { 248.0f,-140.0f,0.0f };
 			m_AfterRot = { -20.0f,270.0f,0.0f };
 		}
 		if (m_Frame < m_FrameMax) {
@@ -508,13 +508,16 @@ void FirstBoss::FireAttack() {
 			m_Frame += 0.01f;
 		}
 		else {
-			m_FireBallArgment = true;
 			m_Frame = m_FrameMin;
 			m_FireState = ShotFire;
 		}
 	}
 	else if (m_FireState == ShotFire) {
 		m_CoolT++;
+		if (m_CoolT % 15 == 0) {
+			m_AddPowerY += 0.2f;
+			m_FireBallArgment = true;
+		}
 		if (m_CoolT > 100) {
 			m_CoolT = 0;
 			m_Frame = m_FrameMin;
@@ -557,6 +560,7 @@ void FirstBoss::FireBallArgment() {
 		newFireBall = new FireBall();
 		newFireBall->Initialize();
 		newFireBall->SetAlive(true);
+		newFireBall->SetAddPowerY(m_AddPowerY);
 		newFireBall->SetPosition({m_Position.x,m_Position.y + 1.5f,m_Position.z});
 		if (m_RandFire == 0) {
 			newFireBall->SetAddSpeed(0.5f);

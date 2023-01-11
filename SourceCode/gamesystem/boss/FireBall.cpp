@@ -28,7 +28,7 @@ void FireBall::Update() {
 		firetex->Update();
 		//Obj_SetParam();
 	}
-	if (m_Position.x <= -140.0f || m_Position.x >= 250.0f) {
+	if ((m_Position.x <= -140.0f || m_Position.x >= 250.0f) || (m_Position.y <= -155.0f || m_Position.y >= -100.0f)) {
 		m_Alive = false;
 	}
 	firetex->SetColor({ 1.0f,0.5f,0.0f,1.0f });
@@ -69,6 +69,7 @@ void FireBall::Shot() {
 			m_ParticleCount = 0;
 		}
 		m_Position.x += m_AddSpeed;
+		m_Position.y += m_AddPowerY;
 	}
 	else {
 		m_ParticleCount = 0;

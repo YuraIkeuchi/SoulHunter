@@ -94,7 +94,7 @@ protected:
 	float m_Frame = 0.0f;//フレーム
 	float m_RotFrame = 0.0f;//フレーム
 	bool m_Active = false;//行動開始
-	int m_Action = 1;//攻撃の種類
+	int m_Action = 2;//攻撃の種類
 	int m_Pat = 0;//パターン
 	int m_Aiming = 0;//敵追従
 	int m_CoolT = 0;//クールタイム

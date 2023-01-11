@@ -63,4 +63,9 @@ private:
 		ShotFire,
 		EndFire,
 	};
+
+	//‰Š‚ÌUŒ‚‚Ì•Ï”
+	int m_FireTimer = 0;
+	int m_FireCount = 0;
+	float m_AddPowerY = -0.5f;
 };

@@ -40,6 +40,7 @@ public:
 	void SetAlive(bool Alive) { this->m_Alive = Alive; }
 
 	void SetAddSpeed(float AddSpeed) { this->m_AddSpeed = AddSpeed; }
+	void SetAddPowerY(float AddPowerY) { this->m_AddPowerY = AddPowerY; }
 
 private:
 	//テクスチャ
@@ -49,7 +50,7 @@ private:
 	XMFLOAT3 m_OldPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT2 m_Radius = { 0.5f,0.5f };
 	float m_AddSpeed = 0.0f;
-
+	float m_AddPowerY = 0.0f;
 	bool m_Alive = false;
 	int m_ParticleCount = 0;
 };
