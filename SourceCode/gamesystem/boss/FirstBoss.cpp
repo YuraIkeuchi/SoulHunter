@@ -42,7 +42,7 @@ bool FirstBoss::Initialize() {
 //バトル開始時の初期化
 bool FirstBoss::BattleInitialize() {
 	assert(player);
-	m_Position = { 205.0f, -152.0f,0.0f };
+	m_Position = { 205.0f, -154.0f,0.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
@@ -65,8 +65,7 @@ void FirstBoss::Spec() {
 		//行動開始
 		if (m_Action == 0) {
 			//横移動
-			BesideAttack();
-			
+			//BesideAttack();	
 		}
 		else if (m_Action == 1) {
 			//突き刺してくる攻撃
@@ -74,7 +73,7 @@ void FirstBoss::Spec() {
 		}
 		else if (m_Action == 2) {
 			//炎の攻撃
-			FireAttack();
+			//FireAttack();
 		}
 	}
 	FireBallArgment();
@@ -257,7 +256,7 @@ void FirstBoss::NotAttack() {
 		//sin波によって上下に動く
 		m_Angle += 1.0f;
 		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-152.0f);
+		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-154.0f);
 		//攻撃間のインターバル
 		if (m_HP >= 20.0f) {
 			m_AttackCount++;
@@ -282,6 +281,7 @@ void FirstBoss::BesideAttack() {
 	m_Number = 1;
 	m_AnimeSpeed = 1;
 	m_fbxObject->PlayAnimation(m_Number);
+	m_ParticlePos = m_Position;
 	//攻撃の動き
 	if (m_Pat == 1) {
 		m_TargetCoolT = 1;
@@ -297,15 +297,14 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 3) {
 		m_TargetCoolT = 100;
-		m_AfterPos = { 250.0f,-152.0f,0.0f };
+		m_AfterPos = { 250.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,270.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
 		m_TargetCoolT = 100;
-		m_ParticlePos = m_Position;
 		m_FoodParticleCount += 3;
-		m_AfterPos = { 159.0f,-152.0f,0.0f };
+		m_AfterPos = { 159.0f,-154.0f,0.0f };
 		m_AfterRot = { 45.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
@@ -324,7 +323,7 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 7) {
 		m_TargetCoolT = 1;
-		m_AfterPos = { 205.0f,-152.0f,0.0f };
+		m_AfterPos = { 205.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
@@ -339,13 +338,15 @@ void FirstBoss::BesideAttack() {
 }
 //突き刺してくる攻撃
 void FirstBoss::StabbingAttack() {
-	if (m_MoveCount < 4) {
+	m_ParticlePos = m_Position;
+	if (m_MoveCount < 1) {
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		switch (m_Pat) {
+		//上に飛ぶ
 		case 1:	//アニメーションのためのやつ
 			m_AfterPos = {
 			m_Position.x,
-			-120.0f,
+			-110.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -360,6 +361,7 @@ void FirstBoss::StabbingAttack() {
 				m_OutPos = { m_TargetPos.x,m_Position.y,m_Position.z + 5 };
 				break;
 			}
+		//場所移動
 		case 2:
 			m_AfterPos = {
 			m_TargetPos.x,
@@ -377,10 +379,11 @@ void FirstBoss::StabbingAttack() {
 				m_Pat++;
 				break;
 			}
+		//落下
 		case 3:
 			m_AfterPos = {
 			m_Position.x,
-			-152.0f,
+			-154.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -391,6 +394,9 @@ void FirstBoss::StabbingAttack() {
 				m_Frame = m_FrameMax;
 				if (m_CoolT < 90) {
 					m_CoolT++;
+					if (m_CoolT <= 10) {
+						m_FoodParticleCount += 2;
+					}
 				}
 				else {
 					m_CoolT = 0;
@@ -407,11 +413,22 @@ void FirstBoss::StabbingAttack() {
 			
 		case 1:
 			m_AfterPos = {
-			223.0f,
-			-152.0f,
+			205.0f,
+			-154.0f,
 			m_Position.z
 			};
 			m_AfterRot = { 0.0f,270.0f,0.0f };
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.01f;
+				break;
+			}
+			else {
+				m_Pat++;
+				m_Frame = m_FrameMin;
+				break;
+			}
+		case 2:
+			m_AfterRot = { 0.0f,180.0f,0.0f };
 			if (m_Frame < m_FrameMax) {
 				m_Frame += 0.01f;
 				break;
@@ -437,7 +454,7 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	m_Rotation = {
 		Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
 Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-m_Rotation.z,
+Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 	};
 }
 //炎の攻撃
@@ -465,11 +482,11 @@ void FirstBoss::FireAttack() {
 	}
 	else if (m_FireState == Set1) {
 		if (m_RandFire == 0) {
-			m_AfterPos = { 159.0f,-152.0f,0.0f };
+			m_AfterPos = { 159.0f,-154.0f,0.0f };
 			m_AfterRot = { -20.0f,90.0f,0.0f };
 		}
 		else {
-			m_AfterPos = { 248.0f,-152.0f,0.0f };
+			m_AfterPos = { 248.0f,-154.0f,0.0f };
 			m_AfterRot = { -20.0f,270.0f,0.0f };
 		}
 		if (m_Frame < m_FrameMax) {
@@ -507,7 +524,7 @@ void FirstBoss::FireAttack() {
 	else {
 		m_AfterPos = {
 			223.0f,
-			-152.0f,
+			-154.0f,
 			m_Position.z
 		};
 		m_AfterRot = { 0.0f,270.0f,0.0f };
