@@ -87,7 +87,7 @@ protected:
 	//あたり範囲
 	float m_HitRadius = 0.0f;
 	//HP
-	float m_HP = 20.0f;
+	float m_HP = 1.0f;
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム

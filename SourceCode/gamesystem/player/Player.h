@@ -186,6 +186,9 @@ private:
 	int m_AttackTimer = 0;
 	//攻撃時のエフェクト発生条件
 	bool m_AttackArgment = false;
+	//2回目の攻撃判定
+	int m_AttackCount = 0;
+	int m_SecondTimer = 0;
 	//攻撃が壁にあたった時のエフェクト発生条件
 	bool m_WallArgment = false;
 	//ダッシュ時のエフェクト発生条件
@@ -219,7 +222,6 @@ private:
 	//ジャンプ時の動きの変数
 	bool m_JumpRot = false;
 	float m_RotFrame = 0.0f;
-
 	//向いている向き
 	float m_Velocity = 0.0f;
 	int m_PlayerDir = 0;
@@ -272,12 +274,6 @@ private:
 	float m_Frame = 0.0f;
 	//パーティクルのための変数
 	int m_ParticleNumber = 0;
-	//提出用の攻撃タイプ
-	int m_AttackType = 0;
-	enum AttackType {
-		Sword,
-		Shot,
-	};
 	//ムービー中の動き
 	bool m_Movie = false;
 	//ディゾルブ
@@ -301,7 +297,7 @@ private:
 	XMVECTOR m_VectorSwordPos;//剣の座標
 	XMFLOAT3 m_SwordPos;//剣の座標
 	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
-	XMFLOAT3 m_SwordScale = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_SwordScale = { 4.5f,4.5f,4.5f };
 	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;
@@ -330,7 +326,8 @@ private:
 
 	AnimationTimer m_AnimationTimer;
 	enum AnimationType {
-		Attack,
+		FirstAttack,
+		SecondAttack,
 		Walk,
 		FirstJump,
 		Wait,

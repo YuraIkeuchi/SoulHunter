@@ -87,7 +87,7 @@ void Player::Update()
 			//ダッシュ
 			PlayerDush();
 			//攻撃(剣)
-			if (m_AttackType == Sword && !m_CollideObj) {
+			if (!m_CollideObj) {
 				PlayerAttack();
 			}
 			//HP回復
@@ -381,7 +381,6 @@ void Player::PlayerFall() {
 			//初期化
 			m_Jump = false;
 			m_AddPower = 0.0f;
-			m_AnimationTimer.FallAnimation = 0;
 		}
 
 		//空中アニメーション
@@ -402,27 +401,28 @@ void Player::PlayerFall() {
 	//ジャンプ回数のリセット
 	if (m_AddPower == 0.0f && block->GetHitDown()) {
 		m_JumpCount = 0;
-	/*	playerwing->SetEaseStart(true);
-		playerwing->SetAfterScale({ 0.000f,0.000f,0.000f });*/
 	}
 }
 //プレイヤーの攻撃
 void Player::PlayerAttack() {
 	Input* input = Input::GetInstance();
 	//攻撃
-	//攻撃の向き
 	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal) && (m_Alive)) {
 		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
-			m_SwordScale = { 4.5f,4.5f,4.5f };
-			if (m_Rotation.y == 90.0f) {
-				m_AttackPos = { m_Position.x + 4.0f,m_Position.y,m_Position.z };
+			//攻撃回数によって動きが変わる
+			m_AttackCount++;
+			if (m_AttackCount == 1) {
+				m_SwordRotation = { 32.0f,91.0f,48.0f };
+				PlayerAnimetion(FirstAttack, 3);
 			}
-			else if (m_Rotation.y == 270.0f) {
-				m_AttackPos = { m_Position.x - 4.0f,m_Position.y,m_Position.z };
+			else if(m_AttackCount == 2) {
+				m_AttackCount = 0;
+				m_SwordRotation = { 0.0f,90.0f,60.0f };
+				PlayerAnimetion(SecondAttack, 3);
 			}
-			PlayerAnimetion(Attack, 2);
+			//剣の処理
 			m_SwordEase = true;
 			m_SwordFrame = 0.0f;
 			m_SwordType = ArgSword;
@@ -434,10 +434,12 @@ void Player::PlayerAttack() {
 	}	
 	//攻撃のインターバル
 	if (m_Attack) {
-		if (m_AttackTimer <= 10) {
+		m_AttackTimer++;
+
+		if (m_AttackTimer <= 25) {
 			m_SwordParticleNum = 1;
 		}
-		else if(m_AttackTimer >= 15 && m_AttackTimer <= 20) {
+		else if(m_AttackTimer >= 25 && m_AttackTimer <= 35) {
 			m_SwordParticleNum = 7;
 		}
 		else {
@@ -445,17 +447,26 @@ void Player::PlayerAttack() {
 		}
 		m_SwordParticleCount = 1;
 		//攻撃エフェクトの出現
-		if (m_AttackTimer == 6) {
-			m_AttackArgment = true;
+		if (m_AttackTimer == 20) {
+			//攻撃範囲の設定
+			//攻撃の向き
+			//右向き
+			if (m_Rotation.y == 90.0f) {
+				m_AttackPos = { m_Position.x + 2.0f,m_Position.y,m_Position.z };
+			}
+			//左向き
+			else if (m_Rotation.y == 270.0f) {
+				m_AttackPos = { m_Position.x - 2.0f,m_Position.y,m_Position.z };
+			}
+
 			//攻撃時壁にあたった場合壁からパーティクルを出す
-			if (block->AttackMapCollideCommon(m_AttackPos, { 1.6f,0.8f }, m_AttackPos)) {
+			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 2.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }) && m_AttackTimer == 30) {
 				m_WallArgment = true;
 			}
 		}
-		m_AttackTimer++;
-		
 		//一定フレームで攻撃終了
 		if (m_AttackTimer >= 40) {
+			m_SecondTimer = 0;
 			m_AttackTimer = 0;
 			m_Attack = false;
 			m_SwordEase = true;
@@ -463,7 +474,6 @@ void Player::PlayerAttack() {
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
 			m_SwordParticleCount = 0;
-			m_SwordScale = { 0.0f,0.0f,0.0f };
 		}
 
 		//攻撃が地面で行われた場合砂煙が発生する
@@ -476,15 +486,35 @@ void Player::PlayerAttack() {
 			};
 		}
 	}
+	else {
+		//一定フレーム以内だったら2段階目の攻撃が出る
+		if (m_AttackCount == 1) {
+			m_SecondTimer++;
+			if (m_SecondTimer >= 40) {
+				m_AttackCount = 0;
+				m_SecondTimer = 0;
+			}
+		}
+	}
 }
 //攻撃判定を取るか
 bool Player::CheckAttack() {
-
-	if ((m_Attack) && (m_AttackTimer >= 25 && m_AttackTimer <= 39)) {
-		return true;
+	//攻撃モーションによって判定取るフレームが違う
+	if (m_AttackCount == 1) {
+		if ((m_Attack) && (m_AttackTimer >= 18 && m_AttackTimer <= 32)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	else {
-		return false;
+	else{
+		if ((m_Attack) && (m_AttackTimer >= 25 && m_AttackTimer <= 34)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	return false;
 }
@@ -796,13 +826,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("SwordPosX:%f", m_SwordPos.x);
-	ImGui::Text("SwordPosY:%f", m_SwordPos.y);
-	ImGui::Text("SwordPosZ:%f", m_SwordPos.z);
-	ImGui::Text("SwordScaleX:%f", m_SwordScale.x);
-	ImGui::Text("SwordScaleY:%f", m_SwordScale.y);
-	ImGui::Text("SwordScaleZ:%f", m_SwordScale.z);
-	ImGui::Text("Timer:%d", m_AttackTimer);
+	ImGui::Text("m_AnimationType:%d", m_AnimationType);
 	ImGui::End();
 
 	//エフェクトの描画
@@ -832,7 +856,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 
 	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
-		if (m_SwordColor.w >= 0.1f) {
+		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
 			FollowObj_Draw();
 		}
 		Fbx_Draw(dxCommon);
@@ -840,7 +864,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	//パーティクルの描画
 	particleheal->Draw();
 	particletex->Draw();
-	swordparticle->Draw();
+	if (m_HP != 0) {
+		swordparticle->Draw();
+	}
 }
 //解放
 void Player::Finalize()
@@ -974,9 +1000,6 @@ void Player::BirthParticle() {
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
 			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0.0f;
@@ -1030,6 +1053,15 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_DamageArgment = true;
 	m_HP -= 1;
 	m_Interval = 100;
+	//攻撃もリセットされる
+	m_SecondTimer = 0;
+	m_AttackTimer = 0;
+	m_Attack = false;
+	m_SwordEase = true;
+	m_SwordFrame = 0.0f;
+	m_SwordType = DeleteSword;
+	m_SwordAfterAlpha = 0.0f;
+	m_SwordParticleCount = 0;
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = 1;//右側に弾かれる
@@ -1097,14 +1129,16 @@ void Player::IntroductionDraw(DirectXCommon* dxCommon) {
 }
 //ボス登場シーンの更新
 void Player::BossAppUpdate(int Timer) {
+	m_AnimeLoop = true;
+	m_AnimeSpeed = 1;
+	m_AnimationType = Wait;
+	m_fbxObject->PlayAnimation(m_AnimationType);
 	m_fbxObject->SetPosition({ 0.0f,8.0f,0.0f });
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
 void Player::BossAppDraw(DirectXCommon* dxCommon) {
-	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
 }
 //ボス終了シーンの更新
 void Player::BossEndUpdate(int Timer) {
@@ -1117,9 +1151,7 @@ void Player::BossEndUpdate(int Timer) {
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
 void Player::BossEndDraw(DirectXCommon* dxCommon) {
-	//FollowObj_Draw();
 	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
 }
 //クリアシーンの更新
 void Player::ClearUpdate(int Timer) {
@@ -1129,17 +1161,12 @@ void Player::ClearUpdate(int Timer) {
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	m_Position.z += 0.3f;
-	////一定時間立ったら前にすすむ
-	//if (Timer >= 100) {
-	//	
-	//}
-
 	m_AnimationTimer.MoveAnimation++;
 
 	if (m_AnimationTimer.MoveAnimation == 1) {
 		//アニメーションのためのやつ
 		m_AnimeLoop = true;
-		m_AnimationType = 1;
+		m_AnimationType = Walk;
 		m_AnimeSpeed = 1;
 		m_fbxObject->PlayAnimation(m_AnimationType);
 	}

@@ -349,10 +349,6 @@ void FirstBoss::StabbingAttack() {
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		switch (m_Pat) {
 		case 1:	//アニメーションのためのやつ
-		/*	m_AnimeLoop = true;
-			m_Number = 0;
-			m_AnimeSpeed = 1;
-			m_fbxObject->PlayAnimation(m_Number);*/
 			m_AfterPos = {
 			m_Position.x,
 			-120.0f,
@@ -410,11 +406,6 @@ void FirstBoss::StabbingAttack() {
 					break;
 				}
 			}
-			//default:
-			//	MoveCount = 0;
-			//	//pat = 1;
-			//	break;
-			//}
 		}
 	}
 	else {
@@ -457,7 +448,6 @@ m_Rotation.z,
 }
 //炎の攻撃
 void FirstBoss::FireAttack() {
-
 	if (m_FireState == Set0) {
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		m_AfterPos = {

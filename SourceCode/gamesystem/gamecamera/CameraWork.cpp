@@ -11,6 +11,17 @@ CameraWork::CameraWork() {
 
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
+
+	m_TitleCameraScale = 80.0f;
+	m_TitleCameraSpeed += 0.1f;
+	//â~â^ìÆÇÃåvéZ
+	m_TitleCameraRadius = m_TitleCameraSpeed * m_PI / 180.0f;
+	m_TitleCameraCircleX = cosf(m_TitleCameraRadius) * m_TitleCameraScale;
+	m_TitleCameraCircleZ = sinf(m_TitleCameraRadius) * m_TitleCameraScale;
+	m_eyePos.x = m_TitleCameraCircleX;
+	m_eyePos.z = m_TitleCameraCircleZ;
+	m_eyePos.y = 50.0f;
+	m_targetPos = { 0.0f,30.0f,0.0f };
 }
 //çXêV
 void CameraWork::Update(DebugCamera* camera) {

@@ -379,13 +379,13 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\JsonObj\IntroductionObj.cpp">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\JsonObj\TitleObj.cpp">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\JsonObj\BossStagObj.cpp">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp">
       <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
@@ -400,7 +400,7 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\JsonObj\ClearObj.cpp">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
       <Filter>SourceCords\engine\shake</Filter>
@@ -756,13 +756,13 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\JsonObj\IntroductionObj.h">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\JsonObj\TitleObj.h">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\JsonObj\BossStagObj.h">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h">
       <Filter>SourceCords\gamesystem\scene\scenechange</Filter>
@@ -777,7 +777,7 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\JsonObj\ClearObj.h">
-      <Filter>SourceCords\gamesystem\JsonObj</Filter>
+      <Filter>SourceCords\gamesystem\gamecamera\JsonObj</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\shake\Shake.h">
       <Filter>SourceCords\engine\shake</Filter>
@@ -999,14 +999,14 @@
     <Filter Include="SourceCords\gamesystem\scene\Introduction">
       <UniqueIdentifier>{d28e5e3d-213c-437a-ae7f-5ec12e0e1fb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\JsonObj">
-      <UniqueIdentifier>{e17ea6d3-67d8-43c2-980a-bbd86560e76b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\engine\shake">
       <UniqueIdentifier>{2a7ab0e4-35b2-424d-b2f9-dff4e3205eff}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\scene\scenechange">
       <UniqueIdentifier>{6b1cdae9-8eae-43b6-9011-3cc929ef6cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\gamecamera\JsonObj">
+      <UniqueIdentifier>{e17ea6d3-67d8-43c2-980a-bbd86560e76b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
