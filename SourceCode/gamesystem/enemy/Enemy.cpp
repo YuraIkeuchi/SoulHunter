@@ -110,10 +110,6 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 				enemyeffect->Draw();
 			}
 		}
-
-		ImGui::Begin("Enemy");
-		ImGui::Text("RotX:%f", m_Rotation.x);
-		ImGui::End();
 	}
 	particletex->Draw();
 }
@@ -217,11 +213,11 @@ void Enemy::Tackle() {
 	if (m_TargetTimer == 30) {
 		if (player->GetPosition().x > m_Position.x) {
 			m_TouchWall = LeftTouch;
-			m_Speed = 0.2f;
+			m_Speed = 0.15f;
 		}
 		else {
 			m_TouchWall = RightTouch;
-			m_Speed = -0.2f;
+			m_Speed = -0.15f;
 		}
 	}
 	else if (m_TargetTimer == 200) {
@@ -229,10 +225,10 @@ void Enemy::Tackle() {
 	}
 	m_ParticleCount++;
 	//‰ñ“]•ûŒü‚ª•Ï‚í‚é
-	if (m_Speed == 0.2f) {
+	if (m_Speed == 0.15f) {
 		m_Rotation.x += 10.0f;
 	}
-	else if(m_Speed == -0.2f) {
+	else if(m_Speed == -0.15f) {
 		m_Rotation.x -= 10.0f;
 	}
 	m_Position.x += m_Speed;

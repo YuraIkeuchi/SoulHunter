@@ -101,16 +101,32 @@ bool InterBoss::collideBoss() {
 	OBB2.SetParam_Scl(player->GetSwordScale());
 	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && !m_Damage && player->CheckAttack()) {
-		m_Damage = true;
-		m_DamageTimer = 50;
-		m_EffectArgment = true;
-		m_HP--;
-		m_Effect = true;
-		return true;
+	//OBB‚ÆŒü‚«‚Å”»’èŽæ‚é
+	if (player->GetRotation().y == 90.0f) {
+		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
+			m_Damage = true;
+			m_DamageTimer = 50;
+			m_EffectArgment = true;
+			m_HP--;
+			m_Effect = true;
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	else {
-		return false;
+		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
+			m_Damage = true;
+			m_DamageTimer = 50;
+			m_EffectArgment = true;
+			m_HP--;
+			m_Effect = true;
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	return true;

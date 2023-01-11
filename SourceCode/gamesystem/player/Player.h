@@ -187,7 +187,7 @@ private:
 	//攻撃時のエフェクト発生条件
 	bool m_AttackArgment = false;
 	//2回目の攻撃判定
-	bool m_SecondAttack = false;
+	int m_AttackCount = 0;
 	int m_SecondTimer = 0;
 	//攻撃が壁にあたった時のエフェクト発生条件
 	bool m_WallArgment = false;
@@ -297,7 +297,7 @@ private:
 	XMVECTOR m_VectorSwordPos;//剣の座標
 	XMFLOAT3 m_SwordPos;//剣の座標
 	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
-	XMFLOAT3 m_SwordScale = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_SwordScale = { 4.5f,4.5f,4.5f };
 	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
 	float m_SwordFrame = 0.0f;
 	bool m_SwordEase = false;
