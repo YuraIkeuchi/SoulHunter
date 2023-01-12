@@ -43,7 +43,7 @@ private:
 	//定数
 	static const int Skill_Max = 4;//スキルの数
 	static const int CompassExplain_Max = 4;//説明文の数(コンパス)
-	static const int LibraExplain_Max = 4;//説明文の数(天秤座)
+	static const int LibraExplain_Max = 3;//説明文の数(天秤座)
 	static const int DushExplain_Max = 4;//説明文の数(ダッシュ)
 	static const int HealExplain_Max = 4;//説明文の数(ヒール)
 public:

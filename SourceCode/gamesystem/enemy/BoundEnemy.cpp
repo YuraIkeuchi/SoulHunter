@@ -37,28 +37,6 @@ void BoundEnemy::Action() {
 	m_OldPos = m_Position;
 
 	if (m_Alive && UpdateCollide()) {
-
-		//マップチップとの当たり判定
-		if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
-			m_Gravity = 0.02f;
-			m_ParticleCount = 5.0f;
-			//初期化
-			m_Air = false;
-		}
-
-		//行動
-		Move();
-
-		//ダメージ時の動き
-		DamageAct();
-		//パーティクル生成
-		BirthParticle();
-		//エフェクト関係
-		ArgEffect();
-		//魂関係
-		ArgSoul();
-
-		VanishEnemy();
 		m_fbxObject->Update(true, 1, m_AnimationStop);
 		PlayerCollide();
 		Fbx_SetParam();
@@ -69,6 +47,28 @@ void BoundEnemy::Action() {
 			}
 		}
 	}
+
+	//マップチップとの当たり判定
+	if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
+		m_Gravity = 0.02f;
+		m_ParticleCount = 5.0f;
+		//初期化
+		m_Air = false;
+	}
+
+	//行動
+	Move();
+
+	//ダメージ時の動き
+	DamageAct();
+	//パーティクル生成
+	BirthParticle();
+	//エフェクト関係
+	ArgEffect();
+	//魂関係
+	ArgSoul();
+
+	VanishEnemy();
 	ParticleUpdate();
 }
 //描画

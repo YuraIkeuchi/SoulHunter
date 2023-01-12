@@ -56,7 +56,7 @@ void Player::StateInitialize() {
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_AddDisolve = 0.0f;
 	m_Addcolor = { 0.0f,0.0f,0.0f,1.0f };
-	m_HP = 3;
+	m_HP = 5;
 	m_Interval = 0;
 	m_FlashCount = 0;
 	m_Death = false;
@@ -467,7 +467,7 @@ void Player::PlayerAttack() {
 		}
 
 		//一定フレームで攻撃終了
-		if (m_AttackTimer >= 30) {
+		if (m_AttackTimer >= 35) {
 			m_SecondTimer = 0;
 			m_AttackTimer = 0;
 			m_Attack = false;
@@ -479,7 +479,7 @@ void Player::PlayerAttack() {
 		}
 
 		//攻撃が地面で行われた場合砂煙が発生する
-		if (m_AddPower == 0.0f) {
+		if (!m_Jump && m_AddPower == 0.0f) {
 			m_FoodParticleCount += 0.25f;
 			m_FoodParticlePos = {
 		m_AttackPos.x,
@@ -503,7 +503,7 @@ void Player::PlayerAttack() {
 bool Player::CheckAttack() {
 	//攻撃モーションによって判定取るフレームが違う
 	if (m_AttackCount == 1) {
-		if ((m_Attack) && (m_AttackTimer >= 18 && m_AttackTimer <= 30)) {
+		if ((m_Attack) && (m_AttackTimer >= 21 && m_AttackTimer <= 30)) {
 			return true;
 		}
 		else {
@@ -810,6 +810,9 @@ bool Player::DeathMove() {
 			if (m_AddDisolve < 2.0f) {
 				m_AddDisolve += 0.015f;
 			}
+			else {
+				m_AddDisolve = 1.5f;
+			}
 		}
 		m_Position.x += m_ShakePos.x;
 		m_Position.y += m_ShakePos.y;
@@ -825,14 +828,14 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("m_AnimationType:%d", m_AnimationType);
-	ImGui::End();*/
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("PosX:%f", m_Position.x);
+	//ImGui::Text("PosY:%f", m_Position.y);
+	//ImGui::Text("PosZ:%f", m_Position.z);
+	//ImGui::Text("m_AnimationType:%d", m_Jump);
+	//ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -864,7 +867,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
 			FollowObj_Draw();
 		}
-		Fbx_Draw(dxCommon);
+		if (m_AddDisolve <= 1.5f) {
+			Fbx_Draw(dxCommon);
+		}
 	}
 	//パーティクルの描画
 	particleheal->Draw();
@@ -955,10 +960,10 @@ void Player::InitPlayer(int StageNumber) {
 		}
 	}
 
-	m_AnimeLoop = true;
-	m_AnimeSpeed = 2;
-	m_AnimationType = 3;
-	m_fbxObject->PlayAnimation(m_AnimationType);
+	//m_AnimeLoop = true;
+	//m_AnimeSpeed = 2;
+	//m_AnimationType = 3;
+	//m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //ポーズ開いたときはキャラが動かない
 void Player::Pause() {
