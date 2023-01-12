@@ -35,7 +35,7 @@ bool FirstBoss::Initialize() {
 	m_Position = { 205.0f, -145.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
-	m_HitRadius = 1.8f;;
+	m_HitRadius = 2.2f;
 
 	return true;
 }
@@ -46,8 +46,8 @@ bool FirstBoss::BattleInitialize() {
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
-	m_OBBScale = { 0.1f,0.1f,0.1f };
-	m_HitRadius = 1.8f;;
+	m_OBBScale = { 3.0f,0.25f,0.5f };
+	m_HitRadius = 2.2f;
 
 	return true;
 }
@@ -61,24 +61,24 @@ void FirstBoss::Spec() {
 		}
 		//攻撃していない
 		NotAttack();
-		m_HitRadius = 1.8f;;
+		m_HitRadius = 2.2f;
 	}
 	else {
 		//行動開始
 		if (m_Action == 0) {
 			//横移動
 			BesideAttack();	
-			m_HitRadius = 1.8f;;
+			m_HitRadius = 2.2f;
 		}
 		else if (m_Action == 1) {
 			//突き刺してくる攻撃
 			StabbingAttack();
-			m_HitRadius = 1.8f;;
+			m_HitRadius = 2.2f;
 		}
 		else if (m_Action == 2) {
 			//炎の攻撃
 			FireAttack();
-			m_HitRadius = 1.8f;;
+			m_HitRadius = 2.2f;
 		}
 		else if (m_Action == 3) {
 			//必殺アタック
@@ -114,6 +114,7 @@ void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
 	//ImGui::SliderFloat("RotZ", &m_Rotation.z, 360, -360);*/
 	//ImGui::Text("HP:%f", m_HP);
 	//ImGui::Text("m_Action:%d", m_Action);
+	//ImGui::Text("m_DamageTimer:%d", m_DamageTimer);
 	//ImGui::Text("m_AttackCount:%d", m_AttackCount);
 	//ImGui::End();
 	IKETexture::PreDraw(0);
@@ -257,11 +258,12 @@ void FirstBoss::DrawOutArea() {
 }
 //攻撃していない
 void FirstBoss::NotAttack() {
-	if (m_AttackCount > 350) {
+	if (m_AttackCount > 500) {
 		m_RandFire = rand() % 3;
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
 		m_Action = (rand() % 4);
+		//m_Action = 3;
 		m_Active = true;
 	}
 	else {
@@ -302,8 +304,8 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 3) {
 		m_TargetCoolT = 100;
-		m_AfterPos = { 250.0f,-150.0f,0.0f };
-		m_AfterRot = { 45.0f,270.0f,0.0f };
+		m_AfterPos = { 250.0f,-154.0f,0.0f };
+		m_AfterRot = { 20.0f,270.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
@@ -324,13 +326,13 @@ void FirstBoss::BesideAttack() {
 		m_TargetCoolT = 1;
 		m_AfterPos = { 205.0f,-96.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, 0.05f, m_TargetCoolT);
 	}
 	else if (m_Pat == 7) {
 		m_TargetCoolT = 1;
 		m_AfterPos = { 205.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, 0.005f, m_TargetCoolT);
 	}
 	else {
 		m_Angle = 280.0f;
@@ -570,55 +572,36 @@ void FirstBoss::SpecialAttack() {
 	}
 	else if (m_Pat == 2) {
 		m_TargetCoolT = 50;
-		if (m_CoolT == 45) {
-			XMFLOAT3 position{};
-			position.x = (player->GetPosition().x - m_Position.x);
-			position.y = (player->GetPosition().y - m_Position.y);
-		}
-
+		m_AfterPos = { 205.0f,-145.0f,30.0f };
+		m_AfterRot = { 0.0f,180.0f,0.0f };
 		if (m_CoolT == 49) {
-			double sb, sbx, sby;
-			sbx = player->GetPosition().x - m_Position.x;
-			sby = player->GetPosition().y - m_Position.y;
-			sb = sqrt(sbx * sbx + sby * sby);
-			speedX = sbx / sb * 1.5f;
-			speedY = sby / sb * 1.5f;
+			m_TargetPos = player->GetPosition();
 		}
-		m_AfterPos = { 205.0f,-140.0f,30.0f };
-		m_AfterRot = { 45.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 3) {
-		m_HitRadius = 6.0f;
-		//プレイヤーにスピード加算
-		m_Position.x += (float)speedX;
-		m_Position.y += (float)speedY;
-		m_Position.z -= 1.0f;
-		m_Rotation.z += 15.0f;
-
-		if (m_Position.z <= -60.0f) {
-			m_Frame = 0.0f;
-			m_Pat++;
-		}
+		m_TargetCoolT = 20;
+		m_AfterPos = m_TargetPos;
+		m_AfterRot = { 0.0f,180.0f,720.0f };
+		FrameMove(m_AfterPos, m_AfterRot, 0.02f, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
-		m_HitRadius = 1.8f;;
 		m_TargetCoolT = 1;
-		m_AfterPos = { 205.0f,-105.0f,-60.0f };
-		m_AfterRot = { 0.0f,180.0f,0.0f };
+		m_AfterPos = { m_Position.x,-105.0f,0.0f };
+		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 5) {
 		m_TargetCoolT = 1;
 		m_AfterPos = { 205.0f,-105.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, 0.05f, m_TargetCoolT);
 	}
 	else if (m_Pat == 6) {
 		m_TargetCoolT = 1;
 		m_AfterPos = { 205.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, 0.005f, m_TargetCoolT);
 	}
 	else {
 		m_Angle = 280.0f;
@@ -711,8 +694,14 @@ Ease(In,Cubic,m_Frame,m_Rotation.z,AfterRot.z),
 }
 //HPに応じたステータス
 void FirstBoss::StateManager() {
-	if (m_HP >= 10) {
+	if (m_HP >= 30) {
+		m_AttackCount += 2;
+	}
+	else if (m_HP >= 29 && m_HP >= 20) {
 		m_AttackCount += 3;
+	}
+	else if (m_HP >= 19 && m_HP >= 10) {
+		m_AttackCount += 4;
 	}
 	else {
 		m_AttackCount += 5;

@@ -32,6 +32,7 @@ void PlayerSkill::Compass() {
 
 void PlayerSkill::Heal() {
 	s_HealSkill = true;
+	m_HealAlive = false;
 }
 
 //ƒXƒLƒ‹‚ðŽg‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©

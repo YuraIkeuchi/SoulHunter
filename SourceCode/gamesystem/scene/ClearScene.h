@@ -37,7 +37,7 @@ private://メンバ変数
 	//色
 	XMFLOAT4 m_TextColor = { 1.0f,1.0f,1.0f,0.0f };
 	//座標
-	XMFLOAT2 m_ClearPos = { 0.0f,900.0f };
+	XMFLOAT2 m_ClearPos = { 0.0f,550.0f };
 	int m_ChangeTimer = 0;
 	//ライトの変数
 	XMFLOAT3 m_LightPos = { 0.0f,0.0f,0.0f };

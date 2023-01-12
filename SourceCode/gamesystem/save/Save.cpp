@@ -72,6 +72,7 @@ const void Save::Draw() {
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
 		objSave->Draw();
+		markEffect->Draw();
 	}
 
 	IKESprite::PreDraw();
@@ -79,7 +80,7 @@ const void Save::Draw() {
 		SaveSprite[m_SaveCount]->Draw();
 	}
 	particletex->Draw();
-	markEffect->Draw();
+
 }
 
 //“–‚½‚è”»’è

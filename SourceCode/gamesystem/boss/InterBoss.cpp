@@ -107,7 +107,7 @@ bool InterBoss::collideBoss() {
 	if (player->GetRotation().y == 90.0f) {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 20;
+			m_DamageTimer = 10;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;
@@ -120,7 +120,7 @@ bool InterBoss::collideBoss() {
 	else {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 20;
+			m_DamageTimer = 10;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;
