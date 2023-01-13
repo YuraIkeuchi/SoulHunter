@@ -1107,7 +1107,7 @@ void BaseScene::LoadGame() {
 void BaseScene::EnemyUpdate(std::vector<InterEnemy*> m_Enemys) {
 	for (InterEnemy* enemy : m_Enemys) {
 		if (enemy != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
+			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && m_MoveEnemy) {
 				enemy->Update();
 			}
 			else {

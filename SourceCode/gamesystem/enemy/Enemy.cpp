@@ -118,6 +118,7 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {
+	Fbx_SetParam();
 	m_fbxObject->StopAnimation();
 	m_fbxObject->Update(true, 1, m_AnimationStop);
 }

@@ -93,6 +93,9 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BossSceneChange* bossscenechange_;
 	bossscenechange_ = new BossSceneChange();
 	bossscenechange.reset(bossscenechange_);
+
+	//プレイモードは敵を動かす
+	m_MoveEnemy = true;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
@@ -258,7 +261,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		//FPSManager::GetInstance()->ImGuiDraw();
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		//PostImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
@@ -314,6 +317,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
 		}
+		ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 		ImGui::End();
 	}
 }

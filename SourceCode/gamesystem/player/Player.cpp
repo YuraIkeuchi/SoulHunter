@@ -77,6 +77,7 @@ void Player::Update()
 	m_HandMat = m_fbxObject->GetWorldMat();
 	//m_Object->Update();
 	m_OldPlayerPos = m_Position;
+	
 	//ムービー中は一部挙動は出来ない
 	if (!m_Movie) {
 		if (m_GoalDir == No && !m_Death) {
@@ -139,6 +140,7 @@ void Player::Update()
 
 	//エフェクトの更新
 	EffectUpdate();
+
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -222,17 +224,44 @@ void Player::EffectUpdate() {
 //プレイヤーの移動
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
+	//当たり判定を精密に取るため
+	m_LimitLeftPos = { m_Position.x - 2.3f,m_Position.y,m_Position.z };
+	m_LimitRightPos = { m_Position.x + 2.3f,m_Position.y,m_Position.z };
+
+	//当たり判定
+	if (block->LimitMapCollideCommon(m_LimitLeftPos, { 2.0f,1.0f }, m_LimitLeftPos)) {
+		m_LeftLimit = true;
+	}
+	else {
+		m_LeftLimit = false;
+	}
+
+	if (block->LimitMapCollideCommon(m_LimitRightPos, { 2.0f,1.0f }, m_LimitRightPos)) {
+		m_RightLimit = true;
+	}
+	else {
+		m_RightLimit = false;
+	}
 	//地面にいる間は攻撃モーションで動き止まる
 	if (m_AddPower == 0.0f) {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
 			//動きやジャンプ
 			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (m_Alive)) {
-				MoveCommon(0.3f, Right, 90.0f);
-
+				if (!m_RightLimit) {
+					MoveCommon(0.3f, Right, 90.0f);
+				}
+				else {
+					MoveCommon(0.0f, Right, 90.0f);
+				}
 			}
 
 			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (m_Alive)) {
-				MoveCommon(-0.3f, Left, 270.0f);
+				if (!m_LeftLimit) {
+					MoveCommon(-0.3f, Left, 270.0f);
+				}
+				else {
+					MoveCommon(0.0f, Left, 270.0f);
+				}
 
 			}
 			particletex->SetParticleBreak(true);
@@ -828,14 +857,15 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("PosX:%f", m_Position.x);
-	//ImGui::Text("PosY:%f", m_Position.y);
-	//ImGui::Text("PosZ:%f", m_Position.z);
-	//ImGui::Text("m_AnimationType:%d", m_Jump);
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("LimitRightPosX:%f", m_LimitRightPos.x);
+	ImGui::Text("LimitLeftPosX:%f", m_LimitLeftPos.x);
+	ImGui::Text("LimitRight::%d", m_RightLimit);
+	ImGui::Text("LimitLeft::%d", m_LeftLimit);
+	ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {

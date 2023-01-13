@@ -90,6 +90,8 @@ bool ThornEnemy::ThornCollision() {
 }
 //ƒ|[ƒY
 void ThornEnemy::Pause() {
+	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
+	Obj_SetParam();
 	m_Object->Update();
 }
 //‰ñ“]‚Ì“®‚«

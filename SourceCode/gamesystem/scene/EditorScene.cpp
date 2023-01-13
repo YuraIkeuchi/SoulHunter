@@ -55,6 +55,9 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	LoadEnemyParam(StageNumber);
 	LoadObjParam(StageNumber);
 	BGMStart = true;
+
+	//エディタモードは最初は敵を止める
+	m_MoveEnemy = false;
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
@@ -161,11 +164,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		camerawork->ImGuiDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -266,6 +264,13 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	if (ImGui::RadioButton("m_ObjDelete", &m_ObjDelete)) {
 		m_ObjDelete = true;
 	}
+	if (ImGui::RadioButton("Move", &m_MoveEnemy)) {
+		m_MoveEnemy = true;
+	}
+	if (ImGui::RadioButton("NoMove", &m_MoveEnemy)) {
+		m_MoveEnemy = false;
+	}
+	ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 	ImGui::End();
 	//敵生成
 	imguieditor->EditorImGuiDraw();
@@ -381,6 +386,7 @@ void EditorScene::MapInitialize() {
 }
 //マップ切り替えの関数
 void EditorScene::StageMapChange(int StageNumber) {
+	m_MoveEnemy = false;
 	mapchange->SetAddStartChange(true);
 	save->InitSave(StageNumber);
 	for (int i = 0; i < tutorialtext.size(); i++) {

@@ -107,6 +107,8 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {
+	Fbx_SetParam();
+	//m_fbxObject->StopAnimation();
 	m_fbxObject->Update(true, 1, m_AnimationStop);
 }
 //プレイヤーをロックオンする
