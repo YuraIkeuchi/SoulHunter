@@ -139,18 +139,6 @@ void Block::Update(XMFLOAT3& pos) {
 }
 //描画
 void Block::Draw(XMFLOAT3& pos) {
-	//float l_MapPosX;
-	//float l_MapPosY;
-	//ImGui::Begin("Game");
-	///*ImGui::SliderFloat("pos.l_MapPosX", &pos.l_MapPosX, 860, -860);
-	//ImGui::SliderFloat("pos.l_MapPosY", &pos.l_MapPosY, 860, -860);*/
-	///*ImGui::Text("LeftGoal::%d", m_Left_Goal);
-	//ImGui::Text("RightGoal::%d", m_Right_Goal);
-	//ImGui::Text("DownGoal::%d", m_Down_Goal);
-	//ImGui::Text("UpGoal::%d", m_Up_Goal);*/
-	//ImGui::Text("HitDir::%d", m_HitDown);
-	////ImGui::Text("Interval::%d", Interval);
-	//ImGui::End();
 	IKEObject3d::PreDraw();
 	//マップチップの描画
 	for (int y = 0; y < map_max_y; y++)
@@ -584,6 +572,76 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 //攻撃の当たり判定
 bool Block::AttackMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 old_pos)
 {
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0;
+	float l_MapPosY = 0;
+	//Radius
+	float l_RadiusX = 0;
+	float l_RadiusY = 0;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						l_IsHit = true;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						l_IsHit = true;
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						l_IsHit = true;
+					}
+				}
+			}
+		}
+	}
+
+	return l_IsHit;
+}
+//移動限界用当たり判定(攻撃)
+bool Block::LimitMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 old_pos) {
 	//マップチップ
 	//X, Y
 	float l_MapPosX = 0;
