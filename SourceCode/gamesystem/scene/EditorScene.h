@@ -52,4 +52,5 @@ private:
 	unique_ptr<ImGuiEditor> imguieditor;
 	EnemyEdit* enemyedit = nullptr;
 	ObjEdit* objedit = nullptr;
+
 };

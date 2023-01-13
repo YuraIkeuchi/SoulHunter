@@ -193,7 +193,6 @@ public:
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
 	//エディタ関係
 	//エディタのタイプ
-
 	int EditorType = 0;
 	enum EditorType {
 		EnemySet,
@@ -207,6 +206,9 @@ public:
 		NormalDis,
 		FarDis,
 	};
+
+	//敵を動かすかどうか
+	bool m_MoveEnemy = false;
 
 	//ザコ敵
 	std::vector<InterEnemy*> m_Enemys;
