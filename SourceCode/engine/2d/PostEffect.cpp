@@ -13,7 +13,6 @@ float PostEffect::addsepia = 0.0f;
 PostEffect::PostEffect()
 	:IKESprite(100, { 0,0 }, { 500,500 }, { 1,1,1,1 }, { 0,0 }, false, false)
 {
-
 }
 
 void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar_t* psShaderName)
@@ -329,6 +328,10 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMap->color = this->color;
 		constMap->mat = XMMatrixIdentity();	// 行列の合成	
 		constMap->sepia = this->addsepia;
+		constMap->ToneType = this->ToneType;
+		constMap->ColorSpace = this->ColorSpace;
+		constMap->BaseLuminance = this->BaseLuminance;
+		constMap->MaxLuminance = this->MaxLuminance;
 		this->constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定
@@ -402,4 +405,28 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 		cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texBuff[i].Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 	}
+}
+
+void PostEffect::ImGuiDraw() {
+	ImGui::Begin("post");
+	ImGui::Text("ColorType:%d", ColorSpace);
+	ImGui::Text("ToneType:%d", ToneType);
+	ImGui::SliderFloat("BaseLuminance", &BaseLuminance, 0.0f, 1.0f);
+	ImGui::SliderFloat("MaxLuminance", &MaxLuminance, 0.0f, 1.0f);
+	if (ImGui::RadioButton("ColorType:Default", &ColorSpace)) {
+		ColorSpace = Default;
+	}
+	if (ImGui::RadioButton("ColorType:Change", &ColorSpace)) {
+		ColorSpace = Change;
+	}
+	if (ImGui::RadioButton("ToneType:None", &ToneType)) {
+		ToneType = None;
+	}
+	if (ImGui::RadioButton("ToneType:Reinhard", &ToneType)) {
+		ToneType = Reinhard;
+	}
+	if (ImGui::RadioButton("ToneType:Gt", &ToneType)) {
+		ToneType = Gt;
+	}
+	ImGui::End();
 }

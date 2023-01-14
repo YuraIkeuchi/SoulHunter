@@ -19,6 +19,8 @@ public:
 
 	//描画
 	void Draw(ID3D12GraphicsCommandList* cmdList);
+	//ImGui
+	void ImGuiDraw();
 
 	/// <summary>
 	/// シーン描画前処理
@@ -50,4 +52,19 @@ private://メンバ変数
 	ComPtr<ID3D12RootSignature>rootSignature;
 	//セピア
 	static float addsepia;
+	int ToneType;//トーンタイプ
+	int ColorSpace;//出力色空間
+	float BaseLuminance;//基準輝度
+	float MaxLuminance;//最大輝度
+	int tex = 0;
+	enum Tone {
+		None,
+		Reinhard,
+		Gt
+	};
+
+	enum ColorType {
+		Default,
+		Change,
+	};
 };

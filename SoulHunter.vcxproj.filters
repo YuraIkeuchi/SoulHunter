@@ -49,6 +49,9 @@
     <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\ToneMapPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp">
@@ -434,9 +437,6 @@
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
       <Filter>SourceCords\engine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
-      <Filter>SourceCords\engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
       <Filter>SourceCords\engine\2d</Filter>
     </ClInclude>
@@ -790,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
+      <Filter>SourceCords\engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
