@@ -38,18 +38,15 @@ float4 main(VSOutput input) : SV_TARGET
     float4 colortex0 = tex0.Sample(smp,input.uv);
     float4 color = colortex0;
 
+    //トーンマップ処理
+    float3 toneMapColor = ToneMap(float3(colortex0.rgb), toeColor, linearColor);
+
     //float a = color.r * 0.5 + color.g * 0.5 + color.b * 0.5;
-    //if (a > 0.8f) {
-    //    color = float4(0.8, 0.8, 0.8, 1);
+    //if (a > 1.2f) {
+    //    color = float4(colortex0.rgb - 0.5, 1);
     //}
 
-
-    float Lz = MaxLuminance / BaseLuminance;
-    float k = BaseLuminance * Lz / (BaseLuminance - Lz);
-
-    return float4(color.rgb * k / (color.rgb + float3(k, k, k)),1);
-
-     //return float4(color.rgb, 1);
+     return float4(toneMapColor.rgb, 1);
 }
 
 //色変換
@@ -105,13 +102,19 @@ float4 ToneMapping(float4 color) {
 //Reinhartトーン
 float3 ReinhardTone(float3 color) {
 
+
+    //float Lz = MaxLuminance / BaseLuminance;
+    //float k = BaseLuminance * Lz / (BaseLuminance - Lz);
+
+    //return float4(color.rgb * k / (color.rgb + float3(k, k, k)), 1);
+
     //return (1, 1, 1);
 
 }
 
 //GTトーン
 float3 GtTone(float3 color) {
-    float k = MaxLuminance / BaseLuminance;
+  /*  float k = MaxLuminance / BaseLuminance;
     float P = k;
     float a = 1.0f;
     float m = 0.22f;
@@ -137,23 +140,23 @@ float3 GtTone(float3 color) {
     float3 S = P - (P - s1) * exp(cp * (x - s0));
     float3 L = m + a * (x - m);
 
-    return T * w0 + L * w1 + S * w2;
+    return T * w0 + L * w1 + S * w2;*/
 }
 
 //OETF適用
 float4 ApplyOETF(float4 color) {
-    float4 result = 0;
+    //float4 result = 0;
 
-    switch (ColorSpace) {
-        //そのまま色を返す
-    case 0:
-        result.rgb = OETF_BT709(color.rgb);
-        break;
-    case 1:
-        result.rgb = OETF_BT2100(color.rgb);
-        break;
-    }
-    return float4(result.rgb, 1);
+    //switch (ColorSpace) {
+    //    //そのまま色を返す
+    //case 0:
+    //    result.rgb = OETF_BT709(color.rgb);
+    //    break;
+    //case 1:
+    //    result.rgb = OETF_BT2100(color.rgb);
+    //    break;
+    //}
+    //return float4(result.rgb, 1);
 }
 
 float3 OETF_BT709(float3 color) {

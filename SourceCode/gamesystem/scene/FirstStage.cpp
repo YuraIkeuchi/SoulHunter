@@ -98,7 +98,9 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	m_MoveEnemy = true;
 
 	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/PostEffectTestPS.hlsl");
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+
+	PlayPostEffect = false;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)

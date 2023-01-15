@@ -13,6 +13,8 @@ float PostEffect::addsepia = 0.0f;
 PostEffect::PostEffect()
 	:IKESprite(100, { 0,0 }, { 500,500 }, { 1,1,1,1 }, { 0,0 }, false, false)
 {
+	tonecolor = { 1.125f,1.5f };
+	linearcolor = { 1.5f,0.0f };
 }
 
 void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar_t* psShaderName)
@@ -328,10 +330,12 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMap->color = this->color;
 		constMap->mat = XMMatrixIdentity();	// 行列の合成	
 		constMap->sepia = this->addsepia;
-		constMap->ToneType = this->ToneType;
+		constMap->linearcolor = this->linearcolor;
+		constMap->toecolor = this->tonecolor;
+		/*constMap->ToneType = this->ToneType;
 		constMap->ColorSpace = this->ColorSpace;
 		constMap->BaseLuminance = this->BaseLuminance;
-		constMap->MaxLuminance = this->MaxLuminance;
+		constMap->MaxLuminance = this->MaxLuminance;*/
 		this->constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定
@@ -408,7 +412,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 }
 
 void PostEffect::ImGuiDraw() {
-	ImGui::Begin("post");
+	/*ImGui::Begin("post");
 	ImGui::Text("ColorType:%d", ColorSpace);
 	ImGui::Text("ToneType:%d", ToneType);
 	ImGui::SliderFloat("BaseLuminance", &BaseLuminance, 0.0f, 1.0f);
@@ -428,5 +432,14 @@ void PostEffect::ImGuiDraw() {
 	if (ImGui::RadioButton("ToneType:Gt", &ToneType)) {
 		ToneType = Gt;
 	}
+	ImGui::End();*/
+
+	ImGui::Begin("shader");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(300, 130));
+	ImGui::SliderFloat("toe : x", &tonecolor.x, 0, 2);
+	ImGui::SliderFloat("toe : y", &tonecolor.y, 0, 2);
+	ImGui::SliderFloat("linear : x", &linearcolor.x, 0, 2);
+	ImGui::SliderFloat("linear : y", &linearcolor.y, 0, 2);
 	ImGui::End();
 }

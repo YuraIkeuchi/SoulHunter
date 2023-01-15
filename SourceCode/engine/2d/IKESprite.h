@@ -36,10 +36,12 @@ public: // サブクラス
 		XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
 		float sepia;
-		int ToneType;//トーンタイプ
-		int ColorSpace;//出力色空間
-		float BaseLuminance;//基準輝度
-		float MaxLuminance;//最大輝度
+		XMFLOAT2 linearcolor;
+		XMFLOAT2 toecolor;
+		//int ToneType;//トーンタイプ
+		//int ColorSpace;//出力色空間
+		//float BaseLuminance;//基準輝度
+		//float MaxLuminance;//最大輝度
 	};
 
 public: // 静的メンバ関数

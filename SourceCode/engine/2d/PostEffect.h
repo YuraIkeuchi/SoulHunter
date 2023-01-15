@@ -52,6 +52,9 @@ private://メンバ変数
 	ComPtr<ID3D12RootSignature>rootSignature;
 	//セピア
 	static float addsepia;
+	//トーンマップ用
+	XMFLOAT2 tonecolor;
+	XMFLOAT2 linearcolor;
 	int ToneType;//トーンタイプ
 	int ColorSpace;//出力色空間
 	float BaseLuminance;//基準輝度

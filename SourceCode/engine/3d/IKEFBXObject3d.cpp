@@ -340,20 +340,44 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 
 	//アニメーション
 	if (isPlay) {
-		//1フレーム進める
-		currentTime += frameTime * Speed;
-		//最後まで再生したら先頭に戻す
-		if (Loop) {
-			if (currentTime > endTime) {
-				currentTime = startTime;
+		//通常再生
+		if (!m_Reverse) {
+			//1フレーム進める
+			currentTime += frameTime * Speed;
+			//最後まで再生したら先頭に戻す
+			if (Loop) {
+				if (currentTime > endTime) {
+					currentTime = startTime;
+				}
+			}
+			else {
+				if (currentTime > endTime) {
+					isPlay = false;
+					if (Stop) {
+
+						Stop = false;
+					}
+				}
 			}
 		}
+		//逆再生
 		else {
-			if (currentTime > endTime) {
-				isPlay = false;
-				if (Stop) {
-
-					Stop = false;
+			//1フレーム進める
+			currentTime -= frameTime * Speed;
+			//最後まで再生したら先頭に戻す
+			if (Loop) {
+				if (currentTime < startTime) {
+					currentTime = endTime;
+					m_Reverse = false;
+				}
+			}
+			else {
+				if (currentTime < startTime) {
+					isPlay = false;
+					m_Reverse = false;
+					if (Stop) {
+						Stop = false;
+					}
 				}
 			}
 		}
