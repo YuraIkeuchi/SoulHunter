@@ -113,10 +113,12 @@ public:	//メンバ関数
 
 	void SetChangeColor(bool ChangeColor) { this->ChangeColor = ChangeColor; }
 	void SetShadeSet(bool ShadeSet) { this->ShadeSet = ShadeSet; }
+	void SetReverse(bool Reverse) { this->m_Reverse = Reverse; }
 	XMMATRIX GetWorldMat() { return WorldMat; }
 	XMMATRIX GetMatrot() { return matRot; }
 	XMMATRIX GetMatScl() { return matScale; }
 	const int GetBoneNumber() { return BoneNumber; }
+	const bool GetReverse() { return m_Reverse; }
 
 	void SetBoneNumber(int BoneNumber) { this->BoneNumber = BoneNumber; }
 	/// <summary>
@@ -162,6 +164,8 @@ protected:	//メンバ変数
 	bool isPlay = false;
 	//アニメーションのデータ
 	std::vector<Animation> animationData;
+	//逆再生かどうか
+	bool m_Reverse = false;
 public:	//定数
 	//主に追従関係
 	XMMATRIX matScale, matRot, matTrans;

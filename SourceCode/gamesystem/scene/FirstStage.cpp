@@ -96,6 +96,11 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 
 	//プレイモードは敵を動かす
 	m_MoveEnemy = true;
+
+	//ポストエフェクトのファイル指定
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+
+	PlayPostEffect = false;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)

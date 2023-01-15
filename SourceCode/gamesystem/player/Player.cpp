@@ -492,6 +492,7 @@ void Player::PlayerAttack() {
 			//攻撃時壁にあたった場合壁からパーティクルを出す
 			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 5.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z })) {
 				m_WallArgment = true;
+				m_fbxObject->SetReverse(true);
 			}
 		}
 
@@ -857,14 +858,14 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
+	bool Reverse = m_fbxObject->GetReverse();
 	ImGui::Begin("player");
 	ImGui::SetWindowPos(ImVec2(1000, 450));
 	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("LimitRightPosX:%f", m_LimitRightPos.x);
-	ImGui::Text("LimitLeftPosX:%f", m_LimitLeftPos.x);
-	ImGui::Text("LimitRight::%d", m_RightLimit);
-	ImGui::Text("LimitLeft::%d", m_LeftLimit);
+	ImGui::Text("Reverse:%d", Reverse);
+	if (ImGui::RadioButton("Reverce", &Reverse)) {
+	
+	}
 	ImGui::End();
 
 	//エフェクトの描画

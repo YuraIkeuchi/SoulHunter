@@ -55,6 +55,9 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, true);
+
+	//ポストエフェクトのファイル指定
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
 }
 //更新
 void IntroductionScene::Update(DirectXCommon* dxCommon) {

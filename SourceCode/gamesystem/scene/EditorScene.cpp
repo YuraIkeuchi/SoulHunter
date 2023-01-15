@@ -58,6 +58,9 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 
 	//エディタモードは最初は敵を止める
 	m_MoveEnemy = false;
+
+	//ポストエフェクトのファイル指定
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
@@ -146,8 +149,8 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
-		PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
+		postEffect->ImGuiDraw();
 		//player->ImGuiDraw();
 		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -176,24 +179,11 @@ void EditorScene::Finalize()
 void EditorScene::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3Dオブジェクト描画
 	//背景は先に描画する
-	IKEObject3d::PreDraw();
 	
 }
 //後ろの描画
 void EditorScene::BackDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-
-#pragma endregion
-	//スプライトの描画
-	ModelDraw(dxCommon);
-	//FBXの描画
-	//object1->Draw(dxCommon->GetCmdList());
-}
-//ポストエフェクトがかからない
-void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
-
 	IKEObject3d::PreDraw();
 	backobjalways->Draw();
 	block->Draw(m_PlayerPos);
@@ -237,6 +227,12 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	// 3Dオブジェクト描画後処理
 	//完全に前に各スプライト
 	IKEObject3d::PostDraw();
+}
+//ポストエフェクトがかからない
+void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
+
+	IKEObject3d::PreDraw();
+
 	IKESprite::PreDraw();
 	ui->Draw();
 	mapchange->Draw();
@@ -272,6 +268,19 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	}
 	ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 	ImGui::End();
+	//ポストエフェクト
+	{
+		ImGui::Begin("postEffect");
+		ImGui::SetWindowPos(ImVec2(1000, 450));
+		ImGui::SetWindowSize(ImVec2(280, 300));
+		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
+			PlayPostEffect = true;
+		}
+		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
+			PlayPostEffect = false;
+		}
+		ImGui::End();
+	}
 	//敵生成
 	imguieditor->EditorImGuiDraw();
 	{
