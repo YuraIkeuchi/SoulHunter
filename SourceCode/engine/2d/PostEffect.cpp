@@ -327,15 +327,15 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
+		/*constMap->linearcolor = this->linearcolor;
+		constMap->toecolor = this->tonecolor;*/
 		constMap->color = this->color;
 		constMap->mat = XMMatrixIdentity();	// 行列の合成	
 		constMap->sepia = this->addsepia;
-		constMap->linearcolor = this->linearcolor;
-		constMap->toecolor = this->tonecolor;
-		/*constMap->ToneType = this->ToneType;
+		constMap->ToneType = this->ToneType;
 		constMap->ColorSpace = this->ColorSpace;
 		constMap->BaseLuminance = this->BaseLuminance;
-		constMap->MaxLuminance = this->MaxLuminance;*/
+		constMap->MaxLuminance = this->MaxLuminance;
 		this->constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定
@@ -412,11 +412,11 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 }
 
 void PostEffect::ImGuiDraw() {
-	/*ImGui::Begin("post");
+	ImGui::Begin("post");
 	ImGui::Text("ColorType:%d", ColorSpace);
 	ImGui::Text("ToneType:%d", ToneType);
-	ImGui::SliderFloat("BaseLuminance", &BaseLuminance, 0.0f, 1.0f);
-	ImGui::SliderFloat("MaxLuminance", &MaxLuminance, 0.0f, 1.0f);
+	ImGui::SliderFloat("BaseLuminance", &BaseLuminance, 0.0f, 2.0f);
+	ImGui::SliderFloat("MaxLuminance", &MaxLuminance, 0.0f, 2.0f);
 	if (ImGui::RadioButton("ColorType:Default", &ColorSpace)) {
 		ColorSpace = Default;
 	}
@@ -432,14 +432,14 @@ void PostEffect::ImGuiDraw() {
 	if (ImGui::RadioButton("ToneType:Gt", &ToneType)) {
 		ToneType = Gt;
 	}
-	ImGui::End();*/
-
-	ImGui::Begin("shader");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(300, 130));
-	ImGui::SliderFloat("toe : x", &tonecolor.x, 0, 2);
-	ImGui::SliderFloat("toe : y", &tonecolor.y, 0, 2);
-	ImGui::SliderFloat("linear : x", &linearcolor.x, 0, 2);
-	ImGui::SliderFloat("linear : y", &linearcolor.y, 0, 2);
 	ImGui::End();
+
+	//ImGui::Begin("shader");
+	//ImGui::SetWindowPos(ImVec2(0, 0));
+	//ImGui::SetWindowSize(ImVec2(300, 130));
+	//ImGui::SliderFloat("toe : x", &tonecolor.x, 0, 2);
+	//ImGui::SliderFloat("toe : y", &tonecolor.y, 0, 2);
+	//ImGui::SliderFloat("linear : x", &linearcolor.x, 0, 2);
+	//ImGui::SliderFloat("linear : y", &linearcolor.y, 0, 2);
+	//ImGui::End();
 }
