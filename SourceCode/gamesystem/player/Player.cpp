@@ -225,18 +225,18 @@ void Player::EffectUpdate() {
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
 	//当たり判定を精密に取るため
-	m_LimitLeftPos = { m_Position.x - 2.3f,m_Position.y,m_Position.z };
-	m_LimitRightPos = { m_Position.x + 2.3f,m_Position.y,m_Position.z };
+	m_LimitLeftPos = { m_Position.x - 1.3f,m_Position.y,m_Position.z };
+	m_LimitRightPos = { m_Position.x + 1.3f,m_Position.y,m_Position.z };
 
 	//当たり判定
-	if (block->LimitMapCollideCommon(m_LimitLeftPos, { 2.0f,1.0f }, m_LimitLeftPos)) {
+	if (block->LimitMapCollideCommon(m_LimitLeftPos, { 3.0f,1.0f }, m_LimitLeftPos)) {
 		m_LeftLimit = true;
 	}
 	else {
 		m_LeftLimit = false;
 	}
 
-	if (block->LimitMapCollideCommon(m_LimitRightPos, { 2.0f,1.0f }, m_LimitRightPos)) {
+	if (block->LimitMapCollideCommon(m_LimitRightPos, { 3.0f,1.0f }, m_LimitRightPos)) {
 		m_RightLimit = true;
 	}
 	else {
@@ -859,14 +859,14 @@ bool Player::DeathMove() {
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
 	bool Reverse = m_fbxObject->GetReverse();
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("Reverse:%d", Reverse);
-	if (ImGui::RadioButton("Reverce", &Reverse)) {
-	
-	}
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("Reverse:%d", Reverse);
+	//if (ImGui::RadioButton("Reverce", &Reverse)) {
+	//
+	//}
+	//ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {

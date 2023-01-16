@@ -11,6 +11,7 @@ public:
 	void Finalize() override;//開放
 	void Pause() override;//ポーズのとき
 	void Draw(DirectXCommon* dxCommon) override;//描画
+	void MapDraw(XMFLOAT4 Color) override;//ミニマップのとき
 	void DeathMove();//死んだときの動き
 	bool BirdLockOn();
 	void Move();

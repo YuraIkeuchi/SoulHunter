@@ -49,8 +49,6 @@ void InterBoss::Update() {
 			bosseffect->Update(m_Position, m_Effect, m_HitDir);
 		}
 	}
-	//ボスの名前の更新
-	bossname->Update();
 	//パーティクル
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	particletex->SetParticleBreak(true);
@@ -75,8 +73,6 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 	}
 	//パーティクルの描画
 	particletex->Draw();
-	//ボスの名前
-	bossname->Draw();
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }

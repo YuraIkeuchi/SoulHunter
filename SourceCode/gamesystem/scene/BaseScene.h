@@ -116,6 +116,8 @@ public:
 	void EnemyUpdate(std::vector<InterEnemy*> m_Enemys);
 	//“G‚Ì•`‰æ(‘O
 	void EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* dxCommon);
+	//“G‚Ì•`‰æ(‘O
+	void EnemyMapDraw(std::vector<InterEnemy*> m_Enemys);
 	//“G‚Ì‰ğ•ú
 	void EnemyFinalize(std::vector<InterEnemy*> m_Enemys);
 	//”wŒiOBj‚ÌXV

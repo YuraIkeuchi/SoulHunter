@@ -239,6 +239,10 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	pause->Draw();
 	chest->ExplainDraw();
 	scenechange->Draw();
+	EnemyMapDraw(m_Enemys);
+	EnemyMapDraw(m_ThornEnemys);
+	EnemyMapDraw(m_BoundEnemys);
+	EnemyMapDraw(m_BirdEnemys);
 	IKESprite::PostDraw();
 #pragma endregion
 }

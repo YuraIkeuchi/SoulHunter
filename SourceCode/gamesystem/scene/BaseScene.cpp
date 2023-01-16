@@ -1009,9 +1009,7 @@ void BaseScene::LoadObjParam(const int& StageNumber) {
 //ゲームデータのセーブ(位置とマップ番号)
 void BaseScene::SaveGame() {
 	std::ofstream playerofs("Resources/game_param/gamedata.csv");  // ファイルパスを指定する
-	//normalofs << "Enemy_Quantity" << "," << m_Enemys.size() << std::endl;
 
-	playerofs << "Wait" << "," << 120 << std::endl;
 	playerofs << "StageNumber" << "," << StartStage << std::endl;
 	playerofs << "POP" << "," << player->GetPosition().x
 		<< "," << player->GetPosition().y
@@ -1121,6 +1119,14 @@ void BaseScene::EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* dxCo
 	for (InterEnemy* enemy : m_Enemys) {
 		if (enemy != nullptr) {
 			enemy->Draw(dxCommon);
+		}
+	}
+}
+//敵のミニマップ描画
+void BaseScene::EnemyMapDraw(std::vector<InterEnemy*> m_Enemys) {
+	for (InterEnemy* enemy : m_Enemys) {
+		if (enemy != nullptr && pause->GetPauseNumber() == 1 && pause->GetIsPause() && minimap->GetMapType() == 1) {
+			enemy->MapDraw(minimap->GetMapColor());
 		}
 	}
 }

@@ -160,11 +160,11 @@ void TitleScene::FrontDraw() {
 	titleobj->FrontDraw();
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
-	TitleSprite->Draw();
-	TitlePartsSprite[2]->Draw();
-	for (int i = 0; i < 2; i++) {
-		TitlePartsSprite[i]->Draw();
-	}
+	//TitleSprite->Draw();
+	//TitlePartsSprite[2]->Draw();
+	//for (int i = 0; i < 2; i++) {
+	//	TitlePartsSprite[i]->Draw();
+	//}
 	scenechange->Draw();
 	IKESprite::PostDraw();
 }

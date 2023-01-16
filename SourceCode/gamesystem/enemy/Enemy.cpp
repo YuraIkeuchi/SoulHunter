@@ -5,6 +5,12 @@
 using namespace DirectX;
 
 Enemy::Enemy() {
+
+	IKESprite* MiniEnemySprite_;
+	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
+	MiniEnemySprite.reset(MiniEnemySprite_);
+
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::NormalEnemy);
 	ParticleInit();
 }
@@ -102,6 +108,8 @@ void Enemy::Action() {
 	ArgSoul();
 
 	ParticleUpdate();
+	//ミニマップに表示させる
+	MapEnemy();
 }
 //描画
 void Enemy::Draw(DirectXCommon* dxCommon) {
@@ -263,4 +271,12 @@ void Enemy::DeathMove() {
 //解放
 void Enemy::Finalize() {
 	//enemyeffects.pop_back();
+}
+
+void Enemy::MapDraw(XMFLOAT4 Color) {
+	MiniEnemySprite->SetColor(Color);
+	IKESprite::PreDraw();
+	if (m_Alive) {
+		MiniEnemySprite->Draw();
+	}
 }

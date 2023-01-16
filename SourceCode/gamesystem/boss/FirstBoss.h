@@ -32,7 +32,7 @@ private:
 	unique_ptr<IKETexture> OutAreatexture;
 	XMFLOAT3 m_OutPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT4 m_OutColor = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT3 m_OutScale = { 0.5f,10.0f,1.0f };
+	XMFLOAT3 m_OutScale = { 0.8f,40.0f,1.0f };
 	bool m_DrawArea = false;
 	//アニメーション関係
 	int m_Number = 0;

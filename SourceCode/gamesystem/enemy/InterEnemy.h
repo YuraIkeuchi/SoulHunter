@@ -68,6 +68,8 @@ protected:
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<HitStop> hitstop =nullptr;
 
+	//スプライト
+	unique_ptr<IKESprite> MiniEnemySprite;
 	OBB OBB1 = {};
 	OBB OBB2 = {};
 	//座標やスケールなど
@@ -157,6 +159,9 @@ protected:
 	//ダメージフラグ
 	bool m_Damage = false;
 	int m_DamageTimer = 0;
+
+	//敵の座標
+	XMFLOAT2 m_EnemyPosition = { 0.0f,0.0f };
 	
 public:
 	virtual ~InterEnemy() = default;
@@ -185,6 +190,8 @@ public:
 	/// </summary>
 	virtual void Draw(DirectXCommon* dxCommon)override;
 
+	virtual void MapDraw(XMFLOAT4 Color) = 0;
+
 
 	bool Collision();//普通の当たり判定
 
@@ -212,4 +219,6 @@ public:
 	void ParticleUpdate();
 	//エフェクト発生
 	void BirdArgment();
+	//ミニマップに敵を表示
+	void MapEnemy();
 };

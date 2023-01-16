@@ -31,7 +31,6 @@ public:
 		LibraExplain,
 		HealExplain,
 		Save1,
-		BossName,
 		LoadText1,
 		NowLoad1,
 		ChestBack,

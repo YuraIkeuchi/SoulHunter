@@ -16,6 +16,7 @@ MapChange::MapChange() {
 	IKESprite* change_;
 	change_ = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
 	change_->SetColor(s_color);
+	change_->SetSize({ 1280.0f,720.0f });
 	change.reset(change_);
 }
 //XV

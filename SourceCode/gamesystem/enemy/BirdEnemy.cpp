@@ -5,6 +5,12 @@
 using namespace DirectX;
 
 BirdEnemy::BirdEnemy() {
+
+	IKESprite* MiniEnemySprite_;
+	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
+	MiniEnemySprite.reset(MiniEnemySprite_);
+
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BirdEnemy);
 	//パーティクル
 	ParticleInit();
@@ -83,6 +89,8 @@ void BirdEnemy::Action() {
 	VanishEnemy();
 	//エフェクト発生
 	BirdArgment();
+	//ミニマップに表示させる
+	MapEnemy();
 	ParticleUpdate();
 }
 //描画
@@ -199,4 +207,10 @@ void BirdEnemy::DeathMove() {
 //解放
 void BirdEnemy::Finalize() {
 	//enemyeffects.pop_back();
+}
+
+void BirdEnemy::MapDraw(XMFLOAT4 Color) {
+	MiniEnemySprite->SetColor(Color);
+	IKESprite::PreDraw();
+	MiniEnemySprite->Draw();
 }
