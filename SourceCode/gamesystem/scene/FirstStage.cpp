@@ -5,6 +5,7 @@
 #include "ImageManager.h"
 #include "imgui.h"
 #include <Easing.h>
+
 //プレイシーンの初期化
 void FirstStage::PlaySceneInitialize() {
 	//魂
@@ -267,7 +268,9 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		//FPSManager::GetInstance()->ImGuiDraw();
-		ImGuiDraw(dxCommon);
+		if (StageNumber != BossMap) {
+			ImGuiDraw(dxCommon);
+		}
 		camerawork->ImGuiDraw();
 		//PostImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
@@ -316,14 +319,19 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 	{
 		int App = camerawork->GetCameraNumber();
-		ImGui::Begin("GamePlay");
+		ImGui::Begin("Scene");
 		ImGui::SetWindowPos(ImVec2(1000, 150));
 		ImGui::SetWindowSize(ImVec2(280, 150));
-		if (ImGui::RadioButton("m_SceneChange", &m_SceneChange)) {
+		if (ImGui::RadioButton("m_EditorScene", &m_SceneChange)) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
+			m_SceneMigration = Editor;
 		}
-		ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
+		if (ImGui::RadioButton("m_TitleScene", &m_SceneChange)) {
+			scenechange->SetAddStartChange(true);
+			m_SceneChange = true;
+			m_SceneMigration = Title;
+		}
 		ImGui::End();
 	}
 }
@@ -681,14 +689,22 @@ void FirstStage::ChangeUpdate() {
 
 	//シーン変更
 	if (scenechange->AddBlack(0.05f)) {
-		//エディタシーンへ変更
+		//ImGuiでシーンを切り替えたかどうか
 		if (m_SceneChange) {
 			m_GameLoad = true;
 			StartStage = StageNumber;
 			block->ResetBlock();
 			minimap->ResetBlock();
 			SaveGame();
-			SceneManager::GetInstance()->ChangeScene("EDITORSCENE");
+			//シーン先を決める
+			if (m_SceneMigration == Editor) {
+				SceneManager::GetInstance()->ChangeScene("EDITORSCENE");
+			}
+			else if (m_SceneMigration == Title) {
+				m_GameLoop = true;
+				Audio::GetInstance()->StopWave(0);
+				SceneManager::GetInstance()->ChangeScene("TITLE");
+			}
 			m_SceneChange = false;
 		}
 		else {

@@ -56,9 +56,9 @@ void InterBoss::Update() {
 }
 //•`‰æ
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Boss");
-	ImGui::Text("HP : %f", m_HP);
-	ImGui::End();*/
+	//ImGui::Begin("Boss");
+	//ImGui::Text("PosX : %f", m_Position.y);
+	//ImGui::End();
 	//ƒ{ƒX‚Ì•`‰æ
 	IKEObject3d::PreDraw();
 	if (m_Alive) {

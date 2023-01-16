@@ -6,6 +6,8 @@
 #include <Easing.h>
 #include "ImageManager.h"
 #include "imgui.h"
+TitleObj* TitleScene::titleobj = nullptr;
+bool TitleScene::m_TitleNew = false;
 //初期化
 void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//スプライト生成
@@ -38,8 +40,12 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//Json
-	titleobj = new TitleObj();
-	titleobj->Initialize();
+	if (!m_TitleNew) {
+		titleobj = new TitleObj();
+		titleobj->Initialize();
+		m_TitleNew = true;
+	}
+	titleobj->SetStopParticle(false);
 	//ライト
 	m_LightPos = { 0.0f,0.0f,15.0f };
 

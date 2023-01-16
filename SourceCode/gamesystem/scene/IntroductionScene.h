@@ -23,7 +23,7 @@ public:
 	void Movie();
 private://メンバ変数
 	//Json読み込みのクラス
-	IntroductionObj* Introductionobj = nullptr;
+	static IntroductionObj* Introductionobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
 	unique_ptr<IKESprite> IntroSprite;
@@ -36,5 +36,7 @@ private://メンバ変数
 	//色
 	XMFLOAT4 m_TextColor = { 1.0f,1.0f,1.0f,0.0f };
 	int m_ChangeTimer = 0;
+
+	static bool m_IntroNew;
 };
 

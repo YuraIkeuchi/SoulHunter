@@ -23,7 +23,7 @@ public:
 	void Movie();
 private://メンバ変数
 	//Json読み込みのクラス
-	ClearObj* clearobj = nullptr;
+	static ClearObj* clearobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
 	unique_ptr<IKESprite> ClearSprite;
@@ -41,5 +41,7 @@ private://メンバ変数
 	int m_ChangeTimer = 0;
 	//ライトの変数
 	XMFLOAT3 m_LightPos = { 0.0f,0.0f,0.0f };
+
+	static bool m_ClearNew;
 };
 

@@ -8,7 +8,6 @@ ImageManager* ImageManager::GetIns() {
 void ImageManager::Load2D() {
 	IKESprite::LoadTexture(Title, L"Resources/2d/sceneback/Title1.png");
 	IKESprite::LoadTexture(TitleParts, L"Resources/2d/sceneback/TitleParts.png");
-	IKESprite::LoadTexture(GameOver, L"Resources/2d/sceneback/GameOver.png");
 	IKESprite::LoadTexture(BlackFilter, L"Resources/2d/effect/Blackfilter.png");
 	IKESprite::LoadTexture(PauseBack, L"Resources/2d/sceneback/PauseBack.png");
 	IKESprite::LoadTexture(Pause1, L"Resources/2d/sceneback/PauseMenu.png");
@@ -26,7 +25,6 @@ void ImageManager::Load2D() {
 	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
 	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");
 	IKESprite::LoadTexture(ChestBack, L"Resources/2d/SkillExplain/ExplainBack.png");
-	IKESprite::LoadTexture(LetterMessage, L"Resources/2d/Tutorial/DushText.png");
 	IKESprite::LoadTexture(Curtain, L"Resources/2d/sceneback/Curtain.png");
 	IKESprite::LoadTexture(SkipText, L"Resources/2d/sceneback/SkipText.png");
 	IKESprite::LoadTexture(IntroText, L"Resources/2d/sceneback/IntroText.png");
@@ -47,7 +45,6 @@ void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(ChestTex, L"Resources/2d/text/textpoint.png");
 	IKETexture::LoadTexture(WingEffect, L"Resources/2d/effect/Wing3.png");
 	IKETexture::LoadTexture(LightTex, L"Resources/2d/sceneback/BackLight.png");
-	IKETexture::LoadTexture(LetterTex, L"Resources/2d/Tutorial/TutorialDush.png");
 	IKETexture::LoadTexture(ReadTex, L"Resources/2d/text/textpointread.png");
 	IKETexture::LoadTexture(OutArea, L"Resources/2d/effect/OutArea.png");
 }

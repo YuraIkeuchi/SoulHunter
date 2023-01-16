@@ -10,7 +10,7 @@
 void GameoverScene::Initialize(DirectXCommon* dxCommon) {
 	BaseInitialize(dxCommon);
 	IKESprite* sprite_;
-	sprite_ = IKESprite::Create(ImageManager::GameOver, { 0.0f,0.0f });
+	sprite_ = IKESprite::Create(ImageManager::Title, { 0.0f,0.0f });
 	sprite.reset(sprite_);
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);

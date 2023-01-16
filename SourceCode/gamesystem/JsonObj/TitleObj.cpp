@@ -1,6 +1,4 @@
 #include "TitleObj.h"
-#include "ModelManager.h"
-#include "ImageManager.h"
 #include "JsonLoader.h"
 using namespace DirectX;	
 //初期化
@@ -58,7 +56,7 @@ void TitleObj::Update() {
 	//炎のパーティクル
 	if (!m_StopParticle) {
 		m_ParticleCount++;
-		if (m_ParticleCount > 4) {
+		if (m_ParticleCount > 6) {
 			m_ParticleCount = 0;
 		}
 	}
@@ -67,12 +65,11 @@ void TitleObj::Update() {
 	}
 
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 4, 4);
+	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 6, 4);
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
 	particletex->SetStartScale(0.5f);
-	particletex->SetAddScale(0.1f);
-	
+	particletex->SetAddScale(0.008f);
 }
 //前面描画
 const void TitleObj::FrontDraw() {
