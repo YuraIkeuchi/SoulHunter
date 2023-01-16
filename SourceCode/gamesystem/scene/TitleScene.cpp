@@ -58,6 +58,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//セーブ
 	save = new Save();
 	m_TitleSelect = NewGame;
+	dxCommon->SetFullScreen(true);
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
