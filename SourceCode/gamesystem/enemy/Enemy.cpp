@@ -5,9 +5,9 @@
 using namespace DirectX;
 
 Enemy::Enemy() {
-
+	IKESprite::LoadTexture(26, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
-	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_ = IKESprite::Create(26, { 0.0f,0.0f });
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
@@ -126,6 +126,8 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {
+	//ミニマップに表示させる
+	MapEnemy();
 	Fbx_SetParam();
 	m_fbxObject->StopAnimation();
 	m_fbxObject->Update(true, 1, m_AnimationStop);
@@ -272,11 +274,11 @@ void Enemy::DeathMove() {
 void Enemy::Finalize() {
 	//enemyeffects.pop_back();
 }
-
+//ミニマップの描画
 void Enemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
-	if (m_Alive) {
+	if (m_EnemyPosition.x != 0.0f && m_EnemyPosition.y != 0.0f && m_Alive) {
 		MiniEnemySprite->Draw();
 	}
 }

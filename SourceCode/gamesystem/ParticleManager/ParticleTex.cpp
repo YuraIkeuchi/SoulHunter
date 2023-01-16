@@ -320,7 +320,6 @@ void ParticleTex::SaveParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 	//é¿ç€Ç…ìÆÇ≠
 	for (int i = 0; i < particletex.size(); i++) {
 		if (m_Alive[i]) {
-			m_AddScale = 0.005f;
 			m_AddPower[i].y += 0.001f;
 			if (m_AddPower[i].y <= 0.01f) {
 				m_pos[i].x += float((cos(m_Angle[i])) * m_speed[i].x);

@@ -63,7 +63,7 @@ void Save::Update() {
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->SetParticleBreak(true);
 	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 4, 4);
-
+	particletex->SetAddScale(0.005f);
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }
 //•`‰æ

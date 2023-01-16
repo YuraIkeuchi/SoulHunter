@@ -1,10 +1,11 @@
 #include "ClearScene.h"
-#include "Audio.h"
 #include "input.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
 #include "imgui.h"
+ClearObj* ClearScene::clearobj = nullptr;
+bool ClearScene::m_ClearNew = false;
 //初期化
 void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	//カメラワーク
@@ -13,9 +14,11 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//Json
-	clearobj = new ClearObj();
-	clearobj->Initialize();
-
+	if (!m_ClearNew) {
+		clearobj = new ClearObj();
+		clearobj->Initialize();
+		m_ClearNew = true;
+	}
 	//スプライト生成
 	IKESprite* CurtainSprite_[2];
 	//gaussian = new PostEffect();

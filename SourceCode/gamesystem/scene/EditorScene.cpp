@@ -254,9 +254,15 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Editor");
 	ImGui::SetWindowPos(ImVec2(1000, 150));
 	ImGui::SetWindowSize(ImVec2(280, 150));
-	if (ImGui::RadioButton("m_SceneChange", &m_SceneChange)) {
-		m_SceneChange = true;
+	if (ImGui::RadioButton("m_GameScene", &m_SceneChange)) {
 		scenechange->SetAddStartChange(true);
+		m_SceneChange = true;
+		m_SceneMigration = GamePlay;
+	}
+	if (ImGui::RadioButton("m_TitleScene", &m_SceneChange)) {
+		scenechange->SetAddStartChange(true);
+		m_SceneChange = true;
+		m_SceneMigration = Title;
 	}
 	if (ImGui::RadioButton("m_EnemyDelete", &m_EnemyDelete)) {
 		m_EnemyDelete = true;
@@ -668,7 +674,7 @@ void EditorScene::ChangeUpdate() {
 		scenechange->SetAddStartChange(true);
 	}
 
-	//シーン変更
+	//ImGuiでシーンを切り替えたかどうか
 	if (scenechange->AddBlack(0.05f)) {
 		//ゲームシーンへ変更
 		if (m_SceneChange) {
@@ -677,21 +683,14 @@ void EditorScene::ChangeUpdate() {
 			block->ResetBlock();
 			minimap->ResetBlock();
 			SaveGame();
-			SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
-			m_SceneChange = false;
-		}
-		else {
-			block->ResetBlock();
-			minimap->ResetBlock();
-			Audio::GetInstance()->StopWave(0);
-			if (player->GetHP() < 1) {
-				SceneManager::GetInstance()->ChangeScene("GAMEOVER");
-				m_GameLoop = true;
+			//シーン先を決める
+			if (m_SceneMigration == GamePlay) {
+				SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
 			}
-			else {
+			else if (m_SceneMigration == Title) {
 				SceneManager::GetInstance()->ChangeScene("TITLE");
-				m_GameLoop = true;
 			}
+			m_SceneChange = false;
 		}
 	}
 	//マップ切り替え

@@ -27,7 +27,7 @@ private://メンバ変数
 	array<unique_ptr<IKESprite>,3> TitlePartsSprite;
 	unique_ptr<IKETexture> backtex;
 	//Json読み込みのクラス
-	TitleObj* titleobj = nullptr;
+	static TitleObj* titleobj;
 	//シーン遷移のためのもの
 	int m_TitleSelect = 0;
 	//タイトルのパーツに必要なもの
@@ -48,5 +48,7 @@ private://メンバ変数
 
 	//ライトの変数
 	XMFLOAT3 m_LightPos = { 0.0f,0.0f,0.0f };
+
+	static bool m_TitleNew;
 };
 

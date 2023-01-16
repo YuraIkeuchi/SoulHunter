@@ -14,9 +14,8 @@ private:
 public:
 	//スプライトの名前
 	enum texName {
-		Title = 26,
+		Title = 27,
 		TitleParts,
-		GameOver,
 		BlackFilter,
 		PauseBack,
 		Pause1,
@@ -34,7 +33,6 @@ public:
 		LoadText1,
 		NowLoad1,
 		ChestBack,
-		LetterMessage,
 		Curtain,
 		SkipText,
 		IntroText,
@@ -54,7 +52,6 @@ public:
 		ChestTex,
 		WingEffect,
 		LightTex,
-		LetterTex,
 		ReadTex,
 		OutArea,
 	};

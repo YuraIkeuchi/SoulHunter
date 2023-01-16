@@ -1,11 +1,12 @@
 #include "IntroductionScene.h"
 #include "Audio.h"
 #include "input.h"
-#include "DebugText.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
 #include "imgui.h"
+IntroductionObj* IntroductionScene::Introductionobj = nullptr;
+bool IntroductionScene ::m_IntroNew = false;
 //初期化
 void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	//カメラワーク
@@ -14,9 +15,11 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//Json
-	Introductionobj = new IntroductionObj();
-	Introductionobj->Initialize();
-
+	if (!m_IntroNew) {
+		Introductionobj = new IntroductionObj();
+		Introductionobj->Initialize();
+		m_IntroNew = true;
+	}
 	//スプライト生成
 	IKESprite* CurtainSprite_[2];
 	//gaussian = new PostEffect();

@@ -391,4 +391,13 @@ public:
 	bool m_SceneChange = false;
 	bool m_EnemyDelete = false;
 	bool m_ObjDelete = false;
+
+	//どのシーンに行くか
+	int m_SceneMigration = 0;
+	//シーン先
+	enum SceneMigration {
+		GamePlay,
+		Editor,
+		Title,
+	};
 };

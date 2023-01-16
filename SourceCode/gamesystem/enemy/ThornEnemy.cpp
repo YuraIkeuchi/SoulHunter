@@ -5,9 +5,9 @@
 using namespace DirectX;
 
 ThornEnemy::ThornEnemy() {
-
+	IKESprite::LoadTexture(26, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
-	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_ = IKESprite::Create(26, { 0.0f,0.0f });
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
@@ -99,6 +99,8 @@ bool ThornEnemy::ThornCollision() {
 }
 //ポーズ
 void ThornEnemy::Pause() {
+	//ミニマップに表示させる
+	MapEnemy();
 	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	Obj_SetParam();
 	m_Object->Update();
@@ -163,5 +165,7 @@ void ThornEnemy::Finalize() {
 void ThornEnemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
-	MiniEnemySprite->Draw();
+	if (m_EnemyPosition.x != 0.0f && m_EnemyPosition.y != 0.0f && m_Alive) {
+		MiniEnemySprite->Draw();
+	}
 }

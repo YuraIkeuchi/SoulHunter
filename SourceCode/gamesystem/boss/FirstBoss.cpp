@@ -254,8 +254,8 @@ void FirstBoss::NotAttack() {
 		m_RandFire = rand() % 3;
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
-		m_Action = (rand() % 4);
-		//m_Action = 3;
+		//m_Action = (rand() % 4);
+		m_Action = 3;
 		m_Active = true;
 	}
 	else {
@@ -568,6 +568,9 @@ void FirstBoss::SpecialAttack() {
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		if (m_CoolT == 49) {
 			m_TargetPos = player->GetPosition();
+		}
+		if (m_TargetPos.y < -154.0f) {
+			m_TargetPos.y = -154.0f;
 		}
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}

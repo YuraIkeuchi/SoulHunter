@@ -199,7 +199,7 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 c = { 0.4,0.4,0.4,0 };//
 	//cameraPosÇ∆Ç†ÇÈÇ™ç°ÇÕå≈íËç¿ïW
 	float dist = length(cameraPos - input.worldpos);
-	float4 addcol = float4(lerp(normalcolor.rgb, c.rgb, dist / 150), 0.0);
+	float4 addcol = float4(lerp(normalcolor.rgb, c.rgb, dist / 50), 0.0);
 	//à√à≈Ç…Ç∑ÇÈÇΩÇﬂ
 	addcol = addcol * -0.5f;
 
