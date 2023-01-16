@@ -78,6 +78,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	//Ž€‚ñ‚¾‚Æ‚«‚ÉˆÃ‚­‚È‚é‚æ‚¤‚Ì‚â‚Â
 	BlackFilter = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
 	BlackFilter->SetColor(BlackColor);
+	BlackFilter->SetSize({ 1280.0f,720.0f });
 	//ƒ[ƒh‰Šú‰»
 	StartGame();
 	LoadEnemyParam(StageNumber);
@@ -405,6 +406,10 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		pause->Draw();
 		chest->ExplainDraw();
 		BlackFilter->Draw();
+		EnemyMapDraw(m_Enemys);
+		EnemyMapDraw(m_ThornEnemys);
+		EnemyMapDraw(m_BoundEnemys);
+		EnemyMapDraw(m_BirdEnemys);
 	}
 	IKESprite::PostDraw();
 }

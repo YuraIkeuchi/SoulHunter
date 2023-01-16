@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Save.h"
 #include "MapChip.h"
+#include "InterEnemy.h"
 #include "Audio.h"
 #include "VolumManager.h"
 #include <array>   
@@ -42,6 +43,8 @@ private:
 public:
 	//getter
 	bool GetReturnMap() { return m_ReturnMap; }
+	int GetMapType() { return m_MapType; }
+	XMFLOAT4 GetMapColor() { return m_MapColor; }
 	//setter
 	void SetReturnMap(bool m_ReturnMap) { this->m_ReturnMap = m_ReturnMap; }
 	void SetDushDraw(bool m_DushDraw) { this->m_DushDraw = m_DushDraw; }

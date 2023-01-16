@@ -23,7 +23,6 @@ void ImageManager::Load2D() {
 	IKESprite::LoadTexture(CompassExplain, L"Resources/2d/ui/Compassexplain.png");
 	IKESprite::LoadTexture(HealExplain, L"Resources/2d/ui/Healexplain.png");
 	IKESprite::LoadTexture(Save1, L"Resources/2d/sceneback/SaveText.png");
-	IKESprite::LoadTexture(BossName, L"Resources/2d/sceneback/BossName.png");
 	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
 	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");
 	IKESprite::LoadTexture(ChestBack, L"Resources/2d/SkillExplain/ExplainBack.png");

@@ -5,6 +5,12 @@
 using namespace DirectX;
 
 BoundEnemy::BoundEnemy() {
+
+	IKESprite* MiniEnemySprite_;
+	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
+	MiniEnemySprite.reset(MiniEnemySprite_);
+
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BoundEnemy);
 	ParticleInit();
 }
@@ -70,6 +76,8 @@ void BoundEnemy::Action() {
 
 	VanishEnemy();
 	ParticleUpdate();
+	//ミニマップに表示させる
+	MapEnemy();
 }
 //描画
 void BoundEnemy::Draw(DirectXCommon* dxCommon) {
@@ -125,4 +133,10 @@ void BoundEnemy::Move() {
 //解放
 void BoundEnemy::Finalize() {
 	//enemyeffects.pop_back();
+}
+
+void BoundEnemy::MapDraw(XMFLOAT4 Color) {
+	MiniEnemySprite->SetColor(Color);
+	IKESprite::PreDraw();
+	MiniEnemySprite->Draw();
 }

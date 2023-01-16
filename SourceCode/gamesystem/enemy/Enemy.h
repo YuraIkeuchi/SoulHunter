@@ -10,6 +10,7 @@ public:
 	void Finalize() override;//開放
 	void Action()override;//更新
 	void Pause() override;//ポーズのとき
+	void MapDraw(XMFLOAT4 Color) override;//ミニマップのとき
 	void Move();//普通の移動
 	void AttackExtra();//攻撃前の予備動作
 	void Tackle();//タックル

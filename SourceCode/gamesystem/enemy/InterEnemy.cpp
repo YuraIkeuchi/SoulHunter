@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "ParticleManager.h"
 bool InterEnemy::Initialize() {
+
 	return true;
 }
 //更新
@@ -310,4 +311,12 @@ void InterEnemy::ArgSoul() {
 		//}
 	
 	}
+}
+
+void InterEnemy::MapEnemy() {
+	//プレイヤーの座標
+	m_EnemyPosition.x = m_Position.x * 4.5f;
+	m_EnemyPosition.y = m_Position.y * -2.4f;
+
+	MiniEnemySprite->SetPosition(m_EnemyPosition);
 }

@@ -10,6 +10,7 @@ public:
 	void Action()override;//更新
 	void Finalize() override;//開放
 	void Pause() override;//ポーズのとき
+	void MapDraw(XMFLOAT4 Color) override;//ミニマップのとき
 	void Draw(DirectXCommon* dxCommon) override;//描画
 	void Move();
 };

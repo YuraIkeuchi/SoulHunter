@@ -73,7 +73,6 @@ protected:
 	//各クラス
 	std::vector<BossEffect*> bosseffects;
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<BossName> bossname = nullptr;
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<Pause> pause = nullptr;
 	OBB OBB1 = {};
@@ -89,7 +88,7 @@ protected:
 	//あたり範囲
 	float m_HitRadius = 0.0f;
 	//HP
-	float m_HP = 40.0f;
+	float m_HP = 1.0f;
 	//エフェクト
 	bool m_Effect = false;
 	float m_Frame = 0.0f;//フレーム

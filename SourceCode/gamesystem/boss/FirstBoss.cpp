@@ -3,10 +3,6 @@
 #include <Easing.h>
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
-	//ボスの名前
-	BossName* bossname_;
-	bossname_ = new BossName();
-	bossname.reset(bossname_);
 	//パーティクル
 	ParticleTex* particletex_;
 	particletex_ = new ParticleTex();
@@ -55,10 +51,6 @@ bool FirstBoss::BattleInitialize() {
 void FirstBoss::Spec() {
 	//行動を決める
 	if (!m_Active) {
-		//ボスの名前表示
-		if (m_AttackCount == 1) {
-			bossname->SetAddStartChange(true);
-		}
 		//攻撃していない
 		NotAttack();
 		m_HitRadius = 2.2f;

@@ -363,28 +363,6 @@ void MiniMap::ColorChange() {
 			m_TextTimer = 0;
 		}
 	}
-
-	////マップ切り替え時の色変更
-	//if (m_MapTypeChange) {
-	//	if (m_MapType == Whole) {
-	//		m_MapColor.w -= 0.05f;
-	//		m_WholeColor.w += 0.05f;
-	//		if (m_WholeColor.w > 1.0f) {
-	//			m_MapColor.w = 0.0f;
-	//			m_WholeColor.w = 1.0f;
-	//			m_MapTypeChange = false;
-	//		}
-	//	}
-	//	else {
-	//		m_MapColor.w += 0.05f;
-	//		m_WholeColor.w -= 0.05f;
-	//		if (m_WholeColor.w < 0.0f) {
-	//			m_MapColor.w = 1.0f;
-	//			m_WholeColor.w = 0.0f;
-	//			m_MapTypeChange = false;
-	//		}
-	//	}
-	//}
 }
 //マップを切り替えるテキストが出てくる
 void MiniMap::MoveStateTex() {

@@ -5,6 +5,12 @@
 using namespace DirectX;
 
 ThornEnemy::ThornEnemy() {
+
+	IKESprite* MiniEnemySprite_;
+	MiniEnemySprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
+	MiniEnemySprite.reset(MiniEnemySprite_);
+
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::ThornEnemy);
 }
 //初期化
@@ -46,6 +52,9 @@ void ThornEnemy::Action() {
 			m_DamageTimer = 0;
 		}
 	}
+
+	//ミニマップに表示させる
+	MapEnemy();
 }
 //描画
 void ThornEnemy::Draw(DirectXCommon* dxCommon) {
@@ -149,4 +158,10 @@ void ThornEnemy::RotMove() {
 //解放
 void ThornEnemy::Finalize() {
 	//enemyeffects.pop_back();
+}
+
+void ThornEnemy::MapDraw(XMFLOAT4 Color) {
+	MiniEnemySprite->SetColor(Color);
+	IKESprite::PreDraw();
+	MiniEnemySprite->Draw();
 }

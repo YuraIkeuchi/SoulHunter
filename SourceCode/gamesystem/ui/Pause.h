@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "VolumManager.h"
 #include "Player.h"
+#include "InterEnemy.h"
 #include <array>   
 #include <memory> 
 #include <list> // ヘッダファイルインクルード
@@ -35,6 +36,7 @@ private:
 public:
 	//getter
 	bool GetIsPause() { return m_IsPause; }
+	int GetPauseNumber() { return m_PauseNumber; }
 	//setter
 	void SetIsPause(bool IsPause) { this->m_IsPause = IsPause; }
 	void SetPauseNumber(int m_PauseNumber) { this->m_PauseNumber = m_PauseNumber; }

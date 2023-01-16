@@ -47,5 +47,11 @@ private:
 	//êF
 	XMFLOAT4 m_HPColor[HP_Max];
 	float m_CutWidth = 72.0f;
+	enum EnemyType {
+		Normal,
+		Thorn,
+		Bound,
+		Bird
+	};
 private:
 };

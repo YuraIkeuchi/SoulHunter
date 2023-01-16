@@ -115,7 +115,7 @@ void PlayerSoul::SetEffect(InterEnemy* enemy) {
 //“–‚½‚è”»’è
 bool PlayerSoul::Collide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Pos.x, m_Pos.y, 1.2f, m_PlayerPos.x, m_PlayerPos.y, 1.2f) && (m_Effect) && (!m_Move)) {
+	if (Collision::CircleCollision(m_Pos.x, m_Pos.y, 1.5f, m_PlayerPos.x, m_PlayerPos.y, 1.5f) && (m_Effect) && (!m_Move)) {
 		//m_ParticleCount = 0;
 		//m_Effect = false;
 		m_Timer = 0;

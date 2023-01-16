@@ -75,8 +75,6 @@ float4 main(VSOutput input) : SV_TARGET
 				// ‘S‚Ä‰ÁŽZ‚·‚é
 				shadecolor.rgb += atten * (diffuse + specular) * pointLights[i].lightcolor;
 
-				//float tone = shadecolor.r * 0.5 + shadecolor.g * 0.5 + shadecolor.b * 0.5;
-
 				//if (tone >= 2.0f) {
 				//	shadecolor.rgb = float3(0, 0, 0);
 				//}
