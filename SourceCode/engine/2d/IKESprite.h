@@ -33,8 +33,6 @@ public: // サブクラス
 
 	struct ConstBufferData
 	{
-		//XMFLOAT2 linearcolor;
-		//XMFLOAT2 toecolor;
 		XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
 		float sepia;

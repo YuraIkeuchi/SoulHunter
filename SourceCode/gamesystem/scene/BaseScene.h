@@ -112,6 +112,7 @@ public:
 	//プレイヤーとステージの読み書き
 	void SaveGame();
 	void LoadGame();
+	void ReloadEnemy();
 	//敵の更新
 	void EnemyUpdate(std::vector<InterEnemy*> m_Enemys);
 	//敵の描画(前

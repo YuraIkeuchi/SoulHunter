@@ -327,8 +327,6 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		/*constMap->linearcolor = this->linearcolor;
-		constMap->toecolor = this->tonecolor;*/
 		constMap->color = this->color;
 		constMap->mat = XMMatrixIdentity();	// s—ñ‚Ì‡¬	
 		constMap->sepia = this->addsepia;

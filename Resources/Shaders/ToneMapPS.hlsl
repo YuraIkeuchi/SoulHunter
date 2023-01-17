@@ -80,15 +80,10 @@ float4 ToneMapping(float4 color) {
 
 //Reinhartトーン
 float3 ReinhardTone(float3 color) {
-
-
     float Lz = MaxLuminance / BaseLuminance;
     float k = BaseLuminance * Lz / (BaseLuminance - Lz);
 
     return float4(color.rgb * k / (color.rgb + float3(k, k, k)), 1);
-
-    //return (1, 1, 1);
-
 }
 
 //GTトーン

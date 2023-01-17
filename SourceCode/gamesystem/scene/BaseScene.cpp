@@ -697,6 +697,15 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_ThornObjs[i]->SetThornObjPos(m_SetThornObjPos[i]);
 	}
 }
+void BaseScene::ReloadEnemy() {
+	m_EnemyStartPos.resize(m_NormalEnemyCount);
+	m_Enemys.resize(m_NormalEnemyCount);
+	for (int i = 0; i < m_Enemy_Num; i++) {
+		m_EnemyStartPos[i] = m_Enemys[i]->GetStartPos();
+		m_Enemys[i]->SetPosition(m_EnemyStartPos[i]);
+		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
+	}
+}
 //CSV‚ðŠJ‚¢‚Ä‚¢‚é
 void BaseScene::OpenObjParam(const int& StageNumber) {
 	switch (StageNumber)

@@ -3,8 +3,6 @@ cbuffer cbuff0 : register(b0)
 	float4 color; // 色(RGBA)
 	matrix mat; // ３Ｄ変換行列
 	float addsepia;
-	/*float2 linearColor;
-	float2 toeColor;*/
 	int ToneType;//トーンタイプ
 	int ColorSpace;//出力色空間
 	float BaseLuminance;//基準輝度

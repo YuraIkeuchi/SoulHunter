@@ -151,8 +151,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		//FPSManager::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
