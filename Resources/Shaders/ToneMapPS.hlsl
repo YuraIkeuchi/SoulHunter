@@ -67,10 +67,12 @@ float4 ToneMapping(float4 color) {
     case 0:
         result.rgb = color.rgb;
         break;
+        //Reinhardトーン
     case 1:
         result.rgb = ReinhardTone(color.rgb);
         break;
     case 2:
+        //GTトーン
         result.rgb = GtTone(color.rgb);
         break;
     }

@@ -100,7 +100,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	m_MoveEnemy = true;
 
 	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	PlayPostEffect = false;
 }

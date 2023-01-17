@@ -153,7 +153,7 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R11G11B10_FLOAT; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ

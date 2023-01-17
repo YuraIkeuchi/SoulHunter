@@ -52,6 +52,9 @@
     <FxCompile Include="Resources\Shaders\ToneMapPS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\NewToneMapPS.hlsl">
+      <Filter>SourceCords\shader\2d\posteffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp">
