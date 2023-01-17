@@ -34,7 +34,7 @@ void ImageManager::Load2D() {
 //テクスチャの読み込み
 void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(DushEffect, L"Resources/2d/effect/DushEffect.png");
-	IKETexture::LoadTexture(AttackEffect, L"Resources/2d/effect/Attack.png");
+	IKETexture::LoadTexture(AttackEffect, L"Resources/2d/effect/DushEffect.png");
 	IKETexture::LoadTexture(ParticleEffect, L"Resources/2d/effect/effect1.png");
 	IKETexture::LoadTexture(DamageEffect, L"Resources/2d/effect/effect2.png");
 	IKETexture::LoadTexture(NormalEffect, L"Resources/2d/effect/NormalEffect.png");

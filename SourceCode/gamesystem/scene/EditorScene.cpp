@@ -60,7 +60,7 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	m_MoveEnemy = false;
 
 	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)

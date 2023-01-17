@@ -49,9 +49,6 @@
     <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ToneMapPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\NewToneMapPS.hlsl">
       <Filter>SourceCords\shader\2d\posteffect</Filter>
     </FxCompile>

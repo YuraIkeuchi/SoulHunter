@@ -6,7 +6,17 @@ class PostEffect : public IKESprite
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
+	// 定数バッファ用データ構造体B0
+	struct CONST_BUFFER_DATA_POST
+	{
+		float sepia;
+		float pad;
+		XMFLOAT2 P1;
+		XMFLOAT2 P2;
+		XMFLOAT2 P3;
+	};
 
+public:
 	//コンストラクタ
 	PostEffect();
 	/// <summary>
@@ -52,22 +62,27 @@ private://メンバ変数
 	ComPtr<ID3D12RootSignature>rootSignature;
 	//セピア
 	static float addsepia;
-	//トーンマップ用
-	XMFLOAT2 tonecolor;
-	XMFLOAT2 linearcolor;
-	int ToneType;//トーンタイプ
-	int ColorSpace;//出力色空間
-	float BaseLuminance;//基準輝度
-	float MaxLuminance;//最大輝度
 	int tex = 0;
-	enum Tone {
-		None,
-		Reinhard,
-		Gt
-	};
+	////トーンマップ用
+	//XMFLOAT2 tonecolor;
+	//XMFLOAT2 linearcolor;
+	//int ToneType;//トーンタイプ
+	//int ColorSpace;//出力色空間
+	//float BaseLuminance;//基準輝度
+	//float MaxLuminance;//最大輝度
+	//enum Tone {
+	//	None,
+	//	Reinhard,
+	//	Gt
+	//};
 
-	enum ColorType {
-		Default,
-		Change,
-	};
+	//enum ColorType {
+	//	Default,
+	//	Change,
+	//};
+
+
+	XMFLOAT2 P1 = { 0.10f,0.05f };
+	XMFLOAT2 P2 = { 0.50f,0.5f };
+	XMFLOAT2 P3 = { 2.00f,1.00f };
 };

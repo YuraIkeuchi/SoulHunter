@@ -13,8 +13,9 @@ float PostEffect::addsepia = 0.0f;
 PostEffect::PostEffect()
 	:IKESprite(100, { 0,0 }, { 500,500 }, { 1,1,1,1 }, { 0,0 }, false, false)
 {
-	tonecolor = { 1.125f,1.5f };
-	linearcolor = { 1.5f,0.0f };
+	P1 = { 0.10f, 0.05f };
+	P2 = { 0.20f, 0.55f};
+	P3 = { 2.00f, 1.00f };
 }
 
 void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar_t* psShaderName)
@@ -127,7 +128,7 @@ void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R11G11B10_FLOAT; // 0～255指定のRGBA
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
@@ -195,7 +196,7 @@ void PostEffect::Initialize()
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(CONST_BUFFER_DATA_POST) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
@@ -205,7 +206,7 @@ void PostEffect::Initialize()
 	//CreateGraphicsPipelineState();
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R11G11B10_FLOAT,
+		DXGI_FORMAT_R8G8B8A8_UNORM,
 		WinApp::window_width,
 		(UINT)WinApp::window_height,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
@@ -218,7 +219,7 @@ void PostEffect::Initialize()
 			D3D12_HEAP_FLAG_NONE,
 			&texresDesc,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R11G11B10_FLOAT, clearColor),
+			&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
 			IID_PPV_ARGS(&texBuff[i]));
 		assert(SUCCEEDED(result));
 		{//テクスチャを赤
@@ -300,7 +301,7 @@ void PostEffect::Initialize()
 	assert(SUCCEEDED(result));
 	//SRV
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = DXGI_FORMAT_R11G11B10_FLOAT;
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
@@ -324,16 +325,17 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	this->matWorld *= XMMatrixTranslation(position.x, position.y, 0.0f);
 
 	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
+	CONST_BUFFER_DATA_POST* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->color = this->color;
-		constMap->mat = XMMatrixIdentity();	// 行列の合成	
 		constMap->sepia = this->addsepia;
-		constMap->ToneType = this->ToneType;
+		constMap->P1 = this->P1;
+		constMap->P2 = this->P2;
+		constMap->P3 = this->P3;
+	/*	constMap->ToneType = this->ToneType;
 		constMap->ColorSpace = this->ColorSpace;
 		constMap->BaseLuminance = this->BaseLuminance;
-		constMap->MaxLuminance = this->MaxLuminance;
+		constMap->MaxLuminance = this->MaxLuminance;*/
 		this->constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定
@@ -410,34 +412,14 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 }
 
 void PostEffect::ImGuiDraw() {
-	ImGui::Begin("post");
-	ImGui::Text("ColorType:%d", ColorSpace);
-	ImGui::Text("ToneType:%d", ToneType);
-	ImGui::SliderFloat("BaseLuminance", &BaseLuminance, 0.0f, 2.0f);
-	ImGui::SliderFloat("MaxLuminance", &MaxLuminance, 0.0f, 2.0f);
-	if (ImGui::RadioButton("ColorType:Default", &ColorSpace)) {
-		ColorSpace = Default;
-	}
-	if (ImGui::RadioButton("ColorType:Change", &ColorSpace)) {
-		ColorSpace = Change;
-	}
-	if (ImGui::RadioButton("ToneType:None", &ToneType)) {
-		ToneType = None;
-	}
-	if (ImGui::RadioButton("ToneType:Reinhard", &ToneType)) {
-		ToneType = Reinhard;
-	}
-	if (ImGui::RadioButton("ToneType:Gt", &ToneType)) {
-		ToneType = Gt;
-	}
+	ImGui::Begin("shader");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(300, 130));
+	ImGui::SliderFloat("P1.x", &P1.x, 0, 0.1f);
+	ImGui::SliderFloat("P1.y", &P1.y, 0, 0.1f);
+	ImGui::SliderFloat("P2.x", &P2.x, 0.5f, 1.0f);
+	ImGui::SliderFloat("P2.y", &P2.y, 0.5f, 1.0f);
+	ImGui::SliderFloat("P3.x", &P3.x, 1, 2);
+	ImGui::SliderFloat("P3.y", &P3.y, 1, 2);
 	ImGui::End();
-
-	//ImGui::Begin("shader");
-	//ImGui::SetWindowPos(ImVec2(0, 0));
-	//ImGui::SetWindowSize(ImVec2(300, 130));
-	//ImGui::SliderFloat("toe : x", &tonecolor.x, 0, 2);
-	//ImGui::SliderFloat("toe : y", &tonecolor.y, 0, 2);
-	//ImGui::SliderFloat("linear : x", &linearcolor.x, 0, 2);
-	//ImGui::SliderFloat("linear : y", &linearcolor.y, 0, 2);
-	//ImGui::End();
 }
