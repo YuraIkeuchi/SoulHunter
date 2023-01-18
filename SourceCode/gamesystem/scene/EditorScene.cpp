@@ -192,8 +192,6 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	}
 	backlight->Draw();
 	save->Draw();
-	//パーティクルの描画
-	particleMan->Draw(dxCommon->GetCmdList());
 	//敵の描画
 	EnemyDraw(m_Enemys, dxCommon);
 	EnemyDraw(m_ThornEnemys, dxCommon);
@@ -569,7 +567,6 @@ void EditorScene::AllUpdate() {
 
 	//その他の更新
 	hitstop->Update();
-	ParticleManager::GetInstance()->Update();
 	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);

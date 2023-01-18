@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Pause.h"
 #include "IKETexture.h"
-#include "ParticleTex.h"
+#include "ParticleManager.h"
 #include "BossEffect.h"
 #include "BossName.h"
 #include "VariableCommon.h"
@@ -73,7 +73,8 @@ protected:
 	//ŠeƒNƒ‰ƒX
 	std::vector<BossEffect*> bosseffects;
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<ParticleTex> particletex = nullptr;
+	unique_ptr<ParticleManager> hoot;
+	unique_ptr<ParticleManager> death;
 	unique_ptr<Pause> pause = nullptr;
 	OBB OBB1 = {};
 	OBB OBB2 = {};

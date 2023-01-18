@@ -17,14 +17,11 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 
 	// グラフィックスパイプライン生成
 	IKEFBXObject3d::CreateGraphicsPipeline();
-	//パ^ティクルマネージャー
-	particleMan = ParticleManager::GetInstance();
 	// カメラ生成
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
 	IKETexture::SetCamera(camera);
 	// 3Dオブジェクトにカメラをセット
 	IKEObject3d::SetCamera(camera);
-	particleMan->SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
 	//ポストエフェクトの初期化
 	//(普通)
@@ -36,11 +33,8 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット
 	IKEObject3d::SetLightGroup(lightGroup);
-	// パーティクルマネージャ生成
-
-	//BirthParticle();
-	ParticleManager::GetInstance()->Update();
-
+	//パーティクルにカメラセット
+	ParticleManager::CreateCommon(dxCommon->GetDev(), camera, dxCommon->GetCmdList());
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);

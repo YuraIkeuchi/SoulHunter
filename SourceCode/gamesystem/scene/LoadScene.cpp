@@ -60,7 +60,7 @@ void LoadScene::Initialize(DirectXCommon* dxCommon) {
 }
 //XV
 void LoadScene::Update(DirectXCommon* dxCommon) {
-	ParticleManager::GetInstance()->Update();
+
 	Input* input = Input::GetInstance();
 
 	m_LoadTimer++;

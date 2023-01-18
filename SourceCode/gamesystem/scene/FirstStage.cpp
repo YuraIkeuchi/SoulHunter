@@ -213,7 +213,7 @@ void FirstStage::NormalUpdate() {
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
 	}
-	ParticleManager::GetInstance()->Update();
+
 	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
@@ -375,8 +375,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		backlight->Draw();
 		save->Draw();
-		//パーティクルの描画
-		particleMan->Draw(dxCommon->GetCmdList());
 		//チュートリアル
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->Draw();

@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "ModelManager.h"
 #include "IKEFbxLoader.h"
-#include "ParticleManager.h"
+#include "ImageManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -32,17 +32,21 @@ bool Player::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
-	ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
-
 	SwordParticle* swordparticle_ = new SwordParticle();
 	swordparticle_->Initialize();
 	swordparticle.reset(swordparticle_);
 
-	ParticleHeal* particleheal_ = new ParticleHeal();
-	particleheal_->Initialize();
-	particleheal.reset(particleheal_);
+	ParticleManager* death_ = new ParticleManager();
+	death_->Initialize(ImageManager::ParticleEffect);
+	death.reset(death_);
+
+	ParticleManager* heal_ = new ParticleManager();
+	heal_->Initialize(ImageManager::ParticleEffect);
+	heal.reset(heal_);
+
+	ParticleManager* hoot_ = new ParticleManager();
+	hoot_->Initialize(ImageManager::HootEffect);
+	hoot.reset(hoot_);
 
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
@@ -186,11 +190,9 @@ void Player::EffectUpdate() {
 			0 };
 
 	//パーティクル関係
-	particletex->SetStartColor({ 1.0f,0.9f,0.8f,1.0f });
-	
-	particletex->Update(m_ParticlePos, m_ParticleCount, 3, m_ParticleNumber);
-	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
-	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
+	hoot->Update();
+	heal->Update();
+	death->Update();
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
@@ -264,12 +266,11 @@ void Player::PlayerMove() {
 				}
 
 			}
-			particletex->SetParticleBreak(true);
 		}
 		else {
 			m_Velocity = 0.0f;
-			if (m_FoodParticleCount == 5.0f) {
-				m_FoodParticleCount = 0.0f;
+			if (m_FoodParticleCount == 5) {
+				m_FoodParticleCount = 0;
 			}
 		}
 	}
@@ -285,15 +286,13 @@ void Player::PlayerMove() {
 				MoveCommon(-0.3f, Left, 270.0f);
 
 			}
-			particletex->SetParticleBreak(true);
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0.0f;
+			m_FoodParticleCount = 0;
 		}
 	}
 	m_Position.x += m_Velocity;
-	particletex->SetParticleBreak(true);
 	//歩きアニメーション
 	WalkAnimation();
 
@@ -335,7 +334,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_PlayerDir = Dir;
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
-		m_FoodParticleCount += 0.5f;
+		m_FoodParticleCount += 1;
 		m_ParticlePos.x = m_Position.x;
 		m_ParticlePos.y = m_Position.y - 1.5f;
 		m_ParticlePos.z = m_Position.z;
@@ -510,7 +509,7 @@ void Player::PlayerAttack() {
 
 		//攻撃が地面で行われた場合砂煙が発生する
 		if (!m_Jump && m_AddPower == 0.0f) {
-			m_FoodParticleCount += 0.25f;
+			m_FoodParticleCount += 1;
 			m_FoodParticlePos = {
 		m_AttackPos.x,
 		m_AttackPos.y - 2.0f,
@@ -562,7 +561,6 @@ void Player::PlayerDush() {
 			m_Dush = true;
 			m_ParticlePos = m_Position;
 			m_ParticleCount = 3;
-			particletex->SetParticleBreak(false);
 			if (m_PlayerDir == Right) {
 				//m_Rotation.y = 180.0f;
 				m_DushDir = DushRight;
@@ -622,7 +620,6 @@ void Player::PlayerHeal() {
 		}
 	}
 	else if (m_HealType == Invocation) {
-		particleheal->SetHeal(true);
 		if (m_Frame < 1.0f) {
 			m_Frame += 0.1f;
 		}
@@ -846,7 +843,6 @@ bool Player::DeathMove() {
 		}
 		m_Position.x += m_ShakePos.x;
 		m_Position.y += m_ShakePos.y;
-		particletex->SetParticleBreak(true);
 		m_ParticleNumber = 2;
 		m_ParticlePos = m_Position;
 		if (m_AddDisolve >= 1.9f) {
@@ -903,8 +899,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	particleheal->Draw();
-	particletex->Draw();
+	hoot->Draw();
+	heal->Draw();
+	death->Draw();
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -1033,18 +1030,47 @@ void Player::Editor() {
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
+	XMFLOAT3 l_hootpos{};
+	XMFLOAT3 l_deathpos{};
+	XMFLOAT3 l_healpos{};
+
 	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5.0f && m_Alive) {
-		for (int i = 0; i < m_FoodParticleNum; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = m_Position.z;
-			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
-		}
-		m_FoodParticleCount = 0.0f;
+	if (m_FoodParticleCount >= 5 && m_Alive) {
+		const float rnd_vel = 0.1f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = m_Position.z;
+		l_hootpos = { m_Position.x,m_Position.y - 1.0f,m_Position.z };
+		//const float rnd_sca = 0.1f;
+		//float sca{};
+		//sca = (float)rand() / RAND_MAX*rnd_sca;
+		hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f, { 1.0f,1.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		m_FoodParticleCount = 0;
 	}
+
+	//m_PlayerPos = player->GetPosition();
+	if (m_ParticleCount >= 1) {
+		float angle = (float)rand() / RAND_MAX * 360.0f;
+		const float rnd_vel = 0.1f;
+		XMFLOAT3 vel{};
+		l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
+		l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
+		l_deathpos.z = m_Position.z;
+		death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.9f,0.8f,1.0f }, { 1.0f,0.9f,0.8f,1.0f });
+		m_ParticleCount = 0;
+	}
+
+	if (m_HealCount >= 1) {
+		const float rnd_vel = 0.05f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+		vel.z = 0.0f;
+		l_healpos = m_Position;
+		heal->Add(20, { l_healpos.x,l_healpos.y - 1.0f,l_healpos.z }, vel, {}, 1.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
+	}
+	heal->Update();
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {

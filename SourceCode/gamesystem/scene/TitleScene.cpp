@@ -45,7 +45,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		titleobj->Initialize();
 		m_TitleNew = true;
 	}
-	titleobj->SetStopParticle(false);
 	//ライト
 	m_LightPos = { 0.0f,0.0f,15.0f };
 
@@ -62,7 +61,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
-	ParticleManager::GetInstance()->Update();
 	Input* input = Input::GetInstance();
 	lightGroup->Update();
 	titleobj->Update();
@@ -86,7 +84,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
-		titleobj->SetStopParticle(true);
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
 		scenechange->SetAddStartChange(true);
 		if (m_TitleSelect == NewGame) {
@@ -98,7 +95,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	//ライトを徐々に小さくする
-	if (titleobj->GetStopParticle() && pointLightAtten[0] <= 1.0f) {
+	if (pointLightAtten[0] <= 1.0f) {
 		pointLightAtten[0] += 0.0001f;
 		pointLightAtten[1] += 0.0001f;
 		pointLightAtten[2] += 0.0001f;

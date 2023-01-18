@@ -43,6 +43,7 @@ public:
 		DushEffect,
 		AttackEffect,
 		ParticleEffect,
+		HootEffect,
 		DamageEffect,
 		NormalEffect,
 		SmokeTex,

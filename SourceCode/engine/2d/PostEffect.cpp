@@ -133,9 +133,9 @@ void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar
 
 	// デスクリプタレンジ
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV0;
+	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV1;
-	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t0 レジスタ
 
 															   // ルートパラメータ

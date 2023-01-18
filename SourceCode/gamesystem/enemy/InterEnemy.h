@@ -1,17 +1,12 @@
 #pragma once
-#include "IKEObject3d.h"
-#include"IKEModel.h"
 #include "Block.h"
 #include "Player.h"
 #include "EnemyEffect.h"
-#include "BirdEnemyEffect.h"
-#include "IKEFBXModel.h"
-#include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
+#include "ParticleManager.h"
 #include "HitStop.h"
 #include "VariableCommon.h"
-#include "ParticleTex.h"
 #include "CollisionPrimitive.h"
 #define DIRECTINPUT_VERSION 0x0800
 
@@ -64,8 +59,8 @@ protected:
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
-	std::vector<BirdEnemyEffect*> birdenemyeffects;
-	unique_ptr<ParticleTex> particletex = nullptr;
+	unique_ptr<ParticleManager> hoot;
+	unique_ptr<ParticleManager> death;
 	unique_ptr<HitStop> hitstop =nullptr;
 
 	//スプライト
@@ -93,8 +88,6 @@ protected:
 	bool m_EffectArgment = false;
 	bool m_SoulArgment = false;
 	int m_SoulCount = 0;
-	//bool m_Soul = false;
-	//bool m_death = false;
 	//棘の的に使う
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
@@ -135,7 +128,7 @@ protected:
 	float m_ThornSetPos = 0.0f;
 	//パーティクル関係
 	int m_ParticleNum = 5;
-	float m_ParticleCount = 0.0f;
+	int m_ParticleCount = 0;
 	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
 	//敵の種類(当たり判定などに用いる)
 	int m_EnemyType = 0;
@@ -208,6 +201,9 @@ public:
 	//足元にパーティクル
 	void BirthParticle();
 
+	//死んだ時
+	void DeathBirthParticle();
+
 	bool VanishEnemy();//敵が消える処理
 
 	void ArgEffect();//エフェクト生成
@@ -217,8 +213,7 @@ public:
 	//パーティクル関係
 	void ParticleInit();
 	void ParticleUpdate();
-	//エフェクト発生
-	void BirdArgment();
+
 	//ミニマップに敵を表示
 	void MapEnemy();
 };
