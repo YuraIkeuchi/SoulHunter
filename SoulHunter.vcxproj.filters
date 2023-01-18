@@ -270,9 +270,6 @@
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
@@ -280,9 +277,6 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ThornParticle.cpp">
@@ -638,9 +632,6 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
@@ -648,9 +639,6 @@
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ThornParticle.h">

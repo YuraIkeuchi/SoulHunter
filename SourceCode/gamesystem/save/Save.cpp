@@ -31,9 +31,9 @@ void Save::Initialize() {
 	}
 
 	m_ParticleCount = 0;
-	ParticleTex* particletex_ = new ParticleTex();
+	/*ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
-	particletex.reset(particletex_);
+	particletex.reset(particletex_);*/
 	//エフェクト
 	MarkEffect* markEffect_ = new MarkEffect();
 	markEffect_->Initialize();
@@ -60,10 +60,10 @@ void Save::Update() {
 	if (m_ParticleCount > 4) {
 		m_ParticleCount = 0;
 	}
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->SetParticleBreak(true);
-	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 4, 4);
-	particletex->SetAddScale(0.005f);
+	//particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	//particletex->SetParticleBreak(true);
+	//particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 4, 4);
+	//particletex->SetAddScale(0.005f);
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }
 //描画
@@ -79,7 +79,7 @@ const void Save::Draw() {
 	if (m_SaveText) {
 		SaveSprite[m_SaveCount]->Draw();
 	}
-	particletex->Draw();
+	//particletex->Draw();
 
 }
 

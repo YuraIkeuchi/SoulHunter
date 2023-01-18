@@ -57,6 +57,7 @@ void TitleObj::Update() {
 }
 //‘O–Ê•`‰æ
 const void TitleObj::FrontDraw() {
+	IKEObject3d::PreDraw();
 	fire->Draw(addBle);
 }
 //”wŒi•`‰æ

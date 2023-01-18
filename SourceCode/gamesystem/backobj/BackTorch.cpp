@@ -15,9 +15,9 @@ void BackTorch::Initialize() {
 	object3d_->SetScale(m_scale);
 	object3d.reset(object3d_);
 	m_ParticleCount = 0;
-	ParticleTex* particletex_ = new ParticleTex();
+	/*ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
-	particletex.reset(particletex_);
+	particletex.reset(particletex_);*/
 }
 
 //ƒZƒbƒg
@@ -30,10 +30,10 @@ void BackTorch::SetObj() {
 	if (m_ParticleCount > 4) {
 		m_ParticleCount = 0;
 	}
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->SetParticleBreak(true);
+	//particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	//particletex->SetParticleBreak(true);
 	if (UpdateCollide()) {
-		particletex->Update({ m_pos.x,m_pos.y + 8.0f,m_pos.z }, m_ParticleCount, 4, 4);
+		//particletex->Update({ m_pos.x,m_pos.y + 8.0f,m_pos.z }, m_ParticleCount, 4, 4);
 	}
 }
 //“Á•Ê‚È•`‰æ
@@ -44,6 +44,6 @@ void BackTorch::specialDraw() {
 	//ImGui::Text("m_Position.z : %f", m_rot.z);
 	//ImGui::End();
 	if (DrawCollide()) {
-		particletex->Draw();
+		//particletex->Draw();
 	}
 }

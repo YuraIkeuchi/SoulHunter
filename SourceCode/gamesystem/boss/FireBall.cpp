@@ -1,6 +1,5 @@
 #include "FireBall.h"
 #include "ImageManager.h"
-#include "imgui.h"
 #include "Collision.h"
 //読み込み
 FireBall::FireBall() {
@@ -14,9 +13,9 @@ FireBall::FireBall() {
 bool FireBall::Initialize() {
 	m_Scale = { 0.4f, 0.4f, 0.4f };
 	m_Color = { 1.0f,0.5f,0.0f,1.0f };
-	ParticleTex* particletex_ = new ParticleTex();
+	/*ParticleTex* particletex_ = new ParticleTex();
 	particletex_->Initialize();
-	particletex.reset(particletex_);
+	particletex.reset(particletex_);*/
 	return true;
 }
 //更新
@@ -35,11 +34,11 @@ void FireBall::Update() {
 	firetex->SetPosition(m_Position);
 	firetex->SetScale(m_Scale);
 	//パーティクルの更新
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->SetParticleBreak(true);
-	for (int i = 0; i < 2; i++) {
+	//particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	//particletex->SetParticleBreak(true);
+	/*for (int i = 0; i < 2; i++) {
 		particletex->Update(m_Position, m_ParticleCount, 2, 0);
-	}
+	}*/
 }
 //ポーズ時
 void FireBall::Pause() {
@@ -57,7 +56,6 @@ void FireBall::Draw(DirectXCommon* dxCommon) {
 	if (m_Alive) {
 	firetex->Draw();
 	}
-	particletex->Draw();
 }
 //実際に弾を撃つ
 void FireBall::Shot() {

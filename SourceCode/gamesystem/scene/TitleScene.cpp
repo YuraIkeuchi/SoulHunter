@@ -10,6 +10,8 @@ TitleObj* TitleScene::titleobj = nullptr;
 bool TitleScene::m_TitleNew = false;
 //初期化
 void TitleScene::Initialize(DirectXCommon* dxCommon) {
+	//共通の初期化
+	BaseInitialize(dxCommon);
 	//スプライト生成
 	IKESprite* TitlePartsSprite_[3];
 	//gaussian = new PostEffect();
@@ -37,8 +39,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//カメラワーク
 	camerawork = new CameraWork();
 	camerawork->SetCameraType(0);
-	//共通の初期化
-	BaseInitialize(dxCommon);
+	
 	//Json
 	if (!m_TitleNew) {
 		titleobj = new TitleObj();

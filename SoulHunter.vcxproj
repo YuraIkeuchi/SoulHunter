@@ -296,11 +296,9 @@
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ThornParticle.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\Player.cpp" />
@@ -424,11 +422,9 @@
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h" />
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.h" />
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ThornParticle.h" />
     <ClInclude Include="SourceCode\gamesystem\player\Player.h" />

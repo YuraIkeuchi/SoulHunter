@@ -53,7 +53,7 @@ public:
 
 	void SetPosition(const XMFLOAT3& m_Position) { this->m_Position = m_Position; }
 private:
-	unique_ptr<ParticleTex> particletex = nullptr;
+	//unique_ptr<ParticleTex> particletex = nullptr;
 	//ƒNƒ‰ƒX
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<MarkEffect> markEffect = nullptr;
