@@ -7,15 +7,7 @@
 #include <d3dx12.h>
 #include <forward_list>
 #include "Camera.h"
-
-
-//タイプ
-enum blendType {
-	alphaBle = 0,
-	addBle,
-	subBle
-};
-
+#include "VariableCommon.h"
 
 /// <summary>
 /// パーティクルマネージャ
@@ -112,7 +104,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(blendType type = alphaBle);
+	void Draw(int BlendType);
 
 	///// <summary>
 	///// カメラのセット
@@ -166,6 +158,9 @@ public: // メンバ関数
 	/// </summary>
 	void CreateModel(UINT texNumber);
 
+public:
+		void SetAlphaType(int m_AlphaType) { this->m_AlphaType = m_AlphaType; }
+
 private: // メンバ変数
 	static const int srvCount = 213;
 	// デバイス
@@ -204,6 +199,8 @@ private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff;
 	// パーティクル配列
 	std::forward_list<Particle> particles;
+
+	int m_AlphaType = 0;
 
 };
 

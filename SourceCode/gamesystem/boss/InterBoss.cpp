@@ -71,8 +71,8 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	hoot->Draw();
-	death->Draw();
+	hoot->Draw(AlphaBlendType);
+	death->Draw(AddBlendType);
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }

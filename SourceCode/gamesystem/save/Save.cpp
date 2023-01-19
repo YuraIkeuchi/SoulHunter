@@ -11,7 +11,6 @@ void Save::Initialize() {
 	objSave_ = IKEObject3d::Create();
 	objSave_->SetModel(modelSave);
 	objSave_->SetRotation({ 0.0f,90.0f,0.0f });
-	objSave_->SetLightEffect(false);
 	objSave_->SetScale({ 3.0f,3.0f,3.0f });
 	objSave.reset(objSave_);
 	

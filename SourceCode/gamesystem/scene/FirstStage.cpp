@@ -102,7 +102,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
-	PlayPostEffect = true;
+	//PlayPostEffect = true;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)

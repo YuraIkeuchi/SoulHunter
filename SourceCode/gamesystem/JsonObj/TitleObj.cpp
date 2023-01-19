@@ -6,7 +6,7 @@ using namespace DirectX;
 void TitleObj::Initialize() {
 
 	ParticleManager* fire_ = new ParticleManager();
-	fire_->Initialize(ImageManager::ParticleEffect);
+	fire_->Initialize(ImageManager::Normal);
 	fire.reset(fire_);
 	jsonData = JsonLoader::LoadFile("Title");
 
@@ -58,7 +58,7 @@ void TitleObj::Update() {
 //‘O–Ê•`‰æ
 const void TitleObj::FrontDraw() {
 	IKEObject3d::PreDraw();
-	fire->Draw(addBle);
+	
 }
 //”wŒi•`‰æ
 const void TitleObj::BackDraw() {
@@ -66,6 +66,8 @@ const void TitleObj::BackDraw() {
 	for (auto& object : objects) {
 		object->Draw();
 	}
+
+	fire->Draw(AddBlendType);
 }
 //‰ð•ú
 void TitleObj::Finalize() {
@@ -81,7 +83,7 @@ void TitleObj::BirthParticle() {
 	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
-	fire->Add(20, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 
 	fire->Update();
 }

@@ -18,7 +18,10 @@ ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
 CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
 CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
 ComPtr<ID3D12Resource> ParticleManager::texbuff[srvCount];
-UINT ParticleManager::descriptorHandleIncrementSize = 0;
+UINT ParticleManager::descriptorHandleIncrementSize = 0u;
+std::string ParticleManager::directoryPath = "Resources/2d/Effect/";
+std::string ParticleManager::extensionPath = ".png";
+
 
 
 
@@ -152,7 +155,7 @@ void ParticleManager::Update() {
 	constBuff->Unmap(0, nullptr);
 }
 
-void ParticleManager::Draw(blendType type) {
+void ParticleManager::Draw(int BlendType) {
 	UINT drawNum = (UINT)std::distance(particles.begin(), particles.end());
 	if (drawNum > vertexCount) {
 		drawNum = vertexCount;
@@ -165,19 +168,19 @@ void ParticleManager::Draw(blendType type) {
 
 	// nullptrチェック
 	assert(cmdList);
-	if (type == alphaBle) {
+	if (BlendType == AlphaBlendType) {
 		// パイプラインステートの設定
 		cmdList->SetPipelineState(alphaBlendPipelineSet.pipelinestate.Get());
 		// ルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(alphaBlendPipelineSet.rootsignature.Get());
 	}
-	if (type == addBle) {
+	if (BlendType == AddBlendType) {
 		// パイプラインステートの設定
 		cmdList->SetPipelineState(addBlendPipelineSet.pipelinestate.Get());
 		// ルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(addBlendPipelineSet.rootsignature.Get());
 	}
-	if (type == subBle) {
+	if (BlendType == SubBlendType) {
 		// パイプラインステートの設定
 		cmdList->SetPipelineState(subBlendPipelineSet.pipelinestate.Get());
 		// ルートシグネチャの設定
@@ -248,7 +251,7 @@ void ParticleManager::InitializeGraphicsPipeline() {
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleVS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/ParticleVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -271,7 +274,7 @@ void ParticleManager::InitializeGraphicsPipeline() {
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticlePS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/ParticlePS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -294,7 +297,7 @@ void ParticleManager::InitializeGraphicsPipeline() {
 
 	// ジオメトリシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleGS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/ParticleGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -841,7 +844,7 @@ void ParticleManager::LoadTexture(UINT texNumber, const std::string& filename) {
 	ScratchImage scratchImg{};
 
 	//ディレクトリパスとファイル名を連結してフルパスを得る
-	std::string fullPath = filename;
+	std::string fullPath = directoryPath + filename + extensionPath;
 
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];

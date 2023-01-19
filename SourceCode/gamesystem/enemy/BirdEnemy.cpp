@@ -112,7 +112,7 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 
-	death->Draw();
+	death->Draw(AddBlendType);
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {

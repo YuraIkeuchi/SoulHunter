@@ -3,6 +3,7 @@
 #include <string>
 #include "IKESprite.h"
 #include "IKETexture.h"
+#include "ParticleManager.h"
 //2D‚Ì“Ç‚İ‚İˆ—
 class ImageManager  final {
 private:
@@ -56,11 +57,18 @@ public:
 		ReadTex,
 		OutArea,
 	};
+
+	enum ParticleTex {
+		Normal,
+		Food
+	};
 public:
 	static ImageManager* GetIns();		//æ“¾—p
 
 	void Load2D();
 	void LoadTex2D();
+	void LoadParticle();
 
+	static bool load;
 };
 

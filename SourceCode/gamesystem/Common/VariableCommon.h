@@ -42,3 +42,11 @@ enum HitDir {
 	HitRight,
 	HitLeft,
 };
+//ブレンドタイプ
+enum BlendType
+{
+	AlphaBlendType,
+	AddBlendType,
+	SubBlendType,
+};
+

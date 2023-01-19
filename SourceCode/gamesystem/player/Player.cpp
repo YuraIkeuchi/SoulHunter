@@ -899,9 +899,9 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	hoot->Draw();
-	heal->Draw();
-	death->Draw();
+	hoot->Draw(AlphaBlendType);
+	heal->Draw(AddBlendType);
+	death->Draw(AlphaBlendType);
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
