@@ -19,7 +19,6 @@ Player::Player() {
 //初期化
 bool Player::Initialize()
 {
-	
 	IKEObject3d* m_FollowObject_ = new IKEObject3d();
 	m_FollowObject_ = IKEObject3d::Create();
 	m_FollowObject_->SetModel(m_FollowModel);
@@ -115,8 +114,7 @@ void Player::Update()
 
 	//自動落下
 	PlayerFall();
-	//パーティクル生成
-	BirthParticle();
+
 	//剣の更新
 	SwordUpdate();
 	
@@ -148,6 +146,8 @@ void Player::Update()
 }
 //剣の更新
 void Player::SwordUpdate() {
+	//パーティクル生成
+	BirthParticle();
 	//行列を求める
 	m_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
 	m_VectorSwordPos.m128_f32[1] = m_HandMat.r[3].m128_f32[1];
@@ -190,9 +190,6 @@ void Player::EffectUpdate() {
 			0 };
 
 	//パーティクル関係
-	hoot->Update();
-	heal->Update();
-	death->Update();
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
@@ -410,12 +407,6 @@ void Player::PlayerFall() {
 			m_Jump = false;
 			m_AddPower = 0.0f;
 		}
-
-		//空中アニメーション
-		/*m_AnimationTimer.FallAnimation++;
-		if (m_AnimationTimer.FallAnimation == 1) {
-			PlayerAnimetion(10, 1);
-		}*/
 	}
 	else {
 		m_Jump = true;
@@ -594,7 +585,7 @@ void Player::PlayerDush() {
 void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
-	if (input->PushButton(input->Button_Y) && (s_UseHeal) && (m_HP <= 4)
+	if (input->PushButton(input->Button_Y)  
 		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())) {
 		m_HealType = InterVal;
 	}
@@ -889,6 +880,11 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 
+	//パーティクルの描画
+	hoot->Draw(AlphaBlendType);
+	heal->Draw(AddBlendType);
+	death->Draw(AlphaBlendType);
+
 	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
 		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
@@ -898,10 +894,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 			Fbx_Draw(dxCommon);
 		}
 	}
-	//パーティクルの描画
-	hoot->Draw(AlphaBlendType);
-	heal->Draw(AddBlendType);
-	death->Draw(AlphaBlendType);
+	
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -1041,7 +1034,7 @@ void Player::BirthParticle() {
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.z = m_Position.z;
-		l_hootpos = { m_Position.x,m_Position.y - 1.0f,m_Position.z };
+		l_hootpos = { m_Position.x,m_Position.y - 0.0f,m_Position.z };
 		//const float rnd_sca = 0.1f;
 		//float sca{};
 		//sca = (float)rand() / RAND_MAX*rnd_sca;
@@ -1061,16 +1054,16 @@ void Player::BirthParticle() {
 		m_ParticleCount = 0;
 	}
 
-	if (m_HealCount >= 1) {
 		const float rnd_vel = 0.05f;
 		XMFLOAT3 vel{};
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
 		vel.z = 0.0f;
 		l_healpos = m_Position;
-		heal->Add(20, { l_healpos.x,l_healpos.y - 1.0f,l_healpos.z }, vel, {}, 1.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
-	}
+		heal->Add(200, { l_healpos.x,l_healpos.y - 1.0f,l_healpos.z }, vel, {}, 1.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
+	hoot->Update();
 	heal->Update();
+	death->Update();
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {

@@ -88,8 +88,9 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <returns></returns>
-	static void CreateCommon(ID3D12Device* device, Camera* camera, ID3D12GraphicsCommandList* cmdList);
-
+	static void CreateCommon(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
+	//カメラsっと
+	static void SetCamera(Camera* camera);
 	/// <summary>
 	/// 初期化
 	/// </summary>

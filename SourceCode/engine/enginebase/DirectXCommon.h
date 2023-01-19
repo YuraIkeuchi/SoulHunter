@@ -12,6 +12,13 @@
 //DirectX”Ä—p
 class DirectXCommon
 {
+	//’è”
+public:
+	static const int normalwindow_width = 1280;
+	static const int normalwindow_height = 720;
+
+	static const int smallwindow_width = 1000;
+	static const int smallwindow_height = 500;
 private:
 	// Microsoft::WRL::‚ğÈ—ª
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

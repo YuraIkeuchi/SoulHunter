@@ -95,11 +95,14 @@ void DirectXCommon::PreDraw() {
 	// 深度バッファクリア
 	ClearDepthBuffer();
 
-	//ビューポート領域の設定
-	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height));
-
-	//シザー短形の設定
-	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WinApp::window_width, WinApp::window_height));
+	if (FullScreen) {
+		cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, normalwindow_width, normalwindow_height));
+		cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, normalwindow_width, normalwindow_height));
+	}
+	else {
+		cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, smallwindow_width, smallwindow_height));
+		cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, smallwindow_width, smallwindow_height));
+	}
 }
 void DirectXCommon::ClearDepthBuffer() {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得

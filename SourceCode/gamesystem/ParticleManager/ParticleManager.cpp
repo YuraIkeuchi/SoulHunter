@@ -49,15 +49,14 @@ const DirectX::XMFLOAT3 operator/(const DirectX::XMFLOAT3& lhs, const float rhs)
 	return result;
 }
 
-
-void ParticleManager::CreateCommon(ID3D12Device* device, Camera* camera, ID3D12GraphicsCommandList* cmdList) {
+void ParticleManager::CreateCommon(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList) {
 	// nullptrチェック
 	assert(device);
-	assert(camera);
+
 	assert(cmdList);
 
 	ParticleManager::device = device;
-	ParticleManager::camera = camera;
+
 	ParticleManager::cmdList = cmdList;
 
 	//HRESULT result;
@@ -69,6 +68,11 @@ void ParticleManager::CreateCommon(ID3D12Device* device, Camera* camera, ID3D12G
 	CreateAddBlendPipeline();
 	CreateSubBlendPipeline();
 
+}
+
+void ParticleManager::SetCamera(Camera* camera) {
+	assert(camera);
+	ParticleManager::camera = camera;
 }
 
 void ParticleManager::Initialize(UINT texNumber) {

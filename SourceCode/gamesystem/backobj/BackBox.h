@@ -5,7 +5,8 @@ class BackBox :public BackObjCommon {
 public:
 	//OBJ‚Ì” 
 	BackBox();
-	void Initialize() override;//‰Šú‰»
+	bool Initialize() override;//‰Šú‰»
 	void SetObj() override;//ƒZƒbƒg‚µ‚½obj
 	void specialDraw() override;
+	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
 };

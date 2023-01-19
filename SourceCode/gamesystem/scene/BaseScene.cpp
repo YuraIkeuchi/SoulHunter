@@ -1,5 +1,6 @@
 #include "BaseScene.h"
 #include "CollisionManager.h"
+#include "ImageManager.h"
 Block* BaseScene::block = nullptr;
 MiniMap* BaseScene::minimap = nullptr;
 //Pause* BaseScene::pause = nullptr;
@@ -34,7 +35,9 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	// 3Dオブエクトにライトをセット
 	IKEObject3d::SetLightGroup(lightGroup);
 	//パーティクルにカメラセット
-	ParticleManager::CreateCommon(dxCommon->GetDev(), camera, dxCommon->GetCmdList());
+	ParticleManager::CreateCommon(dxCommon->GetDev(), dxCommon->GetCmdList());
+	ParticleManager::SetCamera(camera);
+	ImageManager::GetIns()->LoadParticle();
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
@@ -1153,7 +1156,7 @@ void BaseScene::BackObjUpdate(std::vector<BackObjCommon*> objs) {
 void BaseScene::BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon) {
 	for (BackObjCommon* backobj : objs) {
 		if (backobj != nullptr) {
-			backobj->Draw();
+			backobj->Draw(dxCommon);
 		}
 	}
 }
