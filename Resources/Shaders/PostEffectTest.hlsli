@@ -1,6 +1,9 @@
 cbuffer cbuff0 : register(b0)
 {
-	float addsepia;
+	float3 Color;//色
+	float addsepia;//セピア
+	bool isTone;//トーンの有無
+	float frame;//水面表現
 	float2 P_1;
 	float2 P_2;
 	float2 P_3;

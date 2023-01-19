@@ -128,7 +128,7 @@ void PostEffect::CreateGraphicsPipeline(const wchar_t* vsShaderName, const wchar
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_UNORM; // 0～255指定のRGBA
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R11G11B10_FLOAT; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
@@ -328,15 +328,14 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	CONST_BUFFER_DATA_POST* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
+		constMap->Color = { 1.0f,1.0f, 1.0f };
 		constMap->sepia = this->addsepia;
+		constMap->isTone = true;
+		constMap->frame = 0.0f;
 		constMap->P1 = this->P1;
 		constMap->P2 = this->P2;
 		constMap->P3 = this->P3;
-	/*	constMap->ToneType = this->ToneType;
-		constMap->ColorSpace = this->ColorSpace;
-		constMap->BaseLuminance = this->BaseLuminance;
-		constMap->MaxLuminance = this->MaxLuminance;*/
-		this->constBuff->Unmap(0, nullptr);
+		constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定
 	cmdList->SetPipelineState(pipelineState.Get());
@@ -415,10 +414,10 @@ void PostEffect::ImGuiDraw() {
 	ImGui::Begin("shader");
 	ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetWindowSize(ImVec2(300, 130));
-	ImGui::SliderFloat("P1.x", &P1.x, 0, 0.1f);
-	ImGui::SliderFloat("P1.y", &P1.y, 0, 0.1f);
-	ImGui::SliderFloat("P2.x", &P2.x, 0.5f, 1.0f);
-	ImGui::SliderFloat("P2.y", &P2.y, 0.5f, 1.0f);
+	ImGui::SliderFloat("P1.x", &P1.x, 0, 0.5f);
+	ImGui::SliderFloat("P1.y", &P1.y, 0, 0.5f);
+	ImGui::SliderFloat("P2.x", &P2.x, 0.3f, 0.8f);
+	ImGui::SliderFloat("P2.y", &P2.y, 0.3f, 0.8f);
 	ImGui::SliderFloat("P3.x", &P3.x, 1, 2);
 	ImGui::SliderFloat("P3.y", &P3.y, 1, 2);
 	ImGui::End();

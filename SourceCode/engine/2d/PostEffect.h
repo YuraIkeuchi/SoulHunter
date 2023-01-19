@@ -9,8 +9,10 @@ public:
 	// 定数バッファ用データ構造体B0
 	struct CONST_BUFFER_DATA_POST
 	{
-		float sepia;
-		float pad;
+		XMFLOAT3 Color;//色
+		float sepia;//セピア
+		bool isTone;//トーンの有無
+		float frame;//水面表現
 		XMFLOAT2 P1;
 		XMFLOAT2 P2;
 		XMFLOAT2 P3;

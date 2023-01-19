@@ -21,7 +21,7 @@ float4 main(VSOutput input) : SV_TARGET
 	color = colortex0.rgb;
 	float4 outputcolor;
 	float2 p1 = float2(0.10, 0.05);
-	float2 p2 = float2(0.20, 0.55);
+	float2 p2 = float2(0.50, 0.55);
 	float2 p3 = float2(2.00, 1.00);
 
 
