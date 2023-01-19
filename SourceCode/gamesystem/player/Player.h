@@ -161,6 +161,7 @@ private:
 private:
 	//攻撃の位置を取る
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
+	//パーティクル
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleManager> hoot;
 	unique_ptr<ParticleManager> heal;
@@ -241,12 +242,10 @@ private:
 	};
 	int m_DushDir = 0;
 	//足元のパーティクル
-	int m_FoodParticleNum = 5;
 	int m_FoodParticleCount = 0;
 	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
-	int m_ParticleCount = 0;
-	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	int m_DeathParticleCount = 0;
 	//剣のパーティクル
 	int m_SwordParticleCount = 0;
 	XMFLOAT3 m_SwordParticlePos = { 0.0f,0.0f,0.0f };
@@ -267,11 +266,8 @@ private:
 	bool m_CollideChest = false;
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
-
-	//必殺技
+	//イージングのため
 	float m_Frame = 0.0f;
-	//パーティクルのための変数
-	int m_ParticleNumber = 0;
 	//ムービー中の動き
 	bool m_Movie = false;
 	//ディゾルブ
@@ -285,9 +281,7 @@ private:
 	int m_HealType = 0;
 	enum HealType {
 		NoHeal,
-		InterVal,
-		Invocation,
-		Fail,
+		UseHeal,
 	};
 
 	//手行列

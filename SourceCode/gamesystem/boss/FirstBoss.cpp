@@ -9,7 +9,7 @@ FirstBoss::FirstBoss() {
 	death.reset(death_);
 
 	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::HootEffect);
+	hoot_->Initialize(ImageManager::Hoot);
 	hoot.reset(hoot_);
 
 	IKETexture* OutAreatexture_;

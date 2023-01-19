@@ -46,14 +46,14 @@ void PlayerDamageEffect::Update(const XMFLOAT3& pos, bool& Effect) {
 }
 //•`‰æ
 const void PlayerDamageEffect::Draw() {
-	IKETexture::PreDraw(1);
+	IKETexture::PreDraw(AddBlendType);
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		if (m_DamageAlive[i]) {
 			damagetex[i]->Draw();
 		}
 	}
 
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	if (m_HitEffect) {
 		HitEffectTexture->Draw();
 	}

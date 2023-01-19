@@ -37,7 +37,6 @@ void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(DushEffect, L"Resources/2d/effect/DushEffect.png");
 	IKETexture::LoadTexture(AttackEffect, L"Resources/2d/effect/DushEffect.png");
 	IKETexture::LoadTexture(ParticleEffect, L"Resources/2d/effect/effect1.png");
-	IKETexture::LoadTexture(ParticleEffect, L"Resources/2d/effect/hootEffect.png");
 	IKETexture::LoadTexture(DamageEffect, L"Resources/2d/effect/effect2.png");
 	IKETexture::LoadTexture(NormalEffect, L"Resources/2d/effect/NormalEffect.png");
 	IKETexture::LoadTexture(SmokeTex, L"Resources/2d/effect/hootEffect.png");
@@ -55,6 +54,6 @@ void ImageManager::LoadTex2D() {
 void ImageManager::LoadParticle() {
 
 	ParticleManager::LoadTexture(Normal, "effect1");
-	ParticleManager::LoadTexture(Food, "hootEffect");
+	ParticleManager::LoadTexture(Hoot, "hootEffect");
 	load = true;
 }

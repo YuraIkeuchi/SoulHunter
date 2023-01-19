@@ -75,15 +75,15 @@ void TitleObj::Finalize() {
 }
 
 void TitleObj::BirthParticle() {
-	XMFLOAT3 pos = { 0.0f,23.0f,0.0f };
+	XMFLOAT3 pos = { 0.0f,20.0f,0.0f };
 
 	const float rnd_vel = 0.05f;
 	XMFLOAT3 vel{};
-	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
 	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
 
-	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	fire->Add(100, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 
 	fire->Update();
 }

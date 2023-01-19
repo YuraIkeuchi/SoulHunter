@@ -57,7 +57,7 @@ void BoundEnemy::Action() {
 	//マップチップとの当たり判定
 	if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
 		m_Gravity = 0.02f;
-		m_ParticleCount = 5;
+		m_HootParticleCount = 5;
 		//初期化
 		m_Air = false;
 	}

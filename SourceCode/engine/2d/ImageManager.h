@@ -44,7 +44,6 @@ public:
 		DushEffect,
 		AttackEffect,
 		ParticleEffect,
-		HootEffect,
 		DamageEffect,
 		NormalEffect,
 		SmokeTex,
@@ -60,7 +59,7 @@ public:
 
 	enum ParticleTex {
 		Normal,
-		Food
+		Hoot
 	};
 public:
 	static ImageManager* GetIns();		//Žæ“¾—p

@@ -127,9 +127,8 @@ protected:
 	//棘の敵の必要変数
 	float m_ThornSetPos = 0.0f;
 	//パーティクル関係
-	int m_ParticleNum = 5;
-	int m_ParticleCount = 0;
-	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	int m_HootParticleCount = 0;
+	int m_DeathParticleCount = 0;
 	//敵の種類(当たり判定などに用いる)
 	int m_EnemyType = 0;
 	bool m_BulletHit = 0;
@@ -141,8 +140,6 @@ protected:
 	};
 	//アニメーション
 	bool m_AnimationStop = false;
-	//ぱーてぃくる
-	int m_ParticleObjCount = 0;
 	//ディゾルブ
 	bool m_Disolve = false;
 	//死んだときのモーション

@@ -40,7 +40,7 @@ void BackTorch::specialDraw() {
 	//ImGui::Text("m_Position.y : %f", m_rot.y);
 	//ImGui::Text("m_Position.z : %f", m_rot.z);
 	//ImGui::End();
-	fire->Draw(AlphaBlendType);
+	fire->Draw(AddBlendType);
 }
 //•`‰æ
 void BackTorch::Draw(DirectXCommon* dxCommon) {
@@ -53,15 +53,15 @@ void BackTorch::Draw(DirectXCommon* dxCommon) {
 }
 
 void BackTorch::BirthParticle() {
-	XMFLOAT3 pos = m_Position;
+	XMFLOAT3 pos = { m_Position.x,m_Position.y + 1.0f,m_Position.z };
 
 	const float rnd_vel = 0.05f;
 	XMFLOAT3 vel{};
-	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
 	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
 
-	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	fire->Add(50, { pos.x,pos.y + 7.0f,pos.z }, vel, {}, 2.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 
 	fire->Update();
 }

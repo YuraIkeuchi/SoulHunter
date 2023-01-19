@@ -36,15 +36,15 @@ bool Player::Initialize()
 	swordparticle.reset(swordparticle_);
 
 	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::ParticleEffect);
+	death_->Initialize(ImageManager::Normal);
 	death.reset(death_);
 
 	ParticleManager* heal_ = new ParticleManager();
-	heal_->Initialize(ImageManager::ParticleEffect);
+	heal_->Initialize(ImageManager::Normal);
 	heal.reset(heal_);
 
 	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::HootEffect);
+	hoot_->Initialize(ImageManager::Hoot);
 	hoot.reset(hoot_);
 
 	Shake* shake_ = new Shake();
@@ -176,26 +176,20 @@ void Player::SwordUpdate() {
 }
 //エフェクトの更新
 void Player::EffectUpdate() {
-	//パーティクルのカウント数の更新
-	if (m_ParticleCount > 3) {
-		m_ParticleCount = 0;
-	}
-
-	if (m_HealCount > 3) {
-		m_HealCount = 0;
-	}
-	//パーティクルを出す
+	
+	//剣のパーティクルの場所を決める
 	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
 			 static_cast<float>(rand() % 1) + 1,
 			0 };
 
-	//パーティクル関係
+	//パーティクル関係(剣)
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 
+	//エフェクト関係
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Update();
@@ -219,6 +213,7 @@ void Player::EffectUpdate() {
 			damageeffect->Update(m_Position, m_Effect);
 		}
 	}
+
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -332,9 +327,6 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
 		m_FoodParticleCount += 1;
-		m_ParticlePos.x = m_Position.x;
-		m_ParticlePos.y = m_Position.y - 1.5f;
-		m_ParticlePos.z = m_Position.z;
 		m_FoodParticlePos = {
 			m_Position.x,
 			m_Position.y - 1.0f,
@@ -347,10 +339,9 @@ void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
 	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
-		&& (m_HealType == NoHeal) && (m_Alive)) {
+		&& (m_HealType == NoHeal) && (m_Alive) && (!m_Attack)) {
 		m_JumpCount++;
 		m_Jump = true;
-		m_ParticleCount = 0;
 		m_AddPower = 0.8f;
 	
 		if (m_JumpCount == 1) {
@@ -550,20 +541,17 @@ void Player::PlayerDush() {
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_Dush = true;
-			m_ParticlePos = m_Position;
-			m_ParticleCount = 3;
 			if (m_PlayerDir == Right) {
-				//m_Rotation.y = 180.0f;
 				m_DushDir = DushRight;
 			}
 			else if (m_PlayerDir == Left) {
-				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
 			PlayerAnimetion(Dush, 4);
 		}
 	}
 
+	//ダッシュ中は横に自動で動く
 	if (m_Dush) {
 		m_DushTimer--;
 		if (m_DushDir == DushRight) {
@@ -574,7 +562,6 @@ void Player::PlayerDush() {
 		}
 
 		if (m_DushTimer == 0) {
-			m_ParticleCount = 0;
 			m_DushDir = NoDush;
 			m_Dush = false;
 			m_DushTimer = 10;
@@ -586,44 +573,29 @@ void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())) {
-		m_HealType = InterVal;
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5)) {
+		m_HealType = UseHeal;
 	}
 
-	if (m_HealType == InterVal) {
+	//回復チャージ
+	if (m_HealType == UseHeal) {
 		m_HealCount++;
 		m_HealTimer++;
-		if (m_HealTimer > 100) {
+		if (m_HealTimer > 150) {
 			m_SoulCount -= 6.0f;
 			m_HealTimer = 0;
 			m_HealCount = 0;
 			m_HP += 1;
-			m_HealType = Invocation;
+			m_HealType = NoHeal;
 			m_Frame = 0.0f;
 		}
 		else {
+			//途中で話した場合回復終了
 			if (!input->PushButton(input->Button_Y) || m_Interval != 0) {
 				m_HealTimer = 0;
-				m_HealType = Fail;
-				m_Frame = 0.0f;
+				m_HealType = NoHeal;
 				m_HealCount = 0;
 			}
-		}
-	}
-	else if (m_HealType == Invocation) {
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_HealType = NoHeal;
-		}
-	}
-	else if (m_HealType == Fail) {
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_HealType = NoHeal;
 		}
 	}
 }
@@ -815,7 +787,7 @@ bool Player::DeathMove() {
 		}
 		else {
 			//シェイク始まったらパーティクル
-			m_ParticleCount++;
+			m_DeathParticleCount++;
 			//ディゾルブで消す
 			if (m_Addcolor.x <= 1.0f) {
 				m_Addcolor.y += 0.01f;
@@ -834,8 +806,6 @@ bool Player::DeathMove() {
 		}
 		m_Position.x += m_ShakePos.x;
 		m_Position.y += m_ShakePos.y;
-		m_ParticleNumber = 2;
-		m_ParticlePos = m_Position;
 		if (m_AddDisolve >= 1.9f) {
 			return true;
 		}
@@ -845,15 +815,12 @@ bool Player::DeathMove() {
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	bool Reverse = m_fbxObject->GetReverse();
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("Reverse:%d", Reverse);
-	//if (ImGui::RadioButton("Reverce", &Reverse)) {
-	//
-	//}
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_HealCount:%d", m_HealCount);
+	ImGui::Text("m_HealTimer:%d", m_HealTimer);
+	ImGui::End();
 
 	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
@@ -880,11 +847,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 
-	//パーティクルの描画
-	hoot->Draw(AlphaBlendType);
-	heal->Draw(AddBlendType);
-	death->Draw(AlphaBlendType);
-
+	
 	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
 		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
@@ -894,7 +857,10 @@ void Player::Draw(DirectXCommon* dxCommon) {
 			Fbx_Draw(dxCommon);
 		}
 	}
-	
+	//パーティクルの描画
+	heal->Draw(AddBlendType);
+	death->Draw(AddBlendType);
+	hoot->Draw(AlphaBlendType);
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -996,74 +962,66 @@ void Player::Editor() {
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;
-		m_Rotation = { 0.0f,180.0f,0.0f };
-	}
 
-	if (input->LeftTiltStick(input->Left)) {
-		m_Position.x -= 0.3f;
-		m_Rotation = { 0.0f,0.0f,0.0f };
-	}
+		if (input->LeftTiltStick(input->Left)) {
+			m_Position.x -= 0.3f;
+		}
 
-	if (input->LeftTiltStick(input->Up)) {
-		m_Position.y += 0.3f;
-		//rot = { 0.0f,90.0f,0.0f };
-	}
+		if (input->LeftTiltStick(input->Up)) {
+			m_Position.y += 0.3f;
+		}
 
-	if (input->LeftTiltStick(input->Down)) {
-		m_Position.y -= 0.3f;
-		//rot = { 0.0f,270.0f,0.0f };
-	}
-	//プレイモードではない
-	m_PlayMode = false;
+		if (input->LeftTiltStick(input->Down)) {
+			m_Position.y -= 0.3f;
+		}
+		//プレイモードではない
+		m_PlayMode = false;
 
-	//Obj_SetParam();
-	SwordUpdate();
-	Fbx_SetParam();
-	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
+		//Obj_SetParam();
+		SwordUpdate();
+		Fbx_SetParam();
+		m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
+	}
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
-	XMFLOAT3 l_hootpos{};
-	XMFLOAT3 l_deathpos{};
-	XMFLOAT3 l_healpos{};
+	if (m_FoodParticleCount >= 3 && m_Alive) {
 
-	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5 && m_Alive) {
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = m_Position.z;
-		l_hootpos = { m_Position.x,m_Position.y - 0.0f,m_Position.z };
-		//const float rnd_sca = 0.1f;
-		//float sca{};
-		//sca = (float)rand() / RAND_MAX*rnd_sca;
-		hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f, { 1.0f,1.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		const float hootrnd_vel = 0.1f;
+		XMFLOAT3 hootvel{};
+		hootvel.x = (float)rand() / RAND_MAX * hootrnd_vel - hootrnd_vel / 2.0f;
+		hootvel.y = (float)rand() / RAND_MAX * hootrnd_vel - hootrnd_vel / 2.0f;
+		hootvel.z = m_Position.z;
+		hoot->Add(50, { m_Position.x,m_Position.y - 2.0f,m_Position.z }, hootvel, {}, 1.0f, 0.0f, { 1.0f,1.0f,1.0f,0.3f }, { 1.0f,1.0f,1.0f,0.3f });
+
 		m_FoodParticleCount = 0;
 	}
 
-	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleCount >= 1) {
-		float angle = (float)rand() / RAND_MAX * 360.0f;
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
-		l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
-		l_deathpos.z = m_Position.z;
-		death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.9f,0.8f,1.0f }, { 1.0f,0.9f,0.8f,1.0f });
-		m_ParticleCount = 0;
+	if (m_DeathParticleCount >= 3) {
+		for (int i = 0; i < 3; ++i) {
+			const float deathrnd_vel = 0.4f;
+			XMFLOAT3 deathvel{};
+			deathvel.x = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
+			deathvel.y = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
+			deathvel.z = 0.0f;
+			death->Add(50, { m_Position.x ,m_Position.y,m_Position.z }, deathvel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.9f,0.8f,1.0f }, { 1.0f,0.9f,0.8f,1.0f });
+		}
+		m_DeathParticleCount = 0;
 	}
 
-		const float rnd_vel = 0.05f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-		vel.z = 0.0f;
-		l_healpos = m_Position;
-		heal->Add(200, { l_healpos.x,l_healpos.y - 1.0f,l_healpos.z }, vel, {}, 1.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
+	if (m_HealCount >= 3) {
+		const float healrnd_vel = 0.05f;
+		XMFLOAT3 healvel{};
+		healvel.x = (float)rand() / RAND_MAX * healrnd_vel - healrnd_vel / 3.0f;
+		healvel.y = (float)rand() / RAND_MAX * healrnd_vel * 2.0f;// -rnd_vel / 2.0f;
+		healvel.z = (float)rand() / RAND_MAX * healrnd_vel - healrnd_vel / 3.0f;
+		heal->Add(100, { m_Position.x ,m_Position.y - 2.0f,m_Position.z }, healvel, XMFLOAT3(), 2.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
+		m_HealCount = 0;
+	}
 	hoot->Update();
 	heal->Update();
 	death->Update();
+
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
