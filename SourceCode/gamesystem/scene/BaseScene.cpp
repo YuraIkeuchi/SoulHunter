@@ -115,7 +115,6 @@ void BaseScene::BackObjInitialize() {
 	chest->SetPlayer(player);
 	chest->SetPlayerSkill(playerskill);
 	//背景obj
-	backobjalways->Initialize();
 	backlight->Initialize();
 }
 //ゲームの始まり
@@ -157,8 +156,8 @@ void BaseScene::StartGame() {
 		}
 	}
 }
-//CSVを開いている
-void BaseScene::OpenEnemyParam(const int& StageNumber) {
+//CSVを開いている(敵)
+void BaseScene::OpenEnemyParam(const int StageNumber) {
 	switch (StageNumber)
 	{
 	case Map1:
@@ -295,7 +294,7 @@ void BaseScene::ThornObjSpecity(const char* vsShaderName) {
 	m_ThornObjPosition.resize(m_ThornObjs.size());
 }
 //CSVに書き込んでいる
-void BaseScene::SaveEnemyParam(const int& StageNumber) {
+void BaseScene::SaveEnemyParam(const int StageNumber) {
 	//マップ1
 	if (StageNumber == Map1) {
 		//普通の敵
@@ -388,7 +387,7 @@ void BaseScene::SaveEnemyParam(const int& StageNumber) {
 	}
 }
 //CSVから値を読み込んでいる(敵)
-void BaseScene::LoadEnemyParam(const int& StageNumber) {
+void BaseScene::LoadEnemyParam(const int StageNumber) {
 	OpenEnemyParam(StageNumber);
 	//普通の敵
 	while (std::getline(m_EnemyPopcom, m_EnemyLine)) {
@@ -703,8 +702,8 @@ void BaseScene::ReloadEnemy() {
 		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
 	}
 }
-//CSVを開いている
-void BaseScene::OpenObjParam(const int& StageNumber) {
+//CSVを開いている(背景OBJ)
+void BaseScene::OpenObjParam(const int StageNumber) {
 	switch (StageNumber)
 	{
 	case Map1:
@@ -768,7 +767,7 @@ void BaseScene::ObjSpecity(const char* vsShaderName) {
 	}
 }
 //CSVに書き込んでいる
-void BaseScene::SaveObjParam(const int& StageNumber) {
+void BaseScene::SaveObjParam(const int StageNumber) {
 	//マップ1
 	if (StageNumber == Map1) {
 		ObjSpecity("Resources/backobj_param/BackObj/FirstMapBackObj.csv");
@@ -804,7 +803,7 @@ void BaseScene::SaveObjParam(const int& StageNumber) {
 	}
 }
 //CSVから値を読み込んでいる(Obj)
-void BaseScene::LoadObjParam(const int& StageNumber) {
+void BaseScene::LoadObjParam(const int StageNumber) {
 	OpenObjParam(StageNumber);
 	//背景Obj
 	//柱
@@ -1011,6 +1010,23 @@ void BaseScene::LoadObjParam(const int& StageNumber) {
 		m_BackTorchs[i]->SetRotation(m_BackTorchStartRot[i]);
 		lightGroup->SetPointLightActive(i + 2, true);
 	}
+}
+//CSVを開いている(共通のOBJ)
+void BaseScene::OpenBackObjAlwaysParam(const int StageNumber) {
+	if (StageNumber == BossMap) {
+		m_AlwaysFile.open("Resources/backalways_param/BossMapBackRock.csv");
+	}
+	else {
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	}
+
+	m_AlwaysPopcom << m_AlwaysFile.rdbuf();
+	m_AlwaysFile.close();
+}
+
+void BaseScene::LoadBackObjAlways(const int StageNumber) {
+	OpenBackObjAlwaysParam(StageNumber);
+
 }
 //ゲームデータのセーブ(位置とマップ番号)
 void BaseScene::SaveGame() {

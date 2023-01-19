@@ -36,6 +36,11 @@ public:
 	/// 毎フレーム処理
 	/// </summary>
 	void Update() override;
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw(DirectXCommon* dxCommon) override;
 	//剣の更新
 	void SwordUpdate();
 	//エフェクトの更新
@@ -79,10 +84,7 @@ public:
 	void PlayerThornHit(const XMFLOAT3& pos);
 	//スキルリセット
 	void ResetSkill();
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(DirectXCommon* dxCommon) override;
+	
 
 	/// <summary>
 	/// 開放

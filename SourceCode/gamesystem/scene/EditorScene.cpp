@@ -15,7 +15,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	pause = new Pause();
 	mapchange = new MapChange();
 	save = new Save();
-	backobjalways = new BackObjAlways();
 	backlight = new BackLight();
 	respornenemy = new ResPornEnemy();
 	firstboss = new FirstBoss();
@@ -183,7 +182,6 @@ void EditorScene::ModelDraw(DirectXCommon* dxCommon) {
 void EditorScene::BackDraw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
-	backobjalways->Draw();
 	block->Draw(m_PlayerPos);
 	if (StageNumber != BossMap) {
 		BackObjDraw(m_BackRocks, dxCommon);
@@ -388,11 +386,10 @@ void EditorScene::MapInitialize() {
 			break;
 		}
 		save->InitSave(StageNumber);
-		backobjalways->InitRock(StageNumber);
-		LoadEnemyParam(StageNumber);
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
+		LoadEnemyParam(StageNumber);
 		LoadObjParam(StageNumber);
 		chest->InitChest(StageNumber);
 		StageChange = false;
@@ -567,7 +564,6 @@ void EditorScene::AllUpdate() {
 
 	//‚»‚Ì‘¼‚ÌXV
 	hitstop->Update();
-	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);

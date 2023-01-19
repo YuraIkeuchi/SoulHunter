@@ -39,7 +39,6 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	pause = new Pause();
 	mapchange = new MapChange();
 	save = new Save();
-	backobjalways = new BackObjAlways();
 	backlight = new BackLight();
 	chest = new Chest();
 	respornenemy = new ResPornEnemy();
@@ -214,7 +213,6 @@ void FirstStage::NormalUpdate() {
 		respornenemy->Update(firstboss);
 	}
 
-	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);
@@ -366,7 +364,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	//画面が黒い間は描画されない
 	if (BlackColor.w <= 1.0f) {
 		//ステージの描画
-		backobjalways->Draw();
 		block->Draw(m_PlayerPos);
 		if (StageNumber != BossMap) {
 			BackObjDraw(m_BackRocks, dxCommon);
@@ -481,11 +478,10 @@ void FirstStage::MapInitialize() {
 		}
 		player->InitPlayer(StageNumber);
 		save->InitSave(StageNumber);
-		backobjalways->InitRock(StageNumber);
-		LoadEnemyParam(StageNumber);
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
+		LoadEnemyParam(StageNumber);
 		chest->InitChest(StageNumber);
 		LoadObjParam(StageNumber);
 		StageChange = false;
