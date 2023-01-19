@@ -58,8 +58,6 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 //XV
 void ClearScene::Update(DirectXCommon* dxCommon) {
 	m_Timer++;
-	//
-	ParticleManager::GetInstance()->Update();
 	Input* input = Input::GetInstance();
 	lightGroup->Update();
 	//ŠÛ‰e

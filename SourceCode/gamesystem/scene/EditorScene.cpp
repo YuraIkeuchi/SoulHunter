@@ -60,7 +60,7 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	m_MoveEnemy = false;
 
 	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
@@ -151,8 +151,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		//FPSManager::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -194,8 +192,6 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	}
 	backlight->Draw();
 	save->Draw();
-	//パーティクルの描画
-	particleMan->Draw(dxCommon->GetCmdList());
 	//敵の描画
 	EnemyDraw(m_Enemys, dxCommon);
 	EnemyDraw(m_ThornEnemys, dxCommon);
@@ -571,7 +567,6 @@ void EditorScene::AllUpdate() {
 
 	//その他の更新
 	hitstop->Update();
-	ParticleManager::GetInstance()->Update();
 	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
@@ -688,6 +683,8 @@ void EditorScene::ChangeUpdate() {
 				SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
 			}
 			else if (m_SceneMigration == Title) {
+				m_GameLoop = true;
+				Audio::GetInstance()->StopWave(0);
 				SceneManager::GetInstance()->ChangeScene("TITLE");
 			}
 			m_SceneChange = false;

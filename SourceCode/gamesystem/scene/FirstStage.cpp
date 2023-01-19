@@ -6,7 +6,7 @@
 #include "imgui.h"
 #include <Easing.h>
 
-//プレイシーンの初期化
+//プレイシーンの初期化(現在は魂だけ)
 void FirstStage::PlaySceneInitialize() {
 	//魂
 	for (int i = 0; i < Soul_Max; i++) {
@@ -100,9 +100,9 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	m_MoveEnemy = true;
 
 	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/ToneMapPS.hlsl");
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
-	PlayPostEffect = false;
+	//PlayPostEffect = true;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
@@ -213,7 +213,7 @@ void FirstStage::NormalUpdate() {
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
 	}
-	ParticleManager::GetInstance()->Update();
+
 	backobjalways->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
@@ -257,8 +257,9 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
+		postEffect->ImGuiDraw();
 		//PostImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
@@ -288,15 +289,7 @@ void FirstStage::ModelDraw(DirectXCommon* dxCommon) {
 	if (m_BossNumber == BossApp || m_BossNumber == BossEnd) {
 		bossstagobj->BackDraw();
 	}
-}
-//後ろの描画
-void FirstStage::BackDraw(DirectXCommon* dxCommon)
-{
-#pragma endregion
-	ModelDraw(dxCommon);
-}
-//ポストエフェクトがかからない
-void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
+
 	//ボス登場シーンかどうかで描画を決める
 	if (m_BossNumber == BossApp) {
 		BossAppDraw(dxCommon);
@@ -308,8 +301,28 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 		NormalDraw(dxCommon);
 	}
 
-	//
+}
+//後ろの描画
+void FirstStage::BackDraw(DirectXCommon* dxCommon)
+{
+#pragma endregion
+	ModelDraw(dxCommon);
+}
+//ポストエフェクトがかからない
+void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
+
+	//完全に前に書くスプライト
 	IKESprite::PreDraw();
+	if (player->GetHP() != 0) {
+		ui->Draw();
+		pause->Draw();
+		chest->ExplainDraw();
+		BlackFilter->Draw();
+		EnemyMapDraw(m_Enemys);
+		EnemyMapDraw(m_ThornEnemys);
+		EnemyMapDraw(m_BoundEnemys);
+		EnemyMapDraw(m_BirdEnemys);
+	}
 	mapchange->Draw();
 	scenechange->Draw();
 	bossscenechange->Draw();
@@ -334,6 +347,19 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
+	//ポストエフェクト
+	{
+		ImGui::Begin("postEffect");
+		ImGui::SetWindowPos(ImVec2(1000, 450));
+		ImGui::SetWindowSize(ImVec2(280, 300));
+		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
+			PlayPostEffect = true;
+		}
+		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
+			PlayPostEffect = false;
+		}
+		ImGui::End();
+	}
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
@@ -349,8 +375,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		backlight->Draw();
 		save->Draw();
-		//パーティクルの描画
-		particleMan->Draw(dxCommon->GetCmdList());
 		//チュートリアル
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->Draw();
@@ -407,19 +431,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 
-	//完全に前に書くスプライト
-	IKESprite::PreDraw();
-	if (player->GetHP() != 0) {
-		ui->Draw();
-		pause->Draw();
-		chest->ExplainDraw();
-		BlackFilter->Draw();
-		EnemyMapDraw(m_Enemys);
-		EnemyMapDraw(m_ThornEnemys);
-		EnemyMapDraw(m_BoundEnemys);
-		EnemyMapDraw(m_BirdEnemys);
-	}
-	IKESprite::PostDraw();
 }
 //ボス登場シーンの描画
 void FirstStage::BossAppDraw(DirectXCommon* dxCommon) {
@@ -517,11 +528,11 @@ void FirstStage::AllUpdate() {
 void FirstStage::LightSet() {
 	m_PlayerPos = camera->GetEye();
 	///ポイントライト
-	lightGroup->SetPointLightPos(0, XMFLOAT3(player->GetPosition().x, player->GetPosition().y, player->GetPosition().z - 5.0f));
+	lightGroup->SetPointLightPos(0, XMFLOAT3(player->GetPosition().x, player->GetPosition().y + 2.0f, player->GetPosition().z - 5.0f));
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 
-	lightGroup->SetPointLightPos(1, XMFLOAT3(save->GetPosition().x, save->GetPosition().y + 2.0f, save->GetPosition().z + 2.0f));
+	lightGroup->SetPointLightPos(1, XMFLOAT3(save->GetPosition().x, save->GetPosition().y + 5.0f, save->GetPosition().z + 2.0f));
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(1, XMFLOAT3(pointLightAtten));
 

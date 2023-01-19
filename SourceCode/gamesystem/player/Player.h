@@ -1,11 +1,6 @@
 #pragma once
-#include "IKEObject3d.h"
-#include"IKEModel.h"
 #include "Block.h"
-#include "IKEFBXModel.h"
-#include "IKEFBXObject3d.h"
 #include "DirectXCommon.h"
-#include "ParticleTex.h"
 #include "VolumManager.h"
 #include "ParticleHeal.h"
 #include "SwordParticle.h"
@@ -16,6 +11,7 @@
 #include "PlayerDushEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
+#include "ParticleManager.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -165,9 +161,10 @@ private:
 private:
 	//攻撃の位置を取る
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
-	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
-	unique_ptr<ParticleHeal> particleheal = nullptr;
+	unique_ptr<ParticleManager> hoot;
+	unique_ptr<ParticleManager> heal;
+	unique_ptr<ParticleManager> death;
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	vector<AttackEffect*> attackeffects;
@@ -245,7 +242,7 @@ private:
 	int m_DushDir = 0;
 	//足元のパーティクル
 	int m_FoodParticleNum = 5;
-	float m_FoodParticleCount = 0;
+	int m_FoodParticleCount = 0;
 	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
 	int m_ParticleCount = 0;

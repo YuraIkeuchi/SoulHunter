@@ -23,7 +23,6 @@ private:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
-	static DirectXCommon* GetInstance();
 	void ClearDepthBuffer();
 	void Finalize();
 	//初期化
@@ -34,6 +33,9 @@ public:
 
 	//描画後処理
 	void PostDraw();
+
+
+	void ClearRenderTarget();
 
 	//デバイスの初期化
 	bool InitializeDevice();
@@ -83,9 +85,9 @@ private:
 	UINT64 fenceVal = 0;
 	WinApp* winApp = nullptr;
 	ComPtr<ID3D12DescriptorHeap> imguiHeap;
-	FLOAT m_This_Like_window_x = 1280;
-	FLOAT m_This_Like_window_y = 720;
-	FLOAT m_This_Like_save_x = 1000;
-	FLOAT m_This_Like_save_y = 500;
-	bool FullScreen = true;
+	float m_This_Like_window_x = 1000.0f;
+	float m_This_Like_window_y = 500.0f;
+	float m_This_Like_save_x = 1000.0f;
+	float m_This_Like_save_y = 500.0f;
+	bool FullScreen = false;
 };

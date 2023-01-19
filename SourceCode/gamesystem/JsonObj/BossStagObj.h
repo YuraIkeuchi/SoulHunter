@@ -1,10 +1,10 @@
 #pragma once
 #include "IKEObject3d.h"
 #include "IKEModel.h"
-#include <memory>
-#include <list> // ヘッダファイルインクルード
 #include <map>
-#include "ParticleTex.h"
+#include <array>   
+#include <memory>
+#include <list>
 #include "IKESprite.h"
 struct JsonData;
 
@@ -48,7 +48,7 @@ private:
 	//スプライト
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
-	unique_ptr<ParticleTex> particletex = nullptr;
+
 	//その他変数
 	bool m_AppStart = false;//登場スタート
 	int m_AppTimer = 0;//時間

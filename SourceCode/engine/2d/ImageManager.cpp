@@ -1,5 +1,6 @@
 ﻿#include "ImageManager.h"
 
+bool ImageManager::load = false;
 ImageManager* ImageManager::GetIns() {
 	static ImageManager instans;
 	return &instans;
@@ -34,8 +35,9 @@ void ImageManager::Load2D() {
 //テクスチャの読み込み
 void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(DushEffect, L"Resources/2d/effect/DushEffect.png");
-	IKETexture::LoadTexture(AttackEffect, L"Resources/2d/effect/Attack.png");
+	IKETexture::LoadTexture(AttackEffect, L"Resources/2d/effect/DushEffect.png");
 	IKETexture::LoadTexture(ParticleEffect, L"Resources/2d/effect/effect1.png");
+	IKETexture::LoadTexture(ParticleEffect, L"Resources/2d/effect/hootEffect.png");
 	IKETexture::LoadTexture(DamageEffect, L"Resources/2d/effect/effect2.png");
 	IKETexture::LoadTexture(NormalEffect, L"Resources/2d/effect/NormalEffect.png");
 	IKETexture::LoadTexture(SmokeTex, L"Resources/2d/effect/hootEffect.png");
@@ -47,4 +49,12 @@ void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(LightTex, L"Resources/2d/sceneback/BackLight.png");
 	IKETexture::LoadTexture(ReadTex, L"Resources/2d/text/textpointread.png");
 	IKETexture::LoadTexture(OutArea, L"Resources/2d/effect/OutArea.png");
+}
+
+
+void ImageManager::LoadParticle() {
+
+	ParticleManager::LoadTexture(Normal, "effect1");
+	ParticleManager::LoadTexture(Food, "hootEffect");
+	load = true;
 }

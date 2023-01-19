@@ -3,9 +3,10 @@
 
 class BackRock :public BackObjCommon {
 public:
-	//”wŒi‚Ì’Œ
+	//OBJ‚Ì” 
 	BackRock();
-	void Initialize() override;//‰Šú‰»
+	bool Initialize() override;//‰Šú‰»
 	void SetObj() override;//ƒZƒbƒg‚µ‚½obj
 	void specialDraw() override;
+	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
 };

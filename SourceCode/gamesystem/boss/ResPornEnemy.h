@@ -1,6 +1,5 @@
 #pragma once
 #include "InterBoss.h"
-#include "ParticleTex.h"
 //ボスステージのときにザコ敵がたまに出現する
 class ResPornEnemy
 {
@@ -27,7 +26,7 @@ public:
 	void SetEnemyArgment(bool m_EnemyArgment) { this->m_EnemyArgment = m_EnemyArgment; }
 private:
 	//クラス
-	unique_ptr<ParticleTex> particletex = nullptr;
+	//unique_ptr<ParticleTex> particletex = nullptr;
 	//その他変数
 	XMFLOAT3 m_ResPornPos = { 0.0f,0.0f,0.0f };//座標
 	int m_ResPornTimer = 0;//生成までの時間

@@ -1,5 +1,6 @@
 #include "BaseScene.h"
 #include "CollisionManager.h"
+#include "ImageManager.h"
 Block* BaseScene::block = nullptr;
 MiniMap* BaseScene::minimap = nullptr;
 //Pause* BaseScene::pause = nullptr;
@@ -17,14 +18,11 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 
 	// グラフィックスパイプライン生成
 	IKEFBXObject3d::CreateGraphicsPipeline();
-	//パ^ティクルマネージャー
-	particleMan = ParticleManager::GetInstance();
 	// カメラ生成
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height);
 	IKETexture::SetCamera(camera);
 	// 3Dオブジェクトにカメラをセット
 	IKEObject3d::SetCamera(camera);
-	particleMan->SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
 	//ポストエフェクトの初期化
 	//(普通)
@@ -36,11 +34,10 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット
 	IKEObject3d::SetLightGroup(lightGroup);
-	// パーティクルマネージャ生成
-
-	//BirthParticle();
-	ParticleManager::GetInstance()->Update();
-
+	//パーティクルにカメラセット
+	ParticleManager::CreateCommon(dxCommon->GetDev(), dxCommon->GetCmdList());
+	ParticleManager::SetCamera(camera);
+	ImageManager::GetIns()->LoadParticle();
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
@@ -697,6 +694,15 @@ void BaseScene::LoadEnemyParam(const int& StageNumber) {
 		m_ThornObjs[i]->SetThornObjPos(m_SetThornObjPos[i]);
 	}
 }
+void BaseScene::ReloadEnemy() {
+	m_EnemyStartPos.resize(m_NormalEnemyCount);
+	m_Enemys.resize(m_NormalEnemyCount);
+	for (int i = 0; i < m_Enemy_Num; i++) {
+		m_EnemyStartPos[i] = m_Enemys[i]->GetStartPos();
+		m_Enemys[i]->SetPosition(m_EnemyStartPos[i]);
+		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
+	}
+}
 //CSVを開いている
 void BaseScene::OpenObjParam(const int& StageNumber) {
 	switch (StageNumber)
@@ -1150,7 +1156,7 @@ void BaseScene::BackObjUpdate(std::vector<BackObjCommon*> objs) {
 void BaseScene::BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon) {
 	for (BackObjCommon* backobj : objs) {
 		if (backobj != nullptr) {
-			backobj->Draw();
+			backobj->Draw(dxCommon);
 		}
 	}
 }

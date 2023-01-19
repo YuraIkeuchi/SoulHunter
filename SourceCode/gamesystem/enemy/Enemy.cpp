@@ -122,7 +122,8 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	particletex->Draw();
+	hoot->Draw(AlphaBlendType);
+	death->Draw(AddBlendType);
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {

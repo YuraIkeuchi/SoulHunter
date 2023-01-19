@@ -1,5 +1,6 @@
 #pragma once
 #include"InterEnemy.h"
+#include "BirdEnemyEffect.h"
 using namespace std;         //  名前空間指定
 //飛ぶ敵
 class BirdEnemy :public InterEnemy {
@@ -15,7 +16,10 @@ public:
 	void DeathMove();//死んだときの動き
 	bool BirdLockOn();
 	void Move();
+	//エフェクト発生
+	void BirdArgment();
 private:
+	std::vector<BirdEnemyEffect*> birdenemyeffects;
 	//ロックオンしている間時間経過する
 	int m_LockTimer = 0;
 	bool m_Attack = false;//攻撃するか

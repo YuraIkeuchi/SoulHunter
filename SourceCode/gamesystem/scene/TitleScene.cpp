@@ -10,6 +10,8 @@ TitleObj* TitleScene::titleobj = nullptr;
 bool TitleScene::m_TitleNew = false;
 //初期化
 void TitleScene::Initialize(DirectXCommon* dxCommon) {
+	//共通の初期化
+	BaseInitialize(dxCommon);
 	//スプライト生成
 	IKESprite* TitlePartsSprite_[3];
 	//gaussian = new PostEffect();
@@ -37,15 +39,13 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//カメラワーク
 	camerawork = new CameraWork();
 	camerawork->SetCameraType(0);
-	//共通の初期化
-	BaseInitialize(dxCommon);
+	
 	//Json
 	if (!m_TitleNew) {
 		titleobj = new TitleObj();
 		titleobj->Initialize();
 		m_TitleNew = true;
 	}
-	titleobj->SetStopParticle(false);
 	//ライト
 	m_LightPos = { 0.0f,0.0f,15.0f };
 
@@ -58,10 +58,10 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//セーブ
 	save = new Save();
 	m_TitleSelect = NewGame;
+	dxCommon->SetFullScreen(true);
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
-	ParticleManager::GetInstance()->Update();
 	Input* input = Input::GetInstance();
 	lightGroup->Update();
 	titleobj->Update();
@@ -85,7 +85,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
-		titleobj->SetStopParticle(true);
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
 		scenechange->SetAddStartChange(true);
 		if (m_TitleSelect == NewGame) {
@@ -97,7 +96,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	//ライトを徐々に小さくする
-	if (titleobj->GetStopParticle() && pointLightAtten[0] <= 1.0f) {
+	if (pointLightAtten[0] <= 1.0f) {
 		pointLightAtten[0] += 0.0001f;
 		pointLightAtten[1] += 0.0001f;
 		pointLightAtten[2] += 0.0001f;

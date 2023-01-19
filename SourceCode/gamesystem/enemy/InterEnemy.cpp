@@ -1,6 +1,6 @@
 #include "InterEnemy.h"
 #include "Collision.h"
-#include "ParticleManager.h"
+#include "ImageManager.h"
 bool InterEnemy::Initialize() {
 
 	return true;
@@ -89,8 +89,10 @@ bool InterEnemy::LockOn() {
 }
 //パーティクルが出てくる
 void InterEnemy::BirthParticle() {
+	XMFLOAT3 l_hootpos{};
+	XMFLOAT3 l_deathpos{};
 	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleCount >= 5.0f && m_Alive) {
+	if (m_ParticleCount >= 5 && m_Alive) {
 
 		for (int i = 0; i < m_ParticleNum; ++i) {
 			const float rnd_vel = 0.1f;
@@ -98,12 +100,30 @@ void InterEnemy::BirthParticle() {
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
+			l_hootpos = { m_Position.x,m_Position.y - 1.0f,m_Position.z };
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f,{1.0f,1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f,1.0f});
 		}
-		m_ParticleCount = 0.0f;
+		m_ParticleCount = 0;
+	}
+
+	//m_PlayerPos = player->GetPosition();
+	if (m_ParticleObjCount >= 1) {
+		float angle = (float)rand() / RAND_MAX * 360.0f;
+		for (int i = 0; i < m_ParticleNum; ++i) {
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
+			l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
+			l_deathpos.z = m_Position.z;
+			//const float rnd_sca = 0.1f;
+			//float sca{};
+			//sca = (float)rand() / RAND_MAX*rnd_sca;
+			death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.5f,0.0f,1.0f }, { 1.0f,0.5f,0.0f,1.0f });
+		}
+		m_ParticleObjCount = 0;
 	}
 }
 //更新を範囲内に入った時のみ
@@ -249,26 +269,20 @@ void InterEnemy::DamageAct() {
 
 //パーティクルの初期化
 void InterEnemy::ParticleInit() {
-	//パーティクル
-	/*ParticleObj* particleobj_;
-	particleobj_ = new ParticleObj();
-	particleobj_->Initialize();
-	particleobj.reset(particleobj_);*/
+	ParticleManager* death_ = new ParticleManager();
+	death_->Initialize(ImageManager::ParticleEffect);
+	death.reset(death_);
 
-	ParticleTex* particletex_;
-	particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
+	ParticleManager* hoot_ = new ParticleManager();
+	hoot_->Initialize(ImageManager::HootEffect);
+	hoot.reset(hoot_);
 }
 //パーティクルの更新
 void InterEnemy::ParticleUpdate() {
-	//particleobj->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
-	//particleobj->SetParticleBreak(true);
-	//particleobj->Update(m_Position, m_ParticleObjCount, 1, 2);
+	BirthParticle();
 
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_ParticleObjCount, 1, 2);
+	hoot->Update();
+	death->Update();
 }
 //エフェクトの生成
 void InterEnemy::ArgEffect() {
@@ -280,37 +294,10 @@ void InterEnemy::ArgEffect() {
 		m_EffectArgment = false;
 	}
 }
-//羽エフェクト生成
-void InterEnemy::BirdArgment() {
-	if (m_BirdEffectArgment) {
-		BirdEnemyEffect* newBirdEnemyEffect;
-		newBirdEnemyEffect = new BirdEnemyEffect();
-		newBirdEnemyEffect->Initialize();
-		birdenemyeffects.push_back(newBirdEnemyEffect);
-		m_BirdEffectArgment = false;
-	}
-}
+
 //魂の生成
 void InterEnemy::ArgSoul() {
-	//Block* block_;
-	if (m_SoulArgment) {
-		//m_SoulCount++;
-		//if (m_SoulCount <= 5) {
-		//	PlayerSoul* newplayersoul;
-		//	newplayersoul = new PlayerSoul();
-		//	newplayersoul->Initialize();
-		//	newplayersoul->SetBlock(block.get());
-		//	newplayersoul->SetPlayer(player.get());
-		//	//newplayersoul->SetPlayer(player);
-		//	//newplayersoul->SetBlock(block);
-		//	playersouls.push_back(newplayersoul);
-		//}
-		//else {
-		//	m_SoulArgment = false;
-		//	m_SoulCount = 0;
-		//}
 	
-	}
 }
 
 void InterEnemy::MapEnemy() {

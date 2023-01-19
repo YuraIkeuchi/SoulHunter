@@ -111,7 +111,8 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	particletex->Draw();
+
+	death->Draw(AddBlendType);
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {
@@ -216,5 +217,16 @@ void BirdEnemy::MapDraw(XMFLOAT4 Color) {
 	IKESprite::PreDraw();
 	if (m_EnemyPosition.x != 0.0f && m_EnemyPosition.y != 0.0f && m_Alive) {
 		MiniEnemySprite->Draw();
+	}
+}
+
+//羽エフェクト生成
+void BirdEnemy::BirdArgment() {
+	if (m_BirdEffectArgment) {
+		BirdEnemyEffect* newBirdEnemyEffect;
+		newBirdEnemyEffect = new BirdEnemyEffect();
+		newBirdEnemyEffect->Initialize();
+		birdenemyeffects.push_back(newBirdEnemyEffect);
+		m_BirdEffectArgment = false;
 	}
 }

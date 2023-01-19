@@ -53,7 +53,7 @@ private:
 	//クラス
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<PlayerSkill> playerskill = nullptr;
-	array<unique_ptr<ParticleTex>, Skill_Max> particletex;
+	//array<unique_ptr<ParticleTex>, Skill_Max> particletex;
 	array<unique_ptr<ChestEffect>, Skill_Max> chesteffect;
 	//絶対に必要なOBJ
 	//開いてる宝箱

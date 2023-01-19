@@ -11,7 +11,6 @@ void Save::Initialize() {
 	objSave_ = IKEObject3d::Create();
 	objSave_->SetModel(modelSave);
 	objSave_->SetRotation({ 0.0f,90.0f,0.0f });
-	//objSave_->SetPosition({ 0, 0, -30 });
 	objSave_->SetScale({ 3.0f,3.0f,3.0f });
 	objSave.reset(objSave_);
 	
@@ -31,13 +30,14 @@ void Save::Initialize() {
 	}
 
 	m_ParticleCount = 0;
-	ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
 	//エフェクト
 	MarkEffect* markEffect_ = new MarkEffect();
 	markEffect_->Initialize();
 	markEffect.reset(markEffect_);
+
+	ParticleManager* fire_ = new ParticleManager();
+	fire_->Initialize(ImageManager::Normal);
+	fire.reset(fire_);
 }
 //更新
 void Save::Update() {
@@ -54,16 +54,7 @@ void Save::Update() {
 	objSave->Update();
 
 	//パーティクルの更新
-	if (m_Alive) {
-		m_ParticleCount++;
-	}
-	if (m_ParticleCount > 4) {
-		m_ParticleCount = 0;
-	}
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->SetParticleBreak(true);
-	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 4, 4);
-	particletex->SetAddScale(0.005f);
+	BirthParticle();
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }
 //描画
@@ -79,7 +70,9 @@ const void Save::Draw() {
 	if (m_SaveText) {
 		SaveSprite[m_SaveCount]->Draw();
 	}
-	particletex->Draw();
+
+	fire->Draw(AddBlendType);
+	//particletex->Draw();
 
 }
 
@@ -160,4 +153,19 @@ void Save::SaveAnime() {
 			m_SaveText = false;
 		}
 	}
+}
+
+
+void Save::BirthParticle() {
+	XMFLOAT3 pos = m_Position;
+
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+
+	fire->Update();
 }

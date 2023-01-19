@@ -128,6 +128,9 @@ void IntroductionObj::Update(int Timer) {
 	if (Timer >= 120) {
 		m_OffSet = 0.0f;
 	}
+	else {
+		m_OffSet = -0.01f;
+	}
 	objskydome->Update();
 	objskydome->SetAddOffset(0.0005f);
 	//Json—p

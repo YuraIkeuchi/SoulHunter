@@ -41,12 +41,12 @@ Chest::Chest() {
 	}
 
 	//パーティクル
-	ParticleTex* particletex_[Skill_Max];
-	for (int i = 0; i < Skill_Max; i++) {
-		particletex_[i] = new ParticleTex();
-		particletex_[i]->Initialize();
-		particletex[i].reset(particletex_[i]);
-	}
+	//ParticleTex* particletex_[Skill_Max];
+	//for (int i = 0; i < Skill_Max; i++) {
+	//	particletex_[i] = new ParticleTex();
+	//	particletex_[i]->Initialize();
+	//	particletex[i].reset(particletex_[i]);
+	//}
 	//開けた時のエフェクト
 	ChestEffect* chesteffect_[Skill_Max];
 	for (int i = 0; i < Skill_Max; i++) {
@@ -157,7 +157,7 @@ void Chest::Update() {
 	}
 	//パーティクル関係
 	for (int i = 0; i < Skill_Max; i++) {
-		particletex[i]->SetParticleBreak(true);
+	/*	particletex[i]->SetParticleBreak(true);
 		if (m_ChestState[i] == Open && m_Alive[i]) {
 			m_ParticleCount[i]++;
 		}
@@ -169,7 +169,7 @@ void Chest::Update() {
 			m_ParticleCount[i] = 0;
 		}
 		particletex[i]->SetStartColor({ 1.0f,1.0f,0.0f,1.0f });
-		particletex[i]->Update(m_ParticlePos[i], m_ParticleCount[i], 3, 3);
+		particletex[i]->Update(m_ParticlePos[i], m_ParticleCount[i], 3, 3);*/
 		chesteffect[i]->Update(m_ChestPos[i], player->GetPosition(),m_ChestState[i]);
 	}
 
@@ -208,7 +208,7 @@ const void Chest::Draw() {
 	}
 
 	for (int i = 0; i < Skill_Max; i++) {
-		particletex[i]->Draw();
+		//particletex[i]->Draw();
 		if (m_Hit[i]) {
 			chesteffect[i]->Draw();
 		}

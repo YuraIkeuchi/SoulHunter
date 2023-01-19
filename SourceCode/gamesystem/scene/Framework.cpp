@@ -55,13 +55,13 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 
 	IKEObject3d::StaticInitialize(dxcommon->GetDev(), dxcommon->GetCmdList(), WinApp::window_width, WinApp::window_height);
 	IKETexture::StaticInitialize(dxcommon->GetDev(), dxcommon->GetCmdList(), WinApp::window_width, WinApp::window_height);
+	//ParticleManager::CreateCommon(dxcommon->GetDev(), dxcommon->GetCmdList());
 	// FBX関連静的初期化
 	IKEFbxLoader::GetInstance()->Initialize(dxcommon->GetDev());
-	// パーティクルマネージャ初期化
-	ParticleManager::GetInstance()->Initialize(dxcommon->GetDev());
 	ModelManager::GetInstance()->Initialize();
 	ImageManager::GetIns()->LoadTex2D();
 	ImageManager::GetIns()->Load2D();
+
 }
 
 void Framework::Finalize()

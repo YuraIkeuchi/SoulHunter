@@ -1,14 +1,12 @@
 cbuffer cbuff0 : register(b0)
 {
-	float4 color; // 色(RGBA)
-	matrix mat; // ３Ｄ変換行列
-	float addsepia;
-	/*float2 linearColor;
-	float2 toeColor;*/
-	int ToneType;//トーンタイプ
-	int ColorSpace;//出力色空間
-	float BaseLuminance;//基準輝度
-	float MaxLuminance;//最大輝度
+	float3 Color;//色
+	float addsepia;//セピア
+	bool isTone;//トーンの有無
+	float frame;//水面表現
+	float2 P_1;
+	float2 P_2;
+	float2 P_3;
 };
 
 //頂点シェーダーからの出力構造体

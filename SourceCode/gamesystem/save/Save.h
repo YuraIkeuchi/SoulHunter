@@ -36,6 +36,8 @@ public:
 	void TexMove();
 	//アニメーション
 	void SaveAnime();
+	//パーティクル
+	void BirthParticle();
 private:
 	//定数
 	static const int SaveSprite_Max = 4;//アニメーションの数
@@ -53,7 +55,6 @@ public:
 
 	void SetPosition(const XMFLOAT3& m_Position) { this->m_Position = m_Position; }
 private:
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//クラス
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<MarkEffect> markEffect = nullptr;
@@ -62,6 +63,8 @@ private:
 	unique_ptr <IKEObject3d> objSave;
 	//テクスチャやスプライト
 	array<unique_ptr<IKESprite>, SaveSprite_Max> SaveSprite;
+	//クラス
+	unique_ptr<ParticleManager> fire;
 	//座標
 	XMFLOAT3 m_Position = {0.0f,0.0f,0.0f};
 	XMFLOAT3 m_TexPosition = {0.0f,0.0f,0.0f};
@@ -80,3 +83,4 @@ private:
 	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
 	int m_ParticleCount = 0;
 };
+
