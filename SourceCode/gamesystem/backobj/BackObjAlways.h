@@ -29,7 +29,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon) override;
-	void InitRock(int StageNumber);//ステージごとの配置
 private:
 	//定数
 	static const int BackRock_Max = 11;//OBJの数

@@ -292,7 +292,7 @@ public:
 	//•ó” 
 	Chest* chest = nullptr;
 	//”wŒi‚Ìobj
-	std::vector<BackObjAlways*> backobjalways;
+	std::vector<BackObjAlways*> m_BackObjAlways;
 	BackLight* backlight = nullptr;
 	//UIŠÖŒW
 	UI* ui = nullptr;
@@ -340,6 +340,8 @@ public:
 	std::vector<XMFLOAT3> m_BackBoxStartRot;
 	std::vector<XMFLOAT3> m_BackTorchStartRot;
 
+	std::vector<XMFLOAT3> m_BackAlwaysStartPos;
+
 	//‹¤’Ê‚Ì”wŒiŠâ
 	std::ifstream m_AlwaysFile;
 	std::stringstream m_AlwaysPopcom;
@@ -357,7 +359,7 @@ public:
 	int m_BackRock_Num;
 	int m_BackBox_Num;
 	int m_BackTorch_Num;
-
+	int m_BackAlways_Num;
 	//ž™‚ÌŒü‚«
 	enum ThornDir {
 		Up,

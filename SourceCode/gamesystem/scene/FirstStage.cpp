@@ -83,6 +83,8 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	StartGame();
 	LoadEnemyParam(StageNumber);
 	LoadObjParam(StageNumber);
+	LoadBackObjAlways(StageNumber);
+
 	BGMStart = true;
 
 	//ボスシーンのためのもの
@@ -204,7 +206,6 @@ void FirstStage::NormalUpdate() {
 
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->Update(i);
-
 	}
 
 	//その他の更新
@@ -213,11 +214,16 @@ void FirstStage::NormalUpdate() {
 		respornenemy->Update(firstboss);
 	}
 
+	//背景の岩
+	for (BackObjAlways* newalways : m_BackObjAlways) {
+		if (newalways != nullptr) {
+			newalways->Update();
+		}
+	}
 	backlight->Update();
 	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
-	playerskill->Update();
 	chest->Update();
 	VolumManager::GetInstance()->Update();
 	save->Update();
@@ -333,6 +339,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::Begin("Scene");
 		ImGui::SetWindowPos(ImVec2(1000, 150));
 		ImGui::SetWindowSize(ImVec2(280, 150));
+		ImGui::Text("AlwaysNum:%d", m_BackAlways_Num);
 		if (ImGui::RadioButton("m_EditorScene", &m_SceneChange)) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
@@ -364,6 +371,11 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	//画面が黒い間は描画されない
 	if (BlackColor.w <= 1.0f) {
 		//ステージの描画
+		for (BackObjAlways* newalways : m_BackObjAlways) {
+			if (newalways != nullptr) {
+				newalways->Draw(dxCommon);
+			}
+		}
 		block->Draw(m_PlayerPos);
 		if (StageNumber != BossMap) {
 			BackObjDraw(m_BackRocks, dxCommon);
@@ -415,8 +427,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 				birdplayersoul[i][j]->Draw();
 			}
 		}
-
-		playerskill->Draw();
 	}
 	IKESprite::PreDraw();
 	if (player->GetHP() == 0) {
@@ -481,9 +491,10 @@ void FirstStage::MapInitialize() {
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
-		LoadEnemyParam(StageNumber);
 		chest->InitChest(StageNumber);
+		LoadEnemyParam(StageNumber);
 		LoadObjParam(StageNumber);
+		LoadBackObjAlways(StageNumber);
 		StageChange = false;
 		player->SetGoalDir(0);
 	}

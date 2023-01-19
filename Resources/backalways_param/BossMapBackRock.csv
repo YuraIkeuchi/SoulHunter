@@ -1,4 +1,6 @@
-PillerCount,0
-WallCount,0
-RockCount,0
-TorchCount,0
+BackCount,4
+//背景岩の生成座標
+POP,135.0,-20.0,25.0
+POP,135.0,-80.0,25.0
+POP,135.0,-130.0,25.0
+POP,285.0,-130.0,25.0

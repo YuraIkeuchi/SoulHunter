@@ -55,8 +55,6 @@ void BaseScene::PlayerInitialize() {
 	
 	//スキル配置
 	playerskill = new PlayerSkill();
-	playerskill->Initialize();
-	playerskill->SetPlayer(player);
 }
 //カメラの初期化
 void BaseScene::CameraInitialize() {
@@ -1013,11 +1011,26 @@ void BaseScene::LoadObjParam(const int StageNumber) {
 }
 //CSVを開いている(共通のOBJ)
 void BaseScene::OpenBackObjAlwaysParam(const int StageNumber) {
-	if (StageNumber == BossMap) {
-		m_AlwaysFile.open("Resources/backalways_param/BossMapBackRock.csv");
-	}
-	else {
+	switch (StageNumber)
+	{
+	case Map1:
 		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map2:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map3:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map4:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map5:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map6:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case BossMap:
+		m_AlwaysFile.open("Resources/backalways_param/BossMapBackRock.csv");
+	case TutoRial:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	default:
+		break;
 	}
 
 	m_AlwaysPopcom << m_AlwaysFile.rdbuf();
@@ -1026,7 +1039,55 @@ void BaseScene::OpenBackObjAlwaysParam(const int StageNumber) {
 
 void BaseScene::LoadBackObjAlways(const int StageNumber) {
 	OpenBackObjAlwaysParam(StageNumber);
+	//柱
+	while (std::getline(m_AlwaysPopcom, m_AlwaysLine)) {
+		std::istringstream line_stream(m_AlwaysLine);
+		std::string word;
+		std::getline(line_stream, word, ',');
 
+		if (word.find("//") == 0) {
+			continue;
+		}
+		if (word.find("BackCount") == 0) {
+			std::getline(line_stream, word, ',');
+			int quantity = (int)std::atof(word.c_str());
+			m_BackAlways_Num = quantity;
+			break;
+		}
+	}
+
+	m_BackAlwaysStartPos.resize(m_BackAlways_Num);
+	for (int i = 0; i < m_BackAlways_Num; i++) {
+		while (getline(m_AlwaysPopcom, m_AlwaysLine)) {
+			std::istringstream line_stream(m_AlwaysLine);
+
+			std::string word;
+			//半角スペース区切りで行の先頭文字列を取得
+			getline(line_stream, word, ',');
+			if (word.find("//") == 0) {
+				continue;
+			}
+			//各コマンド
+			if (word.find("POP") == 0) {
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				m_BackAlwaysStartPos[i] = { x,y,z };
+				break;
+			}
+		}
+	}
+
+	m_BackObjAlways.resize(m_BackAlways_Num);
+	for (int i = 0; i < m_BackAlways_Num; i++) {
+		m_BackObjAlways[i] = new BackObjAlways();
+		m_BackObjAlways[i]->Initialize();
+		m_BackObjAlways[i]->SetPosition(m_BackAlwaysStartPos[i]);
+	}
 }
 //ゲームデータのセーブ(位置とマップ番号)
 void BaseScene::SaveGame() {

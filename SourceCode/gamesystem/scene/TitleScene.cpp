@@ -96,7 +96,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	//ƒ‰ƒCƒg‚ğ™X‚É¬‚³‚­‚·‚é
-	if (pointLightAtten[0] <= 1.0f) {
+	if (pointLightAtten[0] <= 1.0f && scenechange->GetAddStartChange()) {
 		pointLightAtten[0] += 0.0001f;
 		pointLightAtten[1] += 0.0001f;
 		pointLightAtten[2] += 0.0001f;
