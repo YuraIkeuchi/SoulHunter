@@ -18,7 +18,7 @@ ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
 CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
 CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
 ComPtr<ID3D12Resource> ParticleManager::texbuff[srvCount];
-UINT ParticleManager::descriptorHandleIncrementSize = 0u;
+UINT ParticleManager::descriptorHandleIncrementSize = 0;
 
 
 

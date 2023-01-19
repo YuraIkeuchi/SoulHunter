@@ -9,15 +9,27 @@
 
 using namespace Microsoft::WRL;
 
-DirectXCommon* DirectXCommon::GetInstance()
+void DirectXCommon::Finalize()
 {
-	static DirectXCommon instance;
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+	dxgiFactory.Reset();
+	cmdList.Reset();
+	cmdAllocator.Reset();
+	cmdQueue.Reset();
+	swapchain.Reset();
+	backBuffers.clear();
+	depthBuffer.Reset();
+	rtvHeaps.Reset();
+	dsvHeap.Reset();
+	fence.Reset();
+	fence.Reset();
+	imguiHeap.Reset();
 
-	return &instance;
 }
 
-void DirectXCommon::Initialize(WinApp* winApp)
-{
+void DirectXCommon::Initialize(WinApp* winApp) {
 	// nullptrチェック
 	assert(winApp);
 
@@ -53,82 +65,50 @@ void DirectXCommon::Initialize(WinApp* winApp)
 		assert(0);
 	}
 
-
 	// imgui初期化
 	if (!InitImgui()) {
 		assert(0);
 	}
 }
 
-void DirectXCommon::ClearDepthBuffer()
-{
+void DirectXCommon::PreDraw() {
+
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	// バックバッファの番号を取得（2つなので0番か1番）
+	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
+
+	//表示状態から描画状態に変更
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	// レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(), bbIndex, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+
+	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
+
+	// レンダーターゲットをセット
+	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
+
+	// 全画面クリア
+	ClearRenderTarget();
+	// 深度バッファクリア
+	ClearDepthBuffer();
+
+	//ビューポート領域の設定
+	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height));
+
+	//シザー短形の設定
+	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WinApp::window_width, WinApp::window_height));
+}
+void DirectXCommon::ClearDepthBuffer() {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
 	// 深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }
-
-void DirectXCommon::Finalize()
-{
-	ImGui_ImplDX12_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
-	dxgiFactory.Reset();
-	cmdList.Reset();
-	cmdAllocator.Reset();
-	cmdQueue.Reset();
-	swapchain.Reset();
-	backBuffers.clear();
-	depthBuffer.Reset();
-	rtvHeaps.Reset();
-	dsvHeap.Reset();
-	fence.Reset();
-	fence.Reset();
-	imguiHeap.Reset();
-}
-
-void DirectXCommon::PreDraw()
-{
-	//#pragma regin グラフィックスコマンド
-	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
-	//実行
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(), D3D12_RESOURCE_STATE_PRESENT,
-		D3D12_RESOURCE_STATE_RENDER_TARGET));
-	//描画先指定
-	auto rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(), bbIndex, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
-	//深度ステンシルビュー用でスクリプタヒープ
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
-
-	//画面クリア
-	float clearColor[] = { 0.0f,0.0f, 0.0f,0.0f }; // 黒っぽい色
-	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
-	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-
-	//描画コマンド
-	if (FullScreen) {
-		cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, normalwindow_width, normalwindow_height));
-		cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, normalwindow_width, normalwindow_height));
-	}
-	else {
-		cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, smallwindow_width, smallwindow_height));
-		cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, smallwindow_width, smallwindow_height));
-	}
-
-
-	// imgui開始
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	WindowImGuiDraw();
-
-}
-
-void DirectXCommon::PostDraw()
-{
-
+void DirectXCommon::PostDraw() {
+	HRESULT result = S_FALSE;
 	// imgui描画
 	ImGui::Render();
 	ID3D12DescriptorHeap* ppHeaps[] = { imguiHeap.Get() };
@@ -155,91 +135,81 @@ void DirectXCommon::PostDraw()
 	cmdList->Reset(cmdAllocator.Get(), nullptr);
 	swapchain->Present(1, 0);
 }
-bool DirectXCommon::InitializeDevice()
-{
+
+bool DirectXCommon::InitializeDevice() {
 	HRESULT result = S_FALSE;
-#ifdef _DEBUG
-	ComPtr<ID3D12Debug> debugController;
-	//デバッグレイヤーをオンに
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
+#ifdef _Debug
+	ComPtr<ID3D12Debug1> debugController;
+	//デバッグレイヤーをオンに	
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
 		debugController->EnableDebugLayer();
 	}
-	// DREDレポートをオンに
-	ComPtr<ID3D12DeviceRemovedExtendedDataSettings> dredSettings;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&dredSettings)))) {
-		dredSettings->SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
-		dredSettings->SetPageFaultEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
-	}
 #endif
-	//dxgiファクトリーの生成
-	result = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
-
-	//アダプタの列挙用
-	std::vector<ComPtr<IDXGIAdapter1>>adapters;
-
-	//ここに特定の名前を持つアダプターオブジェクトが入る
-	ComPtr<IDXGIAdapter1>tmpAdapter;
-	for (int i = 0; dxgiFactory->EnumAdapters1(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++) {
-		adapters.push_back(tmpAdapter);
-	}
-	//グラフィックボードのアダプタを列挙2
-	for (int i = 0; i < adapters.size(); i++) {
-		DXGI_ADAPTER_DESC1 adesc;
-		adapters[i]->GetDesc1(&adesc);
-		if (adesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) {
-			continue;
-		}
-		std::wstring strDesc = adesc.Description;
-		if (strDesc.find(L"Intel") == std::wstring::npos) {
-			tmpAdapter = adapters[i];
-			break;
-		}
-	}
-
-
-	//デバイスの生成
-	D3D_FEATURE_LEVEL levels[] = {
+	// 対応レベルの配列
+	D3D_FEATURE_LEVEL levels[] =
+	{
 		D3D_FEATURE_LEVEL_12_1,
 		D3D_FEATURE_LEVEL_12_0,
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
 	};
 
-	D3D_FEATURE_LEVEL featureLevel;
-	result = S_FALSE;
-	for (int i = 0; i < _countof(levels); i++) {
-		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i], IID_PPV_ARGS(&dev));
-		if (result == S_OK) {
-			featureLevel = levels[i];
+	// DXGIファクトリーの生成
+	result = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
+
+	// アダプターの列挙用
+	std::vector<ComPtr<IDXGIAdapter1 >> adapters;
+	// ここに特定の名前を持つアダプターオブジェクトが入る
+	ComPtr <IDXGIAdapter1> tmpAdapter;
+	for (int i = 0;
+		dxgiFactory->EnumAdapters1(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND;
+		i++)
+	{
+		adapters.push_back(tmpAdapter); // 動的配列に追加する
+	}
+
+	for (int i = 0; i < adapters.size(); i++)
+	{
+		DXGI_ADAPTER_DESC1 adesc;
+		adapters[i]->GetDesc1(&adesc);  // アダプターの情報を取得
+
+		// ソフトウェアデバイスを回避
+		if (adesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) {
+			continue;
+		}
+
+		std::wstring strDesc = adesc.Description;   // アダプター名
+		// Intel UHD Graphics（オンボードグラフィック）を回避
+		if (strDesc.find(L"Intel") == std::wstring::npos)
+		{
+			tmpAdapter = adapters[i];   // 採用
 			break;
 		}
 	}
 
-	if (FAILED(result)) {
-		assert(0);
-		return false;
-	}
+	D3D_FEATURE_LEVEL featureLevel;
 
-#ifdef _DEBUG
-	ComPtr<ID3D12InfoQueue>infoQueue;
-	if (SUCCEEDED(dev->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
+	for (int i = 0; i < _countof(levels); i++)
+	{
+		// 採用したアダプターでデバイスを生成
+		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i], IID_PPV_ARGS(&dev));
+		if (result == S_OK)
+		{
+			// デバイスを生成できた時点でループを抜ける
+			featureLevel = levels[i];
+			break;
+		}
 	}
-#endif _DEBUG
-
 	return true;
 }
 
-
-bool DirectXCommon::CreateSwapChain()
-{
+bool DirectXCommon::CreateSwapChain() {
 	HRESULT result = S_FALSE;
 	//スワップチェーンの生成
 	DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
-	swapchainDesc.Width = 1280;
-	swapchainDesc.Height = 720;
+	swapchainDesc.Width = WinApp::window_width;
+	swapchainDesc.Height = WinApp::window_height;
 	swapchainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapchainDesc.SampleDesc.Count = 1;
 	swapchainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
@@ -260,8 +230,7 @@ bool DirectXCommon::CreateSwapChain()
 	return true;
 }
 
-bool DirectXCommon::InitializeCommand()
-{
+bool DirectXCommon::InitializeCommand() {
 	HRESULT result = S_FALSE;
 
 	result = dev->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -288,8 +257,7 @@ bool DirectXCommon::InitializeCommand()
 	return true;
 }
 
-bool DirectXCommon::InitializeRenderTargetView()
-{
+bool DirectXCommon::InitializeRenderTargetView() {
 	HRESULT result = S_FALSE;
 
 	//でスクリプタヒープの生成
@@ -317,12 +285,12 @@ bool DirectXCommon::InitializeRenderTargetView()
 		//handle.ptr += i * dev->GetDescriptorHandleIncrementSize(heapDesc.Type);
 		dev->CreateRenderTargetView(backBuffers[i].Get(), nullptr, handle);
 	}
+
 	return true;
 }
 
 //深度バッファ
-bool DirectXCommon::InitializeDepthBuffer()
-{
+bool DirectXCommon::InitializeDepthBuffer() {
 	HRESULT result = S_FALSE;
 
 	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -357,8 +325,7 @@ bool DirectXCommon::InitializeDepthBuffer()
 	return true;
 }
 
-bool DirectXCommon::CreateFence()
-{
+bool DirectXCommon::CreateFence() {
 	HRESULT result = S_FALSE;
 	result = dev->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 	if (FAILED(result)) {
@@ -400,7 +367,7 @@ bool DirectXCommon::InitImgui()
 		return false;
 	}
 	if (!ImGui_ImplDX12_Init(
-		GetDev(),
+		dev.Get(),
 		swcDesc.BufferCount,
 		swcDesc.BufferDesc.Format,
 		imguiHeap.Get(),
@@ -413,6 +380,28 @@ bool DirectXCommon::InitImgui()
 
 	return true;
 }
+//
+//void DirectXCommon::Reset() {
+//	//ID3D12DebugDevice* debugInterface;
+//
+//	//if (SUCCEEDED(dev->QueryInterface(&debugInterface))) {
+//	//	debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
+//	//	debugInterface->Release();
+//	//}
+//}
+
+
+void DirectXCommon::ClearRenderTarget()
+{
+	// バックバッファの番号を取得（2つなので0番か1番）
+	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
+	// レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(), bbIndex, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	// ３．画面クリア           R     G     B    A
+	float clearColor[] = { 0.0f,0.0f, 0.0f,1.0f }; // 青っぽい色
+	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
+}
+
 
 void DirectXCommon::WindowImGuiDraw() {
 	//ImGui::Begin("SelectScreen");
@@ -447,4 +436,3 @@ void DirectXCommon::WindowImGuiDraw() {
 	ImGui::Unindent();
 	ImGui::End();*/
 }
-
