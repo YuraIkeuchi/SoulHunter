@@ -465,6 +465,7 @@ bool Chest::CompassText() {
 			return true;
 		}
 	}
+	//徐々に説明文が出る
 	if (m_CompassTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < CompassExplain_Max; i++) {
 			if (m_CompassTimer % 30 == 0 && m_CompassTimer != 0) {
@@ -516,6 +517,7 @@ bool Chest::LibraText() {
 			return true;
 		}
 	}
+	//徐々に説明文が出る
 	if (m_LibraTimer <= m_LibraTimerMax) {
 		for (int i = 0; i < LibraExplain_Max; i++) {
 			if (m_LibraTimer % 30 == 0 && m_LibraTimer != 0) {
@@ -568,8 +570,8 @@ bool Chest::DushText() {
 			m_ReadText[Dush] = false;
 			return true;
 		}
-
 	}
+	//徐々に説明文が出る
 	if (m_DushTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < DushExplain_Max; i++) {
 			if (m_DushTimer % 30 == 0 && m_DushTimer != 0) {
@@ -619,8 +621,8 @@ bool Chest::HealText() {
 			m_ReadText[Heal] = false;
 			return true;
 		}
-
 	}
+	//徐々に説明文が出る
 	if (m_HealTimer <= m_SkillTimerMax) {
 		for (int i = 0; i < HealExplain_Max; i++) {
 			if (m_HealTimer % 30 == 0 && m_HealTimer != 0) {

@@ -44,7 +44,6 @@ public:
 		DushEffect,
 		AttackEffect,
 		ParticleEffect,
-		HootEffect,
 		DamageEffect,
 		NormalEffect,
 		SmokeTex,
@@ -57,18 +56,10 @@ public:
 		ReadTex,
 		OutArea,
 	};
-
-	enum ParticleTex {
-		Normal,
-		Food
-	};
 public:
 	static ImageManager* GetIns();		//Žæ“¾—p
 
 	void Load2D();
 	void LoadTex2D();
-	void LoadParticle();
-
-	static bool load;
 };
 

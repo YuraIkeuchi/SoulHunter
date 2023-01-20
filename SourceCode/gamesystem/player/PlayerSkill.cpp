@@ -69,14 +69,6 @@ void PlayerSkill::ResetHealSkill() {
 	s_UseHeal = false;
 }
 
-void PlayerSkill::Initialize() {
-}
-//更新
-void PlayerSkill::Update() {
-}
-//描画
-void PlayerSkill::Draw() {
-}
 //スキルのリセット
 void PlayerSkill::ResetSkill() {
 	s_UseLibra = false;

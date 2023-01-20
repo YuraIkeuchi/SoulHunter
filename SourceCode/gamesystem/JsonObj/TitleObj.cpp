@@ -1,13 +1,16 @@
 #include "TitleObj.h"
-#include "JsonLoader.h"
+#include "ModelManager.h"
 #include "ImageManager.h"
-using namespace DirectX;	
+#include "JsonLoader.h"
+using namespace DirectX;
 //初期化
 void TitleObj::Initialize() {
+	//パーティクル
+	m_ParticleCount = 0;
+	ParticleTex* particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 
-	ParticleManager* fire_ = new ParticleManager();
-	fire_->Initialize(ImageManager::Normal);
-	fire.reset(fire_);
 	jsonData = JsonLoader::LoadFile("Title");
 
 
@@ -53,12 +56,30 @@ void TitleObj::Update() {
 	for (auto& object : objects) {
 		object->Update();
 	}
-	BirthParticle();
+
+	//炎のパーティクル
+	if (!m_StopParticle) {
+		m_ParticleCount++;
+	}
+	else {
+		m_ParticleCount = 0;
+	}
+
+
+	if (m_ParticleCount > 6) {
+		m_ParticleCount = 0;
+	}
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 6, SavePart);
+	particletex->SetParticleBreak(true);
+	particletex->SetParticleBillboard(true);
+	particletex->SetStartScale(0.5f);
+	particletex->SetAddScale(0.01f);
+
 }
 //前面描画
 const void TitleObj::FrontDraw() {
-	IKEObject3d::PreDraw();
-	
+	particletex->Draw();
 }
 //背景描画
 const void TitleObj::BackDraw() {
@@ -66,24 +87,8 @@ const void TitleObj::BackDraw() {
 	for (auto& object : objects) {
 		object->Draw();
 	}
-
-	fire->Draw(AddBlendType);
 }
 //解放
 void TitleObj::Finalize() {
 
-}
-
-void TitleObj::BirthParticle() {
-	XMFLOAT3 pos = { 0.0f,23.0f,0.0f };
-
-	const float rnd_vel = 0.05f;
-	XMFLOAT3 vel{};
-	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-
-	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
-
-	fire->Update();
 }

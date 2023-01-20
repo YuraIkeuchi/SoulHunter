@@ -4,14 +4,11 @@
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
 	//パーティクル
-	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::ParticleEffect);
-	death.reset(death_);
-
-	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::HootEffect);
-	hoot.reset(hoot_);
-
+	//パーティクル
+	ParticleTex* particletex_;
+	particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 	IKETexture* OutAreatexture_;
 	OutAreatexture_ = IKETexture::Create(ImageManager::OutArea, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	OutAreatexture_->TextureCreate();

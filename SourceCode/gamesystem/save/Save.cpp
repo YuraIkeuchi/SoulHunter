@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
+#include "Input.h"
 #include "Collision.h"
 //初期化
 void Save::Initialize() {
@@ -11,15 +12,16 @@ void Save::Initialize() {
 	objSave_ = IKEObject3d::Create();
 	objSave_->SetModel(modelSave);
 	objSave_->SetRotation({ 0.0f,90.0f,0.0f });
+	//objSave_->SetPosition({ 0, 0, -30 });
 	objSave_->SetScale({ 3.0f,3.0f,3.0f });
 	objSave.reset(objSave_);
-	
+
 	//セーブ時のUI
 	IKESprite* SaveSprite_[4];
 	const int SaveCount = 4;
 	for (int i = 0; i < SaveSprite.size(); i++) {
 		SaveSprite_[i] = IKESprite::Create(ImageManager::Save1, { 0.0f,0.0f });
-		SaveSprite_[i]->SetPosition({0.0f,600.0f});
+		SaveSprite_[i]->SetPosition({ 0.0f,600.0f });
 		int number_index_y = i / SaveCount;
 		int number_index_x = i % SaveCount;
 		SaveSprite_[i]->SetTextureRect(
@@ -30,17 +32,18 @@ void Save::Initialize() {
 	}
 
 	m_ParticleCount = 0;
+	ParticleTex* particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 	//エフェクト
 	MarkEffect* markEffect_ = new MarkEffect();
 	markEffect_->Initialize();
 	markEffect.reset(markEffect_);
-
-	ParticleManager* fire_ = new ParticleManager();
-	fire_->Initialize(ImageManager::Normal);
-	fire.reset(fire_);
 }
 //更新
 void Save::Update() {
+	Input* input = Input::GetInstance();
+
 	//ボタンを押すとセーブできる
 	if (Collide() && m_SaveCount == 0) {
 		m_GameSave = true;
@@ -54,26 +57,35 @@ void Save::Update() {
 	objSave->Update();
 
 	//パーティクルの更新
-	BirthParticle();
+	if (m_Alive) {
+		m_ParticleCount++;
+	}
+	if (m_ParticleCount > 6) {
+		m_ParticleCount = 0;
+	}
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	particletex->Update({ m_Position.x,m_Position.y + 2.0f,m_Position.z }, m_ParticleCount, 6, SavePart);
+	particletex->SetParticleBreak(true);
+	particletex->SetParticleBillboard(true);
+	particletex->SetStartScale(0.1f);
+	particletex->SetAddScale(0.01f);
+
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }
 //描画
 const void Save::Draw() {
-	
+
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
 		objSave->Draw();
-		markEffect->Draw();
 	}
 
 	IKESprite::PreDraw();
 	if (m_SaveText) {
 		SaveSprite[m_SaveCount]->Draw();
 	}
-
-	fire->Draw(AddBlendType);
-	//particletex->Draw();
-
+	particletex->Draw();
+	markEffect->Draw();
 }
 
 //当たり判定
@@ -153,19 +165,4 @@ void Save::SaveAnime() {
 			m_SaveText = false;
 		}
 	}
-}
-
-
-void Save::BirthParticle() {
-	XMFLOAT3 pos = m_Position;
-
-	const float rnd_vel = 0.05f;
-	XMFLOAT3 vel{};
-	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-
-	fire->Add(200, { pos.x,pos.y + 3.0f,pos.z }, vel, {}, 1.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
-
-	fire->Update();
 }

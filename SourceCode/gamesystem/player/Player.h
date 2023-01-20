@@ -11,7 +11,7 @@
 #include "PlayerDushEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
-#include "ParticleManager.h"
+#include "ParticleTex.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -36,6 +36,11 @@ public:
 	/// 毎フレーム処理
 	/// </summary>
 	void Update() override;
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw(DirectXCommon* dxCommon) override;
 	//剣の更新
 	void SwordUpdate();
 	//エフェクトの更新
@@ -79,10 +84,7 @@ public:
 	void PlayerThornHit(const XMFLOAT3& pos);
 	//スキルリセット
 	void ResetSkill();
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(DirectXCommon* dxCommon) override;
+	
 
 	/// <summary>
 	/// 開放
@@ -106,6 +108,11 @@ public:
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
+
+	//csvを開く
+	void OpenCsv();
+	//csvのロード
+	void LoadCsv();
 	
 	//導入シーンのための処理
 	void IntroductionUpdate(int Timer);
@@ -159,12 +166,10 @@ private:
 	static bool s_UseCompass;
 	static bool s_UseHeal;
 private:
-	//攻撃の位置を取る
-	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
+	//パーティクル
+	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
-	unique_ptr<ParticleManager> hoot;
-	unique_ptr<ParticleManager> heal;
-	unique_ptr<ParticleManager> death;
+	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	vector<AttackEffect*> attackeffects;
@@ -205,7 +210,7 @@ private:
 	bool m_Effect = false;
 	//プレイヤー関係
 	//座標
-	XMFLOAT3 m_OldPlayerPos = {0.0f,0.0f,0.0f};
+	XMFLOAT3 m_OldPos = {0.0f,0.0f,0.0f};
 	//プレイヤーのマップチップの当たり判定をより正確に行うための処理
 	XMFLOAT3 m_LimitRightPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_LimitLeftPos = { 0.0f,0.0f,0.0f };
@@ -241,18 +246,16 @@ private:
 	};
 	int m_DushDir = 0;
 	//足元のパーティクル
-	int m_FoodParticleNum = 5;
 	int m_FoodParticleCount = 0;
 	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
-	int m_ParticleCount = 0;
-	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	int m_DeathParticleCount = 0;
 	//剣のパーティクル
 	int m_SwordParticleCount = 0;
 	XMFLOAT3 m_SwordParticlePos = { 0.0f,0.0f,0.0f };
 	//ゴールしたときの変数
 	bool m_ChangeInterVal = false;
-	int m_IntervalTimer = 0;
+	int m_GoalIntervalTimer = 0;
 	int m_GoalDir = 0;
 	enum GoalDir {
 		No,
@@ -267,11 +270,8 @@ private:
 	bool m_CollideChest = false;
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
-
-	//必殺技
+	//イージングのため
 	float m_Frame = 0.0f;
-	//パーティクルのための変数
-	int m_ParticleNumber = 0;
 	//ムービー中の動き
 	bool m_Movie = false;
 	//ディゾルブ
@@ -285,11 +285,11 @@ private:
 	int m_HealType = 0;
 	enum HealType {
 		NoHeal,
-		InterVal,
-		Invocation,
-		Fail,
+		UseHeal,
 	};
 
+	//攻撃の位置を取る
+	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//手行列
 	XMMATRIX m_HandMat;
 	XMVECTOR m_VectorSwordPos;//剣の座標
@@ -323,6 +323,7 @@ private:
 	};
 
 	AnimationTimer m_AnimationTimer;
+	//プレイヤーのアニメーション
 	enum AnimationType {
 		FirstAttack,
 		SecondAttack,
@@ -337,5 +338,10 @@ private:
 		Damage,
 		Fall
 	};
+
+	//csv用変数
+	std::ifstream m_PlayerFile;
+	std::stringstream m_PlayerPopcom;
+	std::string m_PlayerLine;
 };
 

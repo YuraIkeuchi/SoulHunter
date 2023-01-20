@@ -12,14 +12,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	void SetPlayer(Player* player) { this->player = player; }
-	//PlayerSkill();
-	//初期化
-	void Initialize();
-	//更新
-	void Update();
-	//描画
-	void Draw();
+	
 	//スキルをゲットしたかどうか
 	void Dush();
 	void Libra();
@@ -46,9 +39,6 @@ public:
 	bool GetUseCompass() { return s_UseCompass; }
 	bool GetUseHeal() { return s_UseHeal; }
 	// setter
-	void SetDushPos(const XMFLOAT3& DushPos) { this->m_DushPos = DushPos; }
-	void SetLibraPos(const XMFLOAT3& LibraPos) { this->m_LibraPos = LibraPos; }
-	void SetCompassPos(const XMFLOAT3& CompassPos) { this->m_CompassPos = CompassPos; }
 	void SetDushAlive(bool DushAlive) { this->m_DushAlive = DushAlive; }
 	void SetLibraAlive(bool LibraAlive) { this->m_LibraAlive = LibraAlive; }
 	void SetCompassAlive(bool CompassAlive) { this->m_CompassAlive = CompassAlive; }

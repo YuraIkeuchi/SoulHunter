@@ -15,7 +15,8 @@ void BaseScene::NewFinish() {
 void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	// デバイスをセット
 	IKEFBXObject3d::SetDevice(dxCommon->GetDev());
-
+	//パーティクルマネージャー
+	particleMan = ParticleManager::GetInstance();
 	// グラフィックスパイプライン生成
 	IKEFBXObject3d::CreateGraphicsPipeline();
 	// カメラ生成
@@ -23,6 +24,7 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	IKETexture::SetCamera(camera);
 	// 3Dオブジェクトにカメラをセット
 	IKEObject3d::SetCamera(camera);
+	particleMan->SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
 	//ポストエフェクトの初期化
 	//(普通)
@@ -34,10 +36,8 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット
 	IKEObject3d::SetLightGroup(lightGroup);
-	//パーティクルにカメラセット
-	ParticleManager::CreateCommon(dxCommon->GetDev(), dxCommon->GetCmdList());
-	ParticleManager::SetCamera(camera);
-	ImageManager::GetIns()->LoadParticle();
+	
+	ParticleManager::GetInstance()->Update();
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
@@ -55,8 +55,6 @@ void BaseScene::PlayerInitialize() {
 	
 	//スキル配置
 	playerskill = new PlayerSkill();
-	playerskill->Initialize();
-	playerskill->SetPlayer(player);
 }
 //カメラの初期化
 void BaseScene::CameraInitialize() {
@@ -115,7 +113,6 @@ void BaseScene::BackObjInitialize() {
 	chest->SetPlayer(player);
 	chest->SetPlayerSkill(playerskill);
 	//背景obj
-	backobjalways->Initialize();
 	backlight->Initialize();
 }
 //ゲームの始まり
@@ -157,8 +154,8 @@ void BaseScene::StartGame() {
 		}
 	}
 }
-//CSVを開いている
-void BaseScene::OpenEnemyParam(const int& StageNumber) {
+//CSVを開いている(敵)
+void BaseScene::OpenEnemyParam(const int StageNumber) {
 	switch (StageNumber)
 	{
 	case Map1:
@@ -295,7 +292,7 @@ void BaseScene::ThornObjSpecity(const char* vsShaderName) {
 	m_ThornObjPosition.resize(m_ThornObjs.size());
 }
 //CSVに書き込んでいる
-void BaseScene::SaveEnemyParam(const int& StageNumber) {
+void BaseScene::SaveEnemyParam(const int StageNumber) {
 	//マップ1
 	if (StageNumber == Map1) {
 		//普通の敵
@@ -388,7 +385,7 @@ void BaseScene::SaveEnemyParam(const int& StageNumber) {
 	}
 }
 //CSVから値を読み込んでいる(敵)
-void BaseScene::LoadEnemyParam(const int& StageNumber) {
+void BaseScene::LoadEnemyParam(const int StageNumber) {
 	OpenEnemyParam(StageNumber);
 	//普通の敵
 	while (std::getline(m_EnemyPopcom, m_EnemyLine)) {
@@ -703,8 +700,8 @@ void BaseScene::ReloadEnemy() {
 		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
 	}
 }
-//CSVを開いている
-void BaseScene::OpenObjParam(const int& StageNumber) {
+//CSVを開いている(背景OBJ)
+void BaseScene::OpenObjParam(const int StageNumber) {
 	switch (StageNumber)
 	{
 	case Map1:
@@ -768,7 +765,7 @@ void BaseScene::ObjSpecity(const char* vsShaderName) {
 	}
 }
 //CSVに書き込んでいる
-void BaseScene::SaveObjParam(const int& StageNumber) {
+void BaseScene::SaveObjParam(const int StageNumber) {
 	//マップ1
 	if (StageNumber == Map1) {
 		ObjSpecity("Resources/backobj_param/BackObj/FirstMapBackObj.csv");
@@ -804,7 +801,7 @@ void BaseScene::SaveObjParam(const int& StageNumber) {
 	}
 }
 //CSVから値を読み込んでいる(Obj)
-void BaseScene::LoadObjParam(const int& StageNumber) {
+void BaseScene::LoadObjParam(const int StageNumber) {
 	OpenObjParam(StageNumber);
 	//背景Obj
 	//柱
@@ -1010,6 +1007,87 @@ void BaseScene::LoadObjParam(const int& StageNumber) {
 		m_BackTorchs[i]->SetPosition(m_BackTorchStartPos[i]);
 		m_BackTorchs[i]->SetRotation(m_BackTorchStartRot[i]);
 		lightGroup->SetPointLightActive(i + 2, true);
+	}
+}
+//CSVを開いている(共通のOBJ)
+void BaseScene::OpenBackObjAlwaysParam(const int StageNumber) {
+	switch (StageNumber)
+	{
+	case Map1:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map2:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map3:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map4:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map5:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case Map6:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	case BossMap:
+		m_AlwaysFile.open("Resources/backalways_param/BossMapBackRock.csv");
+	case TutoRial:
+		m_AlwaysFile.open("Resources/backalways_param/NormalBackRock.csv");
+	default:
+		break;
+	}
+
+	m_AlwaysPopcom << m_AlwaysFile.rdbuf();
+	m_AlwaysFile.close();
+}
+
+void BaseScene::LoadBackObjAlways(const int StageNumber) {
+	OpenBackObjAlwaysParam(StageNumber);
+	//柱
+	while (std::getline(m_AlwaysPopcom, m_AlwaysLine)) {
+		std::istringstream line_stream(m_AlwaysLine);
+		std::string word;
+		std::getline(line_stream, word, ',');
+
+		if (word.find("//") == 0) {
+			continue;
+		}
+		if (word.find("BackCount") == 0) {
+			std::getline(line_stream, word, ',');
+			int quantity = (int)std::atof(word.c_str());
+			m_BackAlways_Num = quantity;
+			break;
+		}
+	}
+
+	m_BackAlwaysStartPos.resize(m_BackAlways_Num);
+	for (int i = 0; i < m_BackAlways_Num; i++) {
+		while (getline(m_AlwaysPopcom, m_AlwaysLine)) {
+			std::istringstream line_stream(m_AlwaysLine);
+
+			std::string word;
+			//半角スペース区切りで行の先頭文字列を取得
+			getline(line_stream, word, ',');
+			if (word.find("//") == 0) {
+				continue;
+			}
+			//各コマンド
+			if (word.find("POP") == 0) {
+
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				getline(line_stream, word, ',');
+				m_BackAlwaysStartPos[i] = { x,y,z };
+				break;
+			}
+		}
+	}
+
+	m_BackObjAlways.resize(m_BackAlways_Num);
+	for (int i = 0; i < m_BackAlways_Num; i++) {
+		m_BackObjAlways[i] = new BackObjAlways();
+		m_BackObjAlways[i]->Initialize();
+		m_BackObjAlways[i]->SetPosition(m_BackAlwaysStartPos[i]);
 	}
 }
 //ゲームデータのセーブ(位置とマップ番号)

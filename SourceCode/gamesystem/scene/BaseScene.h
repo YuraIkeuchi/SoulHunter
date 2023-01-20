@@ -35,10 +35,7 @@
 #include "HitStop.h"
 #include <vector>
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
-class CollisionManager;
-class Player;
 //前方宣言
 class SceneManager;
 
@@ -83,7 +80,7 @@ public:
 	void BackObjInitialize();
 	//ゲームの始まり
 	void StartGame();
-	// //CSV指定
+	//csv関係(敵)
 	//普通の敵
 	void NormalEnemySpecity(const char* vsShaderName);
 	//棘の敵
@@ -95,20 +92,25 @@ public:
 	//棘のOBJ
 	void ThornObjSpecity(const char* vsShaderName);
 	//csv開く
-	void OpenEnemyParam(const int& StageNumber);
+	void OpenEnemyParam(const int StageNumber);
 	//csvかきこみ
-	void SaveEnemyParam(const int& StageNumber);
+	void SaveEnemyParam(const int StageNumber);
 	//csvよびだし
-	void LoadEnemyParam(const int& StageNumber);
+	void LoadEnemyParam(const int StageNumber);
 	//OBJ
 	//csv開く
-	void OpenObjParam(const int& StageNumber);
+	void OpenObjParam(const int StageNumber);
 	//csvかきこみ
-	void SaveObjParam(const int& StageNumber);
+	void SaveObjParam(const int StageNumber);
 	//CSV指定
 	void ObjSpecity(const char* vsShaderName);
 	//csvよびだし
-	void LoadObjParam(const int& StageNumber);
+	void LoadObjParam(const int StageNumber);
+	//共通の背景
+	//csv開く
+	void OpenBackObjAlwaysParam(const int StageNumber);
+	//csV呼び出し
+	void LoadBackObjAlways(const int StageNumber);
 	//プレイヤーとステージの読み書き
 	void SaveGame();
 	void LoadGame();
@@ -125,6 +127,7 @@ public:
 	void BackObjUpdate(std::vector<BackObjCommon*> objs);
 	//背景OBJの描画
 	void BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon);
+	
 protected:
 	//定数
 	static const int Soul_Max = 3;//ソウルの最大数
@@ -195,20 +198,6 @@ public:
 	IKESprite* BlackFilter = nullptr;
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
 	//エディタ関係
-	//エディタのタイプ
-	int EditorType = 0;
-	enum EditorType {
-		EnemySet,
-		ObjSet,
-		EnemyObjSet,
-	};
-	
-	//OBJをどの距離に置くか
-	enum m_Distance {
-		NearDis,
-		NormalDis,
-		FarDis,
-	};
 
 	//敵を動かすかどうか
 	bool m_MoveEnemy = false;
@@ -253,16 +242,6 @@ public:
 	//ステージ
 	bool StageChange = true;
 	int StageNumber = 7;
-	enum StageNumber {
-		Map1,
-		Map2,
-		Map3,
-		Map4,
-		Map5,
-		Map6,
-		BossMap,
-		TutoRial,
-	};
 
 	//OBJ
 	//背景pbj
@@ -310,7 +289,7 @@ public:
 	//宝箱
 	Chest* chest = nullptr;
 	//背景のobj
-	BackObjAlways* backobjalways = nullptr;
+	std::vector<BackObjAlways*> m_BackObjAlways;
 	BackLight* backlight = nullptr;
 	//UI関係
 	UI* ui = nullptr;
@@ -357,6 +336,13 @@ public:
 	std::vector<XMFLOAT3> m_BackRockStartRot;
 	std::vector<XMFLOAT3> m_BackBoxStartRot;
 	std::vector<XMFLOAT3> m_BackTorchStartRot;
+
+	std::vector<XMFLOAT3> m_BackAlwaysStartPos;
+
+	//共通の背景岩
+	std::ifstream m_AlwaysFile;
+	std::stringstream m_AlwaysPopcom;
+	std::string m_AlwaysLine;
 	//ゲームデータ
 	std::ifstream m_GameFile;
 	std::stringstream m_GamePopcom;
@@ -370,7 +356,7 @@ public:
 	int m_BackRock_Num;
 	int m_BackBox_Num;
 	int m_BackTorch_Num;
-
+	int m_BackAlways_Num;
 	//棘の向き
 	enum ThornDir {
 		Up,

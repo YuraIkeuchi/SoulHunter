@@ -1,9 +1,9 @@
 #include "Player.h"
 #include "Input.h"
-#include "imgui.h"
 #include "ModelManager.h"
 #include "IKEFbxLoader.h"
 #include "ImageManager.h"
+#include "ParticleManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -31,47 +31,145 @@ bool Player::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
+	ParticleTex* particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
+
 	SwordParticle* swordparticle_ = new SwordParticle();
 	swordparticle_->Initialize();
 	swordparticle.reset(swordparticle_);
 
-	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::ParticleEffect);
-	death.reset(death_);
-
-	ParticleManager* heal_ = new ParticleManager();
-	heal_->Initialize(ImageManager::ParticleEffect);
-	heal.reset(heal_);
-
-	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::HootEffect);
-	hoot.reset(hoot_);
-
+	ParticleHeal* particleheal_ = new ParticleHeal();
+	particleheal_->Initialize();
+	particleheal.reset(particleheal_);
+	
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
 
 	return true;
 }
-//変数の初期化
+//csvを開く
+void Player::OpenCsv() {
+	m_PlayerFile.open("Resources/player_state/Player_State.csv");
+
+	m_PlayerPopcom << m_PlayerFile.rdbuf();
+
+	m_PlayerFile.close();
+}
+//CSVのロード
+void Player::LoadCsv() {
+
+	while (getline(m_PlayerPopcom,m_PlayerLine)) {
+		//解析しやすくする
+		std::istringstream line_stream(m_PlayerLine);
+
+		std::string word;
+		//半角スペース区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+		//"//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			//飛ばす
+			continue;
+		}
+		//各コマンド
+		if (word.find("SCALE") == 0) {
+
+			getline(line_stream, word, ',');
+			m_Scale.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Scale.y = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Scale.z = (float)std::atof(word.c_str());
+		}
+		else if (word.find("POP") == 0) {
+			getline(line_stream, word, ',');
+			m_Position.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Position.y = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Position.z = (float)std::atof(word.c_str());
+		}
+		else if (word.find("ROT") == 0) {
+			getline(line_stream, word, ',');
+			m_Rotation.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Rotation.y = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Rotation.z = (float)std::atof(word.c_str());
+		}
+		else if (word.find("DISOLVE") == 0) {
+			getline(line_stream, word, ',');
+			m_AddDisolve = (float)std::atof(word.c_str());
+		}
+		else if (word.find("ADDCOLOR") == 0) {
+			getline(line_stream, word, ',');
+			m_Addcolor.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Addcolor.y = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Addcolor.z = (float)std::atof(word.c_str());
+			m_Addcolor.w = 1.0f;
+		}
+		else if (word.find("HP") == 0) {
+			getline(line_stream, word, ',');
+			m_HP = (int)std::atof(word.c_str());
+		}
+		else if (word.find("INTERVAL") == 0) {
+			getline(line_stream, word, ',');
+			m_Interval = (int)std::atof(word.c_str());
+		}
+		else if (word.find("FLASH") == 0) {
+
+			getline(line_stream, word, ',');
+			m_FlashCount = (int)std::atof(word.c_str());
+		}
+		else if (word.find("DEATH") == 0) {
+			getline(line_stream, word, ',');
+			m_Death = (bool)std::atof(word.c_str());
+		}
+		else if (word.find("RESTIMER") == 0) {
+			getline(line_stream, word, ',');
+			m_RespornTimer = (int)std::atof(word.c_str());
+		}
+		else if (word.find("ALIVE") == 0) {
+			getline(line_stream, word, ',');
+			m_Alive = (bool)std::atof(word.c_str());
+		}
+		else if (word.find("OLDPOP") == 0) {
+			getline(line_stream, word, ',');
+			m_OldPos.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_OldPos.y = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_OldPos.z = (float)std::atof(word.c_str());
+		}
+		else if (word.find("RAD") == 0) {
+			getline(line_stream, word, ',');
+			m_Radius.x = (float)std::atof(word.c_str());
+			getline(line_stream, word, ',');
+			m_Radius.y = (float)std::atof(word.c_str());
+		}
+		else if (word.find("JUMP") == 0) {
+			getline(line_stream, word, ',');
+			m_Jump = (bool)std::atof(word.c_str());
+		}
+		else if (word.find("ADDPOWER") == 0) {
+			getline(line_stream, word, ',');
+			m_AddPower = (float)std::atof(word.c_str());
+		}
+		else if (word.find("GRAVITY") == 0) {
+			getline(line_stream, word, ',');
+			m_Gravity = (float)std::atof(word.c_str());
+			break;
+		}
+	}
+}
+//変数の初期化(必要な物のみ)
 void Player::StateInitialize() {
-	m_Scale = { 3.0f, 3.0f, 3.0f };
-	m_Position = { 20.0f,-100.0f,0.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_AddDisolve = 0.0f;
-	m_Addcolor = { 0.0f,0.0f,0.0f,1.0f };
-	m_HP = 5;
-	m_Interval = 0;
-	m_FlashCount = 0;
-	m_Death = false;
-	m_RespornTimer = 0;
-	m_Alive = true;
-	//プレイヤー関係
-	m_OldPlayerPos = { 0, 0, 0 };
-	m_Radius.x = 1.3f * m_Scale.x;
-	m_Radius.y = 0.7f * m_Scale.y;
-	m_Jump = false;
-	m_AddPower = -0.01f;
-	m_Gravity = 0.02f;
+	//CSVを開く
+	OpenCsv();
+	//CSVから値読み込み
+	LoadCsv();
 }
 //更新
 void Player::Update()
@@ -79,7 +177,7 @@ void Player::Update()
 	//手のボーン取得
 	m_HandMat = m_fbxObject->GetWorldMat();
 	//m_Object->Update();
-	m_OldPlayerPos = m_Position;
+	m_OldPos = m_Position;
 	
 	//ムービー中は一部挙動は出来ない
 	if (!m_Movie) {
@@ -122,9 +220,9 @@ void Player::Update()
 	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
 	if (m_ChangeInterVal) {
-		m_IntervalTimer++;
-		if (m_IntervalTimer == 120) {
-			m_IntervalTimer = 0;
+		m_GoalIntervalTimer++;
+		if (m_GoalIntervalTimer == 120) {
+			m_GoalIntervalTimer = 0;
 			m_ChangeInterVal = false;
 		}
 	}
@@ -143,6 +241,57 @@ void Player::Update()
 	//エフェクトの更新
 	EffectUpdate();
 
+}
+//描画
+void Player::Draw(DirectXCommon* dxCommon) {
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_PosX:%f", m_Position.x);
+	ImGui::Text("m_PosY:%f", m_Position.y);
+	ImGui::Text("m_PosZ:%f", m_Position.z);
+	ImGui::End();
+
+	//エフェクトの描画
+	for (AttackEffect* attackeffect : attackeffects) {
+		if (attackeffect != nullptr) {
+			attackeffect->Draw();
+		}
+	}
+
+	for (WallAttackEffect* walleffect : walleffects) {
+		if (walleffect != nullptr) {
+			walleffect->Draw();
+		}
+	}
+
+	for (PlayerDushEffect* dusheffect : dusheffects) {
+		if (dusheffect != nullptr) {
+			dusheffect->Draw();
+		}
+	}
+
+	for (PlayerDamageEffect* damageeffect : damageeffects) {
+		if (damageeffect != nullptr) {
+			damageeffect->Draw();
+		}
+	}
+
+
+	//点滅してるかどうかで描画が変わる
+	if (m_FlashCount % 2 == 0 && m_PlayMode) {
+		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
+			FollowObj_Draw();
+		}
+		if (m_AddDisolve <= 1.5f) {
+			Fbx_Draw(dxCommon);
+		}
+	}
+	//パーティクルの描画
+	
+	if (m_HP != 0) {
+		swordparticle->Draw();
+	}
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -177,25 +326,28 @@ void Player::SwordUpdate() {
 //エフェクトの更新
 void Player::EffectUpdate() {
 	//パーティクルのカウント数の更新
-	if (m_ParticleCount > 3) {
-		m_ParticleCount = 0;
+	if (m_DeathParticleCount > 3) {
+		m_DeathParticleCount = 0;
 	}
 
 	if (m_HealCount > 3) {
 		m_HealCount = 0;
 	}
-	//パーティクルを出す
+	//剣のパーティクルの場所を決める
 	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
 			 static_cast<float>(rand() % 1) + 1,
 			0 };
 
 	//パーティクル関係
+	particletex->Update(m_Position, m_DeathParticleCount, 3, NormalPart);
+	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
+	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-
+	//エフェクト関係
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Update();
@@ -219,6 +371,7 @@ void Player::EffectUpdate() {
 			damageeffect->Update(m_Position, m_Effect);
 		}
 	}
+
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -332,9 +485,6 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
 		m_FoodParticleCount += 1;
-		m_ParticlePos.x = m_Position.x;
-		m_ParticlePos.y = m_Position.y - 1.5f;
-		m_ParticlePos.z = m_Position.z;
 		m_FoodParticlePos = {
 			m_Position.x,
 			m_Position.y - 1.0f,
@@ -347,10 +497,9 @@ void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
 	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
-		&& (m_HealType == NoHeal) && (m_Alive)) {
+		&& (m_HealType == NoHeal) && (m_Alive) && (!m_Attack)) {
 		m_JumpCount++;
 		m_Jump = true;
-		m_ParticleCount = 0;
 		m_AddPower = 0.8f;
 	
 		if (m_JumpCount == 1) {
@@ -400,7 +549,7 @@ void Player::PlayerFall() {
 		}
 
 		//壁との当たり判定
-		if (block->PlayerMapCollideCommon(m_Position, m_Radius, m_OldPlayerPos, m_Jump,
+		if (block->PlayerMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump,
 			m_AddPower) && m_Alive)
 		{
 			//初期化
@@ -550,20 +699,17 @@ void Player::PlayerDush() {
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_Dush = true;
-			m_ParticlePos = m_Position;
-			m_ParticleCount = 3;
 			if (m_PlayerDir == Right) {
-				//m_Rotation.y = 180.0f;
 				m_DushDir = DushRight;
 			}
 			else if (m_PlayerDir == Left) {
-				//m_Rotation.y = 0.0f;
 				m_DushDir = DushLeft;
 			}
 			PlayerAnimetion(Dush, 4);
 		}
 	}
 
+	//ダッシュ中は横に自動で動く
 	if (m_Dush) {
 		m_DushTimer--;
 		if (m_DushDir == DushRight) {
@@ -574,7 +720,6 @@ void Player::PlayerDush() {
 		}
 
 		if (m_DushTimer == 0) {
-			m_ParticleCount = 0;
 			m_DushDir = NoDush;
 			m_Dush = false;
 			m_DushTimer = 10;
@@ -586,44 +731,29 @@ void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())) {
-		m_HealType = InterVal;
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5)) {
+		m_HealType = UseHeal;
 	}
 
-	if (m_HealType == InterVal) {
+	//回復チャージ
+	if (m_HealType == UseHeal) {
 		m_HealCount++;
 		m_HealTimer++;
-		if (m_HealTimer > 100) {
+		if (m_HealTimer > 150) {
 			m_SoulCount -= 6.0f;
 			m_HealTimer = 0;
 			m_HealCount = 0;
 			m_HP += 1;
-			m_HealType = Invocation;
+			m_HealType = NoHeal;
 			m_Frame = 0.0f;
 		}
 		else {
+			//途中で話した場合回復終了
 			if (!input->PushButton(input->Button_Y) || m_Interval != 0) {
 				m_HealTimer = 0;
-				m_HealType = Fail;
-				m_Frame = 0.0f;
+				m_HealType = NoHeal;
 				m_HealCount = 0;
 			}
-		}
-	}
-	else if (m_HealType == Invocation) {
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_HealType = NoHeal;
-		}
-	}
-	else if (m_HealType == Fail) {
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_HealType = NoHeal;
 		}
 	}
 }
@@ -815,7 +945,7 @@ bool Player::DeathMove() {
 		}
 		else {
 			//シェイク始まったらパーティクル
-			m_ParticleCount++;
+			m_DeathParticleCount++;
 			//ディゾルブで消す
 			if (m_Addcolor.x <= 1.0f) {
 				m_Addcolor.y += 0.01f;
@@ -834,70 +964,12 @@ bool Player::DeathMove() {
 		}
 		m_Position.x += m_ShakePos.x;
 		m_Position.y += m_ShakePos.y;
-		m_ParticleNumber = 2;
-		m_ParticlePos = m_Position;
 		if (m_AddDisolve >= 1.9f) {
 			return true;
 		}
 	}
 
 	return false;
-}
-//描画
-void Player::Draw(DirectXCommon* dxCommon) {
-	bool Reverse = m_fbxObject->GetReverse();
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("Reverse:%d", Reverse);
-	//if (ImGui::RadioButton("Reverce", &Reverse)) {
-	//
-	//}
-	//ImGui::End();
-
-	//エフェクトの描画
-	for (AttackEffect* attackeffect : attackeffects) {
-		if (attackeffect != nullptr) {
-			attackeffect->Draw();
-		}
-	}
-
-	for (WallAttackEffect* walleffect : walleffects) {
-		if (walleffect != nullptr) {
-			walleffect->Draw();
-		}
-	}
-
-	for (PlayerDushEffect* dusheffect : dusheffects) {
-		if (dusheffect != nullptr) {
-			dusheffect->Draw();
-		}
-	}
-
-	for (PlayerDamageEffect* damageeffect : damageeffects) {
-		if (damageeffect != nullptr) {
-			damageeffect->Draw();
-		}
-	}
-
-	//パーティクルの描画
-	hoot->Draw(AlphaBlendType);
-	heal->Draw(AddBlendType);
-	death->Draw(AlphaBlendType);
-
-	//点滅してるかどうかで描画が変わる
-	if (m_FlashCount % 2 == 0 && m_PlayMode) {
-		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
-			FollowObj_Draw();
-		}
-		if (m_AddDisolve <= 1.5f) {
-			Fbx_Draw(dxCommon);
-		}
-	}
-	
-	if (m_HP != 0) {
-		swordparticle->Draw();
-	}
 }
 //解放
 void Player::Finalize()
@@ -996,74 +1068,43 @@ void Player::Editor() {
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;
-		m_Rotation = { 0.0f,180.0f,0.0f };
-	}
 
-	if (input->LeftTiltStick(input->Left)) {
-		m_Position.x -= 0.3f;
-		m_Rotation = { 0.0f,0.0f,0.0f };
-	}
+		if (input->LeftTiltStick(input->Left)) {
+			m_Position.x -= 0.3f;
+		}
 
-	if (input->LeftTiltStick(input->Up)) {
-		m_Position.y += 0.3f;
-		//rot = { 0.0f,90.0f,0.0f };
-	}
+		if (input->LeftTiltStick(input->Up)) {
+			m_Position.y += 0.3f;
+		}
 
-	if (input->LeftTiltStick(input->Down)) {
-		m_Position.y -= 0.3f;
-		//rot = { 0.0f,270.0f,0.0f };
-	}
-	//プレイモードではない
-	m_PlayMode = false;
+		if (input->LeftTiltStick(input->Down)) {
+			m_Position.y -= 0.3f;
+		}
+		//プレイモードではない
+		m_PlayMode = false;
 
-	//Obj_SetParam();
-	SwordUpdate();
-	Fbx_SetParam();
-	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
+		//Obj_SetParam();
+		SwordUpdate();
+		Fbx_SetParam();
+		m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
+	}
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
-	XMFLOAT3 l_hootpos{};
-	XMFLOAT3 l_deathpos{};
-	XMFLOAT3 l_healpos{};
-
-	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5 && m_Alive) {
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = m_Position.z;
-		l_hootpos = { m_Position.x,m_Position.y - 0.0f,m_Position.z };
-		//const float rnd_sca = 0.1f;
-		//float sca{};
-		//sca = (float)rand() / RAND_MAX*rnd_sca;
-		hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f, { 1.0f,1.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	if (m_FoodParticleCount >= 3 && m_Alive) {
+		for (int i = 0; i < 3; ++i) {
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = m_Position.z;
+			//const float rnd_sca = 0.1f;
+			//float sca{};
+			//sca = (float)rand() / RAND_MAX*rnd_sca;
+			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+		}
 		m_FoodParticleCount = 0;
 	}
-
-	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleCount >= 1) {
-		float angle = (float)rand() / RAND_MAX * 360.0f;
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
-		l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
-		l_deathpos.z = m_Position.z;
-		death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.9f,0.8f,1.0f }, { 1.0f,0.9f,0.8f,1.0f });
-		m_ParticleCount = 0;
-	}
-
-		const float rnd_vel = 0.05f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-		vel.z = 0.0f;
-		l_healpos = m_Position;
-		heal->Add(200, { l_healpos.x,l_healpos.y - 1.0f,l_healpos.z }, vel, {}, 1.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
-	hoot->Update();
-	heal->Update();
-	death->Update();
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {

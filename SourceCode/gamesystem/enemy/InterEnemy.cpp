@@ -89,41 +89,21 @@ bool InterEnemy::LockOn() {
 }
 //パーティクルが出てくる
 void InterEnemy::BirthParticle() {
-	XMFLOAT3 l_hootpos{};
-	XMFLOAT3 l_deathpos{};
-	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleCount >= 5 && m_Alive) {
+	//足元
+	if (m_HootParticleCount >= 5 && m_Alive) {
 
-		for (int i = 0; i < m_ParticleNum; ++i) {
+		for (int i = 0; i < 3; ++i) {
 			const float rnd_vel = 0.1f;
 			XMFLOAT3 vel{};
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
-			l_hootpos = { m_Position.x,m_Position.y - 1.0f,m_Position.z };
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f,{1.0f,1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f,1.0f});
+			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_ParticleCount = 0;
-	}
-
-	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleObjCount >= 1) {
-		float angle = (float)rand() / RAND_MAX * 360.0f;
-		for (int i = 0; i < m_ParticleNum; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
-			l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
-			l_deathpos.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.5f,0.0f,1.0f }, { 1.0f,0.5f,0.0f,1.0f });
-		}
-		m_ParticleObjCount = 0;
+		m_HootParticleCount = 0;
 	}
 }
 //更新を範囲内に入った時のみ
@@ -152,7 +132,7 @@ bool InterEnemy::DrawCollide() {
 bool InterEnemy::VanishEnemy() {
 	if (m_HP < 1 && m_AddPower <= 0.0f) {
 		if (DeathTimer < 30 && !m_Disolve) {
-			m_ParticleObjCount++;
+			m_DeathParticleCount++;
 			DeathTimer++;
 		}
 		else {
@@ -176,7 +156,7 @@ bool InterEnemy::VanishEnemy() {
 			m_AddDisolve += 0.025f;
 		}
 		else {
-			m_ParticleObjCount = 0;
+			m_DeathParticleCount = 0;
 			m_Soul = true;
 			m_SoulArgment = true;
 			m_Alive = false;
@@ -269,20 +249,17 @@ void InterEnemy::DamageAct() {
 
 //パーティクルの初期化
 void InterEnemy::ParticleInit() {
-	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::ParticleEffect);
-	death.reset(death_);
-
-	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::HootEffect);
-	hoot.reset(hoot_);
+	ParticleTex* particletex_;
+	particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 }
 //パーティクルの更新
 void InterEnemy::ParticleUpdate() {
 	BirthParticle();
-
-	hoot->Update();
-	death->Update();
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	particletex->SetParticleBreak(true);
+	particletex->Update(m_Position, m_DeathParticleCount, 1, 2);
 }
 //エフェクトの生成
 void InterEnemy::ArgEffect() {

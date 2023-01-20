@@ -1,11 +1,7 @@
 #include "PlayerSoul.h"
-#include "Input.h"
 #include"Collision.h"
-#include<Easing.h>
-#include<sstream>
-#include <XorShift.h>
-#include<iomanip>
 #include"ImageManager.h"
+#include "Easing.h"
 using namespace DirectX;
 //読み込み
 PlayerSoul::PlayerSoul() {
@@ -15,9 +11,10 @@ PlayerSoul::PlayerSoul() {
 	soultex_->SetPosition({ 0.0f,90.0f,0.0f });
 	//DushEffecttexture->SetRotation({ 90,0,0 });
 	soultex.reset(soultex_);
-	ParticleSoul* particlesoul_ = new ParticleSoul();
-	particlesoul_->Initialize();
-	particlesoul.reset(particlesoul_);
+	
+	/*ParticleManager* particlesoul_ = new ParticleManager();
+	particlesoul_->Initialize(ImageManager::Normal);
+	soulparticle.reset(particlesoul_);*/
 }
 //初期化
 void PlayerSoul::Initialize() {
@@ -32,12 +29,10 @@ void PlayerSoul::Finalize() {
 }
 //更新
 void PlayerSoul::Update(InterEnemy* enemy) {
-
-	Input* input = Input::GetInstance();
 	//エフェクトの発生
-	m_OldPos= m_Pos;
+	m_OldPos= m_Position;
 	SetEffect(enemy);
-	if (block->PlayerSoulMapCollideCommon(m_Pos, m_Radius,m_OldPos, m_Jump,
+	if (block->PlayerSoulMapCollideCommon(m_Position, m_Radius,m_OldPos, m_Jump,
 		m_AddPower) && m_Effect) {
 		m_AddPower = 0.0f;
 		m_BoundPower = 0.0f;
@@ -48,13 +43,12 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 	Move();
 	//魂が消える
 	VanishSoul(enemy);
+	//パーティクル
+	BirthParticle();
 	soultex->SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	soultex->SetPosition(m_Pos);
+	soultex->SetPosition(m_Position);
 	soultex->SetScale(m_Scale);
 	soultex->SetColor(m_Color);
-	particlesoul->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
-	particlesoul->SetParticleBreak(true);
-	particlesoul->Update({ m_Pos.x,m_Pos.y - 0.5f,m_Pos.z }, m_ParticleCount, 10, 0);
 	if (UpdateCollide()) {
 		if (m_Effect) {
 			soultex->Update();
@@ -71,41 +65,31 @@ void PlayerSoul::Draw() {
 		if (m_Effect) {
 			soultex->Draw();
 		}
-		particlesoul->Draw();
 	}
-	
+	//soulparticle->Draw(AddBlendType);
 }
 //エフェクトの動き
 void PlayerSoul::SetEffect(InterEnemy* enemy) {
-	//エフェクトの発生
 	//エフェクトの発生
 	if (enemy->GetSoul() && !m_Effect && !m_EndSoul) {
 		m_Scale = { 0.2f,0.2f,0.2f };
 		m_BoundPower = (float)(rand() % 8 - 4);
 		m_AddPower = (float)(rand() % 3 + 3);
-		//effectcolor.w = (float)(rand() % 10);
 		if (m_BoundPower == 0.0f) {
 			m_BoundPower = 1.0f;
 		}
 
 		m_BoundPower = m_BoundPower / 10;
 		m_AddPower = m_AddPower / 10;
-		m_Pos = enemy->GetPosition();
+		m_Position = enemy->GetPosition();
 		m_Effect = true;
 		m_EndSoul = true;
 	}
 	if (m_Effect && !m_Move) {
 		m_ParticleCount++;
-
-		if (m_ParticleCount > 10) {
-			m_ParticleCount = 0;
-		}
 		m_AddPower -= 0.02f;
-		m_Pos.x += m_BoundPower;
-		m_Pos.y += m_AddPower;
-	/*	m_Scale[0].x -= 0.01f;
-		m_Scale[0].y -= 0.01f;
-		m_Scale[0].z -= 0.01f;*/
+		m_Position.x += m_BoundPower;
+		m_Position.y += m_AddPower;
 		if (m_Scale.x <= 0.0f) {
 			m_Effect = false;
 			enemy->SetSoul(false);
@@ -115,9 +99,7 @@ void PlayerSoul::SetEffect(InterEnemy* enemy) {
 //当たり判定
 bool PlayerSoul::Collide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Pos.x, m_Pos.y, 1.5f, m_PlayerPos.x, m_PlayerPos.y, 1.5f) && (m_Effect) && (!m_Move)) {
-		//m_ParticleCount = 0;
-		//m_Effect = false;
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.5f, m_PlayerPos.x, m_PlayerPos.y, 1.5f) && (m_Effect) && (!m_Move)) {
 		m_Timer = 0;
 		m_ParticleCount = 0;
 		m_Frame = 0.0f;
@@ -147,10 +129,10 @@ void PlayerSoul::Move() {
 			}
 			m_Move = false;
 		}
-		m_Pos = {
-			Ease(In,Cubic,m_Frame,m_Pos.x,m_AfterPos.x),
-			Ease(In,Cubic,m_Frame,m_Pos.y,m_AfterPos.y),
-			Ease(In,Cubic,m_Frame,m_Pos.z,m_AfterPos.z)
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 		};
 		m_Scale = {
 			Ease(In,Cubic,m_Frame,m_Scale.x,0.05f),
@@ -187,7 +169,7 @@ void PlayerSoul::VanishSoul(InterEnemy* enemy) {
 //更新を範囲内に入った時のみ
 bool PlayerSoul::UpdateCollide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Pos.x, m_Pos.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
 		return true;
 	}
 	else {
@@ -198,11 +180,25 @@ bool PlayerSoul::UpdateCollide() {
 //描画を範囲内に入った時のみ
 bool PlayerSoul::DrawCollide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Pos.x, m_Pos.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
 		return true;
 	}
 	else {
 		return false;
 	}
 	return true;
+}
+
+void PlayerSoul::BirthParticle() {
+	const float rnd_vel = 0.05f;
+	if (m_ParticleCount > 3) {
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
+
+		//soulparticle->Add(50, { m_Position.x,m_Position.y,m_Position.z }, vel, {}, 3.0f, 0.0f, { 0.0f,0.5f,1.0f,0.8f }, { 0.0f,0.5f,1.0f,0.8f });
+		m_ParticleCount = 0;
+	}
+		//soulparticle->Update();
 }

@@ -122,8 +122,7 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	hoot->Draw(AlphaBlendType);
-	death->Draw(AddBlendType);
+	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {
@@ -238,7 +237,7 @@ void Enemy::Tackle() {
 	else if (m_TargetTimer == 200) {
 		m_TargetTimer = 0;
 	}
-	m_ParticleCount++;
+	m_HootParticleCount++;
 	//回転方向が変わる
 	if (m_Speed == 0.15f) {
 		m_Rotation.x += 10.0f;

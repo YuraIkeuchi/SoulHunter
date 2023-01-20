@@ -1,17 +1,12 @@
 #pragma once
-#pragma once
 #include <DirectXMath.h>
-#include <Input.h>
 #include"CollisionPrimitive.h"
 #include "InterEnemy.h"
-#include "IKESprite.h"
 #include "IKETexture.h"
 #include "Player.h"
 #include "Block.h"
-#include "ParticleSoul.h"
-#include <array>   
+#include "ParticleManager.h"
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //プレイヤーの魂のクラス
 class PlayerSoul {
@@ -31,6 +26,7 @@ public:
 	void VanishSoul(InterEnemy* enemy);//魂が消える
 	bool UpdateCollide();//更新範囲
 	bool DrawCollide();//描画範囲
+	void BirthParticle();
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -46,12 +42,11 @@ private:
 	//テクスチャ
 	unique_ptr<IKETexture> soultex;
 	//パーティクル
-	unique_ptr<ParticleSoul> particlesoul = nullptr;
 	//クラス
 	unique_ptr<Player> player = nullptr;//
 	unique_ptr<Block> block = nullptr;
 	//変数
-	XMFLOAT3 m_Pos;//座標
+	XMFLOAT3 m_Position;//座標
 	XMFLOAT3 m_OldPos;//位置フレームずれた座標
 	XMFLOAT3 m_AfterPos = { 0.0f,0.0f,0.0f };//イージング後の座標
 	XMFLOAT3 m_Scale = {0.0f,0.0f,0.0f};//大きさ
@@ -66,7 +61,7 @@ private:
 	int m_ParticleCount = 0;//パーティクルの出げっb間隔
 	bool m_Move = false;//動くかどうか
 	float m_Frame = 0.0f;//フレーム
-
+	//unique_ptr<ParticleManager> soulparticle;
 public:
 	Sphere collider;
 };
