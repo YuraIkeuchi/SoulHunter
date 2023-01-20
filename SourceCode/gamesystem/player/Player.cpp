@@ -967,7 +967,6 @@ bool Player::DeathMove() {
 
 	return false;
 }
-
 //‰ð•ú
 void Player::Finalize()
 {
