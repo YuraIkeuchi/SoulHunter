@@ -6,7 +6,6 @@
 #include "VariableCommon.h"
 #include "IKESprite.h"
 #include "IKETexture.h"
-#include <list>
 #include <array>
 #include "ParticleTex.h"
 #include "ChestEffect.h"

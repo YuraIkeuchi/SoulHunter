@@ -52,7 +52,6 @@ const void PlayerDamageEffect::Draw() {
 			damagetex[i]->Draw();
 		}
 	}
-
 	IKETexture::PreDraw(AlphaBlendType);
 	if (m_HitEffect) {
 		HitEffectTexture->Draw();

@@ -91,27 +91,19 @@ bool InterEnemy::LockOn() {
 void InterEnemy::BirthParticle() {
 	//足元
 	if (m_HootParticleCount >= 5 && m_Alive) {
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = m_Position.z;
-		hoot->Add(30, { m_Position.x,m_Position.y - 2.0f,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f,{1.0f,1.0f,1.0f,0.3f},{1.0f,1.0f,1.0f,0.3f});
-		m_HootParticleCount = 0;
-	}
 
-	//m_PlayerPos = player->GetPosition();
-	//死んだ時
-	if (m_DeathParticleCount >= 1) {
 		for (int i = 0; i < 3; ++i) {
-			const float deathrnd_vel = 0.4f;
-			XMFLOAT3 deathvel{};
-			deathvel.x = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
-			deathvel.y = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
-			deathvel.z = 0.0f;
-			death->Add(100, { m_Position.x ,m_Position.y,m_Position.z }, deathvel, XMFLOAT3(), 2.0f, 0.0f, { 1.0f,0.5f,0.0f,1.0f }, { 1.0f,0.5f,0.0f,1.0f });
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = m_Position.z;
+			//const float rnd_sca = 0.1f;
+			//float sca{};
+			//sca = (float)rand() / RAND_MAX*rnd_sca;
+			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_DeathParticleCount = 0;
+		m_HootParticleCount = 0;
 	}
 }
 //更新を範囲内に入った時のみ
@@ -257,20 +249,17 @@ void InterEnemy::DamageAct() {
 
 //パーティクルの初期化
 void InterEnemy::ParticleInit() {
-	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::Normal);
-	death.reset(death_);
-
-	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::Hoot);
-	hoot.reset(hoot_);
+	ParticleTex* particletex_;
+	particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
 }
 //パーティクルの更新
 void InterEnemy::ParticleUpdate() {
 	BirthParticle();
-
-	hoot->Update();
-	death->Update();
+	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
+	particletex->SetParticleBreak(true);
+	particletex->Update(m_Position, m_DeathParticleCount, 1, 2);
 }
 //エフェクトの生成
 void InterEnemy::ArgEffect() {

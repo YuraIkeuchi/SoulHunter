@@ -220,6 +220,7 @@ void FirstStage::NormalUpdate() {
 			newalways->Update();
 		}
 	}
+	ParticleManager::GetInstance()->Update();
 	backlight->Update();
 	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);
@@ -384,6 +385,8 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		backlight->Draw();
 		save->Draw();
+		//パーティクルの描画
+		particleMan->Draw(dxCommon->GetCmdList());
 		//チュートリアル
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->Draw();
@@ -407,7 +410,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 			firstboss->Draw(dxCommon);
 			respornenemy->Draw();
 		}
-
 
 		//魂関係
 		for (int i = 0; i < Soul_Max; i++) {

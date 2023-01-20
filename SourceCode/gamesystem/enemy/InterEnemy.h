@@ -4,7 +4,7 @@
 #include "EnemyEffect.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
-#include "ParticleManager.h"
+#include "ParticleTex.h"
 #include "HitStop.h"
 #include "VariableCommon.h"
 #include "CollisionPrimitive.h"
@@ -59,8 +59,7 @@ protected:
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
-	unique_ptr<ParticleManager> hoot;
-	unique_ptr<ParticleManager> death;
+	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<HitStop> hitstop =nullptr;
 
 	//スプライト

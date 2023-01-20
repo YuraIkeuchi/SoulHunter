@@ -90,8 +90,7 @@ void BoundEnemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	hoot->Draw(AlphaBlendType);
-	death->Draw(AddBlendType);
+	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BoundEnemy::Pause() {

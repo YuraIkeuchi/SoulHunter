@@ -4,8 +4,6 @@
 #include "VariableCommon.h"
 #include "ObjCommon.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
-using namespace std;         //  名前空間指定
 //背景の岩など共通背景のクラス
 class BackObjAlways :
 	public ObjCommon {

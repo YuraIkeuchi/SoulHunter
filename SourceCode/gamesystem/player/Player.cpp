@@ -3,6 +3,7 @@
 #include "ModelManager.h"
 #include "IKEFbxLoader.h"
 #include "ImageManager.h"
+#include "ParticleManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -30,22 +31,18 @@ bool Player::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
+	ParticleTex* particletex_ = new ParticleTex();
+	particletex_->Initialize();
+	particletex.reset(particletex_);
+
 	SwordParticle* swordparticle_ = new SwordParticle();
 	swordparticle_->Initialize();
 	swordparticle.reset(swordparticle_);
 
-	ParticleManager* death_ = new ParticleManager();
-	death_->Initialize(ImageManager::Normal);
-	death.reset(death_);
-
-	ParticleManager* heal_ = new ParticleManager();
-	heal_->Initialize(ImageManager::Normal);
-	heal.reset(heal_);
-
-	ParticleManager* hoot_ = new ParticleManager();
-	hoot_->Initialize(ImageManager::Hoot);
-	hoot.reset(hoot_);
-
+	ParticleHeal* particleheal_ = new ParticleHeal();
+	particleheal_->Initialize();
+	particleheal.reset(particleheal_);
+	
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
 
@@ -291,9 +288,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	heal->Draw(AddBlendType);
-	death->Draw(AddBlendType);
-	hoot->Draw(AlphaBlendType);
+	
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -330,19 +325,28 @@ void Player::SwordUpdate() {
 }
 //エフェクトの更新
 void Player::EffectUpdate() {
-	
+	//パーティクルのカウント数の更新
+	if (m_DeathParticleCount > 3) {
+		m_DeathParticleCount = 0;
+	}
+
+	if (m_HealCount > 3) {
+		m_HealCount = 0;
+	}
 	//剣のパーティクルの場所を決める
 	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
 			 static_cast<float>(rand() % 1) + 1,
 			0 };
 
-	//パーティクル関係(剣)
+	//パーティクル関係
+	particletex->Update(m_Position, m_DeathParticleCount, 3, NormalPart);
+	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
+	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-
 	//エフェクト関係
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
@@ -1088,42 +1092,19 @@ void Player::Editor() {
 //パーティクルが出てくる
 void Player::BirthParticle() {
 	if (m_FoodParticleCount >= 3 && m_Alive) {
-
-		const float hootrnd_vel = 0.1f;
-		XMFLOAT3 hootvel{};
-		hootvel.x = (float)rand() / RAND_MAX * hootrnd_vel - hootrnd_vel / 2.0f;
-		hootvel.y = (float)rand() / RAND_MAX * hootrnd_vel - hootrnd_vel / 2.0f;
-		hootvel.z = m_Position.z;
-		hoot->Add(50, { m_Position.x,m_Position.y - 2.0f,m_Position.z }, hootvel, {}, 1.0f, 0.0f, { 1.0f,1.0f,1.0f,0.3f }, { 1.0f,1.0f,1.0f,0.3f });
-
+		for (int i = 0; i < 3; ++i) {
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = m_Position.z;
+			//const float rnd_sca = 0.1f;
+			//float sca{};
+			//sca = (float)rand() / RAND_MAX*rnd_sca;
+			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+		}
 		m_FoodParticleCount = 0;
 	}
-
-	if (m_DeathParticleCount >= 3) {
-		for (int i = 0; i < 3; ++i) {
-			const float deathrnd_vel = 0.4f;
-			XMFLOAT3 deathvel{};
-			deathvel.x = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
-			deathvel.y = (float)rand() / RAND_MAX * deathrnd_vel - deathrnd_vel / 2.0f;
-			deathvel.z = 0.0f;
-			death->Add(50, { m_Position.x ,m_Position.y,m_Position.z }, deathvel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.9f,0.8f,1.0f }, { 1.0f,0.9f,0.8f,1.0f });
-		}
-		m_DeathParticleCount = 0;
-	}
-
-	if (m_HealCount >= 3) {
-		const float healrnd_vel = 0.05f;
-		XMFLOAT3 healvel{};
-		healvel.x = (float)rand() / RAND_MAX * healrnd_vel - healrnd_vel / 3.0f;
-		healvel.y = (float)rand() / RAND_MAX * healrnd_vel * 2.0f;// -rnd_vel / 2.0f;
-		healvel.z = (float)rand() / RAND_MAX * healrnd_vel - healrnd_vel / 3.0f;
-		heal->Add(100, { m_Position.x ,m_Position.y - 2.0f,m_Position.z }, healvel, XMFLOAT3(), 2.0f, 0.0f, { 0.5f,1.0f,0.1f,1.0f }, { 0.5f,1.0f,0.1f,1.0f });
-		m_HealCount = 0;
-	}
-	hoot->Update();
-	heal->Update();
-	death->Update();
-
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {

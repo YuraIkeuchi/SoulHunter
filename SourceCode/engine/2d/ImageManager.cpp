@@ -1,6 +1,5 @@
 ﻿#include "ImageManager.h"
 
-bool ImageManager::load = false;
 ImageManager* ImageManager::GetIns() {
 	static ImageManager instans;
 	return &instans;
@@ -48,12 +47,4 @@ void ImageManager::LoadTex2D() {
 	IKETexture::LoadTexture(LightTex, L"Resources/2d/sceneback/BackLight.png");
 	IKETexture::LoadTexture(ReadTex, L"Resources/2d/text/textpointread.png");
 	IKETexture::LoadTexture(OutArea, L"Resources/2d/effect/OutArea.png");
-}
-
-
-void ImageManager::LoadParticle() {
-
-	ParticleManager::LoadTexture(Normal, "effect1");
-	ParticleManager::LoadTexture(Hoot, "hootEffect");
-	load = true;
 }

@@ -1,6 +1,6 @@
 #include "InterBoss.h"
 #include"Collision.h"
-
+#include "ParticleManager.h"
 //更新
 void InterBoss::Update() {
 	//当たり判定
@@ -50,8 +50,9 @@ void InterBoss::Update() {
 		}
 	}
 	//パーティクル
-	hoot->Update();
-	death->Update();
+	particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
+	particletex->SetParticleBreak(true);
+	particletex->Update(m_Position, m_ParticleCount, 1, 2);
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -71,8 +72,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	hoot->Draw(AlphaBlendType);
-	death->Draw(AddBlendType);
+	
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }
@@ -184,25 +184,9 @@ void InterBoss::BirthParticle() {
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			hoot->Add(30, { l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z }, vel, XMFLOAT3(), 1.2f, 0.6f, { 1.0f,1.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+			ParticleManager::GetInstance()->Add(30, {l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z}, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0;
 	}
 
-	//m_PlayerPos = player->GetPosition();
-	if (m_ParticleCount >= 1) {
-		float angle = (float)rand() / RAND_MAX * 360.0f;
-		for (int i = 0; i < m_ParticleNum; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			l_deathpos.x = m_Position.x + (5.0f + 0.5f) * sinf(angle);
-			l_deathpos.z = m_Position.y + (5.0f + 0.5f) * cosf(angle);
-			l_deathpos.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			death->Add(50, { l_deathpos.x + vel.x,l_deathpos.y + vel.y,l_deathpos.z }, vel, XMFLOAT3(), 1.0f, 0.0f, { 1.0f,0.5f,0.0f,1.0f }, { 1.0f,0.5f,0.0f,1.0f });
-		}
-		m_ParticleCount = 0;
-	}
 }

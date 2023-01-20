@@ -1,8 +1,10 @@
 #pragma once
 #include "IKEObject3d.h"
 #include "IKEModel.h"
+#include <memory>
+#include <list> // ヘッダファイルインクルード
 #include <map>
-#include "ParticleManager.h"
+#include "ParticleTex.h"
 
 struct JsonData;
 
@@ -22,9 +24,11 @@ public:
 	void Finalize();
 	const void BackDraw();
 	const void FrontDraw();
-	void BirthParticle();
+
 public:
-	
+	//gettersetter
+	void SetStopParticle(bool m_StopParticle) { this->m_StopParticle = m_StopParticle; }
+
 private:
 	//絶対に必要なOBJ
 	IKEModel* modelskydome = nullptr;
@@ -34,6 +38,9 @@ private:
 	std::map<std::string, IKEModel*> models;
 	std::vector<IKEObject3d*> objects;
 	//クラス
-	unique_ptr<ParticleManager> fire;
-	
+	unique_ptr<ParticleTex> particletex = nullptr;
+	//パーティクル
+	XMFLOAT3 m_ParticlePos = { 0.0f,22.0f,0.0f };
+	int m_ParticleCount = 0;
+	bool m_StopParticle = false;
 };

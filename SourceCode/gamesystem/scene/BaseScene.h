@@ -35,10 +35,7 @@
 #include "HitStop.h"
 #include <vector>
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
-class CollisionManager;
-class Player;
 //前方宣言
 class SceneManager;
 

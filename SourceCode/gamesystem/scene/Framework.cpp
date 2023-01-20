@@ -58,6 +58,8 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 	//ParticleManager::CreateCommon(dxcommon->GetDev(), dxcommon->GetCmdList());
 	// FBX関連静的初期化
 	IKEFbxLoader::GetInstance()->Initialize(dxcommon->GetDev());
+	// パーティクルマネージャ初期化
+	ParticleManager::GetInstance()->Initialize(dxcommon->GetDev());
 	ModelManager::GetInstance()->Initialize();
 	ImageManager::GetIns()->LoadTex2D();
 	ImageManager::GetIns()->Load2D();

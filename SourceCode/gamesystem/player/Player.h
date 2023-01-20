@@ -11,7 +11,7 @@
 #include "PlayerDushEffect.h"
 #include "VariableCommon.h"
 #include "Shake.h"
-#include "ParticleManager.h"
+#include "ParticleTex.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -167,10 +167,9 @@ private:
 	static bool s_UseHeal;
 private:
 	//パーティクル
+	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
-	unique_ptr<ParticleManager> hoot;
-	unique_ptr<ParticleManager> heal;
-	unique_ptr<ParticleManager> death;
+	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	vector<AttackEffect*> attackeffects;
