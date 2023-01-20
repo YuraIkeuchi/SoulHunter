@@ -24,10 +24,10 @@ void InterBoss::Update() {
 		m_DeathTimer++;
 		//パーティクルが発生する
 		if (m_Scale.x > 0.0f) {
-			m_ParticleCount++;
+			m_DeathParticleCount++;
 		}
 		else {
-			m_ParticleCount = 0;
+			m_DeathParticleCount = 0;
 		}
 	}
 
@@ -52,7 +52,7 @@ void InterBoss::Update() {
 	//パーティクル
 	particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
 	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_ParticleCount, 1, 2);
+	particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -72,7 +72,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	
+	particletex->Draw();
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }

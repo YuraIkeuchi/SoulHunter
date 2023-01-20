@@ -61,7 +61,7 @@ float4 main(VSOutput input) : SV_TARGET
 				lightv = normalize(lightv);
 
 				// 距離減衰係数
-				float atten = 1.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z * d * d);
+				float atten = 2.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z * d * d);
 
 				// ライトに向かうベクトルと法線の内積
 				float3 dotlightnormal = dot(lightv, input.normal);
@@ -70,7 +70,7 @@ float4 main(VSOutput input) : SV_TARGET
 				// 拡散反射光
 				float3 diffuse = dotlightnormal * m_diffuse;
 				// 鏡面反射光
-				float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+				float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular / 5;
 
 				// 全て加算する
 				shadecolor.rgb += atten * (diffuse + specular) * pointLights[i].lightcolor;

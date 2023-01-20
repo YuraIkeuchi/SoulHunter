@@ -4,6 +4,8 @@
 #include "IKEFbxLoader.h"
 #include "ImageManager.h"
 #include "ParticleManager.h"
+#include "VariableCommon.h"
+#include "VolumManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -288,7 +290,8 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	
+	particletex->Draw();
+	particleheal->Draw();
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -339,7 +342,9 @@ void Player::EffectUpdate() {
 			0 };
 
 	//パーティクル関係
-	particletex->Update(m_Position, m_DeathParticleCount, 3, NormalPart);
+	particletex->SetStartColor({ 1.0f,0.9f,0.8f,1.0f });
+	particletex->SetParticleBreak(true);
+	particletex->Update(m_Position, m_DeathParticleCount, 3, EndPart);
 	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
 	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
@@ -740,6 +745,7 @@ void Player::PlayerHeal() {
 		m_HealCount++;
 		m_HealTimer++;
 		if (m_HealTimer > 150) {
+			particleheal->SetHeal(true);
 			m_SoulCount -= 6.0f;
 			m_HealTimer = 0;
 			m_HealCount = 0;
@@ -1004,7 +1010,6 @@ void Player::InitPlayer(int StageNumber) {
 		}
 	}
 	else if (StageNumber == Map3) {
-
 		if (m_GoalDir == RightGoal) {
 			m_Position = { 39.0f,-70.0f,0.0f };
 		}
@@ -1052,11 +1057,6 @@ void Player::InitPlayer(int StageNumber) {
 			m_Position = { 270.0f,-190.0f,0.0f };
 		}
 	}
-
-	//m_AnimeLoop = true;
-	//m_AnimeSpeed = 2;
-	//m_AnimationType = 3;
-	//m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //ポーズ開いたときはキャラが動かない
 void Player::Pause() {
@@ -1068,26 +1068,25 @@ void Player::Editor() {
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;
-
-		if (input->LeftTiltStick(input->Left)) {
-			m_Position.x -= 0.3f;
-		}
-
-		if (input->LeftTiltStick(input->Up)) {
-			m_Position.y += 0.3f;
-		}
-
-		if (input->LeftTiltStick(input->Down)) {
-			m_Position.y -= 0.3f;
-		}
-		//プレイモードではない
-		m_PlayMode = false;
-
-		//Obj_SetParam();
-		SwordUpdate();
-		Fbx_SetParam();
-		m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 	}
+	if (input->LeftTiltStick(input->Left)) {
+		m_Position.x -= 0.3f;
+	}
+
+	if (input->LeftTiltStick(input->Up)) {
+		m_Position.y += 0.3f;
+	}
+
+	if (input->LeftTiltStick(input->Down)) {
+		m_Position.y -= 0.3f;
+	}
+	//プレイモードではない
+	m_PlayMode = false;
+
+	//Obj_SetParam();
+	SwordUpdate();
+	Fbx_SetParam();
+	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
@@ -1098,10 +1097,7 @@ void Player::BirthParticle() {
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x + vel.x,(m_FoodParticlePos.y) + vel.y,m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0;
 	}

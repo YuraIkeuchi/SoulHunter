@@ -259,7 +259,7 @@ void InterEnemy::ParticleUpdate() {
 	BirthParticle();
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_DeathParticleCount, 1, 2);
+	particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
 }
 //エフェクトの生成
 void InterEnemy::ArgEffect() {
