@@ -68,7 +68,7 @@ void Save::Update() {
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
 	particletex->SetStartScale(0.1f);
-	particletex->SetAddScale(0.01f);
+	particletex->SetAddScale(0.008f);
 
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });
 }

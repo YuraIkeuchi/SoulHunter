@@ -31,8 +31,9 @@ void BackTorch::SetObj() {
 	}
 	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->SetParticleBreak(true);
-	particletex->SetStartScale(0.2f);
-	particletex->SetAddScale(0.01f);
+	particletex->SetParticleBillboard(true);
+	particletex->SetStartScale(0.1f);
+	particletex->SetAddScale(0.008f);
 	if (UpdateCollide()) {
 		particletex->Update({ m_Position.x,m_Position.y + 8.0f,m_Position.z }, m_ParticleCount, 6, SavePart);
 	}

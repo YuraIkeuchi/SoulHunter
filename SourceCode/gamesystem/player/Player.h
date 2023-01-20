@@ -1,7 +1,6 @@
 #pragma once
 #include "Block.h"
 #include "DirectXCommon.h"
-#include "VolumManager.h"
 #include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
@@ -9,7 +8,6 @@
 #include "WallAttackEffect.h"
 #include "PlayerDamageEffect.h"
 #include "PlayerDushEffect.h"
-#include "VariableCommon.h"
 #include "Shake.h"
 #include "ParticleTex.h"
 #include <memory>
@@ -84,8 +82,6 @@ public:
 	void PlayerThornHit(const XMFLOAT3& pos);
 	//スキルリセット
 	void ResetSkill();
-	
-
 	/// <summary>
 	/// 開放
 	/// </summary>

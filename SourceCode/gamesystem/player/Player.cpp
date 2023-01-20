@@ -4,6 +4,8 @@
 #include "IKEFbxLoader.h"
 #include "ImageManager.h"
 #include "ParticleManager.h"
+#include "VariableCommon.h"
+#include "VolumManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -1008,7 +1010,6 @@ void Player::InitPlayer(int StageNumber) {
 		}
 	}
 	else if (StageNumber == Map3) {
-
 		if (m_GoalDir == RightGoal) {
 			m_Position = { 39.0f,-70.0f,0.0f };
 		}
@@ -1067,26 +1068,25 @@ void Player::Editor() {
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;
-
-		if (input->LeftTiltStick(input->Left)) {
-			m_Position.x -= 0.3f;
-		}
-
-		if (input->LeftTiltStick(input->Up)) {
-			m_Position.y += 0.3f;
-		}
-
-		if (input->LeftTiltStick(input->Down)) {
-			m_Position.y -= 0.3f;
-		}
-		//プレイモードではない
-		m_PlayMode = false;
-
-		//Obj_SetParam();
-		SwordUpdate();
-		Fbx_SetParam();
-		m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 	}
+	if (input->LeftTiltStick(input->Left)) {
+		m_Position.x -= 0.3f;
+	}
+
+	if (input->LeftTiltStick(input->Up)) {
+		m_Position.y += 0.3f;
+	}
+
+	if (input->LeftTiltStick(input->Down)) {
+		m_Position.y -= 0.3f;
+	}
+	//プレイモードではない
+	m_PlayMode = false;
+
+	//Obj_SetParam();
+	SwordUpdate();
+	Fbx_SetParam();
+	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
