@@ -1,5 +1,4 @@
 #pragma once
-#include <DirectXMath.h>
 #include "DirectXCommon.h"
 #include "Player.h"
 #include "Pause.h"
@@ -75,6 +74,7 @@ protected:
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<Pause> pause = nullptr;
+	//OBB
 	OBB OBB1 = {};
 	OBB OBB2 = {};
 	//座標や回転
@@ -108,7 +108,7 @@ protected:
 	bool m_AppMove = false;//登場シーン
 	bool m_EffectArgment = false;//エフェクト生成
 	int m_DeathTimer = 0;//死ぬまでの時間
-	int m_ParticleCount = 0;//パーティクルの生成までのフレーム
+	int m_DeathParticleCount = 0;//パーティクルの生成までのフレーム
 	
 	int m_HitDir;
 	//ダメージフラグ
