@@ -4,12 +4,9 @@
 #include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
-#include "AttackEffect.h"
-#include "WallAttackEffect.h"
-#include "PlayerDamageEffect.h"
-#include "PlayerDushEffect.h"
 #include "Shake.h"
 #include "ParticleTex.h"
+#include "PlayerEffect.h"
 #include <memory>
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -64,14 +61,6 @@ public:
 	void PlayerHeal();
 	//ダメージ
 	void PlayerDamage();
-	//攻撃エフェクト
-	void AttackArgment();
-	//壁エフェクト
-	void DushArgment();
-	//ダッシュエフェクト
-	void DamageArgment();
-	//ダメージエフェクト
-	void WallArgment();
 	//ゴール後の動き
 	void GoalMove();
 	//死んだ時の動き
@@ -162,16 +151,14 @@ private:
 	static bool s_UseCompass;
 	static bool s_UseHeal;
 private:
+	vector<PlayerEffect*> effects;
 	//パーティクル
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
-	vector<AttackEffect*> attackeffects;
-	vector<WallAttackEffect*>walleffects;
-	vector<PlayerDushEffect*> dusheffects;
-	vector<PlayerDamageEffect*> damageeffects;
+	
 	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
@@ -182,17 +169,9 @@ private:
 	//攻撃できるか
 	bool m_Attack = false;
 	int m_AttackTimer = 0;
-	//攻撃時のエフェクト発生条件
-	bool m_AttackArgment = false;
 	//2回目の攻撃判定
 	int m_AttackCount = 0;
 	int m_SecondTimer = 0;
-	//攻撃が壁にあたった時のエフェクト発生条件
-	bool m_WallArgment = false;
-	//ダッシュ時のエフェクト発生条件
-	bool m_DushArgment = false;
-	//ダメージエフェクト発生条件
-	bool m_DamageArgment = false;
 	//HP
 	int m_HP = 0;
 	//無敵時間

@@ -200,11 +200,6 @@ void Player::Update()
 			PlayerDamage();
 			//復活処理
 			ResPornPlayer();
-			//エフェクト発生関係
-			AttackArgment();
-			WallArgment();
-			DushArgment();
-			DamageArgment();
 		}
 		else {
 			//ゴール後の動き
@@ -255,31 +250,11 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	ImGui::End();
 
 	//エフェクトの描画
-	for (AttackEffect* attackeffect : attackeffects) {
-		if (attackeffect != nullptr) {
-			attackeffect->Draw();
+	for (PlayerEffect* neweffect : effects) {
+		if (neweffect != nullptr) {
+			neweffect->Draw();
 		}
 	}
-
-	for (WallAttackEffect* walleffect : walleffects) {
-		if (walleffect != nullptr) {
-			walleffect->Draw();
-		}
-	}
-
-	for (PlayerDushEffect* dusheffect : dusheffects) {
-		if (dusheffect != nullptr) {
-			dusheffect->Draw();
-		}
-	}
-
-	for (PlayerDamageEffect* damageeffect : damageeffects) {
-		if (damageeffect != nullptr) {
-			damageeffect->Draw();
-		}
-	}
-
-
 	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
 		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
@@ -341,6 +316,13 @@ void Player::EffectUpdate() {
 			 static_cast<float>(rand() % 1) + 1,
 			0 };
 
+	//エフェクト更新
+	for (PlayerEffect* neweffect : effects) {
+		if (neweffect != nullptr) {
+			neweffect->Update(m_Position,m_AttackPos,m_Dush,m_Effect,m_PlayerDir);
+		}
+	}
+
 	//パーティクル関係
 	particletex->SetStartColor({ 1.0f,0.9f,0.8f,1.0f });
 	particletex->SetParticleBreak(true);
@@ -352,31 +334,7 @@ void Player::EffectUpdate() {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-	//エフェクト関係
-	for (AttackEffect* attackeffect : attackeffects) {
-		if (attackeffect != nullptr) {
-			attackeffect->Update();
-		}
-	}
-
-	for (WallAttackEffect* walleffect : walleffects) {
-		if (walleffect != nullptr) {
-			walleffect->Update(m_AttackPos, m_PlayerDir);
-		}
-	}
-
-	for (PlayerDushEffect* dusheffect : dusheffects) {
-		if (dusheffect != nullptr) {
-			dusheffect->Update(m_Position, m_Dush);
-		}
-	}
-
-	for (PlayerDamageEffect* damageeffect : damageeffects) {
-		if (damageeffect != nullptr) {
-			damageeffect->Update(m_Position, m_Effect);
-		}
-	}
-
+	
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -635,8 +593,11 @@ void Player::PlayerAttack() {
 
 			//攻撃時壁にあたった場合壁からパーティクルを出す
 			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 5.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z })) {
-				m_WallArgment = true;
-				m_fbxObject->SetReverse(true);
+				PlayerEffect* newEffect;
+				newEffect = new PlayerEffect();
+				newEffect->CreateEffect("Wall",m_AttackPos,m_PlayerDir);
+				newEffect->Initialize();
+				effects.push_back(newEffect);
 			}
 		}
 
@@ -700,7 +661,6 @@ void Player::PlayerDush() {
 	//ダッシュ処理
 	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive) && (s_UseDush)) {
 		if (input->TriggerButton(input->Button_RB)) {
-			m_DushArgment = true;
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_Dush = true;
@@ -711,6 +671,12 @@ void Player::PlayerDush() {
 				m_DushDir = DushLeft;
 			}
 			PlayerAnimetion(Dush, 4);
+
+			PlayerEffect* newEffect;
+			newEffect = new PlayerEffect();
+			newEffect->CreateEffect("Dush", m_Position, m_PlayerDir);
+			newEffect->Initialize();
+			effects.push_back(newEffect);
 		}
 	}
 
@@ -834,7 +800,15 @@ void Player::PlayerDamage() {
 				m_Death = true;
 			}
 		}
-		m_DamageArgment = true;
+
+
+		//エフェクト生成
+		PlayerEffect* newEffect;
+		newEffect = new PlayerEffect();
+		newEffect->CreateEffect("Damege", m_Position, m_PlayerDir);
+		newEffect->Initialize();
+		effects.push_back(newEffect);
+
 		m_Alive = false;
 		block->SetThornDir(0);
 		block->SetThornHit(false);
@@ -867,47 +841,6 @@ void Player::PlayerDamage() {
 		m_Interval = 0;
 	}
 
-}
-//エフェクト発生(攻撃)
-void Player::AttackArgment() {
-	if (m_AttackArgment) {
-		AttackEffect* newAttackEffect;
-		newAttackEffect = new AttackEffect();
-		newAttackEffect->Initialize();
-		newAttackEffect->SetEffect(m_AttackPos, m_PlayerDir);
-		attackeffects.push_back(newAttackEffect);
-		m_AttackArgment = false;
-	}
-}
-//壁にあたった時のエフェクト
-void Player::WallArgment() {
-	if (m_WallArgment) {
-		WallAttackEffect* newwallEffect;
-		newwallEffect = new WallAttackEffect();
-		newwallEffect->Initialize();
-		walleffects.push_back(newwallEffect);
-		m_WallArgment = false;
-	}
-}
-//エフェクト発生(ダッシュ)
-void Player::DushArgment() {
-	if (m_DushArgment) {
-		PlayerDushEffect* newDushEffect;
-		newDushEffect = new PlayerDushEffect();
-		newDushEffect->Initialize();
-		dusheffects.push_back(newDushEffect);
-		m_DushArgment = false;
-	}
-}
-//エフェクト発生(ダメージ)
-void Player::DamageArgment() {
-	if (m_DamageArgment) {
-		PlayerDamageEffect* newDamageEffect;
-		newDamageEffect = new PlayerDamageEffect();
-		newDamageEffect->Initialize();
-		damageeffects.push_back(newDamageEffect);
-		m_DamageArgment = false;
-	}
 }
 //ゴール後の動き
 void Player::GoalMove() {
@@ -986,10 +919,7 @@ void Player::InitPlayer(int StageNumber) {
 	m_AddPower = 0.0f;
 	m_FlashCount = 0;
 	m_Interval = 0;
-	attackeffects.clear();
-	walleffects.clear();
-	dusheffects.clear();
-	damageeffects.clear();
+	effects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
 			m_Position = { 275.0f,-110.0,0.0f };
@@ -1147,7 +1077,6 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 void Player::PlayerHit(const XMFLOAT3& pos) {
 	PlayerAnimetion(Damage, 3);
 	m_Effect = true;
-	m_DamageArgment = true;
 	m_HP -= 1;
 	m_Interval = 100;
 	//攻撃もリセットされる
@@ -1172,6 +1101,13 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 		m_Death = true;
 		m_Alive = false;
 	}
+
+	//エフェクト生成
+	PlayerEffect* newEffect;
+	newEffect = new PlayerEffect();
+	newEffect->CreateEffect("Damege", m_Position, m_PlayerDir);
+	newEffect->Initialize();
+	effects.push_back(newEffect);
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerThornHit(const XMFLOAT3& pos) {
