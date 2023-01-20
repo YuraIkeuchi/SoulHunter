@@ -1069,6 +1069,7 @@ void BaseScene::LoadBackObjAlways(const int StageNumber) {
 			}
 			//各コマンド
 			if (word.find("POP") == 0) {
+
 				getline(line_stream, word, ',');
 				float x = (float)std::atof(word.c_str());
 				getline(line_stream, word, ',');

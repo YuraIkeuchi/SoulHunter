@@ -108,6 +108,11 @@ public:
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
+
+	//csvを開く
+	void OpenCsv();
+	//csvのロード
+	void LoadCsv();
 	
 	//導入シーンのための処理
 	void IntroductionUpdate(int Timer);
@@ -161,8 +166,6 @@ private:
 	static bool s_UseCompass;
 	static bool s_UseHeal;
 private:
-	//攻撃の位置を取る
-	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//パーティクル
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleManager> hoot;
@@ -208,7 +211,7 @@ private:
 	bool m_Effect = false;
 	//プレイヤー関係
 	//座標
-	XMFLOAT3 m_OldPlayerPos = {0.0f,0.0f,0.0f};
+	XMFLOAT3 m_OldPos = {0.0f,0.0f,0.0f};
 	//プレイヤーのマップチップの当たり判定をより正確に行うための処理
 	XMFLOAT3 m_LimitRightPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_LimitLeftPos = { 0.0f,0.0f,0.0f };
@@ -253,7 +256,7 @@ private:
 	XMFLOAT3 m_SwordParticlePos = { 0.0f,0.0f,0.0f };
 	//ゴールしたときの変数
 	bool m_ChangeInterVal = false;
-	int m_IntervalTimer = 0;
+	int m_GoalIntervalTimer = 0;
 	int m_GoalDir = 0;
 	enum GoalDir {
 		No,
@@ -286,6 +289,8 @@ private:
 		UseHeal,
 	};
 
+	//攻撃の位置を取る
+	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//手行列
 	XMMATRIX m_HandMat;
 	XMVECTOR m_VectorSwordPos;//剣の座標
@@ -319,6 +324,7 @@ private:
 	};
 
 	AnimationTimer m_AnimationTimer;
+	//プレイヤーのアニメーション
 	enum AnimationType {
 		FirstAttack,
 		SecondAttack,
@@ -333,5 +339,10 @@ private:
 		Damage,
 		Fall
 	};
+
+	//csv用変数
+	std::ifstream m_PlayerFile;
+	std::stringstream m_PlayerPopcom;
+	std::string m_PlayerLine;
 };
 
