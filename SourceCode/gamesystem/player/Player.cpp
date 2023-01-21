@@ -241,13 +241,13 @@ void Player::Update()
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_PosZ:%f", m_Position.z);
-	ImGui::End();
+	//ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("m_PosX:%f", m_Position.x);
+	//ImGui::Text("m_PosY:%f", m_Position.y);
+	//ImGui::Text("m_PosZ:%f", m_Position.z);
+	//ImGui::End();
 
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
@@ -275,14 +275,15 @@ void Player::Draw(DirectXCommon* dxCommon) {
 void Player::SwordUpdate() {
 	//パーティクル生成
 	BirthParticle();
+	XMVECTOR l_VectorSwordPos;
 	//行列を求める
-	m_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
-	m_VectorSwordPos.m128_f32[1] = m_HandMat.r[3].m128_f32[1];
-	m_VectorSwordPos.m128_f32[2] = m_HandMat.r[3].m128_f32[2];
+	l_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
+	l_VectorSwordPos.m128_f32[1] = m_HandMat.r[3].m128_f32[1];
+	l_VectorSwordPos.m128_f32[2] = m_HandMat.r[3].m128_f32[2];
 	//変換
-	m_SwordPos.x = m_VectorSwordPos.m128_f32[0];
-	m_SwordPos.y = m_VectorSwordPos.m128_f32[1];
-	m_SwordPos.z = m_VectorSwordPos.m128_f32[2];
+	m_SwordPos.x = l_VectorSwordPos.m128_f32[0];
+	m_SwordPos.y = l_VectorSwordPos.m128_f32[1];
+	m_SwordPos.z = l_VectorSwordPos.m128_f32[2];
 	
 	m_SwordMatRot = m_FollowObject->GetMatrot();
 	if (m_SwordEase) {
@@ -592,7 +593,7 @@ void Player::PlayerAttack() {
 			}
 
 			//攻撃時壁にあたった場合壁からパーティクルを出す
-			if (block->AttackMapCollideCommon({ m_AttackPos.x,m_SwordPos.y,m_AttackPos.z }, { 5.5f,0.8f }, { m_AttackPos.x,m_SwordPos.y,m_AttackPos.z })) {
+			if (block->AttackMapCollideCommon(m_AttackPos, { 5.5f,0.8f }, m_AttackPos)) {
 				PlayerEffect* newEffect;
 				newEffect = new PlayerEffect();
 				newEffect->CreateEffect("Wall",m_AttackPos,m_PlayerDir);

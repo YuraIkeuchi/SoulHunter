@@ -267,7 +267,6 @@ private:
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//éËçsóÒ
 	XMMATRIX m_HandMat;
-	XMVECTOR m_VectorSwordPos;//åïÇÃç¿ïW
 	XMFLOAT3 m_SwordPos;//åïÇÃç¿ïW
 	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
 	XMFLOAT3 m_SwordScale = { 4.5f,4.5f,4.5f };

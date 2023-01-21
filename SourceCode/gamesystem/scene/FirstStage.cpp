@@ -340,7 +340,6 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::Begin("Scene");
 		ImGui::SetWindowPos(ImVec2(1000, 150));
 		ImGui::SetWindowSize(ImVec2(280, 150));
-		ImGui::Text("AlwaysNum:%d", m_BackAlways_Num);
 		if (ImGui::RadioButton("m_EditorScene", &m_SceneChange)) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
@@ -354,7 +353,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::End();
 	}
 	//ポストエフェクト
-	{
+	/*{
 		ImGui::Begin("postEffect");
 		ImGui::SetWindowPos(ImVec2(1000, 450));
 		ImGui::SetWindowSize(ImVec2(280, 300));
@@ -365,7 +364,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			PlayPostEffect = false;
 		}
 		ImGui::End();
-	}
+	}*/
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {

@@ -1,11 +1,10 @@
 #pragma once
-#include <DirectXMath.h>
 #include"CollisionPrimitive.h"
 #include "InterEnemy.h"
 #include "IKETexture.h"
 #include "Player.h"
 #include "Block.h"
-#include "ParticleManager.h"
+#include "ParticleSoul.h"
 #include <memory> 
 using namespace std;         //  名前空間指定
 //プレイヤーの魂のクラス
@@ -43,6 +42,7 @@ private:
 	unique_ptr<IKETexture> soultex;
 	//パーティクル
 	//クラス
+	unique_ptr<ParticleSoul> particle;
 	unique_ptr<Player> player = nullptr;//
 	unique_ptr<Block> block = nullptr;
 	//変数
