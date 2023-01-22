@@ -52,13 +52,11 @@ private:
 	array<unique_ptr<IKESprite>, Skill_Max> ExplainSprite;
 	array<unique_ptr<IKESprite>, Set_Max> SetSkillSprite;
 	//ïœêî
-	static XMFLOAT2 m_SkillPos[Skill_Max];
 	static XMFLOAT2 m_SetSkillPos[Set_Max];
 	static bool m_SetSkill[Set_Max];
-	static int m_SkillName[Set_Max];
-	array<XMFLOAT2, Set_Max> m_AfterSkillPos;
 	int m_SelectNumber = 0;
 	int m_SelectDir;
+	int m_SetNumber = 0;
 	XMFLOAT2 m_SelectPos = { 0.0f,0.0f };
 	enum SelectDir {
 		Down,

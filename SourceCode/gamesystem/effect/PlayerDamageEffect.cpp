@@ -23,10 +23,10 @@ void PlayerDamageEffect::Initialize() {
 	HitEffectTexture.reset(HitEffectTexture_);
 }
 //更新
-void PlayerDamageEffect::Update(const XMFLOAT3& pos, bool& Effect) {
+void PlayerDamageEffect::Update() {
 	//エフェクトの発生
 	//ダメージ
-	DamageEffectSet(pos,Effect);
+	DamageEffectMove();
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		if (m_DamageAlive[i]) {
 			damagetex[i]->Update();
@@ -36,7 +36,7 @@ void PlayerDamageEffect::Update(const XMFLOAT3& pos, bool& Effect) {
 	}
 
 	//ヒットエフェクト
-	SetHitEffect(pos,Effect);
+	HitEffectMove();
 	if (m_HitEffect) {
 		HitEffectTexture->Update();
 	}
@@ -59,10 +59,10 @@ const void PlayerDamageEffect::Draw() {
 }
 
 //ダメージ食らった時のエフェクト
-void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos, bool& Effect) {
+void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		//エフェクトの発生
-		if (m_DamageAlive[i] == false && Effect && !m_DeleteEffect) {
+		if (m_DamageAlive[i] == false && !m_DeleteEffect) {
 			m_DamageEffectscale[i] = { 0.3f,0.3f,0.3f };
 			damagetex[i]->SetColor({ 1.0f,0.9f,0.8f,1.0f });
 			m_BoundPower[i].x = (float)(rand() % 10 + 5) / 10;
@@ -74,8 +74,13 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos, bool& Effect) {
 			m_DamageEffectpos[i] = pos;
 			m_DamageAlive[i] = true;
 		}
-		if (m_DamageAlive[i] == true) {
-			//m_BoundPower[i].y += 0.01f;
+		
+	}
+}
+
+void PlayerDamageEffect::DamageEffectMove() {
+	for (std::size_t i = 0; i < damagetex.size(); i++) {
+		if (m_DamageAlive[i]) {
 			if (i % 2 == 0) {
 				if (m_BoundPower[i].x < 0.0f) {
 					m_BoundPower[i].x += 0.02f;
@@ -107,20 +112,25 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos, bool& Effect) {
 				m_DamageEffectscale[i] = { 0.0f,0.0f,0.0f };
 				m_DamageAlive[i] = false;
 				m_DeleteEffect = true;
-				Effect = false;
 			}
 		}
 	}
 }
+
 //ヒットエフェクト
-void PlayerDamageEffect::SetHitEffect(const XMFLOAT3& pos, bool& Effect) {
+void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 	//エフェクト出現
-	if (m_HitEffect == false && Effect && !m_DeleteHitEffect) {
+	if (m_HitEffect == false  && !m_DeleteHitEffect) {
 		m_HitScale = { 0.1f,0.1f,0.1f };
 		m_HitPos = pos;
 		m_HitColor = { 1.0f,1.0f,1.0f,1.0f };
 		m_HitEffect = true;
 	}
+
+}
+
+//ヒットエフェクト動く
+void PlayerDamageEffect::HitEffectMove() {
 
 	//エフェクト動く
 	if (m_HitEffect) {

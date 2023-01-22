@@ -16,18 +16,21 @@ void PlayerEffect::CreateEffect(const std::string& newname, XMFLOAT3 pos, int di
 		PlayerDamageEffect* newDamageEffect;
 		newDamageEffect = new PlayerDamageEffect();
 		newDamageEffect->Initialize();
+		newDamageEffect->DamageEffectSet(pos);
 		damageeffects.push_back(newDamageEffect);
 	}
 	else if (newname == "Wall") {
 		WallAttackEffect* newwallEffect;
 		newwallEffect = new WallAttackEffect();
 		newwallEffect->Initialize();
+		newwallEffect->EffectSet(pos,dir);
 		walleffects.push_back(newwallEffect);
 	}
 	else if (newname == "Dush") {
 		PlayerDushEffect* newDushEffect;
 		newDushEffect = new PlayerDushEffect();
 		newDushEffect->Initialize();
+		newDushEffect->DushEffectSet(pos);
 		dusheffects.push_back(newDushEffect);
 	}
 }
@@ -36,7 +39,7 @@ void PlayerEffect::Initialize() {
 
 }
 
-void PlayerEffect::Update(XMFLOAT3 pos, XMFLOAT3 attackpos,bool dush, bool damage, int dir) {
+void PlayerEffect::Update() {
 	//エフェクト関係
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
@@ -46,19 +49,19 @@ void PlayerEffect::Update(XMFLOAT3 pos, XMFLOAT3 attackpos,bool dush, bool damag
 
 	for (WallAttackEffect* walleffect : walleffects) {
 		if (walleffect != nullptr) {
-			walleffect->Update(attackpos, dir);
+			walleffect->Update();
 		}
 	}
 
 	for (PlayerDushEffect* dusheffect : dusheffects) {
 		if (dusheffect != nullptr) {
-			dusheffect->Update(pos, dush);
+			dusheffect->Update();
 		}
 	}
 
 	for (PlayerDamageEffect* damageeffect : damageeffects) {
 		if (damageeffect != nullptr) {
-			damageeffect->Update(pos, damage);
+			damageeffect->Update();
 		}
 	}
 }

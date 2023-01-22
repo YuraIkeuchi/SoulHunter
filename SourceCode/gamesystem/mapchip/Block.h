@@ -119,9 +119,9 @@ private:
 
 	enum ThornDir {
 		NoThorn,
+		RightThorn,
+		LeftThorn,
 		UpThorn,
 		DownThorn,
-		LeftThorn,
-		RightThorn
 	};
 };

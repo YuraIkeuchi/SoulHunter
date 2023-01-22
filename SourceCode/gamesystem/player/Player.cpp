@@ -236,13 +236,13 @@ void Player::Update()
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("m_PosX:%f", m_Position.x);
-	//ImGui::Text("m_PosY:%f", m_Position.y);
-	//ImGui::Text("m_PosZ:%f", m_Position.z);
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(1000, 450));
+	ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_PosX:%f", m_Position.x);
+	ImGui::Text("m_PosY:%f", m_Position.y);
+	ImGui::Text("m_PosZ:%f", m_Position.z);
+	ImGui::End();
 
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
@@ -315,7 +315,7 @@ void Player::EffectUpdate() {
 	//エフェクト更新
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
-			neweffect->Update(m_Position,m_AttackPos,m_Dush,m_Effect,m_PlayerDir);
+			neweffect->Update();
 		}
 	}
 
@@ -589,11 +589,7 @@ void Player::PlayerAttack() {
 
 			//攻撃時壁にあたった場合壁からパーティクルを出す
 			if (block->AttackMapCollideCommon(m_AttackPos, { 5.5f,0.8f }, m_AttackPos)) {
-				PlayerEffect* newEffect;
-				newEffect = new PlayerEffect();
-				newEffect->CreateEffect("Wall",m_AttackPos,m_PlayerDir);
-				newEffect->Initialize();
-				effects.push_back(newEffect);
+				BirthEffect("Wall", m_AttackPos, m_PlayerDir);
 			}
 		}
 
@@ -668,11 +664,7 @@ void Player::PlayerDush() {
 			}
 			PlayerAnimetion(Dush, 4);
 
-			PlayerEffect* newEffect;
-			newEffect = new PlayerEffect();
-			newEffect->CreateEffect("Dush", m_Position, m_PlayerDir);
-			newEffect->Initialize();
-			effects.push_back(newEffect);
+			BirthEffect("Dush", m_Position, m_PlayerDir);
 		}
 	}
 
@@ -728,7 +720,7 @@ void Player::PlayerHeal() {
 //ダメージを食らう
 void Player::PlayerDamage() {
 	//ダメージ時の跳ね返り
-	if (m_HitDir == 1) {
+	if (m_HitDir == HitRight) {
 		if (m_BoundPower > 0.0f) {
 			m_BoundPower -= 0.05f;
 		}
@@ -737,7 +729,7 @@ void Player::PlayerDamage() {
 			m_BoundPower = 0.0f;
 		}
 	}
-	else if (m_HitDir == 2) {
+	else if (m_HitDir == HitLeft) {
 		if (m_BoundPower < 0.0f) {
 			m_BoundPower += 0.05f;
 		}
@@ -752,75 +744,52 @@ void Player::PlayerDamage() {
 	//死んだときの判定
 	if (block->GetThornHit()) {
 		if (m_HP >= 2) {
-			if (block->GetThornDir() == 1) {
+			if (block->GetThornDir() == HitRight) {
+				m_AddPower = 0.0f;
+				m_BoundPower = 1.0f;
+				m_HitDir = HitRight;
+			
+			}
+			else if (block->GetThornDir() == HitLeft) {
+				m_AddPower = 0.0f;
+				m_BoundPower = -1.0f;
+				m_HitDir = HitLeft;
+			
+			}
+			else if (block->GetThornDir() == HitUp) {
 				m_AddPower = 0.0f;
 				m_BoundPower = 0.0f;
 			}
-			else if (block->GetThornDir() == 2) {
+			else if (block->GetThornDir() == HitDown) {
 				m_AddPower = 0.7f;
 				m_BoundPower = 0.0f;
 			}
-			else if (block->GetThornDir() == 3) {
-				m_AddPower = 0.0f;
-				m_BoundPower = 1.0f;
-				m_HitDir = 1;
-			}
-			else if (block->GetThornDir() == 4) {
-				m_AddPower = 0.0f;
-				m_BoundPower = -1.0f;
-				m_HitDir = 2;
-			}
 		}
 		else {
-			if (block->GetThornDir() == 1) {
-				m_AddPower = 0.0f;
-				m_BoundPower = 0.0f;
-			}
-			else if (block->GetThornDir() == 2) {
-				m_AddPower = 0.0f;
-				m_BoundPower = 0.0f;
-			}
-			else if (block->GetThornDir() == 3) {
-				m_AddPower = 0.0f;
-				m_BoundPower = 0.0f;
-				m_HitDir = 1;
-			}
-			else if (block->GetThornDir() == 4) {
-				m_AddPower = 0.0f;
-				m_BoundPower = 0.0f;
-				m_HitDir = 2;
-			}
+			m_AddPower = 0.0f;
+			m_BoundPower = 0.0f;
 			if (!m_Death) {
+				BirthEffect("Damege", m_Position, m_PlayerDir);
 				m_HP -= 1;
-				m_Effect = true;
 				m_Death = true;
 			}
 		}
-
-
-		//エフェクト生成
-		PlayerEffect* newEffect;
-		newEffect = new PlayerEffect();
-		newEffect->CreateEffect("Damege", m_Position, m_PlayerDir);
-		newEffect->Initialize();
-		effects.push_back(newEffect);
-
 		m_Alive = false;
-		block->SetThornDir(0);
+		block->SetThornDir(NoHit);
 		block->SetThornHit(false);
 	}
 
 	//復活処理
 	if (!m_Alive && m_HP >= 1) {
 		if (m_HP != 0) {
-			m_RespornTimer++;
 			m_Rotation.x--;
+			m_RespornTimer++;
 		}
 	}
 
 	//棘にあたったときの動き
 	if (!m_Alive && m_RespornTimer == 1) {
-		m_Effect = true;
+		BirthEffect("Damege", m_Position, m_PlayerDir);
 		m_Jump = true;
 	}
 
@@ -836,7 +805,6 @@ void Player::PlayerDamage() {
 		m_FlashCount = 0;
 		m_Interval = 0;
 	}
-
 }
 //ゴール後の動き
 void Player::GoalMove() {
@@ -1072,7 +1040,6 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
 	PlayerAnimetion(Damage, 3);
-	m_Effect = true;
 	m_HP -= 1;
 	m_Interval = 100;
 	//攻撃もリセットされる
@@ -1083,14 +1050,13 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_SwordFrame = 0.0f;
 	m_SwordType = DeleteSword;
 	m_SwordAfterAlpha = 0.0f;
-	m_SwordParticleCount = 0;
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
-		m_HitDir = 1;//右側に弾かれる
+		m_HitDir = HitRight;//右側に弾かれる
 	}
 	else {
 		m_BoundPower = -1.0f;
-		m_HitDir = 2;
+		m_HitDir = HitLeft;
 	}
 
 	if (m_HP == 0 && !m_Death) {
@@ -1099,22 +1065,26 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	}
 
 	//エフェクト生成
-	PlayerEffect* newEffect;
-	newEffect = new PlayerEffect();
-	newEffect->CreateEffect("Damege", m_Position, m_PlayerDir);
-	newEffect->Initialize();
-	effects.push_back(newEffect);
+	BirthEffect("Damege", m_Position, m_PlayerDir);
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerThornHit(const XMFLOAT3& pos) {
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
-		m_HitDir = 1;//右側に弾かれる
+		m_HitDir = HitRight;//右側に弾かれる
 	}
 	else {
 		m_BoundPower = -1.0f;
-		m_HitDir = 2;
+		m_HitDir = HitLeft;
 	}
+}
+//エフェクト生成
+void Player::BirthEffect(const std::string& newname, XMFLOAT3 pos, int dir) {
+	PlayerEffect* newEffect;
+	newEffect = new PlayerEffect();
+	newEffect->CreateEffect(newname, pos, dir);
+	newEffect->Initialize();
+	effects.push_back(newEffect);
 }
 //導入シーンの更新
 void Player::IntroductionUpdate(int Timer) {

@@ -39,8 +39,11 @@ enum StageNumber {
 };
 //攻撃を食らった向き
 enum HitDir {
+	NoHit,
 	HitRight,
 	HitLeft,
+	HitUp,
+	HitDown,
 };
 //ブレンドタイプ
 enum BlendType

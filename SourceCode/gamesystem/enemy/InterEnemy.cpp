@@ -218,7 +218,7 @@ void InterEnemy::DamageAct() {
 	else {
 		l_Decrease = 0.05f;
 	}
-	if (m_HitDir == 0) {
+	if (m_HitDir == HitRight) {
 		if (m_BoundPower.x < 0.0f) {
 			m_BoundPower.x += l_Decrease;
 		}
@@ -226,7 +226,7 @@ void InterEnemy::DamageAct() {
 			m_BoundPower.x = 0.0f;
 		}
 	}
-	else if (m_HitDir == 1) {
+	else if (m_HitDir == HitLeft) {
 		if (m_BoundPower.x > 0.0f) {
 			m_BoundPower.x -= l_Decrease;
 		}

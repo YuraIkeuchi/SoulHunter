@@ -23,8 +23,8 @@ void WallAttackEffect::Initialize() {
 	}
 }
 //更新
-void WallAttackEffect::Update(const XMFLOAT3& pos,int HitDir) {
-	SetEffect(pos, HitDir);
+void WallAttackEffect::Update() {
+	EffectMove();
 	for (int i = 0; i < particleobj.size(); i++) {
 		particleobj[i]->SetPosition(m_Pos[i]);
 		particleobj[i]->SetScale(m_Scale[i]);
@@ -46,7 +46,7 @@ void WallAttackEffect::Draw() {
 	}
 }
 //エフェクトの動き
-void WallAttackEffect::SetEffect(const XMFLOAT3& pos,int HitDir) {
+void WallAttackEffect::EffectSet(const XMFLOAT3& pos,int HitDir) {
 	//エフェクトの発生
 	for (int i = 0; i < particleobj.size(); i++) {
 		//
@@ -68,6 +68,11 @@ void WallAttackEffect::SetEffect(const XMFLOAT3& pos,int HitDir) {
 			m_Effect[i] = true;
 		}
 
+	}
+}
+
+void WallAttackEffect::EffectMove() {
+	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {
 			m_BoundPower[i].y -= m_Gravity[i];
 			m_Pos[i] = { m_Pos[i].x + m_BoundPower[i].x,
