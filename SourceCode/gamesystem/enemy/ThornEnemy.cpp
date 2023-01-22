@@ -43,7 +43,8 @@ void ThornEnemy::Action() {
 		PlayerCollide();	
 		Obj_SetParam();
 	}
-
+	//パーティクル生成
+	BirthParticle();
 	//ダメージのインターバル
 	if (m_Damage) {
 		m_DamageTimer--;

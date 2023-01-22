@@ -411,6 +411,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -787,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h">
+      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

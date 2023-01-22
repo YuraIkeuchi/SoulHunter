@@ -5,6 +5,7 @@
 #include "PlayerSkill.h"
 #include "VariableCommon.h"
 #include "VolumManager.h"
+#include "ParticleEmitter.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
@@ -984,6 +985,7 @@ void Player::Editor() {
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
+	ParticleEmitter::GetInstance()->DemoEffect(m_Position);
 	if (m_FoodParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
 			const float rnd_vel = 0.1f;
@@ -991,7 +993,8 @@ void Player::BirthParticle() {
 			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 			vel.z = m_Position.z;
-			ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			
+			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0;
 	}

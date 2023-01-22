@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "ImageManager.h"
 #include "VariableCommon.h"
+#include "ParticleEmitter.h"
 bool InterEnemy::Initialize() {
 
 	return true;
@@ -90,6 +91,7 @@ bool InterEnemy::LockOn() {
 }
 //パーティクルが出てくる
 void InterEnemy::BirthParticle() {
+	ParticleEmitter::GetInstance()->DemoEffect(m_Position);
 	//足元
 	if (m_HootParticleCount >= 5 && m_Alive) {
 
@@ -102,7 +104,7 @@ void InterEnemy::BirthParticle() {
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			//ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_HootParticleCount = 0;
 	}

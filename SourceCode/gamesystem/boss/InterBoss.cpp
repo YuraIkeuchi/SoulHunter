@@ -184,7 +184,7 @@ void InterBoss::BirthParticle() {
 			//const float rnd_sca = 0.1f;
 			//float sca{};
 			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			ParticleManager::GetInstance()->Add(30, {l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z}, vel, XMFLOAT3(), 1.2f, 0.6f);
+			//ParticleManager::GetInstance()->Add(30, {l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z}, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FoodParticleCount = 0;
 	}

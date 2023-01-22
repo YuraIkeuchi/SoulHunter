@@ -6,6 +6,7 @@
 #include "ImageManager.h"
 #include "imgui.h"
 #include "VariableCommon.h"
+#include "ParticleEmitter.h"
 TitleObj* TitleScene::titleobj = nullptr;
 bool TitleScene::m_TitleNew = false;
 //初期化
@@ -59,6 +60,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	save = new Save();
 	m_TitleSelect = NewGame;
 	dxCommon->SetFullScreen(true);
+	//ParticleEmitter::GetInstance()->AllDelete();
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
@@ -116,6 +118,9 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		TitlePartsSprite[i]->SetColor(m_TitleColor);
 	}
 	TitleSprite->SetColor(m_TitleColor);
+	ParticleEmitter::GetInstance()->DemoEffect({ 0.0f,23.0f,0.0f });
+	//パーティクル更新
+	ParticleEmitter::GetInstance()->Update();
 	//タイトルの文字浮かぶ
 	PartsBirth();
 	//タイトルの文字が動く
@@ -162,7 +167,9 @@ void TitleScene::ModelDraw(DirectXCommon* dxCommon) {
 //前面描画
 void TitleScene::FrontDraw() {
 	IKEObject3d::PreDraw();
-	titleobj->FrontDraw();
+	//titleobj->FrontDraw();
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->DrawAll();
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	TitleSprite->Draw();

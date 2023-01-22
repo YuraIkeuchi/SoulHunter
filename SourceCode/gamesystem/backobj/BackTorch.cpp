@@ -1,5 +1,6 @@
 #include "BackTorch.h"
 #include <Easing.h>
+#include "ParticleEmitter.h"
 BackTorch::BackTorch() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BackTorch);
 }
@@ -29,18 +30,19 @@ void BackTorch::SetObj() {
 	if (m_ParticleCount > 6) {
 		m_ParticleCount = 0;
 	}
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	/*particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
 	particletex->SetStartScale(0.1f);
-	particletex->SetAddScale(0.008f);
+	particletex->SetAddScale(0.008f);*/
 	if (UpdateCollide()) {
 		particletex->Update({ m_Position.x,m_Position.y + 8.0f,m_Position.z }, m_ParticleCount, 6, SavePart);
 	}
+	ParticleEmitter::GetInstance()->DemoEffect({ m_Position.x,m_Position.y + 8.0f,m_Position.z });
 }
 //“Á•Ê‚È•`‰æ
 void BackTorch::specialDraw() {
-	particletex->Draw();
+	//particletex->Draw();
 }
 
 void BackTorch::Draw(DirectXCommon* dxCommon) {
