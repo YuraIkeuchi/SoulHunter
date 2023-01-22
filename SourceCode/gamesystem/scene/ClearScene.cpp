@@ -1,5 +1,4 @@
 #include "ClearScene.h"
-#include "input.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"

@@ -1,10 +1,10 @@
 #include "FirstStage.h"
 #include "Audio.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
-#include <Easing.h>
+#include "VariableCommon.h"
+#include "PlayerSkill.h"
 
 //プレイシーンの初期化(現在は魂だけ)
 void FirstStage::PlaySceneInitialize() {

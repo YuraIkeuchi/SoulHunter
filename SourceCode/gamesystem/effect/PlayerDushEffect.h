@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include "IKETexture.h"
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //Vectorで持たなくていいプレイヤーエフェクトのクラス
 class PlayerDushEffect {

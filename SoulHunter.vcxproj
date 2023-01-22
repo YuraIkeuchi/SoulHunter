@@ -274,7 +274,6 @@
     <ClCompile Include="SourceCode\gamesystem\editor\ObjEdit.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\AttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BossEffect.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\effect\ChestEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\EnemyEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BirdEnemyEffect.cpp" />
@@ -327,7 +326,6 @@
     <ClCompile Include="SourceCode\gamesystem\ui\DushPause.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\HealPause.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\LibraPause.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\ui\Message.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\MiniMap.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\Option.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\Pause.cpp" />
@@ -403,7 +401,6 @@
     <ClInclude Include="SourceCode\gamesystem\editor\ObjEdit.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\AttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BossEffect.h" />
-    <ClInclude Include="SourceCode\gamesystem\effect\ChestEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\EnemyEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BirdEnemyEffect.h" />
@@ -456,7 +453,6 @@
     <ClInclude Include="SourceCode\gamesystem\ui\DushPause.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\HealPause.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\LibraPause.h" />
-    <ClInclude Include="SourceCode\gamesystem\ui\Message.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\MiniMap.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\Option.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\Pause.h" />

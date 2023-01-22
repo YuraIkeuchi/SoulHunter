@@ -1,11 +1,8 @@
 #pragma once
 #include"IKESprite.h"
-#include "IKETexture.h"
 #include"Player.h"
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "VariableCommon.h"
-#include <list> // ヘッダファイルインクルード
 #include <array>
 using namespace std;         //  名前空間指定
 //チュートリアルのクラス(看板)
@@ -52,8 +49,6 @@ private:
 	IKEModel* modelboard = nullptr;
 	unique_ptr <IKEObject3d> objboard;
 	//テクスチャやスプライト
-	unique_ptr<IKETexture> tutorialPointTex;
-	//array<array<unique_ptr<IKESprite>,Tutorial_Max>> TutorialSprite;
 	unique_ptr<IKESprite> TutorialSprite[Tutorial_Max][TutorialAnime_Max];
 	//その他変数
 	XMFLOAT3 m_TexPosition;//テキストの位置

@@ -1,9 +1,9 @@
 #include "IntroductionScene.h"
 #include "Audio.h"
-#include "input.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
+#include "VariableCommon.h"
 #include "imgui.h"
 IntroductionObj* IntroductionScene::Introductionobj = nullptr;
 bool IntroductionScene ::m_IntroNew = false;

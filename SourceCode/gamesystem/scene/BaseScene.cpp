@@ -1,7 +1,7 @@
 #include "BaseScene.h"
-#include "CollisionManager.h"
 #include "ImageManager.h"
 #include "PlayerSkill.h"
+#include "VariableCommon.h"
 Block* BaseScene::block = nullptr;
 MiniMap* BaseScene::minimap = nullptr;
 //Pause* BaseScene::pause = nullptr;
@@ -119,7 +119,6 @@ void BaseScene::StartGame() {
 		minimap->InitMap(tutorialmap, StageNumber);
 		PlayerSkill::GetInstance()->ResetSkill();
 		skillpause->ResetSkillPause();
-		player->ResetSkill();
 		LoadEnemyParam(TutoRial);
 		LoadObjParam(TutoRial);
 	}

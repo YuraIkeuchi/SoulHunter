@@ -1,9 +1,10 @@
 ﻿#include "SkillPause.h"
 #include "ImageManager.h"
 #include "Input.h"
-#include "imgui.h"
 #include <Easing.h>
 #include "PlayerSkill.h"
+#include "Audio.h"
+#include "VolumManager.h"
 using namespace std;         //  名前空間指定
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;

@@ -1,7 +1,6 @@
 #include "EnemyEffect.h"
-#include"Easing.h"
 #include"ImageManager.h"
-using namespace DirectX;
+#include "VariableCommon.h"
 //ì«Ç›çûÇ›
 EnemyEffect::EnemyEffect() {
 	IKETexture* ParticleEffect_[Effect_Max];

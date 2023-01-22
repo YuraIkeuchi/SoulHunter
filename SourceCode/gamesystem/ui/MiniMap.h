@@ -1,10 +1,8 @@
 #pragma once
 #include "IKESprite.h"
-#include "PlayerSkill.h"
 #include "Player.h"
 #include "Save.h"
 #include "MapChip.h"
-
 #include <array>   
 using namespace std;         //  名前空間指定
 //ミニマップ

@@ -1,9 +1,6 @@
 #include "UI.h"
-#include "ImageManager.h"
 #include "Easing.h"
 #include "imgui.h"
-#include "Audio.h"
-#include "VolumManager.h"
 #include "PlayerSkill.h"
 //ì«Ç›çûÇ›
 UI::UI(Player* player, InterBoss* boss) {

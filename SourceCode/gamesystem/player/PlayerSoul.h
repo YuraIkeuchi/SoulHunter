@@ -1,5 +1,4 @@
 #pragma once
-#include"CollisionPrimitive.h"
 #include "InterEnemy.h"
 #include "IKETexture.h"
 #include "Player.h"
@@ -16,7 +15,7 @@ public:
 
 	void Initialize();//初期化
 	void Finalize();//解放
-	//諸事情により敵ごとに必要になってしまった
+	//更新
 	void Update(InterEnemy* enemy);
 	void Draw();//描画
 	void SetEffect(InterEnemy* enemy);
@@ -62,6 +61,4 @@ private:
 	bool m_Move = false;//動くかどうか
 	float m_Frame = 0.0f;//フレーム
 	//unique_ptr<ParticleManager> soulparticle;
-public:
-	Sphere collider;
 };

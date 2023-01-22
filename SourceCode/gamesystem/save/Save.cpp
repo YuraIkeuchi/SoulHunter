@@ -1,9 +1,8 @@
 #include "Save.h"
 #include "ModelManager.h"
 #include "ImageManager.h"
-#include "imgui.h"
-#include "Input.h"
 #include "Collision.h"
+#include "VariableCommon.h" 
 //初期化
 void Save::Initialize() {
 	//セーブポイント
@@ -42,7 +41,6 @@ void Save::Initialize() {
 }
 //更新
 void Save::Update() {
-	Input* input = Input::GetInstance();
 
 	//ボタンを押すとセーブできる
 	if (Collide() && m_SaveCount == 0) {

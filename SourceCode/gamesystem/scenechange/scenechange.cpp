@@ -1,7 +1,6 @@
 #include "SceneChange.h"
 #include "ImageManager.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;

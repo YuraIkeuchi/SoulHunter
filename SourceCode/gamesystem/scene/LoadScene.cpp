@@ -1,10 +1,10 @@
 #include "LoadScene.h"
 #include "Audio.h"
 #include "input.h"
-#include "DebugText.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 //‰Šú‰»
 void LoadScene::Initialize(DirectXCommon* dxCommon) {
 

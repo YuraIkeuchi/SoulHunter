@@ -1,6 +1,7 @@
 #include "InterEnemy.h"
 #include "Collision.h"
 #include "ImageManager.h"
+#include "VariableCommon.h"
 bool InterEnemy::Initialize() {
 
 	return true;

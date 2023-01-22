@@ -2,7 +2,6 @@
 #include "IKETexture.h"
 #include <array>   
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
 //手紙やセーブポイントなど目立たせたい場所に出すエフェクト

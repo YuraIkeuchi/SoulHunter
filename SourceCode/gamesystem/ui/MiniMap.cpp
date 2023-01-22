@@ -1,5 +1,4 @@
 #include "MiniMap.h"
-#include "ImageManager.h"
 #include "imgui.h"
 #include <Easing.h>
 #include "Input.h"

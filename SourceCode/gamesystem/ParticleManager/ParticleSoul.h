@@ -1,9 +1,7 @@
 #pragma once
-#include "IKEModel.h"
 #include "IKETexture.h"
 #include <array>   
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 class ParticleSoul {
 protected:

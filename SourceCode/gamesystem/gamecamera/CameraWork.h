@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //ゲームのカメラの動き
 class CameraWork {

@@ -1,7 +1,6 @@
 #include "TitleScene.h"
 #include "Audio.h"
 #include "input.h"
-#include "DebugText.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"

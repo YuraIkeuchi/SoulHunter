@@ -1,6 +1,6 @@
 #include "PlayerDamageEffect.h"
-#include"Easing.h"
 #include"ImageManager.h"
+#include "VariableCommon.h"
 using namespace DirectX;
 //ì«Ç›çûÇ›
 PlayerDamageEffect::PlayerDamageEffect() {

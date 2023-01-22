@@ -1,5 +1,4 @@
 #include "BirdEnemyEffect.h"
-#include"Easing.h"
 #include"ImageManager.h"
 using namespace DirectX;
 //“Ç‚İ‚İ

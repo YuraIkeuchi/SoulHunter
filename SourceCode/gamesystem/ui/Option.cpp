@@ -1,6 +1,9 @@
 #include "Option.h"
 #include "ImageManager.h"
 #include "input.h"
+#include "VolumManager.h"
+#include "Audio.h"
+#include "VariableCommon.h"
 Option::Option() {
 	const int OptionCount = 2;
 	IKESprite* OptionSprite_[2];

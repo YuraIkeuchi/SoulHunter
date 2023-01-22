@@ -1,15 +1,12 @@
 #pragma once
 #include "IKESprite.h"
 #include "Player.h"
-#include "Audio.h"
-#include "VolumManager.h"
 #include "CompassPause.h"
 #include "LibraPause.h"
 #include "DushPause.h"
 #include "HealPause.h"
 #include <array>   
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //スキルセット画面のクラス
 class SkillPause {

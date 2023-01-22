@@ -1,6 +1,7 @@
 #include "Block.h"
 #include "imgui.h"
 #include "ModelManager.h"
+#include "VariableCommon.h"
 //ì«Ç›çûÇ›
 Block::Block() {
 	IKEModel* modelNormalBlock_;

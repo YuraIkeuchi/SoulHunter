@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "Input.h"
 #include "ModelManager.h"
-#include "IKEFbxLoader.h"
 #include "ParticleManager.h"
 #include "PlayerSkill.h"
 #include "VariableCommon.h"
@@ -1116,13 +1115,6 @@ void Player::PlayerThornHit(const XMFLOAT3& pos) {
 		m_BoundPower = -1.0f;
 		m_HitDir = 2;
 	}
-}
-//スキルリセット
-void Player::ResetSkill() {
-	//s_UseCompass = false;
-	//s_UseLibra = false;
-	//s_UseDush = false;
-	//s_UseHeal = false;
 }
 //導入シーンの更新
 void Player::IntroductionUpdate(int Timer) {

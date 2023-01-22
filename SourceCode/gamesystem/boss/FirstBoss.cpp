@@ -1,5 +1,6 @@
 #include "FirstBoss.h"
 #include "ImageManager.h"
+#include "VariableCommon.h"
 #include <Easing.h>
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);

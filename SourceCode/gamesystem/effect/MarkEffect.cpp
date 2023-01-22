@@ -1,6 +1,5 @@
 #include "MarkEffect.h"
 #include "ImageManager.h"
-#include "Collision.h"
 #include <Easing.h>
 #include "imgui.h"
 //“Ç‚İ‚İ

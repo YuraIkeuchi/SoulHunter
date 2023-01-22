@@ -1,7 +1,6 @@
 #pragma once
 #include "IKESprite.h"
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //ポーズ画面の回復スキル
 class HealPause {

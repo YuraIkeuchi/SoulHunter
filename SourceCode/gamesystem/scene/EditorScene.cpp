@@ -1,9 +1,9 @@
 #include "EditorScene.h"
 #include "Audio.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "imgui.h"
-#include <Easing.h>
+#include "VariableCommon.h"
+#include "PlayerSkill.h"
 //初期化
 void EditorScene::Initialize(DirectXCommon* dxCommon)
 {
@@ -62,7 +62,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
 {
-	Input* input = Input::GetInstance();
 	//各クラス更新
 	AllUpdate();
 	//光の配置

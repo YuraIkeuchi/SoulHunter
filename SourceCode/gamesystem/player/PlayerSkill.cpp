@@ -1,7 +1,5 @@
 #include "PlayerSkill.h"
-#include "ImageManager.h"
 #include "imgui.h"
-#include "Collision.h"
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ô
 
 bool PlayerSkill::s_DushSkill = false;

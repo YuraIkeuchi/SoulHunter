@@ -8,7 +8,6 @@
 #include "ParticleTex.h"
 #include "PlayerEffect.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
 class Player :
@@ -69,8 +68,6 @@ public:
 	void PlayerHit(const XMFLOAT3& pos);
 	//プレイヤーが敵にあたった瞬間の判定
 	void PlayerThornHit(const XMFLOAT3& pos);
-	//スキルリセット
-	void ResetSkill();
 	/// <summary>
 	/// 開放
 	/// </summary>

@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "ModelManager.h"
+#include "VariableCommon.h"
 #include "ParticleManager.h"
 #include "Easing.h"
 using namespace DirectX;

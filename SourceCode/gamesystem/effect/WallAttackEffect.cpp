@@ -1,7 +1,6 @@
 #include "WallAttackEffect.h"
-#include"Easing.h"
 #include"ModelManager.h"
-#include "imgui.h"
+#include "VariableCommon.h"
 using namespace DirectX;
 //ì«Ç›çûÇ›
 WallAttackEffect::WallAttackEffect() {
