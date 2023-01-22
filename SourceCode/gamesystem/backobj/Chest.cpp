@@ -2,9 +2,11 @@
 #include "ModelManager.h"
 #include "ImageManager.h"
 #include "Collision.h"
-#include "Easing.h"
+#include "VariableCommon.h"
+#include "PlayerSkill.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include "Easing.h"
 #include "Input.h"
 //モデル読み込みと初期化
 Chest::Chest() {
@@ -47,13 +49,6 @@ Chest::Chest() {
 	//	particletex_[i]->Initialize();
 	//	particletex[i].reset(particletex_[i]);
 	//}
-	//開けた時のエフェクト
-	ChestEffect* chesteffect_[Skill_Max];
-	for (int i = 0; i < Skill_Max; i++) {
-		chesteffect_[i] = new ChestEffect();
-		chesteffect_[i]->Initialize();
-		chesteffect[i].reset(chesteffect_[i]);
-	}
 	//スプライト
 	//バック
 	IKESprite* ExplainBack_;
@@ -170,7 +165,6 @@ void Chest::Update() {
 		}
 		particletex[i]->SetStartColor({ 1.0f,1.0f,0.0f,1.0f });
 		particletex[i]->Update(m_ParticlePos[i], m_ParticleCount[i], 3, 3);*/
-		chesteffect[i]->Update(m_ChestPos[i], player->GetPosition(),m_ChestState[i]);
 	}
 
 	//色の設定
@@ -204,13 +198,6 @@ const void Chest::Draw() {
 			else {
 				objOpenChest[i]->Draw();
 			}
-		}
-	}
-
-	for (int i = 0; i < Skill_Max; i++) {
-		//particletex[i]->Draw();
-		if (m_Hit[i]) {
-			chesteffect[i]->Draw();
 		}
 	}
 
@@ -324,25 +311,25 @@ void Chest::OpenChest() {
 		if (m_Hit[Compass] && m_ChestState[Compass] == Close) {
 			m_ReadText[Compass] = true;
 			m_ChestState[Compass] = Open;
-			playerskill->Compass();
+			PlayerSkill::GetInstance()->SetCompassSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		else if (m_Hit[Libra] && m_ChestState[Libra] == Close) {
 			m_ReadText[Libra] = true;
 			m_ChestState[Libra] = Open;
-			playerskill->Libra();
+			PlayerSkill::GetInstance()->SetLibraSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		else if (m_Hit[Dush] && m_ChestState[Dush] == Close) {
 			m_ReadText[Dush] = true;
 			m_ChestState[Dush] = Open;
-			playerskill->Dush();
+			PlayerSkill::GetInstance()->SetDushSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		else if (m_Hit[Heal] && m_ChestState[Heal] == Close) {
 			m_ReadText[Heal] = true;
 			m_ChestState[Heal] = Open;
-			playerskill->Heal();
+			PlayerSkill::GetInstance()->SetHealSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
@@ -361,19 +348,19 @@ void Chest::OpenChest() {
 	}
 
 	//ロードしたときにスキル持ってたら箱開けていたい
-	if (playerskill->GetCompassSkill()) {
+	if (PlayerSkill::GetInstance()->GetCompassSkill()) {
 		m_ChestState[Compass] = Open;
 	}
 
-	if (playerskill->GetLibraSkill()) {
+	if (PlayerSkill::GetInstance()->GetLibraSkill()) {
 		m_ChestState[Libra] = Open;
 	}
 
-	if (playerskill->GetDushSkill()) {
+	if (PlayerSkill::GetInstance()->GetDushSkill()) {
 		m_ChestState[Dush] = Open;
 	}
 
-	if (playerskill->GetHealSkill()) {
+	if (PlayerSkill::GetInstance()->GetHealSkill()) {
 		m_ChestState[Heal] = Open;
 	}
 

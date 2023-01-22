@@ -702,3 +702,9 @@ void FirstBoss::StateManager() {
 		m_AttackCount += 5;
 	}
 }
+
+void FirstBoss::Pause() {
+	Fbx_SetParam();
+	m_fbxObject->StopAnimation();
+	m_fbxObject->Update(true, 1, m_AnimationStop);
+}

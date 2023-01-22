@@ -14,59 +14,11 @@ bool PlayerSkill::s_UseLibra = false;
 bool PlayerSkill::s_UseCompass = false;
 bool PlayerSkill::s_UseHeal = false;
 
-//スキルが手に入ったかどうか
-void PlayerSkill::Dush() {
-	s_DushSkill = true;
-	m_DushAlive = false;
-}
+PlayerSkill* PlayerSkill::GetInstance()
+{
+	static PlayerSkill instance;
 
-void PlayerSkill::Libra() {
-	s_LibraSkill = true;
-	m_LibraAlive = false;
-}
-
-void PlayerSkill::Compass() {
-	s_CompassSkill = true;
-	m_CompassAlive = false;
-}
-
-void PlayerSkill::Heal() {
-	s_HealSkill = true;
-	m_HealAlive = false;
-}
-
-//スキルを使っているかどうか
-void PlayerSkill::UseLibraSkill() {
-	s_UseLibra = true;
-}
-
-void PlayerSkill::UseDushSkill() {
-	s_UseDush = true;
-}
-
-void PlayerSkill::UseCompassSkill() {
-	s_UseCompass = true;
-}
-
-void PlayerSkill::UseHealSkill() {
-	s_UseHeal = true;
-}
-
-//スキルを使っていない
-void PlayerSkill::ResetLibraSkill() {
-	s_UseLibra = false;
-}
-
-void PlayerSkill::ResetDushSkill() {
-	s_UseDush = false;
-}
-
-void PlayerSkill::ResetCompassSkill() {
-	s_UseCompass = false;
-}
-
-void PlayerSkill::ResetHealSkill() {
-	s_UseHeal = false;
+	return &instance;
 }
 
 //スキルのリセット
@@ -79,4 +31,17 @@ void PlayerSkill::ResetSkill() {
 	s_LibraSkill = false;
 	s_CompassSkill = false;
 	s_HealSkill = false;
+}
+
+void PlayerSkill::ImGuiDraw() {
+	ImGui::Begin("skill");
+	ImGui::Text("UseLibra:%d", s_UseLibra);
+	ImGui::Text("UseDush:%d", s_UseDush);
+	ImGui::Text("UseHeal:%d", s_UseHeal);
+	ImGui::Text("UseCompass:%d", s_UseCompass);
+	ImGui::Text("GetLibra:%d", s_LibraSkill);
+	ImGui::Text("GetDush:%d", s_DushSkill);
+	ImGui::Text("GetHeal:%d", s_HealSkill);
+	ImGui::Text("GetCompass:%d", s_CompassSkill);
+	ImGui::End();
 }

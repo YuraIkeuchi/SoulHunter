@@ -7,6 +7,7 @@ public:
 	bool Initialize() override;//初期化
 	bool BattleInitialize() override;//初期化
 	void Spec() override;//ボスの行動
+	void Pause() override;//ポーズのとき
 	void Dead() override;//ボス死亡
 	void End() override;//ボスシーン終了
 	void specialDraw(DirectXCommon* dxCommon) override;//このシーンのみの描画

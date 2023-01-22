@@ -5,7 +5,6 @@
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
 #include "ParticleTex.h"
-#include "HitStop.h"
 #include "VariableCommon.h"
 #include "CollisionPrimitive.h"
 #define DIRECTINPUT_VERSION 0x0800
@@ -23,7 +22,6 @@ protected:
 
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetHitStop(HitStop* hitstop) { this->hitstop.reset(hitstop); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 
 	/// getter
@@ -60,7 +58,6 @@ protected:
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	unique_ptr<ParticleTex> particletex = nullptr;
-	unique_ptr<HitStop> hitstop =nullptr;
 
 	//スプライト
 	unique_ptr<IKESprite> MiniEnemySprite;

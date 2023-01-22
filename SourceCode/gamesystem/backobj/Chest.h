@@ -1,20 +1,14 @@
 ﻿#pragma once
 #include"Player.h"
-#include "PlayerSkill.h"
-#include "IKEObject3d.h"
-#include"IKEModel.h"
-#include "VariableCommon.h"
 #include "IKESprite.h"
 #include "IKETexture.h"
 #include <array>
 #include "ParticleTex.h"
-#include "ChestEffect.h"
 using namespace std;         //  名前空間指定
 //宝箱用のクラス
 class Chest {
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetPlayerSkill(PlayerSkill* playerskill) { this->playerskill.reset(playerskill); }
 	Chest();
 	void Update();//更新
 	const void Draw();//描画
@@ -51,9 +45,6 @@ public:
 private:
 	//クラス
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<PlayerSkill> playerskill = nullptr;
-	//array<unique_ptr<ParticleTex>, Skill_Max> particletex;
-	array<unique_ptr<ChestEffect>, Skill_Max> chesteffect;
 	//絶対に必要なOBJ
 	//開いてる宝箱
 	IKEModel* modelOpenChest = nullptr;

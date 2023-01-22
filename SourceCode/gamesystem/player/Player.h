@@ -120,10 +120,6 @@ public:
 	int GetInterVal() { return  m_Interval; }
 	float GetAddPower() { return  m_AddPower; }
 	float GetVelosity() { return  m_Velocity; }
-	bool GetUseCompass() { return  s_UseCompass; }
-	bool GetUseLibra() { return  s_UseLibra; }
-	bool GetUseDush() { return  s_UseDush; }
-	bool GetUseHeal() { return  s_UseHeal; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
 
@@ -134,10 +130,6 @@ public:
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
-	void SetUseDush(bool UseDush) { this->s_UseDush = UseDush; }
-	void SetUseLibra(bool UseLibra) { this->s_UseLibra = UseLibra; }
-	void SetUseCompass(bool UseCompass) { this->s_UseCompass = UseCompass; }
-	void SetUseHeal(bool UseHeal) { this->s_UseHeal = UseHeal; }
 	void SetChangeInterVal(bool m_ChangeInterVal) { this->m_ChangeInterVal = m_ChangeInterVal; }
 	void SetGoalDir(int m_GoalDir) { this->m_GoalDir = m_GoalDir; }
 	void SetCollideChest(bool m_CollideChest) { this->m_CollideChest = m_CollideChest; }
@@ -145,11 +137,7 @@ public:
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
 
 private:
-	//スキルを使えるかどうか
-	static bool s_UseDush;
-	static bool s_UseLibra;
-	static bool s_UseCompass;
-	static bool s_UseHeal;
+	
 private:
 	vector<PlayerEffect*> effects;
 	//パーティクル
@@ -301,6 +289,7 @@ private:
 	enum AnimationType {
 		FirstAttack,
 		SecondAttack,
+		Rolling,
 		Walk,
 		FirstJump,
 		Wait,

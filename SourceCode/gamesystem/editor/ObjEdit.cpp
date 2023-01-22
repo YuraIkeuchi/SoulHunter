@@ -1,4 +1,8 @@
 #include "ObjEdit.h"
+#include "BackRock.h"
+#include "BackBox.h"
+#include "BackTorch.h"
+
 //íåÇÃê∂ê¨
 void ObjEdit::RockArgment(std::vector<BackObjCommon*>& objs,Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot){
 	BackObjCommon* newPiller;

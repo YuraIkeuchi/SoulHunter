@@ -2,17 +2,13 @@
 #include "Input.h"
 #include "ModelManager.h"
 #include "IKEFbxLoader.h"
-#include "ImageManager.h"
 #include "ParticleManager.h"
+#include "PlayerSkill.h"
 #include "VariableCommon.h"
 #include "VolumManager.h"
 #include "Audio.h"
 #include <Easing.h>
 using namespace DirectX;
-bool Player::s_UseCompass = false;
-bool Player::s_UseDush = false;
-bool Player::s_UseLibra = false;
-bool Player::s_UseHeal = false;
 //読み込み
 Player::Player() {
 	m_FollowModel = ModelManager::GetInstance()->GetModel(ModelManager::Sword);
@@ -660,7 +656,7 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive) && (s_UseDush)) {
+	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive) && (PlayerSkill::GetInstance()->GetUseDush())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
@@ -703,7 +699,7 @@ void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5)) {
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetUseHeal())) {
 		m_HealType = UseHeal;
 	}
 
@@ -1123,10 +1119,10 @@ void Player::PlayerThornHit(const XMFLOAT3& pos) {
 }
 //スキルリセット
 void Player::ResetSkill() {
-	s_UseCompass = false;
-	s_UseLibra = false;
-	s_UseDush = false;
-	s_UseHeal = false;
+	//s_UseCompass = false;
+	//s_UseLibra = false;
+	//s_UseDush = false;
+	//s_UseHeal = false;
 }
 //導入シーンの更新
 void Player::IntroductionUpdate(int Timer) {

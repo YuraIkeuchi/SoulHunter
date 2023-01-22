@@ -2,6 +2,9 @@
 #include "ImageManager.h"
 #include "Easing.h"
 #include "imgui.h"
+#include "Audio.h"
+#include "VolumManager.h"
+#include "PlayerSkill.h"
 //“Ç‚Ýž‚Ý
 UI::UI(Player* player, InterBoss* boss) {
 
@@ -121,7 +124,7 @@ const void UI::Draw() {
 	}
 	SoulGageSprite->Draw();
 
-	if (interboss && playerskill->GetUseLibra() && interboss->GetAlive()) {
+	if (interboss && PlayerSkill::GetInstance()->GetUseLibra() && interboss->GetAlive()) {
 		BossHpSprite->Draw();
 	}
 }

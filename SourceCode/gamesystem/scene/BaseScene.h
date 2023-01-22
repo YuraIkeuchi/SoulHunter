@@ -9,7 +9,6 @@
 #include "ResPornEnemy.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
-#include "PlayerSkill.h"
 #include "Save.h"
 #include "UI.h"
 #include "FirstBoss.h"
@@ -32,7 +31,6 @@
 #include "SceneChange.h"
 #include "FPSManager.h"
 #include "Chest.h"
-#include "HitStop.h"
 #include <vector>
 #include <memory>
 using namespace std;         //  名前空間指定
@@ -273,7 +271,6 @@ public:
 	PostEffect* postEffect = nullptr;
 	
 	//ヒットストップ
-	HitStop* hitstop = false;
 	//シーン遷移のためのもの
 	SceneChange* scenechange = nullptr;
 	MapChange* mapchange = nullptr;
@@ -284,8 +281,6 @@ public:
 	SkillPause* skillpause = nullptr;
 	static MiniMap* minimap;
 	Option* option = nullptr;
-	//スキル
-	PlayerSkill* playerskill = nullptr;
 	//宝箱
 	Chest* chest = nullptr;
 	//背景のobj

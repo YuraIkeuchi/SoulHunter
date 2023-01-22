@@ -1,7 +1,4 @@
 #pragma once
-#include "IKEObject3d.h"
-#include"IKEModel.h"
-#include "VariableCommon.h"
 #include "ObjCommon.h"
 #include <memory>
 //”wŒi‚ÌŠâ‚È‚Ç‹¤’Ê”wŒi‚ÌƒNƒ‰ƒX

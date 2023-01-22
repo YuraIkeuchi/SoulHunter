@@ -1,6 +1,7 @@
 #include "InterBoss.h"
 #include"Collision.h"
 #include "ParticleManager.h"
+#include "VariableCommon.h"
 //更新
 void InterBoss::Update() {
 	//当たり判定
@@ -8,16 +9,15 @@ void InterBoss::Update() {
 	collideBoss();
 	BirthParticle();
 	//ボスの行動
-	if (!pause->GetIsPause()) {
-		if (!m_Movie) {
-			if (m_HP > 0) {
-				Spec();
-			}
-			else {
-				Dead();
-			}
+	if (!m_Movie) {
+		if (m_HP > 0) {
+			Spec();
+		}
+		else {
+			Dead();
 		}
 	}
+	
 	//HPをマイナスにしない
 	if (m_HP <= 0) {
 		m_HP = 0;

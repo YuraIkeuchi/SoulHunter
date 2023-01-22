@@ -3,8 +3,7 @@
 #include "Input.h"
 #include "imgui.h"
 #include <Easing.h>
-#include <memory> 
-#include <list> // ヘッダファイルインクルード
+#include "PlayerSkill.h"
 using namespace std;         //  名前空間指定
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -169,67 +168,67 @@ const void SkillPause::Draw() {
 		NoItemSprite[i]->Draw();
 	}
 	//スキル取得状況によって変わる
-	if (playerskill->GetLibraSkill() && librapause->GetLibraPos().x != 0.0f) {
+	if (PlayerSkill::GetInstance()->GetLibraSkill() && librapause->GetLibraPos().x != 0.0f) {
 		librapause->Draw();
 		//SkillSprite[0]->Draw();
 	}
 
-	if (playerskill->GetDushSkill() && dushpause->GetDushPos().x != 0.0f) {
+	if (PlayerSkill::GetInstance()->GetDushSkill() && dushpause->GetDushPos().x != 0.0f) {
 		dushpause->Draw();
 		//SkillSprite[1]->Draw();
 	}
 
-	if (playerskill->GetCompassSkill() && compasspause->GetCompassPos().x != 0.0f) {
+	if (PlayerSkill::GetInstance()->GetCompassSkill() && compasspause->GetCompassPos().x != 0.0f) {
 		compasspause->Draw();
 		//SkillSprite[2]->Draw();
 	}
 	//後々直す(ヒールスキル)
-	if (playerskill->GetHealSkill() && healpause->GetHealPos().x != 0.0f) {
+	if (PlayerSkill::GetInstance()->GetHealSkill() && healpause->GetHealPos().x != 0.0f) {
 		healpause->Draw();
 		//SkillSprite[2]->Draw();
 	}
 
 	if (m_SelectDir == Down) {
-		if (m_SelectNumber == 0 && playerskill->GetLibraSkill() && !playerskill->GetUseLibra()) {
+		if (m_SelectNumber == 0 && PlayerSkill::GetInstance()->GetLibraSkill() && !PlayerSkill::GetInstance()->GetUseLibra()) {
 			ExplainSprite[0]->Draw();
 		}
-		else if (m_SelectNumber == 1 && playerskill->GetDushSkill() && !playerskill->GetUseDush()) {
+		else if (m_SelectNumber == 1 && PlayerSkill::GetInstance()->GetDushSkill() && !PlayerSkill::GetInstance()->GetUseDush()) {
 			ExplainSprite[1]->Draw();
 		}
-		else if (m_SelectNumber == 2 && playerskill->GetCompassSkill() && !playerskill->GetUseCompass()) {
+		else if (m_SelectNumber == 2 && PlayerSkill::GetInstance()->GetCompassSkill() && !PlayerSkill::GetInstance()->GetUseCompass()) {
 			ExplainSprite[2]->Draw();
 		}
-		else if (m_SelectNumber == 3 && playerskill->GetHealSkill() && !playerskill->GetUseHeal()) {
+		else if (m_SelectNumber == 3 && PlayerSkill::GetInstance()->GetHealSkill() && !PlayerSkill::GetInstance()->GetUseHeal()) {
 			ExplainSprite[3]->Draw();
 		}
 	}
 	else {
 		if (m_SelectNumber == 3) {
-			if (m_SetSkill[0] && m_SkillName[0] == Libra && playerskill->GetUseLibra()) {
+			if (m_SetSkill[0] && m_SkillName[0] == Libra && PlayerSkill::GetInstance()->GetUseLibra()) {
 				ExplainSprite[0]->Draw();
 			}
-			else if (m_SetSkill[0] && m_SkillName[0] == Dush && playerskill->GetUseDush()) {
+			else if (m_SetSkill[0] && m_SkillName[0] == Dush && PlayerSkill::GetInstance()->GetUseDush()) {
 				ExplainSprite[1]->Draw();
 			}
-			else if (m_SetSkill[0] && m_SkillName[0] == Compass && playerskill->GetUseCompass()) {
+			else if (m_SetSkill[0] && m_SkillName[0] == Compass && PlayerSkill::GetInstance()->GetUseCompass()) {
 				ExplainSprite[2]->Draw();
 			}
-			else if (m_SetSkill[0] && m_SkillName[0] == Heal && playerskill->GetUseHeal()) {
+			else if (m_SetSkill[0] && m_SkillName[0] == Heal && PlayerSkill::GetInstance()->GetUseHeal()) {
 				ExplainSprite[3]->Draw();
 			}
 		}
 
 		else if (m_SelectNumber == 4) {
-			if (m_SetSkill[1] && m_SkillName[1] == Libra && playerskill->GetUseLibra()) {
+			if (m_SetSkill[1] && m_SkillName[1] == Libra && PlayerSkill::GetInstance()->GetUseLibra()) {
 				ExplainSprite[0]->Draw();
 			}
-			else if (m_SetSkill[1] && m_SkillName[1] == Dush && playerskill->GetUseDush()) {
+			else if (m_SetSkill[1] && m_SkillName[1] == Dush && PlayerSkill::GetInstance()->GetUseDush()) {
 				ExplainSprite[1]->Draw();
 			}
-			else if (m_SetSkill[1] && m_SkillName[1] == Compass && playerskill->GetUseCompass()) {
+			else if (m_SetSkill[1] && m_SkillName[1] == Compass && PlayerSkill::GetInstance()->GetUseCompass()) {
 				ExplainSprite[2]->Draw();
 			}
-			else if (m_SetSkill[1] && m_SkillName[1] == Heal && playerskill->GetUseHeal()) {
+			else if (m_SetSkill[1] && m_SkillName[1] == Heal && PlayerSkill::GetInstance()->GetUseHeal()) {
 				ExplainSprite[3]->Draw();
 			}
 		}
@@ -285,57 +284,53 @@ void SkillPause::SelectSkill() {
 		//スキルをセットする
 		if (input->TriggerButton(input->Button_A) && m_SkillColor.w == 1.0f) {
 			//ライブラスキル
-			if (m_SelectNumber == 0 && playerskill->GetLibraSkill() && !playerskill->GetUseLibra()) {
+			if (m_SelectNumber == 0 && PlayerSkill::GetInstance()->GetLibraSkill() && !PlayerSkill::GetInstance()->GetUseLibra()) {
 				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
 						librapause->SetLibraPos(m_SetSkillPos[i]);
 						m_SkillName[i] = Libra;
-						playerskill->UseLibraSkill();
-						player->SetUseLibra(true);
+						PlayerSkill::GetInstance()->SetUseLibra(true);
 						break;
 					}
 				}
 			}
 			//ダッシュスキル
-			if (m_SelectNumber == 1 && playerskill->GetDushSkill() && !playerskill->GetUseDush()) {
+			if (m_SelectNumber == 1 && PlayerSkill::GetInstance()->GetDushSkill() && !PlayerSkill::GetInstance()->GetUseDush()) {
 				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
 						dushpause->SetDushPos(m_SetSkillPos[i]);
 						m_SkillName[i] = Dush;
-						playerskill->UseDushSkill();
-						player->SetUseDush(true);
+						PlayerSkill::GetInstance()->SetUseDush(true);
 						break;
 					}
 				}
 			}
 			//コンパススキル
-			else if (m_SelectNumber == 2 && playerskill->GetCompassSkill() && !playerskill->GetUseCompass()) {
+			else if (m_SelectNumber == 2 && PlayerSkill::GetInstance()->GetCompassSkill() && !PlayerSkill::GetInstance()->GetUseCompass()) {
 				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
 						compasspause->SetCompassPos(m_SetSkillPos[i]);
 						m_SkillName[i] = Compass;
-						playerskill->UseCompassSkill();
-						player->SetUseCompass(true);
+						PlayerSkill::GetInstance()->SetUseCompass(true);
 						break;
 					}
 				}
 			}
 			//ヒールスキル
-			else if (m_SelectNumber == 3 && playerskill->GetHealSkill() && !playerskill->GetUseHeal()) {
+			else if (m_SelectNumber == 3 && PlayerSkill::GetInstance()->GetHealSkill() && !PlayerSkill::GetInstance()->GetUseHeal()) {
 				for (int i = 0; i < Set_Max; i++) {
 					if (!m_SetSkill[i]) {
 						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
 						m_SetSkill[i] = true;
 						healpause->SetHealPos(m_SetSkillPos[i]);
 						m_SkillName[i] = Heal;
-						playerskill->UseHealSkill();
-						player->SetUseHeal(true);
+						PlayerSkill::GetInstance()->SetUseHeal(true);
 						break;
 					}
 				}
@@ -358,78 +353,69 @@ void SkillPause::SelectSkill() {
 		if (input->TriggerButton(input->Button_A) && m_SkillColor.w == 1.0f) {
 			//	一番左
 			if (m_SelectNumber == 3) {
-				if (m_SetSkill[0] && m_SkillName[0] == Libra && playerskill->GetUseLibra()) {//ライブラ
+				if (m_SetSkill[0] && m_SkillName[0] == Libra && PlayerSkill::GetInstance()->GetUseLibra()) {//ライブラ
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[0] = { 150.0f,548.0f };
 					m_SetSkill[0] = false;
-					playerskill->SetUseLibra(false);
-					player->SetUseLibra(false);
+					PlayerSkill::GetInstance()->SetUseLibra(false);
 					m_SkillName[0] = None;
 					librapause->SetLibraPos(m_SkillPos[0]);
 				}
-				else if (m_SetSkill[0] && m_SkillName[0] == Dush && playerskill->GetUseDush()) {//ダッシュ
+				else if (m_SetSkill[0] && m_SkillName[0] == Dush && PlayerSkill::GetInstance()->GetUseDush()) {//ダッシュ
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[1] = { 300.0f,548.0f };
 					m_SetSkill[0] = false;
-					playerskill->SetUseDush(false);
-					player->SetUseDush(false);
+					PlayerSkill::GetInstance()->SetUseDush(false);
 					m_SkillName[0] = None;
 					dushpause->SetDushPos(m_SkillPos[1]);
 				}
-				else if (m_SetSkill[0] && m_SkillName[0] == Compass && playerskill->GetUseCompass()) {//コンパス
+				else if (m_SetSkill[0] && m_SkillName[0] == Compass && PlayerSkill::GetInstance()->GetUseCompass()) {//コンパス
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[2] = { 450.0f,548.0f };
 					m_SetSkill[0] = false;
-					playerskill->SetUseCompass(false);
-					player->SetUseCompass(false);
+					PlayerSkill::GetInstance()->SetUseCompass(false);
 					m_SkillName[0] = None;
 					compasspause->SetCompassPos(m_SkillPos[2]);
 				}
-				else if (m_SetSkill[0] && m_SkillName[0] == Heal && playerskill->GetUseHeal()) {//ヒール
+				else if (m_SetSkill[0] && m_SkillName[0] == Heal && PlayerSkill::GetInstance()->GetUseHeal()) {//ヒール
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[3] = { 600.0f,548.0f };
 					m_SetSkill[0] = false;
-					playerskill->SetUseHeal(false);
-					player->SetUseHeal(false);
-					m_SkillName[0] = None;
+					PlayerSkill::GetInstance()->SetUseHeal(false);
 					healpause->SetHealPos(m_SkillPos[3]);
 				}
 			}
 			//2番め
 			else if (m_SelectNumber == 4) {
-				if (m_SetSkill[1] && m_SkillName[1] == Libra && playerskill->GetUseLibra()) {
+				if (m_SetSkill[1] && m_SkillName[1] == Libra && PlayerSkill::GetInstance()->GetUseLibra()) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[0] = { 150.0f,548.0f };
 					m_SetSkill[1] = false;
-					playerskill->ResetLibraSkill();
-					player->SetUseLibra(false);
+					PlayerSkill::GetInstance()->SetUseLibra(false);
 					m_SkillName[1] = None;
 					librapause->SetLibraPos(m_SkillPos[0]);
 				}
-				else if (m_SetSkill[1] && m_SkillName[1] == Dush && playerskill->GetUseDush()) {
+				else if (m_SetSkill[1] && m_SkillName[1] == Dush && PlayerSkill::GetInstance()->GetUseDush()) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[1] = { 300.0f,548.0f };
 					m_SetSkill[1] = false;
-					playerskill->ResetDushSkill();
-					player->SetUseDush(false);
+					PlayerSkill::GetInstance()->SetUseDush(false);
 					m_SkillName[1] = None;
 					dushpause->SetDushPos(m_SkillPos[1]);
 				}
-				else if (m_SetSkill[1] && m_SkillName[1] == Compass && playerskill->GetUseCompass()) {
+				else if (m_SetSkill[1] && m_SkillName[1] == Compass && PlayerSkill::GetInstance()->GetUseCompass()) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[2] = { 450.0f,548.0f };
 					m_SetSkill[1] = false;
-					playerskill->ResetCompassSkill();
-					player->SetUseCompass(false);
+					PlayerSkill::GetInstance()->SetUseHeal(false);
 					m_SkillName[1] = None;
 					compasspause->SetCompassPos(m_SkillPos[2]);
 				}
-				else if (m_SetSkill[1] && m_SkillName[1] == Heal && playerskill->GetUseHeal()) {
+				else if (m_SetSkill[1] && m_SkillName[1] == Heal && PlayerSkill::GetInstance()->GetUseHeal()) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
 					m_SkillPos[3] = { 600.0f,548.0f };
 					m_SetSkill[1] = false;
-					playerskill->ResetHealSkill();
-					player->SetUseHeal(false);
+					PlayerSkill::GetInstance()->SetUseHeal(false);
 					m_SkillName[1] = None;
 					healpause->SetHealPos(m_SkillPos[3]);
 				}

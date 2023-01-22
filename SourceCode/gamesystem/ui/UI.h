@@ -2,11 +2,9 @@
 #include"IKESprite.h"
 #include"Player.h"
 #include "InterBoss.h"
-#include "PlayerSkill.h"
 //UIのクラス
 class UI {
 public:
-	void SetPlayerSkill(PlayerSkill* playerskill) { this->playerskill.reset(playerskill); }
 	UI(Player* player = nullptr, InterBoss* boss = nullptr);
 	void Update(InterBoss* boss = nullptr);
 	void Finalize();
@@ -24,7 +22,6 @@ private:
 	static const int HP_Max = 5;//HPの数
 private:
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<PlayerSkill> playerskill = nullptr;
 	unique_ptr<InterBoss> interboss = nullptr;
 	array<unique_ptr<IKESprite>,HP_Max> PlayerHpSprite;//プレイヤーのHP
 	unique_ptr<IKESprite> BossHpSprite;//ボスのHP
