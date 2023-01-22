@@ -22,7 +22,7 @@ public:
 	//エフェクトの生成
 	void CreateEffect(const std::string& newname, XMFLOAT3 pos, int dir);
 	void Initialize();//初期化
-	void Update(XMFLOAT3 pos,XMFLOAT3 attackpos,bool dush,bool damage, int dir);//更新
+	void Update();//更新
 	void Draw();//描画
 	
 public:

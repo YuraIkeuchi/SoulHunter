@@ -18,9 +18,10 @@ public:
 
 	void Initialize();
 	void Finalize();
-	void Update(const XMFLOAT3& pos, int HitDir);
+	void Update();
 	void Draw();
-	void SetEffect(const XMFLOAT3& pos,int HitDir);
+	void EffectSet(const XMFLOAT3& pos,int HitDir);
+	void EffectMove();
 private:
 	//定数
 	static const int Effect_Max = 5;//エフェクトの数

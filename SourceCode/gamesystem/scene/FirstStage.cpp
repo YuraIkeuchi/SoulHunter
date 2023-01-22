@@ -349,9 +349,8 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::End();
 	}
 
-	PlayerSkill::GetInstance()->ImGuiDraw();
 	//ポストエフェクト
-	/*{
+	{
 		ImGui::Begin("postEffect");
 		ImGui::SetWindowPos(ImVec2(1000, 450));
 		ImGui::SetWindowSize(ImVec2(280, 300));
@@ -362,7 +361,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			PlayPostEffect = false;
 		}
 		ImGui::End();
-	}*/
+	}
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {

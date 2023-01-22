@@ -90,6 +90,8 @@ public:
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
+	//エフェクト生成
+	void BirthEffect(const std::string& newname, XMFLOAT3 pos, int dir);
 
 	//csvを開く
 	void OpenCsv();
@@ -166,8 +168,6 @@ private:
 	float m_BoundPower = 0.0f;
 	//ダメージを受けた向き
 	int m_HitDir = 0;
-	//ダメージ時のエフェクト
-	bool m_Effect = false;
 	//プレイヤー関係
 	//座標
 	XMFLOAT3 m_OldPos = {0.0f,0.0f,0.0f};

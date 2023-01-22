@@ -16,7 +16,7 @@ public:
 	PlayerDushEffect();
 
 	void Initialize();//初期化
-	void Update(const XMFLOAT3& pos, bool& Effect);//更新
+	void Update();//更新
 	const void Draw();//描画
 
 public:
@@ -29,7 +29,10 @@ public:
 
 	//独自の関数
 	//ダッシュエフェクトの位置セット
-	void DushEffectSet(const XMFLOAT3& pos, bool& Effect);
+	void DushEffectSet(const XMFLOAT3& pos);
+
+	//ダッシュエフェクトの動き
+	void DushEffectMove();
 private:
 	
 private:

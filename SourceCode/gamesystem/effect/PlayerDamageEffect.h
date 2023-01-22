@@ -16,14 +16,18 @@ public:
 	PlayerDamageEffect();
 
 	void Initialize();//初期化
-	void Update(const XMFLOAT3& pos, bool& Effect);//更新
+	void Update();//更新
 	const void Draw();//描画
 
 public:
 	//ダメージ時のエフェクトセット
-	void DamageEffectSet(const XMFLOAT3& pos, bool& Effect);
+	void DamageEffectSet(const XMFLOAT3& pos);
+	//エフェクトが動く
+	void DamageEffectMove();
 	//ヒットエフェクト
-	void SetHitEffect(const XMFLOAT3& pos, bool& Effect);
+	void HitEffectSet(const XMFLOAT3& pos);
+	//ヒットエフェクト動く
+	void HitEffectMove();
 private:
 	//定数
 	static const int DamageEffect_Max = 20;//エフェクトの数

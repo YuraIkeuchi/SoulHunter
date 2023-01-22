@@ -14,11 +14,11 @@ void PlayerDushEffect::Initialize() {
 	DushEffecttexture.reset(DushEffecttexture_);
 }
 //更新
-void PlayerDushEffect::Update(const XMFLOAT3& pos, bool& Effect) {
+void PlayerDushEffect::Update() {
 	//エフェクトの発生
 
 	//ダッシュ
-	DushEffectSet(pos,Effect);
+	DushEffectMove();
 	if (m_DushAlive) {
 		DushEffecttexture->Update();
 	}
@@ -33,12 +33,14 @@ const void PlayerDushEffect::Draw() {
 	}
 }
 //ダッシュのエフェクト
-void PlayerDushEffect::DushEffectSet(const XMFLOAT3& pos, bool& Effect) {
-	if (!m_DushAlive && Effect && !m_DeleteEffect) {
+void PlayerDushEffect::DushEffectSet(const XMFLOAT3& pos) {
+	if (!m_DushAlive  && !m_DeleteEffect) {
 		m_DushEffectpos = pos;
 		m_DushAlive = true;
 	}
+}
 
+void PlayerDushEffect::DushEffectMove() {
 	//ダッシュ
 	if (m_DushAlive) {
 		m_DushEffectscale.x += 0.05f;
