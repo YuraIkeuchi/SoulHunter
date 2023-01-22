@@ -16,6 +16,9 @@ public:
 	//bool Collision(XMFLOAT3 position, float radius);
 	bool ThornCollision();
 	
+public:
+	//gettersetter
+	
 private:
 	//‰ñ“]‚Ì‚½‚ß‚Ì•Ï”
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
@@ -23,7 +26,7 @@ private:
 
 	int m_RotNumber = 0;
 	int m_Interval = 0;
-
+	
 	enum RotNumber {
 		Stop,
 		Right,

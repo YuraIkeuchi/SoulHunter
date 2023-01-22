@@ -1,8 +1,10 @@
 #include "MiniMap.h"
-#include "ImageManager.h"
 #include "imgui.h"
 #include <Easing.h>
 #include "Input.h"
+#include "Audio.h"
+#include "VolumManager.h"
+#include "PlayerSkill.h"
 //初期化
 MiniMap::MiniMap() {
 	IKESprite::LoadTexture(10, L"Resources/2d/sceneback/PauseBack.png");
@@ -94,6 +96,7 @@ void MiniMap::Update()
 	ColorChange();
 	//テキストの動き
 	MoveStateTex();
+	UseCompass();
 	for (int y = 0; y < map_max_y; y++)
 	{
 		for (int x = 0; x < map_max_x; x++)
@@ -158,8 +161,8 @@ void MiniMap::Finalize() {
 }
 
 //プレイヤーの位置を描画するかどうか
-void MiniMap::UseCompass(PlayerSkill* playerskill) {
-	if (player->GetUseCompass()) {
+void MiniMap::UseCompass() {
+	if (PlayerSkill::GetInstance()->GetUseCompass()) {
 		LookPlayer = true;
 	}
 	else {

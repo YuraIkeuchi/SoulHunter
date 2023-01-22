@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include "Player.h"
 #include "ObjCommon.h"
-#define DIRECTINPUT_VERSION 0x0800
 
 //”wŒi‚É’u‚­
 //Šî”ÕƒNƒ‰ƒX

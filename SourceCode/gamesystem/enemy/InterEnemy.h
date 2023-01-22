@@ -5,10 +5,8 @@
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
 #include "ParticleTex.h"
-#include "HitStop.h"
-#include "VariableCommon.h"
 #include "CollisionPrimitive.h"
-#define DIRECTINPUT_VERSION 0x0800
+#include "IKESprite.h"
 
 //敵基底
 class InterEnemy :
@@ -23,7 +21,6 @@ protected:
 
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetHitStop(HitStop* hitstop) { this->hitstop.reset(hitstop); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 
 	/// getter
@@ -35,13 +32,13 @@ public:
 
 	float GetAngle() { return  m_Angle; }
 
-	float GetThornPos() { return  m_ThornSetPos; }
-
 	bool GetEffect() { return  m_Effect; }
 
 	bool GetSoul() { return  m_Soul; }
 
 	const XMFLOAT3& GetStartPos() { return  m_StartPos; }
+
+	float GetThornPos() { return  m_ThornSetPos; }
 	/// setter
 	void SetEffect(const bool effect) { this->m_Effect = effect; }
 
@@ -49,9 +46,10 @@ public:
 
 	void SetAngle(const float angle) { this->m_Angle = angle; }
 
+	void SetStartPos(const XMFLOAT3 m_StartPos) { this->m_StartPos = m_StartPos; }
+
 	void SetThornPos(const float m_thornPos) { this->m_ThornSetPos = m_thornPos; }
 
-	void SetStartPos(const XMFLOAT3 m_StartPos) { this->m_StartPos = m_StartPos; }
 	//bool Collision(XMFLOAT3 position, float radius);
 	
 protected:
@@ -60,7 +58,6 @@ protected:
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	unique_ptr<ParticleTex> particletex = nullptr;
-	unique_ptr<HitStop> hitstop =nullptr;
 
 	//スプライト
 	unique_ptr<IKESprite> MiniEnemySprite;
@@ -123,8 +120,7 @@ protected:
 		DownWall,
 	};
 	int m_TouchWall;
-	//棘の敵の必要変数
-	float m_ThornSetPos = 0.0f;
+	
 	//パーティクル関係
 	int m_HootParticleCount = 0;
 	int m_DeathParticleCount = 0;
@@ -149,8 +145,11 @@ protected:
 	bool m_Damage = false;
 	int m_DamageTimer = 0;
 
-	//敵の座標
+	//敵の座標(ミニマップ)
 	XMFLOAT2 m_EnemyPosition = { 0.0f,0.0f };
+
+	//棘の敵の必要変数
+	float m_ThornSetPos = 0.0f;
 	
 public:
 	virtual ~InterEnemy() = default;

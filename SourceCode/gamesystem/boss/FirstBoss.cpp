@@ -1,5 +1,6 @@
 #include "FirstBoss.h"
 #include "ImageManager.h"
+#include "VariableCommon.h"
 #include <Easing.h>
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
@@ -701,4 +702,10 @@ void FirstBoss::StateManager() {
 	else {
 		m_AttackCount += 5;
 	}
+}
+
+void FirstBoss::Pause() {
+	Fbx_SetParam();
+	m_fbxObject->StopAnimation();
+	m_fbxObject->Update(true, 1, m_AnimationStop);
 }

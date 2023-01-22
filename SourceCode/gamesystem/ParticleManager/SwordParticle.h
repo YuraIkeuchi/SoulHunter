@@ -3,7 +3,6 @@
 #include "IKEObject3d.h"
 #include <array>   
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 class SwordParticle {
 protected:

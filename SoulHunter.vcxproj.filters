@@ -348,13 +348,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\EnemyEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ui\Message.cpp">
-      <Filter>SourceCords\gamesystem\ui\Message</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp">
-      <Filter>SourceCords\gamesystem\effect\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\ChestEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp">
@@ -413,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -719,13 +716,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\EnemyEffect.h">
       <Filter>SourceCords\gamesystem\effect\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ui\Message.h">
-      <Filter>SourceCords\gamesystem\ui\Message</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h">
-      <Filter>SourceCords\gamesystem\effect\Other</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\ChestEffect.h">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h">
@@ -793,6 +784,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -986,9 +980,6 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\effect\Enemy">
       <UniqueIdentifier>{70dbe090-c19c-478a-a59c-edd9e9876d2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\ui\Message">
-      <UniqueIdentifier>{c1fa57f5-ba2e-4636-a7c8-70cd5c6e6a6c}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\gamecamera">
       <UniqueIdentifier>{99bacae7-4270-4f69-b8b5-a16881456a1a}</UniqueIdentifier>

@@ -1,8 +1,5 @@
 #pragma once
 #include "BackObjCommon.h"
-#include "BackRock.h"
-#include "BackBox.h"
-#include "BackTorch.h"
 #include "Player.h"
 //背景OBJのエディタクラス
 class ObjEdit {

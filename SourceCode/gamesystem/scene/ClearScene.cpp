@@ -1,9 +1,9 @@
 #include "ClearScene.h"
-#include "input.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 ClearObj* ClearScene::clearobj = nullptr;
 bool ClearScene::m_ClearNew = false;
 //‰Šú‰»

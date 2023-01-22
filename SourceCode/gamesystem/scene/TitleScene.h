@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "TitleObj.h"
-#include "VariableCommon.h"
+
 /// タイトルシーン
 class TitleScene : public BaseScene {
 public:

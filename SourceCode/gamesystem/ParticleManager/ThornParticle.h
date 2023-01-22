@@ -4,7 +4,6 @@
 #include "IkeObject3d.h"
 #include <array>   
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //棘のOBJのパーティクル
 class ThornParticle {

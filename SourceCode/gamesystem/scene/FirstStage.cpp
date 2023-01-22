@@ -1,10 +1,10 @@
 #include "FirstStage.h"
 #include "Audio.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
-#include <Easing.h>
+#include "VariableCommon.h"
+#include "PlayerSkill.h"
 
 //プレイシーンの初期化(現在は魂だけ)
 void FirstStage::PlaySceneInitialize() {
@@ -33,7 +33,6 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//最初にnewする
 	player = new Player();
-	playerskill = new PlayerSkill();
 	skillpause = new SkillPause();
 	option = new Option();
 	pause = new Pause();
@@ -44,8 +43,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	respornenemy = new ResPornEnemy();
 	firstboss = new FirstBoss();
 	camerawork = new CameraWork();
-	hitstop = new HitStop();
-	
+
 	//bossappobj->SetAppStart(true);
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
@@ -153,7 +151,7 @@ void FirstStage::NormalUpdate() {
 	block->Update(m_PlayerPos);
 
 	//プレイヤーの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
+	if (!pause->GetIsPause() && !chest->GetExplain()) {
 		player->Update();
 	}
 	else {
@@ -171,7 +169,7 @@ void FirstStage::NormalUpdate() {
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
+			if (!pause->GetIsPause() && !chest->GetExplain()) {
 				thornobj->Update();
 			}
 			else {
@@ -209,7 +207,6 @@ void FirstStage::NormalUpdate() {
 	}
 
 	//その他の更新
-	hitstop->Update();
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
 	}
@@ -222,7 +219,6 @@ void FirstStage::NormalUpdate() {
 	}
 	ParticleManager::GetInstance()->Update();
 	backlight->Update();
-	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
@@ -340,7 +336,6 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::Begin("Scene");
 		ImGui::SetWindowPos(ImVec2(1000, 150));
 		ImGui::SetWindowSize(ImVec2(280, 150));
-		ImGui::Text("AlwaysNum:%d", m_BackAlways_Num);
 		if (ImGui::RadioButton("m_EditorScene", &m_SceneChange)) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
@@ -353,8 +348,10 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
+
+	PlayerSkill::GetInstance()->ImGuiDraw();
 	//ポストエフェクト
-	{
+	/*{
 		ImGui::Begin("postEffect");
 		ImGui::SetWindowPos(ImVec2(1000, 450));
 		ImGui::SetWindowSize(ImVec2(280, 300));
@@ -365,7 +362,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 			PlayPostEffect = false;
 		}
 		ImGui::End();
-	}
+	}*/
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
@@ -669,8 +666,13 @@ void FirstStage::BossRoomUpdate() {
 			}
 			camerawork->SetCameraType(2);
 
-			if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
-				firstboss->Update();
+			if (StageNumber == BossMap) {
+				if (!pause->GetIsPause()) {
+					firstboss->Update();
+				}
+				else {
+					firstboss->Pause();
+				}
 			}
 
 			//ボスを倒したあとの処理

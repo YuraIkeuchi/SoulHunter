@@ -1,17 +1,12 @@
 #pragma once
-#include "DirectXCommon.h"
 #include "Player.h"
-#include "Pause.h"
 #include "IKETexture.h"
 #include "ParticleTex.h"
 #include "BossEffect.h"
-#include "BossName.h"
-#include "VariableCommon.h"
-#include "ObjCommon.h"
 #include "CollisionPrimitive.h"
+#include "ObjCommon.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
-#define DIRECTINPUT_VERSION 0x0800
 
 class InterBoss :
 	public ObjCommon {
@@ -24,8 +19,7 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
-	void SetPause(Pause* pause) { this->pause.reset(pause); }
-	
+
 	//gettersetter
 	bool GetEffect() { return  m_Effect; }
 	bool GetAlive() { return  m_Alive; }
@@ -43,6 +37,10 @@ public:
 	virtual bool BattleInitialize() = 0;
 	//更新
 	void Update();
+	/// <summary>
+	/// ポーズのとき
+	/// </summary>
+	virtual void Pause() = 0;
 	//描画
 	void Draw(DirectXCommon* dxCommon);
 	//登場シーン更新
@@ -73,7 +71,6 @@ protected:
 	std::vector<BossEffect*> bosseffects;
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<ParticleTex> particletex = nullptr;
-	unique_ptr<Pause> pause = nullptr;
 	//OBB
 	OBB OBB1 = {};
 	OBB OBB2 = {};

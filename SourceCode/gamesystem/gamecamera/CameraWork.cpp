@@ -1,4 +1,5 @@
 #include "CameraWork.h"
+#include "VariableCommon.h"
 #include <Easing.h>
 #include  "imgui.h"
 CameraWork::CameraWork() {

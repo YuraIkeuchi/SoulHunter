@@ -1,11 +1,7 @@
 #pragma once
 #include "IKESprite.h"
-#include "VolumManager.h"
-#include "Audio.h"
-#include "VariableCommon.h"
 #include <array>   
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //オプション画面のクラス
 class Option {

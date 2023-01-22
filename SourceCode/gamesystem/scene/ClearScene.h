@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseScene.h"
 #include "ClearObj.h"
-#include "VariableCommon.h"
 /// タイトルシーン
 class ClearScene : public BaseScene {
 public:

@@ -2,14 +2,11 @@
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include "Player.h"
-#include "IKETexture.h"
 #include "IKESprite.h"
 #include "ParticleTex.h"
 #include "MarkEffect.h"
-#include "VariableCommon.h" 
 #include <array>  
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //セーブのクラス
 class Save {

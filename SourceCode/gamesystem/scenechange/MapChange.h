@@ -1,13 +1,7 @@
 
 #pragma once
 #include"IKESprite.h"
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<ostream>
-#include <iostream>
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //マップ変更時のクラス
 class MapChange {

@@ -1,7 +1,6 @@
 #include "BossEffect.h"
-#include"Easing.h"
 #include"ImageManager.h"
-using namespace DirectX;
+#include "VariableCommon.h"
 
 //ì«Ç›çûÇ›
 BossEffect::BossEffect() {

@@ -2,7 +2,6 @@
 #include "IKEObject3d.h"
 #include "IKEModel.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 #include <array>
 using namespace std;         //  名前空間指定
 //ゲームで使うImGuiのクラス

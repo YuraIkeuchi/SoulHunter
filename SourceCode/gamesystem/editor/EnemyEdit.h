@@ -1,9 +1,5 @@
 #pragma once
 #include "InterEnemy.h"
-#include "Enemy.h"
-#include "ThornEnemy.h"
-#include "BirdEnemy.h"
-#include "BoundEnemy.h"
 #include "Player.h"
 #include "Block.h"
 //エネミーのエディタクラス
@@ -18,13 +14,12 @@ protected:
 
 public://各敵の生成(引数が多いので後々修正する)
 	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,Player* player,
-	Block* block, HitStop* hitstop);
-	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
-		HitStop* hitstop);
+	Block* block);
+	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player);
 	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
-		Block* block, HitStop* hitstop);
+		Block* block);
 	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
-		Block* block, HitStop* hitstop);
+		Block* block);
 private:
 	
 };

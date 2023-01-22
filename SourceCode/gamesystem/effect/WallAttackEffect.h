@@ -2,10 +2,8 @@
 #include <DirectXMath.h>
 #include "IKEModel.h"
 #include "IkeObject3d.h"
-#include "VariableCommon.h"
 #include <array>   
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 class WallAttackEffect {
 private:

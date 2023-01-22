@@ -1,8 +1,5 @@
 #include "PlayerDushEffect.h"
-#include"Collision.h"
-#include"Easing.h"
 #include"ImageManager.h"
-using namespace DirectX;
 //ì«Ç›çûÇ›
 PlayerDushEffect::PlayerDushEffect() {
 

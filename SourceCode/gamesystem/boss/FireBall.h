@@ -1,6 +1,5 @@
 #pragma once
 #include "DirectXCommon.h"
-#include "ObjCommon.h"
 #include "IKETexture.h"
 
 using namespace std;         //  –¼‘O‹óŠÔŽw’è

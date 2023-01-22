@@ -2,9 +2,7 @@
 #include "IKEObject3d.h"
 #include "IKEModel.h"
 #include <map>
-#include <array>   
 #include <memory>
-#include <list>
 #include "IKESprite.h"
 #include "ParticleTex.h"
 struct JsonData;

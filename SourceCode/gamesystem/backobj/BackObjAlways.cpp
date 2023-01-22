@@ -1,6 +1,7 @@
 #include "BackObjAlways.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 BackObjAlways::BackObjAlways() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::StageBackRock);
 }

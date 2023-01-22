@@ -15,6 +15,10 @@ PlayerSoul::PlayerSoul() {
 	/*ParticleManager* particlesoul_ = new ParticleManager();
 	particlesoul_->Initialize(ImageManager::Normal);
 	soulparticle.reset(particlesoul_);*/
+
+	ParticleSoul* particlesoul_ = new ParticleSoul();
+	particlesoul_->Initialize();
+	particle.reset(particlesoul_);
 }
 //初期化
 void PlayerSoul::Initialize() {
@@ -57,6 +61,10 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 	else {
 		m_ParticleCount = 0;
 	}
+
+	particle->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
+	particle->SetParticleBreak(true);
+	particle->Update({ m_Position.x,m_Position.y - 0.5f,m_Position.z }, m_ParticleCount, 10, 0);
 }
 //描画
 void PlayerSoul::Draw() {
@@ -66,6 +74,7 @@ void PlayerSoul::Draw() {
 			soultex->Draw();
 		}
 	}
+	particle->Draw();
 	//soulparticle->Draw(AddBlendType);
 }
 //エフェクトの動き
@@ -87,6 +96,10 @@ void PlayerSoul::SetEffect(InterEnemy* enemy) {
 	}
 	if (m_Effect && !m_Move) {
 		m_ParticleCount++;
+
+		if (m_ParticleCount > 10) {
+			m_ParticleCount = 0;
+		}
 		m_AddPower -= 0.02f;
 		m_Position.x += m_BoundPower;
 		m_Position.y += m_AddPower;
@@ -190,15 +203,15 @@ bool PlayerSoul::DrawCollide() {
 }
 
 void PlayerSoul::BirthParticle() {
-	const float rnd_vel = 0.05f;
-	if (m_ParticleCount > 3) {
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
+	//const float rnd_vel = 0.05f;
+	//if (m_ParticleCount > 3) {
+	//	XMFLOAT3 vel{};
+	//	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
+	//	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	//	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
 
-		//soulparticle->Add(50, { m_Position.x,m_Position.y,m_Position.z }, vel, {}, 3.0f, 0.0f, { 0.0f,0.5f,1.0f,0.8f }, { 0.0f,0.5f,1.0f,0.8f });
-		m_ParticleCount = 0;
-	}
+	//	//soulparticle->Add(50, { m_Position.x,m_Position.y,m_Position.z }, vel, {}, 3.0f, 0.0f, { 0.0f,0.5f,1.0f,0.8f }, { 0.0f,0.5f,1.0f,0.8f });
+	//	//m_ParticleCount = 0;
+	//}
 		//soulparticle->Update();
 }

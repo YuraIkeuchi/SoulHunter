@@ -6,8 +6,6 @@
 #include "IKEObject3d.h"
 #include "Audio.h"
 #include "DebugText.h"
-#include "CollisionPrimitive.h"
-#include "Collision.h"
 #include "WinApp.h"
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
@@ -43,7 +41,6 @@ protected:
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 	DebugText* debugText = nullptr;
-	Collision* collision;
 	bool endRequst = false;
 	WinApp* winApp = nullptr;
 	Camera* camera = nullptr;

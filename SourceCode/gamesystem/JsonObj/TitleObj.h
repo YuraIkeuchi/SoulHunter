@@ -2,7 +2,6 @@
 #include "IKEObject3d.h"
 #include "IKEModel.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 #include <map>
 #include "ParticleTex.h"
 

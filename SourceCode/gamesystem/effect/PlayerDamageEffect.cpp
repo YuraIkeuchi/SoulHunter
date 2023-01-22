@@ -1,6 +1,6 @@
 #include "PlayerDamageEffect.h"
-#include"Easing.h"
 #include"ImageManager.h"
+#include "VariableCommon.h"
 using namespace DirectX;
 //ì«Ç›çûÇ›
 PlayerDamageEffect::PlayerDamageEffect() {
@@ -106,7 +106,7 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos, bool& Effect) {
 			if (m_DamageEffectscale[i].x <= 0.0f) {
 				m_DamageEffectscale[i] = { 0.0f,0.0f,0.0f };
 				m_DamageAlive[i] = false;
-				m_DeleteEffect = false;
+				m_DeleteEffect = true;
 				Effect = false;
 			}
 		}

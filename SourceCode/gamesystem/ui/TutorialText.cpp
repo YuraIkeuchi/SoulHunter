@@ -1,8 +1,7 @@
 #include "TutorialText.h"
-#include "ImageManager.h"
-#include "imgui.h"
 #include "Collision.h"
 #include <Easing.h>
+#include "VariableCommon.h"
 //読み込みと初期化
 TutorialText::TutorialText() {
 	//看板
@@ -17,14 +16,6 @@ TutorialText::TutorialText() {
 	objboard_->SetRotation({ 0.0f,180.0f,0.0f });
 	objboard_->SetScale({ 3.0f,3.0f,3.0f });
 	objboard.reset(objboard_);
-
-
-	//看板に近づいたときのテクスチャ
-	IKETexture* tutorialPointTex_ = IKETexture::Create(ImageManager::TutorialTex, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
-	tutorialPointTex_->TextureCreate();
-	tutorialPointTex_->SetRotation({ 0,0,0 });
-	tutorialPointTex_->SetScale({ 0.8f,0.5f,0.5f });
-	tutorialPointTex.reset(tutorialPointTex_);
 
 	//看板を読むと出てくる文字
 	//データ読み込み
@@ -75,9 +66,6 @@ void TutorialText::Update(int TexNumber) {
 		m_AnimeCount = 0;
 	}
 	
-	//更新と座標セット
-	tutorialPointTex->SetPosition(m_TexPosition);
-	tutorialPointTex->Update();
 	objboard->SetPosition(m_BoardPosition);
 	objboard->Update();
 	for (int i = 0; i < Tutorial_Max; i++) {

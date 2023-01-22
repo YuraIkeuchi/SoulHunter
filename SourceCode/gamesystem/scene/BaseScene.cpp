@@ -1,6 +1,7 @@
 #include "BaseScene.h"
-#include "CollisionManager.h"
 #include "ImageManager.h"
+#include "PlayerSkill.h"
+#include "VariableCommon.h"
 Block* BaseScene::block = nullptr;
 MiniMap* BaseScene::minimap = nullptr;
 //Pause* BaseScene::pause = nullptr;
@@ -52,9 +53,6 @@ void BaseScene::PlayerInitialize() {
 	player->Initialize();
 	player->StateInitialize();
 	player->SetBlock(block);
-	
-	//スキル配置
-	playerskill = new PlayerSkill();
 }
 //カメラの初期化
 void BaseScene::CameraInitialize() {
@@ -66,7 +64,6 @@ void BaseScene::CameraInitialize() {
 void BaseScene::EnemyInitialize() {
 	//ボス
 	firstboss->SetPlayer(player);
-	firstboss->SetPause(pause);
 	firstboss->Initialize();
 
 	//リスポーン関係(敵)
@@ -78,7 +75,6 @@ void BaseScene::PauseInitialize() {
 	//ポーズメニュー
 	//スキルセット
 	skillpause->SetPlayer(player);
-	skillpause->SetPlayerSkill(playerskill);
 	skillpause->Initialize();
 	//skillpause->InitPos();
 	//ミニマップ
@@ -97,7 +93,6 @@ void BaseScene::PauseInitialize() {
 void BaseScene::HelperInitialize() {
 	//UI
 	ui = new UI(player, firstboss);
-	ui->SetPlayerSkill(playerskill);
 	//チュートリアル
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i] = new TutorialText();
@@ -111,7 +106,6 @@ void BaseScene::HelperInitialize() {
 void BaseScene::BackObjInitialize() {
 	//宝箱
 	chest->SetPlayer(player);
-	chest->SetPlayerSkill(playerskill);
 	//背景obj
 	backlight->Initialize();
 }
@@ -123,9 +117,8 @@ void BaseScene::StartGame() {
 		StageNumber = TutoRial;
 		block->Initialize(tutorialmap, 0, StageNumber);
 		minimap->InitMap(tutorialmap, StageNumber);
-		playerskill->ResetSkill();
+		PlayerSkill::GetInstance()->ResetSkill();
 		skillpause->ResetSkillPause();
-		player->ResetSkill();
 		LoadEnemyParam(TutoRial);
 		LoadObjParam(TutoRial);
 	}
@@ -440,7 +433,6 @@ void BaseScene::LoadEnemyParam(const int StageNumber) {
 		m_Enemys[i]->Initialize();
 		m_Enemys[i]->SetPlayer(player);
 		m_Enemys[i]->SetBlock(block);
-		m_Enemys[i]->SetHitStop(hitstop);
 		m_Enemys[i]->SetPosition(m_EnemyStartPos[i]);
 		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + 2, true);
@@ -505,7 +497,6 @@ void BaseScene::LoadEnemyParam(const int StageNumber) {
 		m_ThornEnemys[i] = new ThornEnemy();
 		m_ThornEnemys[i]->Initialize();
 		m_ThornEnemys[i]->SetPlayer(player);
-		m_ThornEnemys[i]->SetHitStop(hitstop);
 		m_ThornEnemys[i]->SetThornPos(m_SetThornEnemyPosY[i]);
 		m_ThornEnemys[i]->SetAngle(m_EnemyAngle[i]);
 		m_ThornEnemys[i]->SetPosition({ m_ThornEnemyStartPos[i].x,0.0f,m_ThornEnemyStartPos[i].z });
@@ -565,7 +556,6 @@ void BaseScene::LoadEnemyParam(const int StageNumber) {
 		m_BoundEnemys[i]->Initialize();
 		m_BoundEnemys[i]->SetPlayer(player);
 		m_BoundEnemys[i]->SetBlock(block);
-		m_BoundEnemys[i]->SetHitStop(hitstop);
 		m_BoundEnemys[i]->SetPosition(m_BoundEnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num), true);
 	}
@@ -623,7 +613,6 @@ void BaseScene::LoadEnemyParam(const int StageNumber) {
 		m_BirdEnemys[i]->Initialize();
 		m_BirdEnemys[i]->SetPlayer(player);
 		m_BirdEnemys[i]->SetBlock(block);
-		m_BirdEnemys[i]->SetHitStop(hitstop);
 		m_BirdEnemys[i]->SetPosition(m_BirdEnemyStartPos[i]);
 		lightGroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), true);
 	}
@@ -1098,10 +1087,10 @@ void BaseScene::SaveGame() {
 	playerofs << "POP" << "," << player->GetPosition().x
 		<< "," << player->GetPosition().y
 		<< "," << player->GetPosition().z << std::endl;
-	playerofs << "DushSkill" << "," << playerskill->GetDushSkill() << std::endl;
-	playerofs << "LibraSkill" << "," << playerskill->GetLibraSkill() << std::endl;
-	playerofs << "CompassSkill" << "," << playerskill->GetCompassSkill() << std::endl;
-	playerofs << "HealSkill" << "," << playerskill->GetHealSkill() << std::endl;
+	playerofs << "DushSkill" << "," << PlayerSkill::GetInstance()->GetDushSkill() << std::endl;
+	playerofs << "LibraSkill" << "," << PlayerSkill::GetInstance()->GetLibraSkill() << std::endl;
+	playerofs << "CompassSkill" << "," << PlayerSkill::GetInstance()->GetCompassSkill() << std::endl;
+	playerofs << "HealSkill" << "," << PlayerSkill::GetInstance()->GetHealSkill() << std::endl;
 	playerofs << "HP" << "," << player->GetHP() << std::endl;
 	playerofs << "Soul" << "," << player->GetSoulCount() << std::endl;
 }
@@ -1144,28 +1133,28 @@ void BaseScene::LoadGame() {
 			std::getline(line_stream, word, ',');
 			bool l_startdushskill = (int)std::atof(word.c_str());
 
-			playerskill->SetDushSkill(l_startdushskill);
+			PlayerSkill::GetInstance()->SetDushSkill(l_startdushskill);
 		}
 		else if (word.find("LibraSkill") == 0) {
 
 			std::getline(line_stream, word, ',');
 			bool l_startlibraskill = (int)std::atof(word.c_str());
 
-			playerskill->SetLibraSkill(l_startlibraskill);
+			PlayerSkill::GetInstance()->SetLibraSkill(l_startlibraskill);
 		}
 		else if (word.find("CompassSkill") == 0) {
 
 			std::getline(line_stream, word, ',');
 			bool l_startcompassskill = (int)std::atof(word.c_str());
 
-			playerskill->SetCompassSkill(l_startcompassskill);
+			PlayerSkill::GetInstance()->SetCompassSkill(l_startcompassskill);
 		}
 		else if (word.find("HealSkill") == 0) {
 
 			std::getline(line_stream, word, ',');
 			bool l_starthealskill = (int)std::atof(word.c_str());
 
-			playerskill->SetHealSkill(l_starthealskill);
+			PlayerSkill::GetInstance()->SetHealSkill(l_starthealskill);
 		}
 		else if (word.find("HP") == 0) {
 
@@ -1189,7 +1178,7 @@ void BaseScene::LoadGame() {
 void BaseScene::EnemyUpdate(std::vector<InterEnemy*> m_Enemys) {
 	for (InterEnemy* enemy : m_Enemys) {
 		if (enemy != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop() && m_MoveEnemy) {
+			if (!pause->GetIsPause() && !chest->GetExplain() && m_MoveEnemy) {
 				enemy->Update();
 			}
 			else {

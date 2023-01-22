@@ -1,13 +1,9 @@
 #pragma once
-#include "IKEObject3d.h"
-#include"IKEModel.h"
 #include "Player.h"
 #include "ObjCommon.h"
 #include "DirectXCommon.h"
 #include "ThornParticle.h"
-#include <array>   
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //棘の棒
 class ThornObj :

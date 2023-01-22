@@ -4,14 +4,10 @@
 #include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
-#include "AttackEffect.h"
-#include "WallAttackEffect.h"
-#include "PlayerDamageEffect.h"
-#include "PlayerDushEffect.h"
 #include "Shake.h"
 #include "ParticleTex.h"
+#include "PlayerEffect.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
 class Player :
@@ -64,14 +60,6 @@ public:
 	void PlayerHeal();
 	//ダメージ
 	void PlayerDamage();
-	//攻撃エフェクト
-	void AttackArgment();
-	//壁エフェクト
-	void DushArgment();
-	//ダッシュエフェクト
-	void DamageArgment();
-	//ダメージエフェクト
-	void WallArgment();
 	//ゴール後の動き
 	void GoalMove();
 	//死んだ時の動き
@@ -80,8 +68,6 @@ public:
 	void PlayerHit(const XMFLOAT3& pos);
 	//プレイヤーが敵にあたった瞬間の判定
 	void PlayerThornHit(const XMFLOAT3& pos);
-	//スキルリセット
-	void ResetSkill();
 	/// <summary>
 	/// 開放
 	/// </summary>
@@ -131,10 +117,6 @@ public:
 	int GetInterVal() { return  m_Interval; }
 	float GetAddPower() { return  m_AddPower; }
 	float GetVelosity() { return  m_Velocity; }
-	bool GetUseCompass() { return  s_UseCompass; }
-	bool GetUseLibra() { return  s_UseLibra; }
-	bool GetUseDush() { return  s_UseDush; }
-	bool GetUseHeal() { return  s_UseHeal; }
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
 
@@ -145,10 +127,6 @@ public:
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
-	void SetUseDush(bool UseDush) { this->s_UseDush = UseDush; }
-	void SetUseLibra(bool UseLibra) { this->s_UseLibra = UseLibra; }
-	void SetUseCompass(bool UseCompass) { this->s_UseCompass = UseCompass; }
-	void SetUseHeal(bool UseHeal) { this->s_UseHeal = UseHeal; }
 	void SetChangeInterVal(bool m_ChangeInterVal) { this->m_ChangeInterVal = m_ChangeInterVal; }
 	void SetGoalDir(int m_GoalDir) { this->m_GoalDir = m_GoalDir; }
 	void SetCollideChest(bool m_CollideChest) { this->m_CollideChest = m_CollideChest; }
@@ -156,22 +134,16 @@ public:
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
 
 private:
-	//スキルを使えるかどうか
-	static bool s_UseDush;
-	static bool s_UseLibra;
-	static bool s_UseCompass;
-	static bool s_UseHeal;
+	
 private:
+	vector<PlayerEffect*> effects;
 	//パーティクル
 	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
-	vector<AttackEffect*> attackeffects;
-	vector<WallAttackEffect*>walleffects;
-	vector<PlayerDushEffect*> dusheffects;
-	vector<PlayerDamageEffect*> damageeffects;
+	
 	unique_ptr<Shake> shake = nullptr;
 	//プレイモードか
 	bool m_PlayMode = false;
@@ -182,17 +154,9 @@ private:
 	//攻撃できるか
 	bool m_Attack = false;
 	int m_AttackTimer = 0;
-	//攻撃時のエフェクト発生条件
-	bool m_AttackArgment = false;
 	//2回目の攻撃判定
 	int m_AttackCount = 0;
 	int m_SecondTimer = 0;
-	//攻撃が壁にあたった時のエフェクト発生条件
-	bool m_WallArgment = false;
-	//ダッシュ時のエフェクト発生条件
-	bool m_DushArgment = false;
-	//ダメージエフェクト発生条件
-	bool m_DamageArgment = false;
 	//HP
 	int m_HP = 0;
 	//無敵時間
@@ -288,7 +252,6 @@ private:
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//手行列
 	XMMATRIX m_HandMat;
-	XMVECTOR m_VectorSwordPos;//剣の座標
 	XMFLOAT3 m_SwordPos;//剣の座標
 	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
 	XMFLOAT3 m_SwordScale = { 4.5f,4.5f,4.5f };
@@ -323,6 +286,7 @@ private:
 	enum AnimationType {
 		FirstAttack,
 		SecondAttack,
+		Rolling,
 		Walk,
 		FirstJump,
 		Wait,

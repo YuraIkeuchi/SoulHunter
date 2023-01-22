@@ -2,9 +2,7 @@
 #include <DirectXMath.h>
 #include "MapChip.h"
 #include "IKEObject3d.h"
-#include "VariableCommon.h"
 #include <memory>
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //マップチップのクラス
 class Block {

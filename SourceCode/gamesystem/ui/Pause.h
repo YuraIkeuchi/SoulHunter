@@ -3,13 +3,9 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "Audio.h"
-#include "VolumManager.h"
 #include "Player.h"
-#include "InterEnemy.h"
 #include <array>   
 #include <memory> 
-#include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //ポーズメニューのクラス
 class Pause {

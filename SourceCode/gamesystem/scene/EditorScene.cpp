@@ -1,15 +1,14 @@
 #include "EditorScene.h"
 #include "Audio.h"
-#include "Input.h"
 #include "SceneManager.h"
 #include "imgui.h"
-#include <Easing.h>
+#include "VariableCommon.h"
+#include "PlayerSkill.h"
 //初期化
 void EditorScene::Initialize(DirectXCommon* dxCommon)
 {
 	//各クラスのnew
 	player = new Player();
-	playerskill = new PlayerSkill();
 	skillpause = new SkillPause();
 	option = new Option();
 	pause = new Pause();
@@ -20,7 +19,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	firstboss = new FirstBoss();
 	chest = new Chest();
 	camerawork = new CameraWork();
-	hitstop = new HitStop();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(false);
 	//共通の初期化
@@ -64,7 +62,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
 {
-	Input* input = Input::GetInstance();
 	//各クラス更新
 	AllUpdate();
 	//光の配置
@@ -441,9 +438,9 @@ void EditorScene::SaveGame() {
 	playerofs << "POP" << "," << player->GetPosition().x
 		<< "," << player->GetPosition().y
 		<< "," << player->GetPosition().z << std::endl;
-	playerofs << "DushSkill" << "," << playerskill->GetDushSkill() << std::endl;
-	playerofs << "LibraSkill" << "," << playerskill->GetLibraSkill() << std::endl;
-	playerofs << "CompassSkill" << "," << playerskill->GetCompassSkill() << std::endl;
+	playerofs << "DushSkill" << "," << PlayerSkill::GetInstance()->GetDushSkill() << std::endl;
+	playerofs << "LibraSkill" << "," << PlayerSkill::GetInstance()->GetLibraSkill() << std::endl;
+	playerofs << "CompassSkill" << "," << PlayerSkill::GetInstance()->GetCompassSkill() << std::endl;
 	playerofs << "HP" << "," << player->GetHP() << std::endl;
 	playerofs << "Soul" << "," << player->GetSoulCount() << std::endl;
 }
@@ -486,21 +483,21 @@ void EditorScene::LoadGame() {
 			std::getline(line_stream, word, ',');
 			bool l_startdushskill = (int)std::atof(word.c_str());
 
-			playerskill->SetDushSkill(l_startdushskill);
+			PlayerSkill::GetInstance()->SetDushSkill(l_startdushskill);
 		}
 		else if (word.find("LibraSkill") == 0) {
 
 			std::getline(line_stream, word, ',');
 			bool l_startlibraskill = (int)std::atof(word.c_str());
 
-			playerskill->SetLibraSkill(l_startlibraskill);
+			PlayerSkill::GetInstance()->SetLibraSkill(l_startlibraskill);
 		}
 		else if (word.find("CompassSkill") == 0) {
 
 			std::getline(line_stream, word, ',');
 			bool l_startcompassskill = (int)std::atof(word.c_str());
 
-			playerskill->SetCompassSkill(l_startcompassskill);
+			PlayerSkill::GetInstance()->SetCompassSkill(l_startcompassskill);
 		}
 		else if (word.find("HP") == 0) {
 
@@ -530,7 +527,7 @@ void EditorScene::AllUpdate() {
 	block->Update(m_PlayerPos);
 
 	//ぷれいやーの更新
-	if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
+	if (!pause->GetIsPause() && !chest->GetExplain()) {
 		player->Editor();
 	}
 	else {
@@ -549,7 +546,7 @@ void EditorScene::AllUpdate() {
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain() && !hitstop->GetHitStop()) {
+			if (!pause->GetIsPause() && !chest->GetExplain()) {
 				thornobj->Update();
 			}
 			else {
@@ -576,18 +573,16 @@ void EditorScene::AllUpdate() {
 	}
 
 	//その他の更新
-	hitstop->Update();
 	backlight->Update();
-	minimap->UseCompass(playerskill);
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
 	VolumManager::GetInstance()->Update();
 	save->Update();
-	if (!pause->GetIsPause() && m_BossNumber == BossBattle && !hitstop->GetHitStop()) {
+	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
 	}
-	if (StageNumber == BossMap && !pause->GetIsPause() && !hitstop->GetHitStop()) {
+	if (StageNumber == BossMap && !pause->GetIsPause()) {
 		firstboss->Update();
 		ui->Update(firstboss);
 	}
@@ -722,21 +717,21 @@ void EditorScene::EditorUpdate() {
 	if (imguieditor->GetEnemyArgment()) {
 		//普通
 		if (imguieditor->GetEnemyType() == Normal) {
-			enemyedit->NormalEnemyArgment(m_Enemys, player, block, hitstop);
+			enemyedit->NormalEnemyArgment(m_Enemys, player, block);
 			m_NormalEnemyCount++;
 		}
 		//棘のやつ
 		else if (imguieditor->GetEnemyType() == Thorn) {
-			enemyedit->ThornEnemyArgment(m_ThornEnemys, player,hitstop);
+			enemyedit->ThornEnemyArgment(m_ThornEnemys, player);
 		}
 		//羽の敵
 		else if (imguieditor->GetEnemyType() == Bound) {
-			enemyedit->BoundEnemyArgment(m_BoundEnemys, player,block, hitstop);
+			enemyedit->BoundEnemyArgment(m_BoundEnemys, player,block);
 			m_BoundEnemyCount++;
 		}
 		//鳥の敵
 		else {
-			enemyedit->BirdEnemyArgment(m_BirdEnemys, player,block, hitstop);
+			enemyedit->BirdEnemyArgment(m_BirdEnemys, player,block);
 			m_BirdEnemyCount++;
 		}
 		imguieditor->SetEnemyArgment(false);
