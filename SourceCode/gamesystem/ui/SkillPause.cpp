@@ -154,10 +154,6 @@ void SkillPause::Update() {
 }
 //描画
 const void SkillPause::Draw() {
-	ImGui::Begin("Skill");
-	ImGui::Text("m_SetSkill[0]:%d",m_SetSkill[0]);
-	ImGui::Text("m_SetSkill[1]:%d", m_SetSkill[1]);
-	ImGui::End();
 	IKESprite::PreDraw();
 	PauseSprite->Draw();
 	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
@@ -170,22 +166,18 @@ const void SkillPause::Draw() {
 	//スキル取得状況によって変わる
 	if (PlayerSkill::GetInstance()->GetLibraSkill() && librapause->GetLibraPos().x != 0.0f) {
 		librapause->Draw();
-		//SkillSprite[0]->Draw();
 	}
 
 	if (PlayerSkill::GetInstance()->GetDushSkill() && dushpause->GetDushPos().x != 0.0f) {
 		dushpause->Draw();
-		//SkillSprite[1]->Draw();
 	}
 
 	if (PlayerSkill::GetInstance()->GetCompassSkill() && compasspause->GetCompassPos().x != 0.0f) {
 		compasspause->Draw();
-		//SkillSprite[2]->Draw();
 	}
 	//後々直す(ヒールスキル)
 	if (PlayerSkill::GetInstance()->GetHealSkill() && healpause->GetHealPos().x != 0.0f) {
 		healpause->Draw();
-		//SkillSprite[2]->Draw();
 	}
 
 	if (m_SelectDir == Down) {
