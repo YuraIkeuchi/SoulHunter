@@ -296,6 +296,7 @@
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp" />
@@ -423,6 +424,7 @@
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h" />
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h" />

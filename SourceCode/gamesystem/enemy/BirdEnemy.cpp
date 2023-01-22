@@ -1,6 +1,5 @@
 #include "BirdEnemy.h"
 #include "ModelManager.h"
-#include "ParticleManager.h"
 #include "Collision.h"
 using namespace DirectX;
 
@@ -77,7 +76,8 @@ void BirdEnemy::Action() {
 	DamageAct();
 	//死んだときの挙動
 	DeathMove();
-
+	//パーティクル生成
+	BirthParticle();
 	//ロックオン
 	BirdLockOn();
 	//エフェクト関係

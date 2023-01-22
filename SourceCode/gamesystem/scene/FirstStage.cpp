@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
+#include "ParticleEmitter.h"
 
 //プレイシーンの初期化(現在は魂だけ)
 void FirstStage::PlaySceneInitialize() {
@@ -101,6 +102,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
+	ParticleEmitter::GetInstance()->AllDelete();
 	//PlayPostEffect = true;
 }
 //更新
@@ -217,7 +219,9 @@ void FirstStage::NormalUpdate() {
 			newalways->Update();
 		}
 	}
-	ParticleManager::GetInstance()->Update();
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->Update();
+	//ParticleManager::GetInstance()->Update();
 	backlight->Update();
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
@@ -381,8 +385,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		backlight->Draw();
 		save->Draw();
-		//パーティクルの描画
-		particleMan->Draw(dxCommon->GetCmdList());
 		//チュートリアル
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->Draw();
@@ -433,6 +435,8 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->DrawAll();
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 
