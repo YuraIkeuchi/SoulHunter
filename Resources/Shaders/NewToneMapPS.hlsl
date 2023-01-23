@@ -20,9 +20,9 @@ float4 main(VSOutput input) : SV_TARGET
 	float3 color = float3(0.0f,0.0f,0.0f);
 	color = colortex0.rgb;
 	float4 outputcolor;
-	float2 p1 = float2(0.10, 0.05);
-	float2 p2 = float2(0.30, 0.55);
-	float2 p3 = float2(2.00, 1.00);
+	float2 p1 = P_1;
+	float2 p2 = P_2;
+	float2 p3 = P_3;
 
 
 	TonemapParams tc;

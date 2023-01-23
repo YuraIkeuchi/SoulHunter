@@ -17,10 +17,6 @@ bool BackTorch::Initialize() {
 	m_Object.reset(object3d_);
 
 	m_ParticleCount = 0;
-	ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
-
 	return true;
 }
 
@@ -30,19 +26,11 @@ void BackTorch::SetObj() {
 	if (m_ParticleCount > 6) {
 		m_ParticleCount = 0;
 	}
-	/*particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	particletex->SetParticleBreak(true);
-	particletex->SetParticleBillboard(true);
-	particletex->SetStartScale(0.1f);
-	particletex->SetAddScale(0.008f);*/
-	if (UpdateCollide()) {
-		particletex->Update({ m_Position.x,m_Position.y + 8.0f,m_Position.z }, m_ParticleCount, 6, SavePart);
-	}
-	ParticleEmitter::GetInstance()->DemoEffect({ m_Position.x,m_Position.y + 8.0f,m_Position.z });
+
+	ParticleEmitter::GetInstance()->DemoEffect(40, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, 2.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 }
 //“Á•Ê‚È•`‰æ
 void BackTorch::specialDraw() {
-	//particletex->Draw();
 }
 
 void BackTorch::Draw(DirectXCommon* dxCommon) {

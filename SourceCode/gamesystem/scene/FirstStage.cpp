@@ -70,10 +70,6 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	//シーン遷移
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
-	//ライト
-	spotLightDir[0] = 0;
-	spotLightDir[1] = 0;
-	spotLightDir[2] = 1;
 	//死んだときに暗くなるようのやつ
 	BlackFilter = IKESprite::Create(ImageManager::BlackFilter, { 0.0f,0.0f });
 	BlackFilter->SetColor(BlackColor);

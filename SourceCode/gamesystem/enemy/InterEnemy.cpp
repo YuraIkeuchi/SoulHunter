@@ -91,7 +91,6 @@ bool InterEnemy::LockOn() {
 }
 //パーティクルが出てくる
 void InterEnemy::BirthParticle() {
-	ParticleEmitter::GetInstance()->DemoEffect(m_Position);
 	//足元
 	if (m_HootParticleCount >= 5 && m_Alive) {
 

@@ -52,6 +52,7 @@ public: // サブクラス
 		bool Fog;//フォグ
 		float Tiling;//タイリング
 		bool LightEfffect;//ライトの影響
+		float lightPower;//ライトの強さ
 	};
 
 private: // 定数
@@ -180,6 +181,8 @@ public: // メンバ関数
 	void SetTiling(float Tiling) { this->Tiling = Tiling; }
 	//ディゾルブの設定
 	void SetDisolve(float Disolve) { this->Disolve = Disolve; }
+	//ディゾルブの設定
+	void SetLightPower(float lightPower) { this->lightPower = lightPower; }
 	//モデルのセット
 	void SetModel(IKEModel* model) { this->model = model; }
 
@@ -251,6 +254,7 @@ protected: // メンバ変数
 	bool ChangeColor = false;//色変更
 	bool Fog = false;//フォグ
 	bool LightEffect = true;//ライトの影響を受けるか
+	float lightPower = 15.0f;
 	// 色
 	XMFLOAT4 color = { 1,1,1,1 };
 	//加算する色

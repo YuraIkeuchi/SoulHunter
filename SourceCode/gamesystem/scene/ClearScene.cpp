@@ -49,6 +49,8 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	player = new Player();
 	player->Initialize();
 	player->StateInitialize();
+	lightGroup->SetPointLightActive(0, false);
+	lightGroup->SetPointLightActive(1, false);
 	//ƒ‰ƒCƒg
 	m_LightPos = { 5.0f,5.0f,-80.0f };
 

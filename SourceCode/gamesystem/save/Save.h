@@ -51,7 +51,6 @@ private:
 	//定数
 	static const int SaveSprite_Max = 4;//アニメーションの数
 private:
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//クラス
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<MarkEffect> markEffect = nullptr;

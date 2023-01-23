@@ -375,6 +375,7 @@ void IKEObject3d::Update()
 	constMap->Fog = Fog;
 	constMap->Tiling = Tiling;
 	constMap->LightEfffect = LightEffect;
+	constMap->lightPower = lightPower;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider) {
@@ -410,6 +411,7 @@ void IKEObject3d::FollowUpdate(XMMATRIX matworld)
 	constMap->Fog = Fog;
 	constMap->Tiling = Tiling;
 	constMap->LightEfffect = LightEffect;
+	//constMap->lightPower = lightPower;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider) {

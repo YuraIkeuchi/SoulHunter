@@ -48,7 +48,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		m_TitleNew = true;
 	}
 	//ライト
-	m_LightPos = { 0.0f,0.0f,15.0f };
+	m_LightPos = { 0.0f,300.0f,0.0f };
 
 	//シーンチェンジ
 	scenechange = new SceneChange();
@@ -118,7 +118,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		TitlePartsSprite[i]->SetColor(m_TitleColor);
 	}
 	TitleSprite->SetColor(m_TitleColor);
-	ParticleEmitter::GetInstance()->DemoEffect({ 0.0f,23.0f,0.0f });
+	ParticleEmitter::GetInstance()->DemoEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 	//タイトルの文字浮かぶ

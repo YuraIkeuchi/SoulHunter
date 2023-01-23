@@ -985,7 +985,7 @@ void Player::Editor() {
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
-	ParticleEmitter::GetInstance()->DemoEffect(m_Position);
+	//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
 	if (m_FoodParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
 			const float rnd_vel = 0.1f;

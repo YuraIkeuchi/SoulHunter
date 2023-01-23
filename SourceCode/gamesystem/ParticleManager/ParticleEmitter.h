@@ -34,7 +34,7 @@ public: //メンバ関数
 	void DrawAll();
 
 	//エフェクト
-	void DemoEffect(XMFLOAT3 l_pos);
+	void DemoEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
 
 	//削除
 	void AllDelete();
