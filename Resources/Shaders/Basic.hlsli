@@ -11,6 +11,7 @@ cbuffer cbuff0 : register(b0)
 	bool Fog;//フォグ
 	float Tiling;//タイリング
 	bool LightEffect;//ライトの影響を受けるか
+	float LightPower;//ライトの力
 };
 
 cbuffer cbuff1 : register(b1)

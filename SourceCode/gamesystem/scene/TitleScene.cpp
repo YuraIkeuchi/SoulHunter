@@ -48,7 +48,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		m_TitleNew = true;
 	}
 	//ライト
-	m_LightPos = { 0.0f,0.0f,15.0f };
+	m_LightPos = { 0.0f,300.0f,0.0f };
 
 	//シーンチェンジ
 	scenechange = new SceneChange();

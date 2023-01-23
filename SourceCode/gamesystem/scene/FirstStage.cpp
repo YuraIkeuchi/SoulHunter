@@ -436,7 +436,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	//プレイヤーの描画
 	player->Draw(dxCommon);
 	//パーティクル描画
-	ParticleEmitter::GetInstance()->DrawAll();
+	//ParticleEmitter::GetInstance()->DrawAll();
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 

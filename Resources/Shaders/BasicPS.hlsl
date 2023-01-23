@@ -55,29 +55,23 @@ float4 main(VSOutput input) : SV_TARGET
 		// 点光源
 		for (i = 0; i < POINTLIGHT_NUM; i++) {
 			if (pointLights[i].active) {
-				// ライトへの方向ベクトル
-				float3 lightv = pointLights[i].lightpos - input.worldpos.xyz;
-				float d = length(lightv);
-				lightv = normalize(lightv);
-
-				// 距離減衰係数
-				float atten = 2.0f / (pointLights[i].lightatten.x + pointLights[i].lightatten.y * d + pointLights[i].lightatten.z * d * d);
-
-				// ライトに向かうベクトルと法線の内積
-				float3 dotlightnormal = dot(lightv, input.normal);
-				// 反射光ベクトル
-				float3 reflect = normalize(-lightv + 2 * dotlightnormal * input.normal);
-				// 拡散反射光
-				float3 diffuse = dotlightnormal * m_diffuse;
-				// 鏡面反射光
-				float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular / 5;
-
+				float ax;
+				float ay;
+				float az;
+				float axyz;
+				float xyzDistanse;
+				float scalr;
+				ax = pointLights[i].lightpos.x - input.worldpos.x;
+				ay = pointLights[i].lightpos.y - input.worldpos.y;
+				az = pointLights[i].lightpos.z - input.worldpos.z;
+				axyz = ax * ax + ay * ay + az * az;
+				xyzDistanse = sqrt(axyz);
+				scalr = 1.0 - (xyzDistanse / LightPower);
 				// 全て加算する
-				shadecolor.rgb += atten * (diffuse + specular) * pointLights[i].lightcolor;
+				if (scalr >= 0) {
 
-				//if (tone >= 2.0f) {
-				//	shadecolor.rgb = float3(0, 0, 0);
-				//}
+					shadecolor.rgb += ((5.025f) * pointLights[i].lightcolor) * scalr;
+				}
 			}
 		}
 
