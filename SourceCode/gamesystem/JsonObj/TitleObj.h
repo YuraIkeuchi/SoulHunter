@@ -36,8 +36,6 @@ private:
 	JsonData* jsonData = nullptr;
 	std::map<std::string, IKEModel*> models;
 	std::vector<IKEObject3d*> objects;
-	//クラス
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//パーティクル
 	XMFLOAT3 m_ParticlePos = { 0.0f,22.0f,0.0f };
 	int m_ParticleCount = 0;

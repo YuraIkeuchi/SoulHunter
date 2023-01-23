@@ -48,19 +48,22 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		m_TitleNew = true;
 	}
 	//ライト
-	m_LightPos = { 0.0f,300.0f,0.0f };
+	m_LightPos = { 0.0f,0.0f,0.0f };
 
 	//シーンチェンジ
 	scenechange = new SceneChange();
 	if (m_GameLoop) {
 		scenechange->SetSubStartChange(true);
 	}
-	
-	pointLightColor[0] = 0.0f;
+
 	//セーブ
 	save = new Save();
 	m_TitleSelect = NewGame;
 	dxCommon->SetFullScreen(true);
+
+	pointLightAtten[0] = 20.0f;
+	pointLightAtten[1] = 20.0f;
+	pointLightAtten[2] = 20.0f;
 	//ParticleEmitter::GetInstance()->AllDelete();
 }
 //更新
@@ -100,10 +103,10 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	//ライトを徐々に小さくする
-	if (pointLightAtten[0] <= 1.0f && scenechange->GetAddStartChange()) {
-		pointLightAtten[0] += 0.0001f;
-		pointLightAtten[1] += 0.0001f;
-		pointLightAtten[2] += 0.0001f;
+	if (scenechange->GetAddStartChange()) {
+		pointLightAtten[0] = Ease(In, Cubic, 0.1f, pointLightAtten[0], 0.0f);
+		pointLightAtten[1] = Ease(In, Cubic, 0.1f, pointLightAtten[1], 0.0f);
+		pointLightAtten[2] = Ease(In, Cubic, 0.1f, pointLightAtten[2], 0.0f);
 	}
 
 	if (scenechange->AddBlack(0.01f)) {
@@ -120,7 +123,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		TitlePartsSprite[i]->SetColor(m_TitleColor);
 	}
 	TitleSprite->SetColor(m_TitleColor);
-	ParticleEmitter::GetInstance()->DemoEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	ParticleEmitter::GetInstance()->FireEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 	//タイトルの文字浮かぶ

@@ -26,8 +26,7 @@ void BackTorch::SetObj() {
 	if (m_ParticleCount > 6) {
 		m_ParticleCount = 0;
 	}
-
-	ParticleEmitter::GetInstance()->DemoEffect(40, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, 2.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	BirthParticle();
 }
 //“Á•Ê‚È•`‰æ
 void BackTorch::specialDraw() {
@@ -41,4 +40,13 @@ void BackTorch::Draw(DirectXCommon* dxCommon) {
 		specialDraw();
 		Obj_Draw();
 	}
+}
+
+void BackTorch::BirthParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,0.5f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.5f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+
+	ParticleEmitter::GetInstance()->FireEffect(30, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
 }

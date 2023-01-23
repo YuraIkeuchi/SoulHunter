@@ -34,6 +34,8 @@ public:
 	void TexMove();
 	//アニメーション
 	void SaveAnime();
+	//パーティクル
+	void BirthParticle();
 public:
 	//getter
 	const XMFLOAT3& GetPosition() { return  m_Position; }

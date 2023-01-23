@@ -40,8 +40,6 @@ struct PointLight
 	float3 lightpos;    // ライト座標
 	float3 lightcolor;  // ライトの色(RGB)
 	float3 lightatten;	// ライト距離減衰係数
-	float3 lightPower;//ライトの強さ
-	//float lightPower;//ライトの強さ
 	uint active;
 };
 

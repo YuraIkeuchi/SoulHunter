@@ -13,7 +13,6 @@ Enemy::Enemy() {
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::NormalEnemy);
-	ParticleInit();
 }
 //初期化
 bool Enemy::Initialize() {
@@ -35,7 +34,7 @@ bool Enemy::Initialize() {
 	//敵の種類
 	m_EnemyType = Normal;
 	//X方向
-	m_Radius.x = 1.4f * 2.7f;
+	m_Radius.x = 1.0f * 2.7f;
 	//下方向
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 3;
@@ -101,14 +100,13 @@ void Enemy::Action() {
 	DeathMove();
 	//パーティクル生成
 	BirthParticle();
+	DeathBirthParticle();
 	//ロックオン
 	LockOn();
 	//エフェクト関係
 	ArgEffect();
 	//魂関係
 	ArgSoul();
-
-	ParticleUpdate();
 	//ミニマップに表示させる
 	MapEnemy();
 }
@@ -123,7 +121,6 @@ void Enemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void Enemy::Pause() {

@@ -5,7 +5,6 @@
 #include "SwordParticle.h"
 #include "ObjCommon.h"
 #include "Shake.h"
-#include "ParticleTex.h"
 #include "PlayerEffect.h"
 #include <memory>
 using namespace std;         //  名前空間指定
@@ -56,6 +55,8 @@ public:
 	bool CheckAttack();
 	//ダッシュ
 	void PlayerDush();
+	//プレイヤーの回転
+	void PlayerRolling();
 	//HP回復
 	void PlayerHeal();
 	//ダメージ
@@ -87,6 +88,8 @@ public:
 
 	//足元にパーティクル
 	void BirthParticle();
+	//死んだ時
+	void DeathBirthParticle();
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
@@ -140,7 +143,6 @@ private:
 private:
 	vector<PlayerEffect*> effects;
 	//パーティクル
-	unique_ptr<ParticleTex> particletex = nullptr;
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
@@ -207,7 +209,6 @@ private:
 	int m_DushDir = 0;
 	//足元のパーティクル
 	int m_FootParticleCount = 0;
-	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
 	int m_DeathParticleCount = 0;
 	//剣のパーティクル

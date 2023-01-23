@@ -45,7 +45,7 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
 	lightGroup->SetDirLightActive(2, false);
-	lightGroup->SetPointLightActive(0, false);
+	lightGroup->SetPointLightActive(0, true);
 	lightGroup->SetPointLightActive(1, true);
 	lightGroup->SetCircleShadowActive(0, true);
 }

@@ -11,8 +11,6 @@ BirdEnemy::BirdEnemy() {
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BirdEnemy);
-	//パーティクル
-	ParticleInit();
 }
 //初期化
 bool BirdEnemy::Initialize() {
@@ -78,6 +76,7 @@ void BirdEnemy::Action() {
 	DeathMove();
 	//パーティクル生成
 	BirthParticle();
+	DeathBirthParticle();
 	//ロックオン
 	BirdLockOn();
 	//エフェクト関係
@@ -91,7 +90,6 @@ void BirdEnemy::Action() {
 	BirdArgment();
 	//ミニマップに表示させる
 	MapEnemy();
-	ParticleUpdate();
 }
 //描画
 void BirdEnemy::Draw(DirectXCommon* dxCommon) {
@@ -111,7 +109,6 @@ void BirdEnemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BirdEnemy::Pause() {
