@@ -69,17 +69,17 @@ void TitleObj::Update() {
 	if (m_ParticleCount > 6) {
 		m_ParticleCount = 0;
 	}
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
+	/*particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
 	particletex->Update({ 0.0f,23.0f,0.0f }, m_ParticleCount, 6, SavePart);
 	particletex->SetParticleBreak(true);
 	particletex->SetParticleBillboard(true);
 	particletex->SetStartScale(0.5f);
-	particletex->SetAddScale(0.01f);
+	particletex->SetAddScale(0.01f);*/
 
 }
 //‘O–Ê•`‰æ
 const void TitleObj::FrontDraw() {
-	particletex->Draw();
+	//particletex->Draw();
 }
 //”wŒi•`‰æ
 const void TitleObj::BackDraw() {

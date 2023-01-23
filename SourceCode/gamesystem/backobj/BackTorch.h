@@ -11,8 +11,6 @@ public:
 	void BirthParticle();//パーティクル
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
-	//クラス
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//パーティクル関係
 	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
 	int m_ParticleCount = 0;
