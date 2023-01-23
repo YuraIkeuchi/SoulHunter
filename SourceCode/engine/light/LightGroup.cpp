@@ -99,6 +99,7 @@ void LightGroup::TransferConstBuffer()
 				constMap->pointLights[i].lightpos = pointLights[i].GetLightPos();
 				constMap->pointLights[i].lightcolor = pointLights[i].GetLightColor();
 				constMap->pointLights[i].lightatten = pointLights[i].GetLightAtten();
+				constMap->pointLights[i].lightpower = pointLights[i].GetLightPower();
 			}
 			// ライトが無効ならライト色を0に
 			else {
@@ -213,6 +214,15 @@ void LightGroup::SetPointLightAtten(const int& index, const XMFLOAT3& lightAtten
 	assert(0 <= index && index < PointLightNum);
 
 	pointLights[index].SetLightAtten(lightAtten);
+	dirty = true;
+}
+
+
+void LightGroup::SetPointLightPower(const int& index, const XMFLOAT3& lightPower)
+{
+	assert(0 <= index && index < PointLightNum);
+
+	pointLights[index].SetLightPower(lightPower);
 	dirty = true;
 }
 

@@ -379,8 +379,8 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			if (m_FoodParticleCount == 5) {
-				m_FoodParticleCount = 0;
+			if (m_FootParticleCount == 5) {
+				m_FootParticleCount = 0;
 			}
 		}
 	}
@@ -399,7 +399,7 @@ void Player::PlayerMove() {
 		}
 		else {
 			m_Velocity = 0.0f;
-			m_FoodParticleCount = 0;
+			m_FootParticleCount = 0;
 		}
 	}
 	m_Position.x += m_Velocity;
@@ -444,7 +444,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_PlayerDir = Dir;
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
-		m_FoodParticleCount += 1;
+		m_FootParticleCount += 1;
 		m_FoodParticlePos = {
 			m_Position.x,
 			m_Position.y - 1.0f,
@@ -608,7 +608,7 @@ void Player::PlayerAttack() {
 
 		//攻撃が地面で行われた場合砂煙が発生する
 		if (!m_Jump && m_AddPower == 0.0f) {
-			m_FoodParticleCount += 1;
+			m_FootParticleCount += 1;
 			m_FoodParticlePos = {
 		m_AttackPos.x,
 		m_AttackPos.y - 2.0f,
@@ -985,18 +985,17 @@ void Player::Editor() {
 }
 //パーティクルが出てくる
 void Player::BirthParticle() {
+	XMFLOAT4 s_color = { 0.8f,0.8f,0.8f,0.3f };
+	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
+	float s_scale = 1.0f;
+	float e_scale = 0.0f;
 	//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
-	if (m_FoodParticleCount >= 3 && m_Alive) {
+	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = m_Position.z;
-			
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, s_scale, e_scale, s_color, e_color);
 			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_FoodParticleCount = 0;
+		m_FootParticleCount = 0;
 	}
 }
 //アニメーションの共通変数

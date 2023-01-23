@@ -155,6 +155,12 @@ public: // メンバ関数
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightatten">ライト距離減衰係数</param>
 	void SetPointLightAtten(const int& index, const XMFLOAT3& lightAtten);
+	/// <summary>
+	/// ライトの強さ
+	/// </summary>
+	/// <param name="index"></param>
+	/// <param name="lightAtten"></param>
+	void SetPointLightPower(const int& index, const  XMFLOAT3& lightPower);
 
 	/// <summary>
 	/// スポットライトの有効フラグをセット

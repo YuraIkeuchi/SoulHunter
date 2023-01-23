@@ -122,7 +122,7 @@ protected:
 	int m_TouchWall;
 	
 	//パーティクル関係
-	int m_HootParticleCount = 0;
+	int m_FootParticleCount = 0;
 	int m_DeathParticleCount = 0;
 	//敵の種類(当たり判定などに用いる)
 	int m_EnemyType = 0;

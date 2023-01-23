@@ -238,7 +238,7 @@ void Enemy::Tackle() {
 	else if (m_TargetTimer == 200) {
 		m_TargetTimer = 0;
 	}
-	m_HootParticleCount++;
+	m_FootParticleCount++;
 	//‰ñ“]•ûŒü‚ª•Ï‚í‚é
 	if (m_Speed == 0.15f) {
 		m_Rotation.x += 10.0f;

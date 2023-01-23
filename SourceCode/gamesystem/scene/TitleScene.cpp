@@ -56,6 +56,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		scenechange->SetSubStartChange(true);
 	}
 	
+	pointLightColor[0] = 0.0f;
 	//セーブ
 	save = new Save();
 	m_TitleSelect = NewGame;
@@ -73,6 +74,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetPointLightPos(0, m_LightPos);
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
+	//lightGroup->SetPointLightPower(0, XMFLOAT3(pointLightPower));
 	//ニューゲームかロードゲームかを選択する
 	if (!scenechange->GetAddStartChange()) {
 		if (m_TitleSelect == NewGame && input->LeftTriggerStick(input->Down)) {

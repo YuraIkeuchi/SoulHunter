@@ -55,6 +55,10 @@ float4 main(VSOutput input) : SV_TARGET
 		// 点光源
 		for (i = 0; i < POINTLIGHT_NUM; i++) {
 			if (pointLights[i].active) {
+				// ライトへの方向ベクトル
+				float3 lightv = pointLights[i].lightpos - input.worldpos.xyz;
+				float d = length(lightv);
+				lightv = normalize(lightv);
 				float ax;
 				float ay;
 				float az;
@@ -66,11 +70,11 @@ float4 main(VSOutput input) : SV_TARGET
 				az = pointLights[i].lightpos.z - input.worldpos.z;
 				axyz = ax * ax + ay * ay + az * az;
 				xyzDistanse = sqrt(axyz);
-				scalr = 1.0 - (xyzDistanse / LightPower);
+				scalr = 1.0 - (xyzDistanse / pointLights[i].lightPower.z);
 				// 全て加算する
 				if (scalr >= 0) {
 
-					shadecolor.rgb += ((5.025f) * pointLights[i].lightcolor) * scalr;
+					shadecolor.rgb += ((3.0f) * pointLights[i].lightcolor) * scalr;
 				}
 			}
 		}

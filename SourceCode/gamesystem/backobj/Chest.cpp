@@ -8,6 +8,7 @@
 #include "VolumManager.h"
 #include "Easing.h"
 #include "Input.h"
+#include "ParticleEmitter.h"
 //モデル読み込みと初期化
 Chest::Chest() {
 	//スプライト読み込み
@@ -42,13 +43,6 @@ Chest::Chest() {
 		objOpenChest[i].reset(objOpenChest_[i]);
 	}
 
-	//パーティクル
-	//ParticleTex* particletex_[Skill_Max];
-	//for (int i = 0; i < Skill_Max; i++) {
-	//	particletex_[i] = new ParticleTex();
-	//	particletex_[i]->Initialize();
-	//	particletex[i].reset(particletex_[i]);
-	//}
 	//スプライト
 	//バック
 	IKESprite* ExplainBack_;
@@ -152,19 +146,9 @@ void Chest::Update() {
 	}
 	//パーティクル関係
 	for (int i = 0; i < Skill_Max; i++) {
-	/*	particletex[i]->SetParticleBreak(true);
-		if (m_ChestState[i] == Open && m_Alive[i]) {
-			m_ParticleCount[i]++;
+		if (m_Alive[i] && m_ChestState[i] == Open) {
+			ParticleEmitter::GetInstance()->DemoEffect(40, { m_ChestPos[i].x,m_ChestPos[i].y + 2.0f,m_ChestPos[i].z }, 2.0f, 0.0f, { 1.0f,0.9f,0.0f,1.0f }, { 1.0f,0.9f,0.0f,1.0f });
 		}
-		else {
-			m_ParticleCount[i] = 0;
-		}
-		m_ParticlePos[i] = m_ChestPos[i];
-		if (m_ParticleCount[i] > 3) {
-			m_ParticleCount[i] = 0;
-		}
-		particletex[i]->SetStartColor({ 1.0f,1.0f,0.0f,1.0f });
-		particletex[i]->Update(m_ParticlePos[i], m_ParticleCount[i], 3, 3);*/
 	}
 
 	//色の設定
