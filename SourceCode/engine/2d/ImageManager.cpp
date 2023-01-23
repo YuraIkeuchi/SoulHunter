@@ -55,6 +55,7 @@ void ImageManager::LoadTex2D() {
 void ImageManager::LoadParticle() {
 
 	ParticleManager::LoadTexture(Normal, "effect1");
+	ParticleManager::LoadTexture(Smoke, "hootEffect");
 	load = true;
 }
 

@@ -41,6 +41,7 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	ClearSprite_ = IKESprite::Create(ImageManager::ClearText, { 0.0f,0.0f });
 	ClearSprite.reset(ClearSprite_);
 	ClearSprite->SetPosition(m_ClearPos);
+
 	//シーンチェンジ
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);

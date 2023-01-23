@@ -25,6 +25,8 @@ public: // サブクラス
 		XMFLOAT3 lightcolor;
 		float pad2;
 		XMFLOAT3 lightatten;
+		float pad3;
+		XMFLOAT3 lightpower;
 		unsigned int active;
 	};
 
@@ -77,6 +79,12 @@ public: // メンバ関数
 	/// <returns>有効フラグ</returns>
 	inline bool IsActive() { return active; }
 
+/// <summary>
+/// ライトの強さ
+/// </summary>
+	inline void SetLightPower(const  XMFLOAT3& lightPower) { this->lightPower = lightPower; }
+
+	inline const XMFLOAT3& GetLightPower() { return lightPower; }
 private: // メンバ変数
 	// ライト座標（ワールド座標系）
 	XMFLOAT3 lightpos = { 0,0,0 };
@@ -84,6 +92,7 @@ private: // メンバ変数
 	XMFLOAT3 lightcolor = { 1,1,1 };
 	// ライト距離減衰係数
 	XMFLOAT3 lightAtten = { 1.0f, 1.0f, 1.0f };
+	XMFLOAT3 lightPower = { 20.0f,5.0f,20.0f };
 	// 有効フラグ
 	bool active = false;
 };

@@ -206,7 +206,7 @@ private:
 	};
 	int m_DushDir = 0;
 	//足元のパーティクル
-	int m_FoodParticleCount = 0;
+	int m_FootParticleCount = 0;
 	XMFLOAT3 m_FoodParticlePos = { 0.0f,0.0f,0.0f };
 	//普通のパーティクル
 	int m_DeathParticleCount = 0;

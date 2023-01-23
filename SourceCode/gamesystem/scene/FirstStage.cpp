@@ -423,6 +423,8 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 				birdplayersoul[i][j]->Draw();
 			}
 		}
+		//パーティクル描画
+		ParticleEmitter::GetInstance()->DrawAll();
 	}
 	IKESprite::PreDraw();
 	if (player->GetHP() == 0) {
@@ -431,8 +433,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
-	//パーティクル描画
-	ParticleEmitter::GetInstance()->DrawAll();
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();
 

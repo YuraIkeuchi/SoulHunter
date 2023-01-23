@@ -14,18 +14,21 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	smokeParticle.reset(ParticleManager::Create(ImageManager::Smoke));
 }
 
 void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
 	circleParticle->Update();
+	smokeParticle->Update();
 }
 
 void ParticleEmitter::DrawAll()
 {
 	//パーティクルマネージャー描画
 	circleParticle->Draw(AddBlendType);
+	smokeParticle->Draw(AlphaBlendType);
 }
 
 void ParticleEmitter::DemoEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor)
@@ -40,10 +43,23 @@ void ParticleEmitter::DemoEffect(int life, XMFLOAT3 l_pos, float startscale, flo
 	circleParticle->Add(100, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor);
 }
 
+void ParticleEmitter::HootEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor) {
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.1f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.z = pos.z;
+
+
+	smokeParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
+}
+
 void ParticleEmitter::AllDelete()
 {
 	//全パーティクルの削除
 	circleParticle->AllDelete();
+	smokeParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

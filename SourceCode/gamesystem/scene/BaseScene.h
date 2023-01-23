@@ -176,6 +176,7 @@ public:
 	float pointLightPos[3] = { 0,0,0 };
 	float pointLightColor[3] = { 1,1,1 };
 	float pointLightAtten[3] = { 0.001f,0.001f,0.001f };
+	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
 	//スポットライト
 	float spotLightDir[3] = { 0,-1,0 };
 	float spotLightPos[3] = { 0,10,0 };

@@ -53,14 +53,6 @@ void Save::Update() {
 	objSave->SetPosition(m_Position);
 	objSave->Update();
 
-	//パーティクルの更新
-	if (m_Alive) {
-		m_ParticleCount++;
-	}
-	if (m_ParticleCount > 6) {
-		m_ParticleCount = 0;
-	}
-	
 	ParticleEmitter::GetInstance()->DemoEffect(40, { m_Position.x,m_Position.y + 2.0f,m_Position.z }, 2.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 
 	markEffect->Update({ m_Position.x,m_Position.y + 5.0f,m_Position.z });

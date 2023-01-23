@@ -91,21 +91,18 @@ bool InterEnemy::LockOn() {
 }
 //パーティクルが出てくる
 void InterEnemy::BirthParticle() {
+	XMFLOAT4 s_color = { 0.8f,0.8f,0.8f,0.3f };
+	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
+	float s_scale = 1.0f;
+	float e_scale = 0.0f;
 	//足元
-	if (m_HootParticleCount >= 5 && m_Alive) {
-
+		//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
+	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = m_Position.z;
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			//ParticleManager::GetInstance()->Add(30, { m_Position.x + vel.x,(m_Position.y - 1.0f) + vel.y,m_Position.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
+			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_HootParticleCount = 0;
+		m_FootParticleCount = 0;
 	}
 }
 //更新を範囲内に入った時のみ

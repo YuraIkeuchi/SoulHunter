@@ -35,6 +35,8 @@ public: //メンバ関数
 
 	//エフェクト
 	void DemoEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
+	//足元の煙
+	void HootEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
 
 	//削除
 	void AllDelete();
@@ -48,4 +50,6 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//煙
+	unique_ptr<ParticleManager> smokeParticle;
 };
