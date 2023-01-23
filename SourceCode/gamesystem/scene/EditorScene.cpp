@@ -598,7 +598,7 @@ void EditorScene::LightSet() {
 	///ポイントライト
 	lightGroup->SetPointLightPos(0, XMFLOAT3(player->GetPosition().x, player->GetPosition().y, player->GetPosition().z - 5.0f));
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
-	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
+	lightGroup->SetPointLightAtten(0, XMFLOAT3({10.0f,10.0f,10.0f}));
 
 	lightGroup->SetPointLightPos(1, XMFLOAT3(save->GetPosition().x, save->GetPosition().y + 2.0f, save->GetPosition().z + 2.0f));
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));

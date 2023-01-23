@@ -99,6 +99,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	ParticleEmitter::GetInstance()->AllDelete();
+	
 	//PlayPostEffect = true;
 }
 //更新
@@ -535,7 +536,7 @@ void FirstStage::LightSet() {
 	///ポイントライト
 	lightGroup->SetPointLightPos(0, XMFLOAT3(player->GetPosition().x, player->GetPosition().y + 2.0f, player->GetPosition().z - 5.0f));
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
-	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
+	lightGroup->SetPointLightAtten(0, XMFLOAT3({6.0f,6.0f,6.0f}));
 
 	lightGroup->SetPointLightPos(1, XMFLOAT3(save->GetPosition().x, save->GetPosition().y + 5.0f, save->GetPosition().z + 2.0f));
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));

@@ -70,7 +70,7 @@ float4 main(VSOutput input) : SV_TARGET
 				az = pointLights[i].lightpos.z - input.worldpos.z;
 				axyz = ax * ax + ay * ay + az * az;
 				xyzDistanse = sqrt(axyz);
-				scalr = 1.0 - (xyzDistanse / pointLights[i].lightPower.z);
+				scalr = 1.0 - (xyzDistanse / pointLights[i].lightatten.x);
 				// ‘S‚Ä‰ÁŽZ‚·‚é
 				if (scalr >= 0) {
 

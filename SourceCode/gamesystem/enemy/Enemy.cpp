@@ -35,7 +35,7 @@ bool Enemy::Initialize() {
 	//“G‚ÌŽí—Þ
 	m_EnemyType = Normal;
 	//X•ûŒü
-	m_Radius.x = 1.4f * 2.7f;
+	m_Radius.x = 1.0f * 2.7f;
 	//‰º•ûŒü
 	m_Radius.y = 0.6f * 2.7f;
 	m_HP = 3;

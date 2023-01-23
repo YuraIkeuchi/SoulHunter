@@ -445,11 +445,6 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_Rotation.y = RotationY;
 	if (!m_Jump && m_AddPower == 0.0f) {
 		m_FootParticleCount += 1;
-		m_FoodParticlePos = {
-			m_Position.x,
-			m_Position.y - 1.0f,
-			m_Position.z,
-		};
 	}
 }
 //プレイヤーのジャンプ
@@ -604,16 +599,6 @@ void Player::PlayerAttack() {
 			m_SwordType = DeleteSword;
 			m_SwordAfterAlpha = 0.0f;
 			m_SwordParticleCount = 0;
-		}
-
-		//攻撃が地面で行われた場合砂煙が発生する
-		if (!m_Jump && m_AddPower == 0.0f) {
-			m_FootParticleCount += 1;
-			m_FoodParticlePos = {
-		m_AttackPos.x,
-		m_AttackPos.y - 2.0f,
-		m_AttackPos.z,
-			};
 		}
 	}
 	else {
@@ -992,7 +977,7 @@ void Player::BirthParticle() {
 	//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
-			ParticleEmitter::GetInstance()->HootEffect(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, s_scale, e_scale, s_color, e_color);
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
 			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FootParticleCount = 0;

@@ -175,7 +175,7 @@ public:
 	//点光源
 	float pointLightPos[3] = { 0,0,0 };
 	float pointLightColor[3] = { 1,1,1 };
-	float pointLightAtten[3] = { 0.001f,0.001f,0.001f };
+	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
 	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
 	//スポットライト
 	float spotLightDir[3] = { 0,-1,0 };
