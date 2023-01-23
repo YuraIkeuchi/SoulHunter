@@ -2,6 +2,7 @@
 #include"Collision.h"
 #include"ImageManager.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 using namespace DirectX;
 //読み込み
 PlayerSoul::PlayerSoul() {
@@ -11,14 +12,6 @@ PlayerSoul::PlayerSoul() {
 	soultex_->SetPosition({ 0.0f,90.0f,0.0f });
 	//DushEffecttexture->SetRotation({ 90,0,0 });
 	soultex.reset(soultex_);
-	
-	/*ParticleManager* particlesoul_ = new ParticleManager();
-	particlesoul_->Initialize(ImageManager::Normal);
-	soulparticle.reset(particlesoul_);*/
-
-	ParticleSoul* particlesoul_ = new ParticleSoul();
-	particlesoul_->Initialize();
-	particle.reset(particlesoul_);
 }
 //初期化
 void PlayerSoul::Initialize() {
@@ -61,10 +54,6 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 	else {
 		m_ParticleCount = 0;
 	}
-
-	particle->SetStartColor({ 0.0f,0.5f,1.0f,0.8f });
-	particle->SetParticleBreak(true);
-	particle->Update({ m_Position.x,m_Position.y - 0.5f,m_Position.z }, m_ParticleCount, 10, 0);
 }
 //描画
 void PlayerSoul::Draw() {
@@ -74,8 +63,6 @@ void PlayerSoul::Draw() {
 			soultex->Draw();
 		}
 	}
-	particle->Draw();
-	//soulparticle->Draw(AddBlendType);
 }
 //エフェクトの動き
 void PlayerSoul::SetEffect(InterEnemy* enemy) {
@@ -203,6 +190,16 @@ bool PlayerSoul::DrawCollide() {
 }
 
 void PlayerSoul::BirthParticle() {
+	XMFLOAT4 s_color = { 0.0f,0.5f,1.0f,0.8f };
+	XMFLOAT4 e_color = { 0.0f,0.5f,1.0f,0.8f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+
+
+	if (m_ParticleCount > 3) {
+		ParticleEmitter::GetInstance()->FireEffect(50, { m_Position.x,m_Position.y - 0.5f,m_Position.z }, s_scale, e_scale, s_color, e_color);
+		m_ParticleCount = 0;
+	}
 	//const float rnd_vel = 0.05f;
 	//if (m_ParticleCount > 3) {
 	//	XMFLOAT3 vel{};

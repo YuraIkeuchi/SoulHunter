@@ -147,7 +147,7 @@ void Chest::Update() {
 	//パーティクル関係
 	for (int i = 0; i < Skill_Max; i++) {
 		if (m_Alive[i] && m_ChestState[i] == Open) {
-			ParticleEmitter::GetInstance()->DemoEffect(40, { m_ChestPos[i].x,m_ChestPos[i].y + 2.0f,m_ChestPos[i].z }, 2.0f, 0.0f, { 1.0f,0.9f,0.0f,1.0f }, { 1.0f,0.9f,0.0f,1.0f });
+			ParticleEmitter::GetInstance()->FireEffect(100, { m_ChestPos[i].x,m_ChestPos[i].y + 2.0f,m_ChestPos[i].z }, 2.0f, 0.0f, { 1.0f,0.9f,0.0f,1.0f }, { 1.0f,0.9f,0.0f,1.0f });
 		}
 	}
 

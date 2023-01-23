@@ -29,10 +29,6 @@ bool Player::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
-	ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
-
 	SwordParticle* swordparticle_ = new SwordParticle();
 	swordparticle_->Initialize();
 	swordparticle.reset(swordparticle_);
@@ -186,6 +182,8 @@ void Player::Update()
 			PlayerJump();
 			//ダッシュ
 			PlayerDush();
+			//ローリング
+			PlayerRolling();
 			//攻撃(剣)
 			if (!m_CollideObj) {
 				PlayerAttack();
@@ -261,7 +259,6 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	particletex->Draw();
 	particleheal->Draw();
 	if (m_HP != 0) {
 		swordparticle->Draw();
@@ -269,8 +266,6 @@ void Player::Draw(DirectXCommon* dxCommon) {
 }
 //剣の更新
 void Player::SwordUpdate() {
-	//パーティクル生成
-	BirthParticle();
 	XMVECTOR l_VectorSwordPos;
 	//行列を求める
 	l_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
@@ -300,10 +295,11 @@ void Player::SwordUpdate() {
 }
 //エフェクトの更新
 void Player::EffectUpdate() {
+	//パーティクル生成
+	BirthParticle();
+	DeathBirthParticle();
 	//パーティクルのカウント数の更新
-	if (m_DeathParticleCount > 3) {
-		m_DeathParticleCount = 0;
-	}
+
 
 	if (m_HealCount > 3) {
 		m_HealCount = 0;
@@ -321,9 +317,7 @@ void Player::EffectUpdate() {
 	}
 
 	//パーティクル関係
-	particletex->SetStartColor({ 1.0f,0.9f,0.8f,1.0f });
-	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_DeathParticleCount, 3, EndPart);
+	
 	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
 	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
@@ -671,6 +665,10 @@ void Player::PlayerDush() {
 		}
 	}
 }
+//プレイヤーの回転
+void Player::PlayerRolling() {
+
+}
 //プレイヤーのHP回復
 void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
@@ -804,6 +802,8 @@ void Player::GoalMove() {
 //ゴールの動き
 bool Player::DeathMove() {
 	if (m_Death) {
+		m_FlashCount = 0;
+		m_Interval = 0;
 		m_DeathTimer++;
 		//最初にアニメーションが入る
 		if (m_DeathTimer == 1) {
@@ -974,13 +974,26 @@ void Player::BirthParticle() {
 	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
 	float s_scale = 1.0f;
 	float e_scale = 0.0f;
-	//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
+	//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
 			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
-			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FootParticleCount = 0;
+	}
+}
+//死んだ時のパーティクル
+void Player::DeathBirthParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.9f,0.8f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,0.9f,0.8f,1.0f };
+	float s_scale = 1.0f;
+	float e_scale = 0.0f;
+	float l_velocity = 0.3f;
+	if (m_DeathParticleCount > 1) {
+		for (int i = 0; i < 5; ++i) {
+			ParticleEmitter::GetInstance()->DeathEffect(30, m_Position, s_scale, e_scale, s_color, e_color, l_velocity);
+		}
+		m_DeathParticleCount = 0;
 	}
 }
 //アニメーションの共通変数

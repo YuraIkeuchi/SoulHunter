@@ -13,8 +13,8 @@ float PostEffect::addsepia = 0.0f;
 PostEffect::PostEffect()
 	:IKESprite(100, { 0,0 }, { 500,500 }, { 1,1,1,1 }, { 0,0 }, false, false)
 {
-	P1 = { 0.10f, 0.05f };
-	P2 = { 0.20f, 0.55f};
+	P1 = { 0.020f, 0.05f };
+	P2 = { 0.30f, 0.80f};
 	P3 = { 2.00f, 1.00f };
 }
 

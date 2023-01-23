@@ -12,7 +12,6 @@ BoundEnemy::BoundEnemy() {
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BoundEnemy);
-	ParticleInit();
 }
 //初期化
 bool BoundEnemy::Initialize() {
@@ -69,13 +68,13 @@ void BoundEnemy::Action() {
 	DamageAct();
 	//パーティクル生成
 	BirthParticle();
+	DeathBirthParticle();
 	//エフェクト関係
 	ArgEffect();
 	//魂関係
 	ArgSoul();
 
 	VanishEnemy();
-	ParticleUpdate();
 	//ミニマップに表示させる
 	MapEnemy();
 }
@@ -90,7 +89,6 @@ void BoundEnemy::Draw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
-	particletex->Draw();
 }
 //ポーズ開いたときはキャラが動かない
 void BoundEnemy::Pause() {

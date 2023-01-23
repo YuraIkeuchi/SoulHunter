@@ -4,7 +4,6 @@
 #include "EnemyEffect.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
-#include "ParticleTex.h"
 #include "CollisionPrimitive.h"
 #include "IKESprite.h"
 
@@ -57,8 +56,7 @@ protected:
 	unique_ptr<Player> player = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
-	unique_ptr<ParticleTex> particletex = nullptr;
-
+	
 	//スプライト
 	unique_ptr<IKESprite> MiniEnemySprite;
 	OBB OBB1 = {};
@@ -204,10 +202,6 @@ public:
 	void ArgEffect();//エフェクト生成
 
 	void ArgSoul();//エフェクト生成
-
-	//パーティクル関係
-	void ParticleInit();
-	void ParticleUpdate();
 
 	//ミニマップに敵を表示
 	void MapEnemy();

@@ -123,7 +123,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		TitlePartsSprite[i]->SetColor(m_TitleColor);
 	}
 	TitleSprite->SetColor(m_TitleColor);
-	ParticleEmitter::GetInstance()->DemoEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
+	ParticleEmitter::GetInstance()->FireEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 	//タイトルの文字浮かぶ

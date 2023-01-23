@@ -34,10 +34,11 @@ public: //メンバ関数
 	void DrawAll();
 
 	//エフェクト
-	void DemoEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
+	void FireEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
 	//足元の煙
 	void HootEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
-
+	//死んだ時のエフェクト
+	void DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor,float velocity);
 	//削除
 	void AllDelete();
 
@@ -50,6 +51,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//死んだ時のパーティクル
+	unique_ptr<ParticleManager> deathParticle;
 	//煙
 	unique_ptr<ParticleManager> smokeParticle;
 };

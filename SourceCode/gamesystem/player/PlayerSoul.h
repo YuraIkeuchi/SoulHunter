@@ -3,7 +3,6 @@
 #include "IKETexture.h"
 #include "Player.h"
 #include "Block.h"
-#include "ParticleSoul.h"
 #include <memory> 
 using namespace std;         //  名前空間指定
 //プレイヤーの魂のクラス
@@ -39,9 +38,7 @@ public:
 private:
 	//テクスチャ
 	unique_ptr<IKETexture> soultex;
-	//パーティクル
 	//クラス
-	unique_ptr<ParticleSoul> particle;
 	unique_ptr<Player> player = nullptr;//
 	unique_ptr<Block> block = nullptr;
 	//変数

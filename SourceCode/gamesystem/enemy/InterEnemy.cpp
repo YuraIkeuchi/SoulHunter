@@ -96,13 +96,27 @@ void InterEnemy::BirthParticle() {
 	float s_scale = 1.0f;
 	float e_scale = 0.0f;
 	//足元
-		//ParticleEmitter::GetInstance()->DemoEffect(m_Position);
+		//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
-		for (int i = 0; i < 3; ++i) {
+		for (int i = 0; i < 5; ++i) {
 			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
 			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FootParticleCount = 0;
+	}
+}
+//死んだ時のパーティクル
+void InterEnemy::DeathBirthParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,1.0f };
+	float s_scale = 2.0f;
+	float e_scale = 0.0f;
+	float l_velocity = 0.2f;
+	if (m_DeathParticleCount > 1) {
+		for (int i = 0; i < 3; ++i) {
+			ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+		}
+		m_DeathParticleCount = 0;
 	}
 }
 //更新を範囲内に入った時のみ
@@ -246,20 +260,6 @@ void InterEnemy::DamageAct() {
 	}
 }
 
-//パーティクルの初期化
-void InterEnemy::ParticleInit() {
-	ParticleTex* particletex_;
-	particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
-}
-//パーティクルの更新
-void InterEnemy::ParticleUpdate() {
-	BirthParticle();
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
-}
 //エフェクトの生成
 void InterEnemy::ArgEffect() {
 	if (m_EffectArgment) {

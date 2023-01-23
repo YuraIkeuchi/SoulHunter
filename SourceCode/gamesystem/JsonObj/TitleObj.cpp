@@ -7,9 +7,6 @@ using namespace DirectX;
 void TitleObj::Initialize() {
 	//パーティクル
 	m_ParticleCount = 0;
-	ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
 
 	jsonData = JsonLoader::LoadFile("Title");
 

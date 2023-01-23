@@ -154,9 +154,8 @@ void Save::SaveAnime() {
 void Save::BirthParticle() {
 	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,0.5f };
 	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.5f };
-	float s_scale = 1.0f;
+	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 
-	ParticleEmitter::GetInstance()->DemoEffect(10, { m_Position.x,m_Position.y + 2.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
-
+	ParticleEmitter::GetInstance()->FireEffect(50, { m_Position.x,m_Position.y + 2.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
 }
