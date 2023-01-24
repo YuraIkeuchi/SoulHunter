@@ -171,7 +171,6 @@ bool InterEnemy::VanishEnemy() {
 		else {
 			m_DeathParticleCount = 0;
 			m_Soul = true;
-			m_SoulArgment = true;
 			m_Alive = false;
 		}
 	}

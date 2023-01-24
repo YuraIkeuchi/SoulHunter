@@ -580,6 +580,7 @@ void Player::PlayerAttack() {
 			//攻撃時壁にあたった場合壁からパーティクルを出す
 			if (block->AttackMapCollideCommon(m_AttackPos, { 5.5f,0.8f }, m_AttackPos)) {
 				BirthEffect("Wall", m_AttackPos, m_PlayerDir);
+				m_fbxObject->SetReverse(true);
 			}
 		}
 
