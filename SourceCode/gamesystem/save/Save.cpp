@@ -42,7 +42,7 @@ void Save::Initialize() {
 void Save::Update() {
 
 	//ボタンを押すとセーブできる
-	if (Collide() && m_SaveCount == 0) {
+	if (Collide() && m_SaveCount == 0 && player->GetHP() >= 1) {
 		m_GameSave = true;
 		m_SaveText = true;
 	}
