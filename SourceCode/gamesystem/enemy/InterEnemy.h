@@ -80,7 +80,6 @@ protected:
 	bool m_Effect = false;
 	bool m_Soul = false;
 	bool m_EffectArgment = false;
-	bool m_SoulArgment = false;
 	int m_SoulCount = 0;
 	//ž™‚Ì“I‚ÉŽg‚¤
 	float m_Angle = 0.0f;

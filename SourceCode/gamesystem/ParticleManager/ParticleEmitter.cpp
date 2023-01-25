@@ -26,11 +26,14 @@ void ParticleEmitter::Update()
 	smokeParticle->Update();
 }
 
-void ParticleEmitter::DrawAll()
+void ParticleEmitter::FlontDrawAll() {
+	deathParticle->Draw(AddBlendType);
+}
+
+void ParticleEmitter::BackDrawAll()
 {
 	//パーティクルマネージャー描画
 	circleParticle->Draw(AddBlendType);
-	deathParticle->Draw(AddBlendType);
 	smokeParticle->Draw(AlphaBlendType);
 }
 

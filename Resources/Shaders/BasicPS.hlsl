@@ -59,22 +59,23 @@ float4 main(VSOutput input) : SV_TARGET
 				float3 lightv = pointLights[i].lightpos - input.worldpos.xyz;
 				float d = length(lightv);
 				lightv = normalize(lightv);
-				float ax;
-				float ay;
-				float az;
-				float axyz;
-				float xyzDistanse;
+				float center_x;
+				float center_y;
+				float center_z;
+				float center;
+				float Distanse;
 				float scalr;
-				ax = pointLights[i].lightpos.x - input.worldpos.x;
-				ay = pointLights[i].lightpos.y - input.worldpos.y;
-				az = pointLights[i].lightpos.z - input.worldpos.z;
-				axyz = ax * ax + ay * ay + az * az;
-				xyzDistanse = sqrt(axyz);
-				scalr = 1.0 - (xyzDistanse / pointLights[i].lightatten.x);
+				float add = 3.0f;
+				center_x = pointLights[i].lightpos.x - input.worldpos.x;
+				center_y = pointLights[i].lightpos.y - input.worldpos.y;
+				center_z = pointLights[i].lightpos.z - input.worldpos.z;
+				center = center_x * center_x + center_y * center_y + center_z * center_z;
+				Distanse = sqrt(center);
+				scalr = 1.0 - (Distanse / pointLights[i].lightatten.x);
 				// ‘S‚Ä‰ÁŽZ‚·‚é
 				if (scalr >= 0) {
 
-					shadecolor.rgb += ((3.0f) * pointLights[i].lightcolor) * scalr;
+					shadecolor.rgb += ((add) * pointLights[i].lightcolor) * scalr;
 				}
 			}
 		}
