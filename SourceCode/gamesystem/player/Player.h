@@ -34,6 +34,7 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon) override;
+	void ImGuiDraw();
 	//剣の更新
 	void SwordUpdate();
 	//エフェクトの更新

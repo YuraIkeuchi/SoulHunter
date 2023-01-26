@@ -51,7 +51,9 @@ void Save::Update() {
 	//セーブしていますとでる
 	SaveAnime();
 	//パーティクル
-	BirthParticle();
+	if (m_Alive) {
+		BirthParticle();
+	}
 	objSave->SetPosition(m_Position);
 	objSave->Update();
 

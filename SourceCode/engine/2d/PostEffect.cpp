@@ -411,7 +411,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 }
 
 void PostEffect::ImGuiDraw() {
-	ImGui::Begin("shader");
+	/*ImGui::Begin("shader");
 	ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetWindowSize(ImVec2(300, 130));
 	ImGui::SliderFloat("P1.x", &P1.x, 0, 0.5f);
@@ -420,5 +420,5 @@ void PostEffect::ImGuiDraw() {
 	ImGui::SliderFloat("P2.y", &P2.y, 0.3f, 0.8f);
 	ImGui::SliderFloat("P3.x", &P3.x, 1, 2);
 	ImGui::SliderFloat("P3.y", &P3.y, 1, 2);
-	ImGui::End();
+	ImGui::End();*/
 }

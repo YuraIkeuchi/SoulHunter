@@ -235,14 +235,7 @@ void Player::Update()
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_PosZ:%f", m_Position.z);
-	ImGui::End();*/
-
+	
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
@@ -263,6 +256,16 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
+}
+void Player::ImGuiDraw() {
+	//ImGui::Begin("player");
+	////ImGui::SetWindowPos(ImVec2(1000, 450));
+	////ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("m_PosX:%f", m_Position.x);
+	//ImGui::Text("m_PosY:%f", m_Position.y);
+	//ImGui::Text("m_PosZ:%f", m_Position.z);
+	//ImGui::End();
+
 }
 //剣の更新
 void Player::SwordUpdate() {

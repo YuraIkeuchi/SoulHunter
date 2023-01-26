@@ -37,3 +37,7 @@ void BackRock::Draw(DirectXCommon* dxCommon) {
 		Obj_Draw();
 	}
 }
+
+void BackRock::ParticleCheck(int StageNumber) {
+
+}

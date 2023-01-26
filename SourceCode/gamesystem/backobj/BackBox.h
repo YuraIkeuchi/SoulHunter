@@ -9,4 +9,5 @@ public:
 	void SetObj() override;//ƒZƒbƒg‚µ‚½obj
 	void specialDraw() override;
 	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
+	void ParticleCheck(int StageNumber)override;
 };

@@ -1,6 +1,7 @@
 #include "BackTorch.h"
 #include <Easing.h>
 #include "ParticleEmitter.h"
+#include "VariableCommon.h"
 BackTorch::BackTorch() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BackTorch);
 }
@@ -11,7 +12,7 @@ bool BackTorch::Initialize() {
 	IKEObject3d* object3d_ = new IKEObject3d();
 	object3d_ = IKEObject3d::Create();
 	object3d_->SetModel(m_Model);
-	m_Position = { 110.0f,-90.0,0.0f };
+	m_Position = { 810.0f,-90.0,0.0f };
 	m_Scale = { 3.0f,6.0f,1.0f };
 	object3d_->SetScale(m_Scale);
 	m_Object.reset(object3d_);
@@ -33,7 +34,9 @@ void BackTorch::specialDraw() {
 }
 
 void BackTorch::Draw(DirectXCommon* dxCommon) {
-	
+	/*ImGui::Begin("a");
+	ImGui::Text("%d", m_Particle);
+	ImGui::End();*/
 	//オブジェクトの描画
 	IKEObject3d::PreDraw();
 	if (DrawCollide()) {
@@ -48,5 +51,16 @@ void BackTorch::BirthParticle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 
-	ParticleEmitter::GetInstance()->FireEffect(30, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
+	if (m_Particle) {
+		ParticleEmitter::GetInstance()->FireEffect(30, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
+	}
+}
+
+void BackTorch::ParticleCheck(int StageNumber) {
+	if (StageNumber != BossMap) {
+		m_Particle = true;
+	}
+	else {
+		m_Particle = false;
+	}
 }

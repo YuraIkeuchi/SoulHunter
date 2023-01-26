@@ -100,7 +100,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 
 	ParticleEmitter::GetInstance()->AllDelete();
 	
-	//PlayPostEffect = true;
+	PlayPostEffect = true;
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)
@@ -182,7 +182,6 @@ void FirstStage::NormalUpdate() {
 	BackObjUpdate(m_BackBoxs);
 	//松明
 	BackObjUpdate(m_BackTorchs);
-
 	//魂関係
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_NormalEnemyCount; j++) {
@@ -316,7 +315,6 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	if (player->GetHP() != 0) {
-		ui->Draw();
 		pause->Draw();
 		chest->ExplainDraw();
 		BlackFilter->Draw();
@@ -349,20 +347,20 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-
-	//ポストエフェクト
-	{
-		ImGui::Begin("postEffect");
-		ImGui::SetWindowPos(ImVec2(1000, 450));
-		ImGui::SetWindowSize(ImVec2(280, 300));
-		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-			PlayPostEffect = true;
-		}
-		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-			PlayPostEffect = false;
-		}
-		ImGui::End();
-	}
+	player->ImGuiDraw();
+	////ポストエフェクト
+	//{
+	//	ImGui::Begin("postEffect");
+	//	ImGui::SetWindowPos(ImVec2(1000, 450));
+	//	ImGui::SetWindowSize(ImVec2(280, 300));
+	//	if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
+	//		PlayPostEffect = true;
+	//	}
+	//	if (ImGui::RadioButton("Default", &PlayPostEffect)) {
+	//		PlayPostEffect = false;
+	//	}
+	//	ImGui::End();
+	//}
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
@@ -424,9 +422,11 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 				birdplayersoul[i][j]->Draw();
 			}
 		}
-		ParticleEmitter::GetInstance()->BackDrawAll();
+		ParticleEmitter::GetInstance()->SmokeDrawAll();
+		ParticleEmitter::GetInstance()->FireDrawAll();
 	}
 	IKESprite::PreDraw();
+	ui->Draw();
 	if (player->GetHP() == 0) {
 		BlackFilter->Draw();
 	}
@@ -519,6 +519,7 @@ void FirstStage::AllDelete() {
 	m_BoundEnemyCount = 0;
 	m_EnemyCount = 0;
 	m_BackObjCount = 0;
+	ParticleEmitter::GetInstance()->AllDelete();
 }
 //各クラスの更新
 void FirstStage::AllUpdate() {
@@ -543,8 +544,22 @@ void FirstStage::LightSet() {
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(1, XMFLOAT3(pointLightAtten));
 
+
+	if (StageNumber != BossMap) {
+		lightGroup->SetPointLightActive(1, true);
+	}
+	else {
+		lightGroup->SetPointLightActive(1, false);
+	}
 	for (BackObjCommon* torch : m_BackTorchs) {
 		for (int i = 0; i < m_BackTorch_Num; i++) {
+
+			if (StageNumber != BossMap) {
+				lightGroup->SetPointLightActive(i + 2, true);
+			}
+			else {
+				lightGroup->SetPointLightActive(i + 2, false);
+			}
 			if (torch != nullptr) {
 				lightGroup->SetPointLightPos(i + 2, XMFLOAT3({ m_BackTorchs[i]->GetPosition().x, m_BackTorchs[i]->GetPosition().y + 3.0f, m_BackTorchs[i]->GetPosition().z + 3.0f }));
 				lightGroup->SetPointLightColor(i + 2, XMFLOAT3(pointLightColor));
@@ -641,6 +656,7 @@ void FirstStage::BossRoomUpdate() {
 
 			//こっからボス戦
 			if (bossscenechange->AddBlack(0.04f)) {
+				ParticleEmitter::GetInstance()->AllDelete();
 				bossscenechange->SetSubStartChange(true);
 				bossstagobj->SetApp(false);
 				Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());

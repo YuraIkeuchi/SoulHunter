@@ -997,6 +997,7 @@ void BaseScene::LoadObjParam(const int StageNumber) {
 		m_BackTorchs[i]->SetPlayer(player);
 		m_BackTorchs[i]->SetPosition(m_BackTorchStartPos[i]);
 		m_BackTorchs[i]->SetRotation(m_BackTorchStartRot[i]);
+		m_BackTorchs[i]->ParticleCheck(StageNumber);
 		lightGroup->SetPointLightActive(i + 2, true);
 	}
 }
