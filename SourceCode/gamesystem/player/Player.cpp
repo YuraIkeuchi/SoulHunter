@@ -981,7 +981,7 @@ void Player::BirthParticle() {
 	//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
-			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 2.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
 		}
 		m_FootParticleCount = 0;
 	}
@@ -1054,6 +1054,7 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_SwordFrame = 0.0f;
 	m_SwordType = DeleteSword;
 	m_SwordAfterAlpha = 0.0f;
+	m_SwordParticleNum = 0;
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = HitRight;//‰E‘¤‚É’e‚©‚ê‚é

@@ -3,7 +3,6 @@
 #include "IKEModel.h"
 #include <memory>
 #include <map>
-#include "ParticleTex.h"
 
 struct JsonData;
 

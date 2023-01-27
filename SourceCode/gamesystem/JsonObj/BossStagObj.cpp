@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "JsonLoader.h"
 #include "ImageManager.h"
+#include "ParticleEmitter.h"
 using namespace DirectX;
 //初期化
 void BossStagObj::Initialize() {
@@ -62,12 +63,6 @@ void BossStagObj::Initialize() {
 	SkipSprite_->SetAnchorPoint({ 0.5f,0.0f });
 	SkipSprite_->SetPosition({ 1000.0f,620.0f });
 	SkipSprite.reset(SkipSprite_);
-	//パーティクル
-	ParticleTex* particletex_;
-	particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
-
 }
 //更新
 void BossStagObj::AppUpdate() {
@@ -97,22 +92,11 @@ void BossStagObj::EndUpdate() {
 		object->Update();
 	}
 	m_ParticleCount++;
-	if (m_ParticleCount > 2) {
-		m_ParticleCount = 0;
-	}
-	//パーティクル
-	particletex->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	particletex->SetStartScale(0.5f);
-	particletex->SetParticleBreak(true);
-	particletex->SetParticleBillboard(true);
-	particletex->Update({ 0.0f,8.0f,20.0f }, m_ParticleCount, 2, 5);
+	DeathParticle();
 }
 //前面描画
 const void BossStagObj::FrontDraw() {
 	//パーティクルの描画
-	IKEObject3d::PreDraw();
-	particletex->Draw();
-	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	for (int i = 0; i < CurtainSprite.size(); i++) {
 		CurtainSprite[i]->Draw();
@@ -137,4 +121,21 @@ const void BossStagObj::BackDraw() {
 //解放
 void BossStagObj::Finalize() {
 
+}
+
+//死んだ時のパーティクル
+void BossStagObj::DeathParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,1.0f };
+	float s_scale = 2.0f;
+	float e_scale = 4.0f;
+	float l_velocity = 0.1f;
+	float l_randZ = 0.0f;
+	l_randZ = (float)(rand() % 8 - 4);
+	if (m_ParticleCount > 1) {
+		for (int i = 0; i < 3; ++i) {
+			ParticleEmitter::GetInstance()->DeathEffect(50, { 0.0f,8.0f,20.0f + l_randZ }, s_scale, e_scale, s_color, e_color, l_velocity);
+		}
+		m_ParticleCount = 0;
+	}
 }

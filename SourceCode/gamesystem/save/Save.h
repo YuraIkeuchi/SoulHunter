@@ -3,7 +3,6 @@
 #include"IKEModel.h"
 #include "Player.h"
 #include "IKESprite.h"
-#include "ParticleTex.h"
 #include "MarkEffect.h"
 #include <array>  
 #include <memory>

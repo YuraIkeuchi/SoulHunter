@@ -5,11 +5,6 @@
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
 	//パーティクル
-	//パーティクル
-	ParticleTex* particletex_;
-	particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);
 	IKETexture* OutAreatexture_;
 	OutAreatexture_ = IKETexture::Create(ImageManager::OutArea, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	OutAreatexture_->TextureCreate();
@@ -303,14 +298,14 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 4) {
 		m_TargetCoolT = 100;
-		m_FoodParticleCount += 3;
+		m_FootParticleCount += 3;
 		m_AfterPos = { 159.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
 	else if (m_Pat == 5) {
 		m_TargetCoolT = 1;
-		m_FoodParticleCount = 0;
+		m_FootParticleCount = 0;
 		m_AfterPos = { 159.0f,-96.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
@@ -394,7 +389,7 @@ void FirstBoss::StabbingAttack() {
 				if (m_CoolT < 90) {
 					m_CoolT++;
 					if (m_CoolT <= 10) {
-						m_FoodParticleCount += 2;
+						m_FootParticleCount += 2;
 					}
 				}
 				else {

@@ -3,7 +3,6 @@
 #include "IKESprite.h"
 #include "IKETexture.h"
 #include <array>
-#include "ParticleTex.h"
 using namespace std;         //  名前空間指定
 //宝箱用のクラス
 class Chest {

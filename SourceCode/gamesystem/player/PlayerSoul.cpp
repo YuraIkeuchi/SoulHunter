@@ -200,15 +200,4 @@ void PlayerSoul::BirthParticle() {
 		ParticleEmitter::GetInstance()->FireEffect(50, { m_Position.x,m_Position.y - 0.5f,m_Position.z }, s_scale, e_scale, s_color, e_color);
 		m_ParticleCount = 0;
 	}
-	//const float rnd_vel = 0.05f;
-	//if (m_ParticleCount > 3) {
-	//	XMFLOAT3 vel{};
-	//	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
-	//	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
-	//	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 3.0f;
-
-	//	//soulparticle->Add(50, { m_Position.x,m_Position.y,m_Position.z }, vel, {}, 3.0f, 0.0f, { 0.0f,0.5f,1.0f,0.8f }, { 0.0f,0.5f,1.0f,0.8f });
-	//	//m_ParticleCount = 0;
-	//}
-		//soulparticle->Update();
 }

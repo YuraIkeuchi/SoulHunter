@@ -3,8 +3,8 @@
 #include "IKEModel.h"
 #include <map>
 #include <memory>
+#include <array>
 #include "IKESprite.h"
-#include "ParticleTex.h"
 struct JsonData;
 
 using namespace std;         //  名前空間指定
@@ -24,6 +24,8 @@ public:
 	void Finalize();
 	const void BackDraw();
 	const void FrontDraw();
+
+	void DeathParticle();
 
 public:
 	//gettersetter
@@ -47,7 +49,6 @@ private:
 	//スプライト
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
 	unique_ptr<IKESprite> SkipSprite;
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//その他変数
 	bool m_AppStart = false;//登場スタート
 	int m_AppTimer = 0;//時間

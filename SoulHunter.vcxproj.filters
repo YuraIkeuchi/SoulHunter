@@ -402,12 +402,6 @@
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleTex.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
@@ -780,12 +774,6 @@
       <Filter>SourceCords\engine\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleSoul.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleTex.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">

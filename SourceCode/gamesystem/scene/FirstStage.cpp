@@ -243,6 +243,8 @@ void FirstStage::BossEndUpdate() {
 	player->BossEndUpdate(1);
 	firstboss->EndUpdate();
 	bossstagobj->EndUpdate();
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->Update();
 }
 //描画
 void FirstStage::Draw(DirectXCommon* dxCommon)
@@ -451,6 +453,7 @@ void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
 	player->BossEndDraw(dxCommon);
 	camerawork->EndDraw();
 	bossstagobj->FrontDraw();
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 }
 //マップ初期化とそれに合わせた初期化
 void FirstStage::MapInitialize() {

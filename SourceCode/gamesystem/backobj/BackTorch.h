@@ -1,6 +1,5 @@
 #pragma once
 #include "BackObjCommon.h"
-#include "ParticleTex.h"
 class BackTorch :public BackObjCommon {
 public:
 	//OBJ‚Ì” 
