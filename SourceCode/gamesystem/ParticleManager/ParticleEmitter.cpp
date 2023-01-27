@@ -30,10 +30,12 @@ void ParticleEmitter::FlontDrawAll() {
 	deathParticle->Draw(AddBlendType);
 }
 
-void ParticleEmitter::BackDrawAll()
+void ParticleEmitter::FireDrawAll() {
+	circleParticle->Draw(AddBlendType);
+}
+void ParticleEmitter::SmokeDrawAll()
 {
 	//パーティクルマネージャー描画
-	circleParticle->Draw(AddBlendType);
 	smokeParticle->Draw(AlphaBlendType);
 }
 

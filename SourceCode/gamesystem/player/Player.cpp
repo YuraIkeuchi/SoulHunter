@@ -235,14 +235,7 @@ void Player::Update()
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(1000, 450));
-	ImGui::SetWindowSize(ImVec2(280, 300));
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_PosZ:%f", m_Position.z);
-	ImGui::End();*/
-
+	
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
@@ -263,6 +256,16 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
+}
+void Player::ImGuiDraw() {
+	//ImGui::Begin("player");
+	////ImGui::SetWindowPos(ImVec2(1000, 450));
+	////ImGui::SetWindowSize(ImVec2(280, 300));
+	//ImGui::Text("m_PosX:%f", m_Position.x);
+	//ImGui::Text("m_PosY:%f", m_Position.y);
+	//ImGui::Text("m_PosZ:%f", m_Position.z);
+	//ImGui::End();
+
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -978,7 +981,7 @@ void Player::BirthParticle() {
 	//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
-			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 2.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
 		}
 		m_FootParticleCount = 0;
 	}
@@ -1051,6 +1054,7 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_SwordFrame = 0.0f;
 	m_SwordType = DeleteSword;
 	m_SwordAfterAlpha = 0.0f;
+	m_SwordParticleNum = 0;
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = HitRight;//右側に弾かれる

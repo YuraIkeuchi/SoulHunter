@@ -1,7 +1,6 @@
 #pragma once
 #include "Player.h"
 #include "IKETexture.h"
-#include "ParticleTex.h"
 #include "BossEffect.h"
 #include "CollisionPrimitive.h"
 #include "ObjCommon.h"
@@ -62,6 +61,7 @@ public:
 	virtual void specialDrawEnd() = 0;//ボス特有の描画
 	//パーティクル
 	void BirthParticle();
+	void DeathParticle();
 	bool collidePlayer();//プレイヤーとの当たり判定
 	bool collideBoss();//攻撃判定
 	void ArgEffect();//エフェクトの生成
@@ -70,7 +70,6 @@ protected:
 	//各クラス
 	std::vector<BossEffect*> bosseffects;
 	unique_ptr<Player> player = nullptr;
-	unique_ptr<ParticleTex> particletex = nullptr;
 	//OBB
 	OBB OBB1 = {};
 	OBB OBB2 = {};
@@ -105,7 +104,7 @@ protected:
 	bool m_AppMove = false;//登場シーン
 	bool m_EffectArgment = false;//エフェクト生成
 	int m_DeathTimer = 0;//死ぬまでの時間
-	int m_DeathParticleCount = 0;//パーティクルの生成までのフレーム
+	
 	
 	int m_HitDir;
 	//ダメージフラグ
@@ -113,8 +112,10 @@ protected:
 	int m_DamageTimer = 0;
 
 	//パーティクル関係
-	int m_FoodParticleCount = 0;
+	int m_FootParticleCount = 0;
 	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
 	int m_ParticleNum = 5;
+
+	int m_DeathParticleCount = 0;//パーティクルの生成までのフレーム
 };
 

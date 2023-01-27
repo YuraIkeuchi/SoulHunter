@@ -37,6 +37,8 @@ public:
 	virtual void SetObj() = 0;//配置
 	virtual void specialDraw() = 0;//その他の描画
 
+	virtual void ParticleCheck(int StageNumber) = 0;
+
 	bool UpdateCollide();//更新範囲
 
 	bool DrawCollide();//描画範囲

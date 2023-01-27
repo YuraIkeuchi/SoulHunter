@@ -37,3 +37,7 @@ void BackBox::Draw(DirectXCommon* dxCommon) {
 		Obj_Draw();
 	}
 }
+
+void BackBox::ParticleCheck(int StageNumber) {
+
+}

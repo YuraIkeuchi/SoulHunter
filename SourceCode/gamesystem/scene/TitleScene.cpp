@@ -174,7 +174,7 @@ void TitleScene::FrontDraw() {
 	IKEObject3d::PreDraw();
 	//titleobj->FrontDraw();
 	//パーティクル描画
-	ParticleEmitter::GetInstance()->BackDrawAll();
+	ParticleEmitter::GetInstance()->FireDrawAll();
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	TitleSprite->Draw();

@@ -1,6 +1,6 @@
 #include "InterBoss.h"
 #include"Collision.h"
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 #include "VariableCommon.h"
 //更新
 void InterBoss::Update() {
@@ -8,6 +8,7 @@ void InterBoss::Update() {
 	collidePlayer();
 	collideBoss();
 	BirthParticle();
+	DeathParticle();
 	//ボスの行動
 	if (!m_Movie) {
 		if (m_HP > 0) {
@@ -22,13 +23,14 @@ void InterBoss::Update() {
 	if (m_HP <= 0) {
 		m_HP = 0;
 		m_DeathTimer++;
-		//パーティクルが発生する
-		if (m_Scale.x > 0.0f) {
-			m_DeathParticleCount++;
-		}
-		else {
-			m_DeathParticleCount = 0;
-		}
+		m_DeathParticleCount++;
+		////パーティクルが発生する
+		//if (m_Scale.x > 0.0f) {
+		//	++;
+		//}
+		//else {
+		//	m_DeathParticleCount = 0;
+		//}
 	}
 
 
@@ -50,9 +52,9 @@ void InterBoss::Update() {
 		}
 	}
 	//パーティクル
-	particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
-	particletex->SetParticleBreak(true);
-	particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
+	//particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
+	//particletex->SetParticleBreak(true);
+	//particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -72,7 +74,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	particletex->Draw();
+	//particletex->Draw();
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }
@@ -169,24 +171,31 @@ void InterBoss::EndDraw(DirectXCommon* dxCommon) {
 }
 //パーティクルが出てくる
 void InterBoss::BirthParticle() {
-	XMFLOAT3 l_hootpos{};
-	XMFLOAT3 l_deathpos{};
-	//m_PlayerPos = player->GetPosition();
-	if (m_FoodParticleCount >= 5 && m_Alive) {
-
-		for (int i = 0; i < m_ParticleNum; ++i) {
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = m_Position.z;
-			l_hootpos = { m_Position.x,m_Position.y - 1.0f,m_Position.z };
-			//const float rnd_sca = 0.1f;
-			//float sca{};
-			//sca = (float)rand() / RAND_MAX*rnd_sca;
-			//ParticleManager::GetInstance()->Add(30, {l_hootpos.x + vel.x,l_hootpos.y + vel.y,l_hootpos.z}, vel, XMFLOAT3(), 1.2f, 0.6f);
+	XMFLOAT4 s_color = { 0.8f,0.8f,0.8f,0.3f };
+	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
+	float s_scale = 1.0f;
+	float e_scale = 0.0f;
+	//足元
+		//ParticleEmitter::GetInstance()->FireEffect(m_Position);
+	if (m_FootParticleCount >= 3 && m_Alive) {
+		for (int i = 0; i < 5; ++i) {
+			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
+			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
-		m_FoodParticleCount = 0;
+		m_FootParticleCount = 0;
 	}
-
+}
+//死んだ時のパーティクル
+void InterBoss::DeathParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,1.0f };
+	float s_scale = 2.0f;
+	float e_scale = 4.0f;
+	float l_velocity = 0.1f;
+	if (m_DeathParticleCount > 1) {
+		for (int i = 0; i < 3; ++i) {
+			ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+		}
+		m_DeathParticleCount = 0;
+	}
 }
