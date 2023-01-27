@@ -31,11 +31,14 @@ public: //メンバ関数
 	void Update();
 
 	//描画
+	void PlayerDrawAll();
 	void FlontDrawAll();
 	void FireDrawAll();
 	void SmokeDrawAll();
 	//エフェクト
 	void FireEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
+	//ヒール
+	void HealEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
 	//足元の煙
 	void HootEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
 	//死んだ時のエフェクト
@@ -52,6 +55,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(ヒール)
+	unique_ptr<ParticleManager> healParticle;
 	//死んだ時のパーティクル
 	unique_ptr<ParticleManager> deathParticle;
 	//煙

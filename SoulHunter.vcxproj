@@ -281,6 +281,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerDamageEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerDushEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerHealEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
@@ -297,7 +298,6 @@
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\SwordParticle.cpp" />
@@ -407,6 +407,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerDushEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerHealEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />
@@ -423,7 +424,6 @@
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\BossEndParticle.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h" />
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\SwordParticle.h" />

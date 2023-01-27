@@ -33,6 +33,13 @@ void PlayerEffect::CreateEffect(const std::string& newname, XMFLOAT3 pos, int di
 		newDushEffect->DushEffectSet(pos);
 		dusheffects.push_back(newDushEffect);
 	}
+	else if (newname == "Heal") {
+		PlayerHealEffect* newHealEffect;
+		newHealEffect = new PlayerHealEffect();
+		newHealEffect->Initialize();
+		newHealEffect->SetEffect(pos);
+		healeffect.push_back(newHealEffect);
+	}
 }
 
 void PlayerEffect::Initialize() {
@@ -64,6 +71,12 @@ void PlayerEffect::Update() {
 			damageeffect->Update();
 		}
 	}
+
+	for (PlayerHealEffect* healeffect : healeffect) {
+		if (healeffect != nullptr) {
+			healeffect->Update();
+		}
+	}
 }
 
 void PlayerEffect::Draw() {
@@ -89,6 +102,12 @@ void PlayerEffect::Draw() {
 	for (PlayerDamageEffect* damageeffect : damageeffects) {
 		if (damageeffect != nullptr) {
 			damageeffect->Draw();
+		}
+	}
+
+	for (PlayerHealEffect* healeffect : healeffect) {
+		if (healeffect != nullptr) {
+			healeffect->Draw();
 		}
 	}
 }

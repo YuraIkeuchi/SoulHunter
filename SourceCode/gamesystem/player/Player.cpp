@@ -33,10 +33,6 @@ bool Player::Initialize()
 	swordparticle_->Initialize();
 	swordparticle.reset(swordparticle_);
 
-	ParticleHeal* particleheal_ = new ParticleHeal();
-	particleheal_->Initialize();
-	particleheal.reset(particleheal_);
-	
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
 
@@ -252,7 +248,6 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	particleheal->Draw();
 	if (m_HP != 0) {
 		swordparticle->Draw();
 	}
@@ -301,12 +296,8 @@ void Player::EffectUpdate() {
 	//パーティクル生成
 	BirthParticle();
 	DeathBirthParticle();
-	//パーティクルのカウント数の更新
+	HealParticle();
 
-
-	if (m_HealCount > 3) {
-		m_HealCount = 0;
-	}
 	//剣のパーティクルの場所を決める
 	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
 			 static_cast<float>(rand() % 1) + 1,
@@ -318,11 +309,6 @@ void Player::EffectUpdate() {
 			neweffect->Update();
 		}
 	}
-
-	//パーティクル関係
-	
-	particleheal->SetStartColor({ 0.5f,1.0f,0.1f,1.0f });
-	particleheal->Update({ m_Position.x,m_Position.y - 1.0f,m_Position.z }, m_HealCount, 3);
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
 	for (int i = 0; i < m_SwordParticleNum; i++) {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
@@ -671,7 +657,39 @@ void Player::PlayerDush() {
 }
 //プレイヤーの回転
 void Player::PlayerRolling() {
+	Input* input = Input::GetInstance();
+	//ダッシュ処理
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_Alive) && (m_JumpCount == 0)) {
+		if (input->TriggerButton(input->Button_RB)) {
+			m_AddPower = 0.0f;
+			m_Rolling = true;
+			m_RollFrame = 0.0f;
+			ResetAttack();
+			if (m_PlayerDir == Right) {
+				m_DushDir = DushRight;
+				m_RollVelocity = 1.5f;
+			}
+			else if (m_PlayerDir == Left) {
+				m_DushDir = DushLeft;
+				m_RollVelocity = -1.5f;
+			}
+			PlayerAnimetion(Rolling, 2);
+		}
+	}
 
+	//ダッシュ中は横に自動で動く
+	if (m_Rolling) {
+		if (m_RollFrame < 1.0f) {
+			m_RollFrame += 0.05f;
+		}
+		else {
+			m_RollFrame = 0.0f;
+			m_Rolling = false;
+		}
+
+		m_RollVelocity = Ease(Out, Cubic, m_RollFrame, m_RollVelocity, 0.0f);
+		m_Position.x += m_RollVelocity;
+	}
 }
 //プレイヤーのHP回復
 void Player::PlayerHeal() {
@@ -687,7 +705,7 @@ void Player::PlayerHeal() {
 		m_HealCount++;
 		m_HealTimer++;
 		if (m_HealTimer > 150) {
-			particleheal->SetHeal(true);
+			BirthEffect("Heal", m_Position, m_PlayerDir);
 			m_SoulCount -= 6.0f;
 			m_HealTimer = 0;
 			m_HealCount = 0;
@@ -978,7 +996,6 @@ void Player::BirthParticle() {
 	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
 	float s_scale = 1.0f;
 	float e_scale = 0.0f;
-	//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 3; ++i) {
 			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 2.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
@@ -999,6 +1016,30 @@ void Player::DeathBirthParticle() {
 		}
 		m_DeathParticleCount = 0;
 	}
+}
+//回復パーティクル
+void Player::HealParticle() {
+	XMFLOAT4 s_color = { 0.5f,1.0f,0.1f,0.5f };
+	XMFLOAT4 e_color = { 0.5f,1.0f,0.1f,0.5f };
+	float s_scale = 2.0f;
+	float e_scale = 0.0f;
+
+	if (m_HealCount > 1) {
+		ParticleEmitter::GetInstance()->HealEffect(50, { m_Position.x,m_Position.y - 2.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
+		m_HealCount = 0;
+	}
+}
+//攻撃リセット
+void Player::ResetAttack() {
+	//攻撃もリセットされる
+	m_SecondTimer = 0;
+	m_AttackTimer = 0;
+	m_Attack = false;
+	m_SwordEase = true;
+	m_SwordFrame = 0.0f;
+	m_SwordType = DeleteSword;
+	m_SwordAfterAlpha = 0.0f;
+	m_SwordParticleNum = 0;
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
@@ -1046,15 +1087,7 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	PlayerAnimetion(Damage, 3);
 	m_HP -= 1;
 	m_Interval = 100;
-	//攻撃もリセットされる
-	m_SecondTimer = 0;
-	m_AttackTimer = 0;
-	m_Attack = false;
-	m_SwordEase = true;
-	m_SwordFrame = 0.0f;
-	m_SwordType = DeleteSword;
-	m_SwordAfterAlpha = 0.0f;
-	m_SwordParticleNum = 0;
+	ResetAttack();
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = HitRight;//右側に弾かれる

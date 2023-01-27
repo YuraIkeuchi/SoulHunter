@@ -5,6 +5,7 @@
 #include "WallAttackEffect.h"
 #include "PlayerDamageEffect.h"
 #include "PlayerDushEffect.h"
+#include "PlayerHealEffect.h"
 #include <list> // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 //攻撃エフェクト
@@ -31,4 +32,5 @@ private:
 	vector<WallAttackEffect*>walleffects;
 	vector<PlayerDushEffect*> dusheffects;
 	vector<PlayerDamageEffect*> damageeffects;
+	vector<PlayerHealEffect*> healeffect;
 };

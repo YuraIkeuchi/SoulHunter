@@ -1,7 +1,6 @@
 #pragma once
 #include "Block.h"
 #include "DirectXCommon.h"
-#include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
 #include "Shake.h"
@@ -91,6 +90,10 @@ public:
 	void BirthParticle();
 	//死んだ時
 	void DeathBirthParticle();
+	//回復パーティクル
+	void HealParticle();
+	//攻撃リセット
+	void ResetAttack();
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
@@ -145,7 +148,6 @@ private:
 	vector<PlayerEffect*> effects;
 	//パーティクル
 	unique_ptr<SwordParticle> swordparticle = nullptr;
-	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	
@@ -208,6 +210,10 @@ private:
 		DushLeft,
 	};
 	int m_DushDir = 0;
+
+	bool m_Rolling = false;
+	float m_RollFrame = 0.0f;
+	float m_RollVelocity = 0.0f;
 	//足元のパーティクル
 	int m_FootParticleCount = 0;
 	//普通のパーティクル
