@@ -32,5 +32,4 @@ public:
 	bool Run();
 
 	void ImGuiDraw();
-
 };

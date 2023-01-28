@@ -171,7 +171,7 @@ void Player::Update()
 	
 	//ムービー中は一部挙動は出来ない
 	if (!m_Movie) {
-		if (m_GoalDir == No && !m_Death) {
+		if (m_GoalDir == No && !m_Death && m_Alive) {
 			//移動
 			PlayerMove();
 			//ジャンプ
@@ -230,8 +230,7 @@ void Player::Update()
 
 }
 //描画
-void Player::Draw(DirectXCommon* dxCommon) {
-	
+void Player::Draw(DirectXCommon* dxCommon) {	
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
@@ -260,7 +259,6 @@ void Player::ImGuiDraw() {
 	//ImGui::Text("m_PosY:%f", m_Position.y);
 	//ImGui::Text("m_PosZ:%f", m_Position.z);
 	//ImGui::End();
-
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -314,7 +312,6 @@ void Player::EffectUpdate() {
 		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-	
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -341,7 +338,7 @@ void Player::PlayerMove() {
 	if (m_AddPower == 0.0f) {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
 			//動きやジャンプ
-			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Right) && (!m_Dush)) {
 				if (!m_RightLimit) {
 					MoveCommon(0.3f, Right, 90.0f);
 				}
@@ -350,7 +347,7 @@ void Player::PlayerMove() {
 				}
 			}
 
-			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Left) && (!m_Dush)) {
 				if (!m_LeftLimit) {
 					MoveCommon(-0.3f, Left, 270.0f);
 				}
@@ -370,12 +367,12 @@ void Player::PlayerMove() {
 	else {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal)) {
 			//動きやジャンプ
-			if (input->LeftTiltStick(input->Right) && (!m_Dush) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Right) && (!m_Dush)) {
 				MoveCommon(0.3f, Right, 90.0f);
 
 			}
 
-			if (input->LeftTiltStick(input->Left) && (!m_Dush) && (m_Alive)) {
+			if (input->LeftTiltStick(input->Left) && (!m_Dush)) {
 				MoveCommon(-0.3f, Left, 270.0f);
 
 			}
@@ -435,7 +432,7 @@ void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
 	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
-		&& (m_HealType == NoHeal) && (m_Alive) && (!m_Attack)) {
+		&& (m_HealType == NoHeal) && (!m_Attack)) {
 		m_JumpCount++;
 		m_Jump = true;
 		m_AddPower = 0.8f;
@@ -513,7 +510,7 @@ void Player::PlayerFall() {
 void Player::PlayerAttack() {
 	Input* input = Input::GetInstance();
 	//攻撃
-	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal) && (m_Alive)) {
+	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal)) {
 		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
@@ -555,7 +552,6 @@ void Player::PlayerAttack() {
 
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 20) {
-			//攻撃範囲の設定
 			//攻撃の向き
 			//右向き
 			if (m_Rotation.y == 90.0f) {
@@ -621,16 +617,18 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (m_Alive) && (PlayerSkill::GetInstance()->GetUseDush())) {
+	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetUseDush())) {
 		if (input->TriggerButton(input->Button_RB)) {
+			m_Dush = true;
 			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
-			m_Dush = true;
+			m_SideFrame = 0.0f;
+			ResetAttack();
 			if (m_PlayerDir == Right) {
-				m_DushDir = DushRight;
+				m_SideVelocity = 2.5f;
 			}
 			else if (m_PlayerDir == Left) {
-				m_DushDir = DushLeft;
+				m_SideVelocity = -2.5f;
 			}
 			PlayerAnimetion(Dush, 4);
 
@@ -640,55 +638,49 @@ void Player::PlayerDush() {
 
 	//ダッシュ中は横に自動で動く
 	if (m_Dush) {
-		m_DushTimer--;
-		if (m_DushDir == DushRight) {
-			m_Position.x += 1.5f;
+		if (m_SideFrame < 1.0f) {
+			m_SideFrame += 0.1f;
 		}
-		else if (m_DushDir == DushLeft) {
-			m_Position.x -= 1.5f;
+		else {
+			m_SideFrame = 0.0f;
+			m_Dush = false;
 		}
 
-		if (m_DushTimer == 0) {
-			m_DushDir = NoDush;
-			m_Dush = false;
-			m_DushTimer = 10;
-		}
+		m_SideVelocity = Ease(In, Cubic, m_SideFrame, m_SideVelocity, 0.0f);
+		m_Position.x += m_SideVelocity;
 	}
 }
 //プレイヤーの回転
 void Player::PlayerRolling() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_Alive) && (m_JumpCount == 0)) {
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0)) {
 		if (input->TriggerButton(input->Button_RB)) {
-			m_AddPower = 0.0f;
 			m_Rolling = true;
-			m_RollFrame = 0.0f;
+			m_SideFrame = 0.0f;
 			ResetAttack();
 			if (m_PlayerDir == Right) {
-				m_DushDir = DushRight;
-				m_RollVelocity = 1.5f;
+				m_SideVelocity = 1.5f;
 			}
 			else if (m_PlayerDir == Left) {
-				m_DushDir = DushLeft;
-				m_RollVelocity = -1.5f;
+				m_SideVelocity = -1.5f;
 			}
 			PlayerAnimetion(Rolling, 2);
 		}
 	}
 
-	//ダッシュ中は横に自動で動く
+	//ローリング中は横に自動で動く
 	if (m_Rolling) {
-		if (m_RollFrame < 1.0f) {
-			m_RollFrame += 0.05f;
+		if (m_SideFrame < 1.0f) {
+			m_SideFrame += 0.1f;
 		}
 		else {
-			m_RollFrame = 0.0f;
+			m_SideFrame = 0.0f;
 			m_Rolling = false;
 		}
 
-		m_RollVelocity = Ease(Out, Cubic, m_RollFrame, m_RollVelocity, 0.0f);
-		m_Position.x += m_RollVelocity;
+		m_SideVelocity = Ease(In, Cubic, m_SideFrame, m_SideVelocity, 0.0f);
+		m_Position.x += m_SideVelocity;
 	}
 }
 //プレイヤーのHP回復
@@ -745,8 +737,6 @@ void Player::PlayerDamage() {
 		}
 	}
 	m_Position.x += m_BoundPower;
-
-
 	//死んだときの判定
 	if (block->GetThornHit()) {
 		if (m_HP >= 2) {
@@ -754,13 +744,11 @@ void Player::PlayerDamage() {
 				m_AddPower = 0.0f;
 				m_BoundPower = 1.0f;
 				m_HitDir = HitRight;
-			
 			}
 			else if (block->GetThornDir() == HitLeft) {
 				m_AddPower = 0.0f;
 				m_BoundPower = -1.0f;
 				m_HitDir = HitLeft;
-			
 			}
 			else if (block->GetThornDir() == HitUp) {
 				m_AddPower = 0.0f;
@@ -879,7 +867,6 @@ bool Player::DeathMove() {
 			return true;
 		}
 	}
-
 	return false;
 }
 //解放
@@ -984,8 +971,6 @@ void Player::Editor() {
 	}
 	//プレイモードではない
 	m_PlayMode = false;
-
-	//Obj_SetParam();
 	SwordUpdate();
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
@@ -1077,7 +1062,6 @@ void Player::ResPornPlayer() {
 //ロードしたときの初期化
 void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 	m_Position = StartPos;
-	//m_Object->SetPosition(m_Position);
 	m_fbxObject->SetPosition(m_Position);
 	block->SetThornDir(0);
 	block->SetThornHit(false);

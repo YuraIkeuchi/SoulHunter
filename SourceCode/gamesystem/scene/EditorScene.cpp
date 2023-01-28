@@ -16,7 +16,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	save = new Save();
 	backlight = new BackLight();
 	respornenemy = new ResPornEnemy();
-	firstboss = new FirstBoss();
 	chest = new Chest();
 	camerawork = new CameraWork();
 	camerawork->SetCameraType(2);
@@ -139,7 +138,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
@@ -153,7 +151,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
@@ -214,15 +211,7 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	player->Draw(dxCommon);
 	//ImGuiのOBJの描画
 	imguieditor->ObjDraw();
-	//playereffect->Draw();
-
-	if (StageNumber == BossMap) {
-		firstboss->Draw(dxCommon);
-		respornenemy->Draw();
-	}
-
 	// 3Dオブジェクト描画後処理
-	//完全に前に各スプライト
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
@@ -579,17 +568,7 @@ void EditorScene::AllUpdate() {
 	chest->Update();
 	VolumManager::GetInstance()->Update();
 	save->Update();
-	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
-		respornenemy->Update(firstboss);
-	}
-	if (StageNumber == BossMap && !pause->GetIsPause()) {
-		firstboss->Update();
-		ui->Update(firstboss);
-	}
-	else {
-		ui->Update();
-	}
-
+	ui->Update();
 	camerawork->Update(camera);
 }
 //ライトの位置

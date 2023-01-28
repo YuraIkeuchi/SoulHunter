@@ -194,8 +194,8 @@ private:
 	//ジャンプ時の動きの変数
 	bool m_JumpRot = false;
 	float m_RotFrame = 0.0f;
-	//向いている向き
 	float m_Velocity = 0.0f;
+	//向いている向き
 	int m_PlayerDir = 0;
 	enum PlayerDir {
 		Right,
@@ -203,17 +203,9 @@ private:
 	};
 	//ダッシュ関係
 	bool m_Dush = false;
-	int m_DushTimer = 10;
-	enum DushDir {
-		NoDush,
-		DushRight,
-		DushLeft,
-	};
-	int m_DushDir = 0;
-
 	bool m_Rolling = false;
-	float m_RollFrame = 0.0f;
-	float m_RollVelocity = 0.0f;
+	float m_SideFrame = 0.0f;
+	float m_SideVelocity = 0.0f;
 	//足元のパーティクル
 	int m_FootParticleCount = 0;
 	//普通のパーティクル
