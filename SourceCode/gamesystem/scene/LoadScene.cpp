@@ -43,13 +43,8 @@ void LoadScene::Initialize(DirectXCommon* dxCommon) {
 
 	//カメラ関係
 	camerawork = new CameraWork();
-
 	// カメラ注視点をセット
 	camerawork->SetPlayer(player);
-	spotLightDir[0] = 0;
-	spotLightDir[1] = 0;
-	spotLightDir[2] = 1;
-
 	//スプライト生成
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
@@ -104,14 +99,8 @@ void LoadScene::Update(DirectXCommon* dxCommon) {
 	nowsprite[m_LoadAnimeCount]->SetColor(m_color);
 
 	lightGroup->Update();
-
-	//camera->SetEye(m_EyePos);
-	//camera->SetTarget(m_TargetPos);
-	//camera->Update();
-	//expandchange->Update();
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
-	ChangePostEffect(PostType);
 }
 //描画
 void LoadScene::Draw(DirectXCommon* dxCommon) {
@@ -122,32 +111,17 @@ void LoadScene::Draw(DirectXCommon* dxCommon) {
 		GameDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-
 		postEffect->Draw(dxCommon->GetCmdList());
 		SpriteDraw();
-
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
-
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		GameDraw(dxCommon);
 		SpriteDraw();
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -188,52 +162,7 @@ void LoadScene::Finalize() {
 }
 //ポストエフェクトのImGui
 void LoadScene::PostImGuiDraw(DirectXCommon* dxCommon) {
-	{
-		if (PlayPostEffect) {
-			ImGui::Begin("PostType");
-			ImGui::SetWindowPos(ImVec2(600, 450));
-			ImGui::SetWindowSize(ImVec2(280, 150));
-			ImGui::Text("m_ChangePostEffect:%d", m_ChangePostEffect);
-			if (ImGui::RadioButton("Stripe", &PostType)) {
-
-				PostType = Stripe;
-				m_ChangePostEffect = true;
-				//ChangePostEffect(PostType);
-			}
-			if (ImGui::RadioButton("Gaussian", &PostType)) {
-				PostType = Blur;
-				m_ChangePostEffect = true;
-
-			}
-			ImGui::End();
-		}
-	}
-	{
-		ImGui::Begin("postEffect");
-		ImGui::SetWindowPos(ImVec2(700, 150));
-		ImGui::SetWindowSize(ImVec2(280, 150));
-		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-			PlayPostEffect = true;
-		}
-		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-			PlayPostEffect = false;
-		}
-		ImGui::End();
-	}
 }
 //ポストエフェクト変更
 void LoadScene::ChangePostEffect(int PostType) {
-	if (m_ChangePostEffect) {
-
-		if (PostType == Stripe) {
-
-			postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/PostEffectTestPS.hlsl");
-		}
-		else if (PostType == Blur) {
-
-			postEffect->CreateGraphicsPipeline(L"Resources/Shaders/GaussianVS.hlsl", L"Resources/Shaders/GaussianPS.hlsl");
-		}
-
-		m_ChangePostEffect = false;
-	}
 }

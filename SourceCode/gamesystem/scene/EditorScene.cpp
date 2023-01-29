@@ -41,10 +41,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-	//ƒ‰ƒCƒg
-	spotLightDir[0] = 0;
-	spotLightDir[1] = 0;
-	spotLightDir[2] = 1;
 	StartGame();
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);

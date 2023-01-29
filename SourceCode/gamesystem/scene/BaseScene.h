@@ -75,25 +75,12 @@ public:
 
 protected:
 	//定数
-	static const int Soul_Max = 3;//ソウルの最大数
-	static const int Enemy_Max = 20;//敵の最大数
 	static const int Tutorial_Max = 5;//チュートリアルの数
 public:
 	///ゲームシーン用
 	DebugCamera* camera = nullptr;
-	ParticleManager* particleMan = nullptr;
 	//ポストエフェクトをかけるか
 	bool PlayPostEffect = false;
-	bool m_ChangePostEffect = false;
-	//ポストエフェクトの種類
-	int PostType = 1;
-
-	enum PostType {
-		Stripe,
-		Blur,
-		Mosaic,
-	};
-	
 	//ライト
 	LightGroup* lightGroup = nullptr;
 
@@ -129,13 +116,6 @@ public:
 	float pointLightColor[3] = { 1,1,1 };
 	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
 	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
-	//スポットライト
-	float spotLightDir[3] = { 0,-1,0 };
-	float spotLightPos[3] = { 0,10,0 };
-	float spotLightColor[3] = { 1,1,1 };
-	float spotLightAtten[3] = { 0.0f,0.0f,0.0f };
-	float spotLightFactorAngle[2] = { 5.0f,15.0f };
-
 	//丸影
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowPos[3] = { 1,2,0 };
