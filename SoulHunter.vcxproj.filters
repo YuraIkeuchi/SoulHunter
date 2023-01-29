@@ -399,14 +399,14 @@
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerDamageEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\PlayerHealEffect.cpp">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -773,14 +773,14 @@
     <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
       <Filter>SourceCords\engine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleHeal.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\PlayerHealEffect.h">
+      <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

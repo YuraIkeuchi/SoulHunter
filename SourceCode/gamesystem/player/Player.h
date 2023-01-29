@@ -1,7 +1,6 @@
 #pragma once
 #include "Block.h"
 #include "DirectXCommon.h"
-#include "ParticleHeal.h"
 #include "SwordParticle.h"
 #include "ObjCommon.h"
 #include "Shake.h"
@@ -91,6 +90,10 @@ public:
 	void BirthParticle();
 	//死んだ時
 	void DeathBirthParticle();
+	//回復パーティクル
+	void HealParticle();
+	//攻撃リセット
+	void ResetAttack();
 
 	//アニメーション関係
 	void PlayerAnimetion(int Number,int AnimeSpeed);
@@ -145,7 +148,6 @@ private:
 	vector<PlayerEffect*> effects;
 	//パーティクル
 	unique_ptr<SwordParticle> swordparticle = nullptr;
-	unique_ptr<ParticleHeal> particleheal = nullptr;
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	
@@ -192,8 +194,8 @@ private:
 	//ジャンプ時の動きの変数
 	bool m_JumpRot = false;
 	float m_RotFrame = 0.0f;
-	//向いている向き
 	float m_Velocity = 0.0f;
+	//向いている向き
 	int m_PlayerDir = 0;
 	enum PlayerDir {
 		Right,
@@ -201,13 +203,9 @@ private:
 	};
 	//ダッシュ関係
 	bool m_Dush = false;
-	int m_DushTimer = 10;
-	enum DushDir {
-		NoDush,
-		DushRight,
-		DushLeft,
-	};
-	int m_DushDir = 0;
+	bool m_Rolling = false;
+	float m_SideFrame = 0.0f;
+	float m_SideVelocity = 0.0f;
 	//足元のパーティクル
 	int m_FootParticleCount = 0;
 	//普通のパーティクル

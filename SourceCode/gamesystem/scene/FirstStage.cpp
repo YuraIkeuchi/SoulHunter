@@ -6,7 +6,6 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
-
 //プレイシーンの初期化(現在は魂だけ)
 void FirstStage::PlaySceneInitialize() {
 	//魂
@@ -217,7 +216,6 @@ void FirstStage::NormalUpdate() {
 	}
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->Update();
-	//ParticleManager::GetInstance()->Update();
 	backlight->Update();
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
@@ -263,7 +261,6 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		ImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
-		//PostImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -276,7 +273,6 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 			ImGuiDraw(dxCommon);
 		}
 		camerawork->ImGuiDraw();
-		//PostImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		dxCommon->PostDraw();
@@ -350,19 +346,6 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::End();
 	}
 	player->ImGuiDraw();
-	////ポストエフェクト
-	//{
-	//	ImGui::Begin("postEffect");
-	//	ImGui::SetWindowPos(ImVec2(1000, 450));
-	//	ImGui::SetWindowSize(ImVec2(280, 300));
-	//	if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-	//		PlayPostEffect = true;
-	//	}
-	//	if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-	//		PlayPostEffect = false;
-	//	}
-	//	ImGui::End();
-	//}
 }
 //普通の描画
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
@@ -433,9 +416,9 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		BlackFilter->Draw();
 	}
 	IKESprite::PostDraw();
-	//プレイヤーの描画
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
+	//プレイヤーの描画
 	player->Draw(dxCommon);
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();

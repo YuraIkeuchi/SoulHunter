@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
+#include "ParticleEmitter.h"
 //初期化
 void EditorScene::Initialize(DirectXCommon* dxCommon)
 {
@@ -15,8 +16,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	mapchange = new MapChange();
 	save = new Save();
 	backlight = new BackLight();
-	respornenemy = new ResPornEnemy();
-	firstboss = new FirstBoss();
 	chest = new Chest();
 	camerawork = new CameraWork();
 	camerawork->SetCameraType(2);
@@ -27,8 +26,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	PlayerInitialize();
 	//カメラの初期化
 	CameraInitialize();
-	//敵の初期化
-	EnemyInitialize();
 	//背景OBJの初期化
 	BackObjInitialize();
 	//ポーズの初期化
@@ -58,6 +55,10 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
+
+	ParticleEmitter::GetInstance()->AllDelete();
+
+	PlayPostEffect = true;
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)
@@ -68,11 +69,6 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 	LightSet();
 	//シーンやマップの変更の処理
 	ChangeUpdate();
-	//BGMスタート
-	if (BGMStart == true) {
-		//Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
-		BGMStart = false;
-	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	//エディタ時はHPが減らない
@@ -139,7 +135,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
@@ -153,7 +148,6 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
@@ -208,21 +202,17 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->Draw();
 	}
+	ParticleEmitter::GetInstance()->SmokeDrawAll();
+	ParticleEmitter::GetInstance()->FireDrawAll();
 	//たからばこ
 	chest->Draw();
 	//プレイヤーの描画
 	player->Draw(dxCommon);
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//ImGuiのOBJの描画
 	imguieditor->ObjDraw();
-	//playereffect->Draw();
-
-	if (StageNumber == BossMap) {
-		firstboss->Draw(dxCommon);
-		respornenemy->Draw();
-	}
-
 	// 3Dオブジェクト描画後処理
-	//完全に前に各スプライト
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
@@ -573,23 +563,14 @@ void EditorScene::AllUpdate() {
 	}
 
 	//その他の更新
+	ParticleEmitter::GetInstance()->Update();
 	backlight->Update();
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
 	VolumManager::GetInstance()->Update();
 	save->Update();
-	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
-		respornenemy->Update(firstboss);
-	}
-	if (StageNumber == BossMap && !pause->GetIsPause()) {
-		firstboss->Update();
-		ui->Update(firstboss);
-	}
-	else {
-		ui->Update();
-	}
-
+	ui->Update();
 	camerawork->Update(camera);
 }
 //ライトの位置

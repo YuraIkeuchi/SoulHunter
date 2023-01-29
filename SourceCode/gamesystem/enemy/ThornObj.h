@@ -55,9 +55,9 @@ private:
 	int m_TargetTimer = 0;
 	int m_MoveTImer = 0;
 	//csvで読み込む座標
-	XMFLOAT3 m_ThornSetPos;
+	XMFLOAT3 m_ThornSetPos = {0.0f,0.0f,0.0f};
 	//パーティクル関係
-	XMFLOAT3 m_SmokeParticlePos;
+	XMFLOAT3 m_SmokeParticlePos = {0.0f,0.0f,0.0f};
 	int m_SmokeParticleCount = 0;
 	XMFLOAT3 m_RockParticlePos;
 	float m_AfterRotetion = 0.0f;
