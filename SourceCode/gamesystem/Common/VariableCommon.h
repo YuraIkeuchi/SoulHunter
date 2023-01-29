@@ -62,3 +62,10 @@ enum EnemyType {
 	Bird,
 };
 
+//”wŒiOBJ‚ÌŽí—Þ
+enum BackObjType {
+	Rock,
+	Box,
+	Torch,
+};
+

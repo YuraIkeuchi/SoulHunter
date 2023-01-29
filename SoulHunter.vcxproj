@@ -260,6 +260,7 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackLight.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjAlways.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjCommon.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObjManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackRock.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackTorch.cpp" />
@@ -386,6 +387,7 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackLight.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjAlways.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjCommon.h" />
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObjManager.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackRock.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackBox.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackTorch.h" />

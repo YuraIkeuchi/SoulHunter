@@ -13,16 +13,12 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "BackObjCommon.h"
-#include "BackRock.h"
-#include "BackBox.h"
-#include "BackTorch.h"
 #include "MapChange.h"
-#include "BackObjAlways.h"
 #include "BackLight.h"
 #include "TutorialText.h"
 #include "VolumManager.h"
 #include "EnemyManager.h"
+#include "BackObjManager.h"
 #include "CameraWork.h"
 #include "SceneChange.h"
 #include "FPSManager.h"
@@ -74,29 +70,10 @@ public:
 	void BackObjInitialize();
 	//ゲームの始まり
 	void StartGame();
-	//OBJ
-	//csv開く
-	void OpenObjParam(const int StageNumber);
-	//csvかきこみ
-	void SaveObjParam(const int StageNumber);
-	//CSV指定
-	void ObjSpecity(const char* vsShaderName);
-	//csvよびだし
-	void LoadObjParam(const int StageNumber);
-	//共通の背景
-	//csv開く
-	void OpenBackObjAlwaysParam(const int StageNumber);
-	//csV呼び出し
-	void LoadBackObjAlways(const int StageNumber);
 	//プレイヤーとステージの読み書き
 	void SaveGame();
 	void LoadGame();
-	
-	//背景OBjの更新
-	void BackObjUpdate(std::vector<BackObjCommon*> objs);
-	//背景OBJの描画
-	void BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon);
-	
+
 protected:
 	//定数
 	static const int Soul_Max = 3;//ソウルの最大数
@@ -131,6 +108,11 @@ public:
 	std::vector<std::vector<int>> map6; //マップチップ(6マップ)
 	std::vector<std::vector<int>> bossmap; //マップチップ(ボスマップ)
 	std::vector<std::vector<int>> tutorialmap; //マップチップ(チュートリアル)
+
+	//ゲームデータ
+	std::ifstream m_GameFile;
+	std::stringstream m_GamePopcom;
+	std::string m_GameLine;
 
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
@@ -169,7 +151,8 @@ public:
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
 	//敵を管理するクラス
 	EnemyManager* enemymanager = nullptr;
-
+	//背景OBJを管理するクラス
+	BackObjManager* backmanager = nullptr;
 	//敵を動かすかどうか
 	bool m_MoveEnemy = false;
 
@@ -180,21 +163,6 @@ public:
 	bool StageChange = true;
 	int StageNumber = 7;
 
-	//OBJ
-	//背景pbj
-	//柱
-	std::vector<BackObjCommon*> m_BackRocks;
-	//岩
-	std::vector<BackObjCommon*> m_BackBoxs;
-	//松明
-	std::vector<BackObjCommon*> m_BackTorchs;
-	//背景OBJの種類
-	enum BackObjType {
-		Rock,
-		Box,
-		Torch,
-	};
-	int m_BackObjCount = 0;//ザコ敵の数
 	//newを最初の一回だけにしたい
 	static bool s_New;
 	//BGMスタート
@@ -222,8 +190,7 @@ public:
 	Option* option = nullptr;
 	//宝箱
 	Chest* chest = nullptr;
-	//背景のobj
-	std::vector<BackObjAlways*> m_BackObjAlways;
+
 	BackLight* backlight = nullptr;
 	//UI関係
 	UI* ui = nullptr;
@@ -238,37 +205,6 @@ public:
 	bool m_ObjSave = false;
 	bool m_ObjLoad = false;
 	static bool m_GameLoad;
-
-	//背景のOBJ
-	std::ifstream m_BackObjFile;
-	std::stringstream m_BackObjPopcom;
-	std::string m_BackObjLine;
-
-	std::vector<XMFLOAT3> m_BackRockStartPos;
-	std::vector<XMFLOAT3> m_BackBoxStartPos;
-	std::vector<XMFLOAT3> m_BackTorchStartPos;
-
-	std::vector<XMFLOAT3> m_BackRockStartRot;
-	std::vector<XMFLOAT3> m_BackBoxStartRot;
-	std::vector<XMFLOAT3> m_BackTorchStartRot;
-
-	std::vector<XMFLOAT3> m_BackAlwaysStartPos;
-
-	//共通の背景岩
-	std::ifstream m_AlwaysFile;
-	std::stringstream m_AlwaysPopcom;
-	std::string m_AlwaysLine;
-	//ゲームデータ
-	std::ifstream m_GameFile;
-	std::stringstream m_GamePopcom;
-	std::string m_GameLine;
-
-	int m_BackObj_Num;
-	int m_BackRock_Num;
-	int m_BackBox_Num;
-	int m_BackTorch_Num;
-	int m_BackAlways_Num;
-
 
 	//ゲームのムービー
 	int m_AppTimer = 0;

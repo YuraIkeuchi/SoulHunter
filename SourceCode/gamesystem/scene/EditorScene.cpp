@@ -19,6 +19,7 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	chest = new Chest();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
+	backmanager = new BackObjManager();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(false);
 	//共通の初期化
@@ -40,8 +41,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-
-	objedit = new ObjEdit();
 	//ライト
 	spotLightDir[0] = 0;
 	spotLightDir[1] = 0;
@@ -50,7 +49,7 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
 	enemymanager->LoadEnemyParam(StageNumber,player,block);
-	LoadObjParam(StageNumber);
+	backmanager->LoadObjParam(StageNumber,player);
 	BGMStart = true;
 
 	//エディタモードは最初は敵を止める
@@ -95,15 +94,16 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 
 	//背景OBJの位置セーブ
 	if (m_ObjSave) {
-		OpenObjParam(StageNumber);
-		SaveObjParam(StageNumber);
+		backmanager->OpenObjParam(StageNumber);
+		backmanager->SaveObjParam(StageNumber);
+	/*	OpenObjParam(StageNumber);
+		SaveObjParam(StageNumber);*/
 		m_ObjSave = false;
 	}
 
 	//背景OBJの位置ロード
 	if (m_ObjLoad) {
-		//OpenEnemyParam(StageNumber);
-		LoadObjParam(StageNumber);
+		backmanager->LoadObjParam(StageNumber, player);
 		m_ObjLoad = false;
 	}
 
@@ -124,7 +124,7 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 	}
 	//要素全削除(OBJ)
 	if (m_ObjDelete) {
-		ObjDelete();
+		backmanager->ObjDelete();
 		m_ObjDelete = false;
 	}
 }
@@ -175,17 +175,10 @@ void EditorScene::ModelDraw(DirectXCommon* dxCommon) {
 void EditorScene::BackDraw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
-	//ステージの描画
-	for (BackObjAlways* newalways : m_BackObjAlways) {
-		if (newalways != nullptr) {
-			newalways->Draw(dxCommon);
-		}
-	}
+	backmanager->AlwaysDraw(dxCommon);
 	block->Draw(m_PlayerPos);
 	if (StageNumber != BossMap) {
-		BackObjDraw(m_BackRocks, dxCommon);
-		BackObjDraw(m_BackBoxs, dxCommon);
-		BackObjDraw(m_BackTorchs, dxCommon);
+		backmanager->Draw(dxCommon);
 	}
 	backlight->Draw();
 	save->Draw();
@@ -210,9 +203,7 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 }
 //ポストエフェクトがかからない
 void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
-
 	IKEObject3d::PreDraw();
-
 	IKESprite::PreDraw();
 	ui->Draw();
 	mapchange->Draw();
@@ -220,10 +211,6 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	chest->ExplainDraw();
 	scenechange->Draw();
 	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
-	/*EnemyMapDraw(m_Enemys);
-	EnemyMapDraw(m_ThornEnemys);
-	EnemyMapDraw(m_BoundEnemys);
-	EnemyMapDraw(m_BirdEnemys);*/
 	IKESprite::PostDraw();
 #pragma endregion
 }
@@ -317,11 +304,6 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 		if (ImGui::Button("EnemySave", ImVec2(90, 50))) {
 			m_EditorSave = true;
 			enemymanager->SaveNum();
-		/*	m_Enemy_Num = m_NormalEnemyCount;
-			m_BoundEnemy_Num = m_BoundEnemyCount;
-			m_BirdEnemy_Num = m_BirdEnemyCount;
-			m_ThornObj_Num = m_ThornObjCount;*/
-
 		}
 		if (ImGui::Button("EnemyLoad", ImVec2(90, 50))) {
 			m_EditorLoad = true;
@@ -329,7 +311,7 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 
 		if (ImGui::Button("OBJSave", ImVec2(90, 50))) {
 			m_ObjSave = true;
-			m_BackObj_Num = m_BackObjCount;
+			backmanager->SaveNum();
 		}
 		if (ImGui::Button("OBJLoad", ImVec2(90, 50))) {
 			m_ObjLoad = true;
@@ -343,7 +325,7 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 void EditorScene::MapInitialize() {
 	if (StageChange) {
 		enemymanager->DeleteEnemy();
-		ObjDelete();
+		backmanager->ObjDelete();
 		switch (StageNumber)
 		{
 		case Map1:
@@ -378,8 +360,8 @@ void EditorScene::MapInitialize() {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
 		enemymanager->LoadEnemyParam(StageNumber,player,block);
-		LoadObjParam(StageNumber);
-		LoadBackObjAlways(StageNumber);
+		backmanager->LoadObjParam(StageNumber, player);
+		backmanager->LoadBackObjAlways(StageNumber);
 		chest->InitChest(StageNumber);
 		StageChange = false;
 		player->SetGoalDir(0);
@@ -394,13 +376,7 @@ void EditorScene::StageMapChange(int StageNumber) {
 		tutorialtext[i]->InitBoard(StageNumber, i);
 	}
 }
-//要素全削除(背景OBJ)
-void EditorScene::ObjDelete() {
-	m_BackRocks.clear();
-	m_BackBoxs.clear();
-	m_BackTorchs.clear();
-	m_BackObjCount = 0;
-}
+
 //ゲームデータのセーブ(位置とマップ番号)
 void EditorScene::SaveGame() {
 	std::ofstream playerofs("Resources/game_param/gamedata.csv");  // ファイルパスを指定する
@@ -509,41 +485,10 @@ void EditorScene::AllUpdate() {
 
 	//設置した敵の更新
 	enemymanager->Update(m_MoveEnemy);
-	//	//普通の敵
-	//EnemyUpdate(m_Enemys);
-	////棘の敵
-	//EnemyUpdate(m_ThornEnemys);
-	////羽の敵
-	//EnemyUpdate(m_BoundEnemys);
-	////鳥の敵
-	//EnemyUpdate(m_BirdEnemys);
-	////棘のOBJ
-	//for (ThornObj* thornobj : m_ThornObjs) {
-	//	if (thornobj != nullptr) {
-	//		if (!pause->GetIsPause() && !chest->GetExplain()) {
-	//			thornobj->Update();
-	//		}
-	//		else {
-	//			thornobj->Pause();
-	//		}
-	//	}
-	//}
-	//柱
-	BackObjUpdate(m_BackRocks);
-	//岩
-	BackObjUpdate(m_BackBoxs);
-	//松明
-	BackObjUpdate(m_BackTorchs);
-	//背景の岩
-	for (BackObjAlways* newalways : m_BackObjAlways) {
-		if (newalways != nullptr) {
-			newalways->Update();
-		}
-	}
-
+	backmanager->Update();
+	
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->Update(i);
-
 	}
 
 	//その他の更新
@@ -569,15 +514,15 @@ void EditorScene::LightSet() {
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(1, XMFLOAT3(pointLightAtten));
 
-	for (BackObjCommon* torch : m_BackTorchs) {
-		for (int i = 0; i < m_BackTorch_Num; i++) {
-			if (torch != nullptr) {
-				lightGroup->SetPointLightPos(i + 2, XMFLOAT3({ m_BackTorchs[i]->GetPosition().x, m_BackTorchs[i]->GetPosition().y + 3.0f, m_BackTorchs[i]->GetPosition().z + 3.0f }));
-				lightGroup->SetPointLightColor(i + 2, XMFLOAT3(pointLightColor));
-				lightGroup->SetPointLightAtten(i + 2, XMFLOAT3(pointLightAtten));
-			}
-		}
-	}
+	//for (BackObjCommon* torch : m_BackTorchs) {
+	//	for (int i = 0; i < m_BackTorch_Num; i++) {
+	//		if (torch != nullptr) {
+	//			lightGroup->SetPointLightPos(i + 2, XMFLOAT3({ m_BackTorchs[i]->GetPosition().x, m_BackTorchs[i]->GetPosition().y + 3.0f, m_BackTorchs[i]->GetPosition().z + 3.0f }));
+	//			lightGroup->SetPointLightColor(i + 2, XMFLOAT3(pointLightColor));
+	//			lightGroup->SetPointLightAtten(i + 2, XMFLOAT3(pointLightAtten));
+	//		}
+	//	}
+	//}
 
 	//丸影
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -708,18 +653,15 @@ void EditorScene::EditorUpdate() {
 	if (imguieditor->GetBackObjArgment()) {
 		//柱
 		if (imguieditor->GetBackObjType() == Rock) {
-			m_BackObjCount++;
-			objedit->RockArgment(m_BackRocks, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+			backmanager->ObjBirth(Rock, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//岩
 		else if (imguieditor->GetBackObjType() == Box) {
-			m_BackObjCount++;
-			objedit->BoxArgment(m_BackBoxs, player, imguieditor->GetPosition(),imguieditor->GetRotation());
+			backmanager->ObjBirth(Box, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//松明
 		else {
-			m_BackObjCount++;
-			objedit->TorchArgment(m_BackTorchs, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+			backmanager->ObjBirth(Torch, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		imguieditor->SetBackObjArgment(false);
 	}
@@ -751,19 +693,16 @@ void EditorScene::EditorUpdate() {
 	//objの削除
 	if (imguieditor->GetBackObjDelete()) {
 		//柱
-		if (imguieditor->GetBackObjType() == Rock && m_BackRocks.size() > 0) {
-			m_BackRocks.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Rock) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//岩
-		if (imguieditor->GetBackObjType() == Box && m_BackBoxs.size() > 0) {
-			m_BackBoxs.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Box) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//松明
-		if (imguieditor->GetBackObjType() == Torch && m_BackTorchs.size() > 0) {
-			m_BackTorchs.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Torch) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		imguieditor->SetBackObjDelete(false);
 	}

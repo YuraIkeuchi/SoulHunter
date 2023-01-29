@@ -44,6 +44,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	firstboss = new FirstBoss();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
+	backmanager = new BackObjManager();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//ã§í ÇÃèâä˙âª
@@ -76,8 +77,8 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	StartGame();
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
-	LoadObjParam(StageNumber);
-	LoadBackObjAlways(StageNumber);
+	backmanager->LoadObjParam(StageNumber,player);
+	backmanager->LoadBackObjAlways(StageNumber);
 
 	BGMStart = true;
 
@@ -155,34 +156,10 @@ void FirstStage::NormalUpdate() {
 	else {
 		player->Pause();
 	}
-	////ê›íuÇµÇΩìGÇÃçXêV
-	////ïÅí ÇÃìG
-	//EnemyUpdate(m_Enemys);
-	////ûôÇÃìG
-	//EnemyUpdate(m_ThornEnemys);
-	////âHÇÃìG
-	//EnemyUpdate(m_BoundEnemys);
-	////íπÇÃìG
-	//EnemyUpdate(m_BirdEnemys);
-	////ûôÇÃOBJ
-	//for (ThornObj* thornobj : m_ThornObjs) {
-	//	if (thornobj != nullptr) {
-	//		if (!pause->GetIsPause() && !chest->GetExplain()) {
-	//			thornobj->Update();
-	//		}
-	//		else {
-	//			thornobj->Pause();
-	//		}
-	//	}
-	//}
 	//ê›íuÇµÇΩìGÇÃçXêV
 	enemymanager->Update(m_MoveEnemy);
-	//íå
-	BackObjUpdate(m_BackRocks);
-	//ä‚
-	BackObjUpdate(m_BackBoxs);
-	//èºñæ
-	BackObjUpdate(m_BackTorchs);
+	backmanager->Update();
+	
 	////ç∞ä÷åW
 	//for (int i = 0; i < Soul_Max; i++) {
 	//	for (int j = 0; j < m_NormalEnemyCount; j++) {
@@ -210,12 +187,6 @@ void FirstStage::NormalUpdate() {
 		respornenemy->Update(firstboss);
 	}
 
-	//îwåiÇÃä‚
-	for (BackObjAlways* newalways : m_BackObjAlways) {
-		if (newalways != nullptr) {
-			newalways->Update();
-		}
-	}
 	//ÉpÅ[ÉeÉBÉNÉãï`âÊ
 	ParticleEmitter::GetInstance()->Update();
 	backlight->Update();
@@ -319,10 +290,6 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 		chest->ExplainDraw();
 		BlackFilter->Draw();
 		enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
-		/*EnemyMapDraw(m_Enemys);
-		EnemyMapDraw(m_ThornEnemys);
-		EnemyMapDraw(m_BoundEnemys);
-		EnemyMapDraw(m_BirdEnemys);*/
 	}
 	mapchange->Draw();
 	scenechange->Draw();
@@ -355,16 +322,10 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 	//âÊñ Ç™çïÇ¢ä‘ÇÕï`âÊÇ≥ÇÍÇ»Ç¢
 	if (BlackColor.w <= 1.0f) {
 		//ÉXÉeÅ[ÉWÇÃï`âÊ
-		for (BackObjAlways* newalways : m_BackObjAlways) {
-			if (newalways != nullptr) {
-				newalways->Draw(dxCommon);
-			}
-		}
+		backmanager->AlwaysDraw(dxCommon);
 		block->Draw(m_PlayerPos);
 		if (StageNumber != BossMap) {
-			BackObjDraw(m_BackRocks, dxCommon);
-			BackObjDraw(m_BackBoxs, dxCommon);
-			BackObjDraw(m_BackTorchs, dxCommon);
+			backmanager->Draw(dxCommon);
 		}
 		backlight->Draw();
 		save->Draw();
@@ -374,17 +335,6 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		//ÇΩÇ©ÇÁÇŒÇ±
 		chest->Draw();
-		//ìGÇÃï`âÊ
-		//EnemyDraw(m_Enemys, dxCommon);
-		//EnemyDraw(m_ThornEnemys, dxCommon);
-		//EnemyDraw(m_BoundEnemys, dxCommon);
-		//EnemyDraw(m_BirdEnemys, dxCommon);
-		////ûôÇÃOBJ
-		//for (ThornObj* thornobj : m_ThornObjs) {
-		//	if (thornobj != nullptr) {
-		//		thornobj->Draw(dxCommon);
-		//	}
-		//}
 		//ìGÇÃï`âÊ
 		enemymanager->Draw(dxCommon);
 
@@ -484,9 +434,8 @@ void FirstStage::MapInitialize() {
 		}
 		chest->InitChest(StageNumber);
 		enemymanager->LoadEnemyParam(StageNumber, player, block);
-		//LoadEnemyParam(StageNumber);
-		LoadObjParam(StageNumber);
-		LoadBackObjAlways(StageNumber);
+		backmanager->LoadObjParam(StageNumber,player);
+		backmanager->LoadBackObjAlways(StageNumber);
 		StageChange = false;
 		player->SetGoalDir(0);
 	}
@@ -494,11 +443,9 @@ void FirstStage::MapInitialize() {
 //ëSçÌèú
 void FirstStage::AllDelete() {
 	enemymanager->DeleteEnemy();
+	backmanager->ObjDelete();
 	//óvëfëSçÌèú
 	player->Finalize();
-	m_BackRocks.clear();
-	m_BackBoxs.clear();
-	m_BackObjCount = 0;
 	ParticleEmitter::GetInstance()->AllDelete();
 }
 //äeÉNÉâÉXÇÃçXêV
@@ -531,7 +478,7 @@ void FirstStage::LightSet() {
 	else {
 		lightGroup->SetPointLightActive(1, false);
 	}
-	for (BackObjCommon* torch : m_BackTorchs) {
+	/*for (BackObjCommon* torch : m_BackTorchs) {
 		for (int i = 0; i < m_BackTorch_Num; i++) {
 
 			if (StageNumber != BossMap) {
@@ -546,7 +493,7 @@ void FirstStage::LightSet() {
 				lightGroup->SetPointLightAtten(i + 2, XMFLOAT3(pointLightAtten));
 			}
 		}
-	}
+	}*/
 
 	//ä€âe
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));

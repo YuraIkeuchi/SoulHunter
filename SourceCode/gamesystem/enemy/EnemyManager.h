@@ -9,6 +9,7 @@
 #include "Chest.h"
 #include "Pause.h"
 #include "EnemyEdit.h"
+//“G‚ÌŠÇ—‚ğ‚Ü‚Æ‚ß‚½ƒNƒ‰ƒX
 class EnemyManager {
 protected:
 	// DirectX::‚ğÈ—ª
