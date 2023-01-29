@@ -14,7 +14,6 @@
 #include "MiniMap.h"
 #include "Option.h"
 #include "MapChange.h"
-#include "BackLight.h"
 #include "TutorialText.h"
 #include "VolumManager.h"
 #include "EnemyManager.h"
@@ -155,14 +154,11 @@ public:
 	BackObjManager* backmanager = nullptr;
 	//敵を動かすかどうか
 	bool m_MoveEnemy = false;
-
 	XMFLOAT3 m_PlayerStartPos;
-
 	int StartStage;
 	//ステージ
 	bool StageChange = true;
 	int StageNumber = 7;
-
 	//newを最初の一回だけにしたい
 	static bool s_New;
 	//BGMスタート
@@ -176,8 +172,6 @@ public:
 	static Block* block;
 	//ポストエフェクト指定
 	PostEffect* postEffect = nullptr;
-	
-	//ヒットストップ
 	//シーン遷移のためのもの
 	SceneChange* scenechange = nullptr;
 	MapChange* mapchange = nullptr;
@@ -190,8 +184,6 @@ public:
 	Option* option = nullptr;
 	//宝箱
 	Chest* chest = nullptr;
-
-	BackLight* backlight = nullptr;
 	//UI関係
 	UI* ui = nullptr;
 	//チュートリアルのテキスト

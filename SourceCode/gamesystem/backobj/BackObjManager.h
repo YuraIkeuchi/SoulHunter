@@ -6,7 +6,11 @@
 #include "BackObjAlways.h"
 #include "Player.h"
 #include "ObjEdit.h"
+#include "LightGroup.h"
+#include "BackLight.h"
 class BackObjManager {
+public:
+	BackObjManager();
 protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -30,7 +34,7 @@ public:
 	//CSV指定
 	void ObjSpecity(const char* vsShaderName);
 	//csvよびだし
-	void LoadObjParam(const int StageNumber, Player* player);
+	void LoadObjParam(const int StageNumber, Player* player, LightGroup* light);
 	//共通の背景
 	//csv開く
 	void OpenBackObjAlwaysParam(const int StageNumber);
@@ -43,9 +47,18 @@ public:
 	//全削除
 	void ObjDelete();
 	void SaveNum();
+	//ライトのセット
+	void LightSet(const int StageNumber,LightGroup* light);
 private:
 	//クラス
 	ObjEdit* objedit = nullptr;
+	LightGroup* lightgroup = nullptr;
+	BackLight* backlight = nullptr;
+	//点光源
+	float pointLightPos[3] = { 0,0,0 };
+	float pointLightColor[3] = { 1,1,1 };
+	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
+	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
 	//背景pbj
 	//柱
 	std::vector<BackObjCommon*> m_BackRocks;

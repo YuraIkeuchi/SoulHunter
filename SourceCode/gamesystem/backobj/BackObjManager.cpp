@@ -1,6 +1,10 @@
 #include "BackObjManager.h"
 #include "VariableCommon.h"
-
+BackObjManager::BackObjManager() {
+	backlight = new BackLight();
+	//背景obj
+	backlight->Initialize();
+}
 //CSVを開いている(背景OBJ)
 void BackObjManager::OpenObjParam(const int StageNumber) {
 	switch (StageNumber)
@@ -102,7 +106,8 @@ void BackObjManager::SaveObjParam(const int StageNumber) {
 	}
 }
 //CSVから値を読み込んでいる(Obj)
-void BackObjManager::LoadObjParam(const int StageNumber, Player* player) {
+void BackObjManager::LoadObjParam(const int StageNumber, Player* player,LightGroup* light) {
+	lightgroup = light;
 	OpenObjParam(StageNumber);
 	//背景Obj
 	//柱
@@ -308,7 +313,7 @@ void BackObjManager::LoadObjParam(const int StageNumber, Player* player) {
 		m_BackTorchs[i]->SetPosition(m_BackTorchStartPos[i]);
 		m_BackTorchs[i]->SetRotation(m_BackTorchStartRot[i]);
 		m_BackTorchs[i]->ParticleCheck(StageNumber);
-		//lightGroup->SetPointLightActive(i + 2, true);
+		lightgroup->SetPointLightActive(i + 2, true);
 	}
 }
 //CSVを開いている(共通のOBJ)
@@ -338,7 +343,7 @@ void BackObjManager::OpenBackObjAlwaysParam(const int StageNumber) {
 	m_AlwaysPopcom << m_AlwaysFile.rdbuf();
 	m_AlwaysFile.close();
 }
-
+//呼び出し
 void BackObjManager::LoadBackObjAlways(const int StageNumber) {
 	OpenBackObjAlwaysParam(StageNumber);
 	//柱
@@ -392,8 +397,9 @@ void BackObjManager::LoadBackObjAlways(const int StageNumber) {
 		m_BackObjAlways[i]->SetPosition(m_BackAlwaysStartPos[i]);
 	}
 }
-
+//更新
 void BackObjManager::Update() {
+	backlight->Update();
 	//柱
 	BackObjUpdate(m_BackRocks);
 	//岩
@@ -406,15 +412,13 @@ void BackObjManager::Update() {
 			newalways->Update();
 		}
 	}
-
 }
-
+//描画
 void BackObjManager::Draw(DirectXCommon* dxCommon) {
 	BackObjDraw(m_BackRocks, dxCommon);
 	BackObjDraw(m_BackBoxs, dxCommon);
 	BackObjDraw(m_BackTorchs, dxCommon);
 }
-
 //背景OBjの更新
 void BackObjManager::BackObjUpdate(std::vector<BackObjCommon*> objs) {
 	for (BackObjCommon* backobj : objs) {
@@ -423,8 +427,9 @@ void BackObjManager::BackObjUpdate(std::vector<BackObjCommon*> objs) {
 		}
 	}
 }
-
+//共通OBjの更新
 void BackObjManager::AlwaysDraw(DirectXCommon* dxCommon) {
+	backlight->Draw();
 	//ステージの描画
 	for (BackObjAlways* newalways : m_BackObjAlways) {
 		if (newalways != nullptr) {
@@ -440,7 +445,6 @@ void BackObjManager::BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon
 		}
 	}
 }
-
 //背景OBJの設置
 void BackObjManager::ObjBirth(int Type, Player* player, XMFLOAT3 pos, XMFLOAT3 rot) {
 	//柱
@@ -459,8 +463,7 @@ void BackObjManager::ObjBirth(int Type, Player* player, XMFLOAT3 pos, XMFLOAT3 r
 		objedit->TorchArgment(m_BackTorchs, player, pos, rot);
 	}
 }
-
-
+//削除
 void BackObjManager::DeleteObjPop(int Type) {
 	//柱
 	if (Type == Rock && m_BackRocks.size() > 0) {
@@ -478,7 +481,6 @@ void BackObjManager::DeleteObjPop(int Type) {
 		m_BackObjCount--;
 	}
 }
-
 //要素全削除(背景OBJ)
 void BackObjManager::ObjDelete() {
 	m_BackRocks.clear();
@@ -486,7 +488,28 @@ void BackObjManager::ObjDelete() {
 	m_BackTorchs.clear();
 	m_BackObjCount = 0;
 }
-
+//要素の数合わせ
 void BackObjManager::SaveNum() {
 	m_BackObj_Num = m_BackObjCount;
+}
+//ライトのセット
+void BackObjManager::LightSet(const int StageNumber, LightGroup* light) {
+	lightgroup = light;
+	for (BackObjCommon* torch : m_BackTorchs) {
+		for (int i = 0; i < m_BackTorch_Num; i++) {
+			if (StageNumber != BossMap) {
+				lightgroup->SetPointLightActive(i + 2, true);
+			}
+			else {
+				lightgroup->SetPointLightActive(i + 2, false);
+			}
+			if (torch != nullptr) {
+				lightgroup->SetPointLightPos(i + 2, XMFLOAT3({ m_BackTorchs[i]->GetPosition().x, m_BackTorchs[i]->GetPosition().y + 3.0f, m_BackTorchs[i]->GetPosition().z + 3.0f }));
+				lightgroup->SetPointLightColor(i + 2, XMFLOAT3(pointLightColor));
+				lightgroup->SetPointLightAtten(i + 2, XMFLOAT3(pointLightAtten));
+			}
+		}
+	}
+
+	lightgroup->Update();
 }

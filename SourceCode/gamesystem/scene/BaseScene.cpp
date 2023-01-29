@@ -17,8 +17,6 @@ void BaseScene::NewFinish() {
 void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	// デバイスをセット
 	IKEFBXObject3d::SetDevice(dxCommon->GetDev());
-	//パーティクルマネージャー
-	//particleMan = ParticleManager::GetInstance();
 	// グラフィックスパイプライン生成
 	IKEFBXObject3d::CreateGraphicsPipeline();
 	// カメラ生成
@@ -40,7 +38,6 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	IKEObject3d::SetLightGroup(lightGroup);
 	ParticleManager::SetCamera(camera);
 	ParticleEmitter::GetInstance()->AllDelete();
-	//ParticleManager::GetInstance()->Update();
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
@@ -78,7 +75,6 @@ void BaseScene::PauseInitialize() {
 	//スキルセット
 	skillpause->SetPlayer(player);
 	skillpause->Initialize();
-	//skillpause->InitPos();
 	//ミニマップ
 	minimap->Initialize();
 	minimap->SetPlayer(player);
@@ -108,8 +104,6 @@ void BaseScene::HelperInitialize() {
 void BaseScene::BackObjInitialize() {
 	//宝箱
 	chest->SetPlayer(player);
-	//背景obj
-	backlight->Initialize();
 }
 //ゲームの始まり
 void BaseScene::StartGame() {
@@ -121,8 +115,8 @@ void BaseScene::StartGame() {
 		minimap->InitMap(tutorialmap, StageNumber);
 		PlayerSkill::GetInstance()->ResetSkill();
 		skillpause->ResetSkillPause();
-		enemymanager->LoadEnemyParam(TutoRial,player,block);
-		backmanager->LoadObjParam(TutoRial,player);
+		enemymanager->LoadEnemyParam(TutoRial,player,block, lightGroup);
+		backmanager->LoadObjParam(TutoRial,player, lightGroup);
 	}
 	//ロードした場合
 	else {

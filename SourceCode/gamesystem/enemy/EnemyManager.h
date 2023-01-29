@@ -9,6 +9,8 @@
 #include "Chest.h"
 #include "Pause.h"
 #include "EnemyEdit.h"
+#include "PlayerSoul.h"
+#include "LightGroup.h"
 //敵の管理をまとめたクラス
 class EnemyManager {
 protected:
@@ -38,7 +40,7 @@ public:
 	//csvかきこみ
 	void SaveEnemyParam(const int StageNumber);
 	//csvよびだし
-	void LoadEnemyParam(const int StageNumber,Player* player,Block* block);
+	void LoadEnemyParam(const int StageNumber,Player* player,Block* block, LightGroup* light);
 	//敵の生成(トゲ以外)
 	void EnemyBirth(int EnemyType, Player* player, Block* block);
 	//棘生成
@@ -64,11 +66,33 @@ public:
 	void DeleteEnemyPop(int Type);
 	//棘の敵の一要素削除
 	void DeleteThornPop();
+	//ライトのセット
+	void LightSet(const int StageNumber, LightGroup* light);
+	//魂のセット
+	void SoulSet(Player* player, Block* block);
+	//魂の更新
+	void SoulUpdate();
+	//魂の描画
+	void SoulDraw();
+protected:
+	//定数
+	static const int Soul_Max = 3;//ソウルの最大数
+	static const int Enemy_Max = 20;//敵の最大数
 private:
 	//クラス
 	unique_ptr<Pause> pause = nullptr;
 	unique_ptr<Chest> chest = nullptr;
 	EnemyEdit* enemyedit = nullptr;
+	LightGroup* lightgroup = nullptr;
+	//魂クラス
+	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
+	//丸影
+	float circleShadowDir[3] = { 0,-1,0 };
+	float circleShadowPos[3] = { 1,2,0 };
+	float circleShadowAtten[3] = { 0.5f,0.6f,0.0f };
+	float circleShadowFactorAngle[2] = { 0.0f, 0.8f };
 	//ザコ敵
 	std::vector<InterEnemy*> m_Enemys;
 	std::vector<InterEnemy*> m_ThornEnemys;
