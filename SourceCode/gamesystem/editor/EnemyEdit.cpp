@@ -3,6 +3,7 @@
 #include "ThornEnemy.h"
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
+#include "FollowEnemy.h"
 //’Êí‚Ì“G‚Ì¶¬
 void EnemyEdit::NormalEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
 	Block* block){
@@ -48,4 +49,14 @@ void EnemyEdit::BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player
 	newBirdEnemy->SetPosition(player->GetPosition());
 	newBirdEnemy->SetStartPos(player->GetPosition());
 	enemy.push_back(newBirdEnemy);
+}
+//’Ç]‚Ì“G‚Ì¶¬
+void EnemyEdit::FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player) {
+	InterEnemy* newFollowEnemy;
+	newFollowEnemy = new FollowEnemy();
+	newFollowEnemy->Initialize();
+	newFollowEnemy->SetPlayer(player);
+	newFollowEnemy->SetThornPos(player->GetPosition().y - 5.0f);
+	newFollowEnemy->SetPosition({ player->GetPosition().x, 0.0f, player->GetPosition().z });
+	enemy.push_back(newFollowEnemy);
 }

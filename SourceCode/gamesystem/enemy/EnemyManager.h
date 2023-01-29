@@ -3,6 +3,7 @@
 #include "ThornEnemy.h"
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
+#include "FollowEnemy.h"
 #include "ThornObj.h"
 #include "Block.h"
 #include "Player.h"
@@ -33,6 +34,8 @@ public:
 	void BoundEnemySpecity(const char* vsShaderName);
 	//’¹‚Ì“G
 	void BirdEnemySpecity(const char* vsShaderName);
+	//’Ç]‚Ì“G
+	void FollowEnemySpecity(const char* vsShaderName);
 	//™‚ÌOBJ
 	void ThornObjSpecity(const char* vsShaderName);
 	//csvŠJ‚­
@@ -98,22 +101,26 @@ private:
 	std::vector<InterEnemy*> m_ThornEnemys;
 	std::vector<InterEnemy*> m_BoundEnemys;
 	std::vector<InterEnemy*> m_BirdEnemys;
+	std::vector<InterEnemy*> m_FollowEnemys;
 	std::vector<ThornObj*> m_ThornObjs;
 
 	int m_NormalEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_BoundEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_BirdEnemyCount = 0;//ƒUƒR“G‚Ì”
+	int m_FollowEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_ThornObjCount = 0;//ƒUƒR“G‚Ì”
 	int m_EnemyCount = 0;
 	std::vector<XMFLOAT3>m_EnemyPosition;
 	std::vector<XMFLOAT3>m_ThornEnemyPosition;
 	std::vector<XMFLOAT3>m_BoundEnemyPosition;
 	std::vector<XMFLOAT3>m_BirdEnemyPosition;
+	std::vector<XMFLOAT3>m_FollowEnemyPosition;
 	std::vector<XMFLOAT3>m_ThornObjPosition;
 	std::vector<XMFLOAT3> m_EnemyStartPos;
 	std::vector<XMFLOAT3> m_ThornEnemyStartPos;
 	std::vector<XMFLOAT3> m_BoundEnemyStartPos;
 	std::vector<XMFLOAT3> m_BirdEnemyStartPos;
+	std::vector<XMFLOAT3> m_FollowEnemyStartPos;
 	std::vector<XMFLOAT3>m_ThornObjStartPos;
 	std::vector<float> m_EnemyAngle;
 	std::vector<float> m_SetThornEnemyPosY;
@@ -137,6 +144,10 @@ private:
 	std::ifstream m_BirdEnemyFile;
 	std::stringstream m_BirdEnemyPopcom;
 	std::string m_BirdEnemyLine;
+	//’Ç]‚Ì“G
+	std::ifstream m_FollowEnemyFile;
+	std::stringstream m_FollowEnemyPopcom;
+	std::string m_FollowEnemyLine;
 	//™‚ÌOBJ
 	std::ifstream m_ThornObjFile;
 	std::stringstream m_ThornObjPopcom;
@@ -146,6 +157,7 @@ private:
 	int m_ThornEnemy_Num;
 	int m_BoundEnemy_Num;
 	int m_BirdEnemy_Num;
+	int m_FollowEnemy_Num;
 	int m_ThornObj_Num;
 
 	//™‚ÌŒü‚«

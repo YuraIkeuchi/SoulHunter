@@ -287,6 +287,7 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\EnemyManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\enemy\FollowEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornObj.cpp" />
@@ -415,6 +416,7 @@
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\EnemyManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\enemy\FollowEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornObj.h" />
