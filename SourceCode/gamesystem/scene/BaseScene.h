@@ -4,10 +4,6 @@
 #include "DirectXCommon.h"
 #include "PostEffect.h"
 #include "ParticleManager.h"
-#include "Enemy.h"
-#include "ThornEnemy.h"
-#include "BirdEnemy.h"
-#include "BoundEnemy.h"
 #include "ResPornEnemy.h"
 #include "Save.h"
 #include "UI.h"
@@ -26,7 +22,7 @@
 #include "BackLight.h"
 #include "TutorialText.h"
 #include "VolumManager.h"
-#include "ThornObj.h"
+#include "EnemyManager.h"
 #include "CameraWork.h"
 #include "SceneChange.h"
 #include "FPSManager.h"
@@ -78,23 +74,6 @@ public:
 	void BackObjInitialize();
 	//ƒQ[ƒ€‚Ìn‚Ü‚è
 	void StartGame();
-	//csvŠÖŒW(“G)
-	//•’Ê‚Ì“G
-	void NormalEnemySpecity(const char* vsShaderName);
-	//™‚Ì“G
-	void ThornEnemySpecity(const char* vsShaderName);
-	//‰H‚Ì“G
-	void BoundEnemySpecity(const char* vsShaderName);
-	//’¹‚Ì“G
-	void BirdEnemySpecity(const char* vsShaderName);
-	//™‚ÌOBJ
-	void ThornObjSpecity(const char* vsShaderName);
-	//csvŠJ‚­
-	void OpenEnemyParam(const int StageNumber);
-	//csv‚©‚«‚±‚İ
-	void SaveEnemyParam(const int StageNumber);
-	//csv‚æ‚Ñ‚¾‚µ
-	void LoadEnemyParam(const int StageNumber);
 	//OBJ
 	//csvŠJ‚­
 	void OpenObjParam(const int StageNumber);
@@ -112,15 +91,7 @@ public:
 	//ƒvƒŒƒCƒ„[‚ÆƒXƒe[ƒW‚Ì“Ç‚İ‘‚«
 	void SaveGame();
 	void LoadGame();
-	void ReloadEnemy();
-	//“G‚ÌXV
-	void EnemyUpdate(std::vector<InterEnemy*> m_Enemys);
-	//“G‚Ì•`‰æ(‘O
-	void EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* dxCommon);
-	//“G‚Ì•`‰æ(‘O
-	void EnemyMapDraw(std::vector<InterEnemy*> m_Enemys);
-	//“G‚Ì‰ğ•ú
-	void EnemyFinalize(std::vector<InterEnemy*> m_Enemys);
+	
 	//”wŒiOBj‚ÌXV
 	void BackObjUpdate(std::vector<BackObjCommon*> objs);
 	//”wŒiOBJ‚Ì•`‰æ
@@ -196,48 +167,15 @@ public:
 	//ƒGƒtƒFƒNƒgŠÖŒW
 	IKESprite* BlackFilter = nullptr;
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
-	//ƒGƒfƒBƒ^ŠÖŒW
+	//“G‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+	EnemyManager* enemymanager = nullptr;
 
 	//“G‚ğ“®‚©‚·‚©‚Ç‚¤‚©
 	bool m_MoveEnemy = false;
 
-	//ƒUƒR“G
-	std::vector<InterEnemy*> m_Enemys;
-	std::vector<InterEnemy*> m_ThornEnemys;
-	std::vector<InterEnemy*> m_BoundEnemys;
-	std::vector<InterEnemy*> m_BirdEnemys;
-	std::vector<ThornObj*> m_ThornObjs;
-
-	//“G‚Ìí—Ş
-	enum EnemyType {
-		Normal,
-		Thorn,
-		Bound,
-		Bird,
-	};
-	int m_NormalEnemyCount = 0;//ƒUƒR“G‚Ì”
-	int m_BoundEnemyCount = 0;//ƒUƒR“G‚Ì”
-	int m_BirdEnemyCount = 0;//ƒUƒR“G‚Ì”
-	int m_ThornObjCount = 0;//ƒUƒR“G‚Ì”
-	int m_EnemyCount = 0;
-	int StartStage;
-	std::vector<XMFLOAT3>m_EnemyPosition;
-	std::vector<XMFLOAT3>m_ThornEnemyPosition;
-	std::vector<XMFLOAT3>m_BoundEnemyPosition;
-	std::vector<XMFLOAT3>m_BirdEnemyPosition;
-	std::vector<XMFLOAT3>m_ThornObjPosition;
-	std::vector<XMFLOAT3> m_EnemyStartPos;
-	std::vector<XMFLOAT3> m_ThornEnemyStartPos;
-	std::vector<XMFLOAT3> m_BoundEnemyStartPos;
-	std::vector<XMFLOAT3> m_BirdEnemyStartPos;
-	std::vector<XMFLOAT3>m_ThornObjStartPos;
-	std::vector<float> m_EnemyAngle;
-	std::vector<float> m_SetThornEnemyPosY;
-	std::vector<XMFLOAT3> m_SetThornObjPos;
-	std::vector<int> m_SetThornObjDir;
-	std::vector<int> m_SetThornObjTargetTimer;
 	XMFLOAT3 m_PlayerStartPos;
 
+	int StartStage;
 	//ƒXƒe[ƒW
 	bool StageChange = true;
 	int StageNumber = 7;
@@ -300,26 +238,7 @@ public:
 	bool m_ObjSave = false;
 	bool m_ObjLoad = false;
 	static bool m_GameLoad;
-	//•’Ê‚Ì“G
-	std::ifstream m_EnemyFile;
-	std::stringstream m_EnemyPopcom;
-	std::string m_EnemyLine;
-	//™‚Ì“G
-	std::ifstream m_ThornEnemyFile;
-	std::stringstream m_ThornEnemyPopcom;
-	std::string m_ThornEnemyLine;
-	//‰H‚Ì“G
-	std::ifstream m_BoundEnemyFile;
-	std::stringstream m_BoundEnemyPopcom;
-	std::string m_BoundEnemyLine;
-	//’¹‚Ì“G
-	std::ifstream m_BirdEnemyFile;
-	std::stringstream m_BirdEnemyPopcom;
-	std::string m_BirdEnemyLine;
-	//™‚ÌOBJ
-	std::ifstream m_ThornObjFile;
-	std::stringstream m_ThornObjPopcom;
-	std::string m_ThornObjLine;
+
 	//”wŒi‚ÌOBJ
 	std::ifstream m_BackObjFile;
 	std::stringstream m_BackObjPopcom;
@@ -343,23 +262,13 @@ public:
 	std::ifstream m_GameFile;
 	std::stringstream m_GamePopcom;
 	std::string m_GameLine;
-	int m_Enemy_Num;
-	int m_ThornEnemy_Num;
-	int m_BoundEnemy_Num;
-	int m_BirdEnemy_Num;
-	int m_ThornObj_Num;
+
 	int m_BackObj_Num;
 	int m_BackRock_Num;
 	int m_BackBox_Num;
 	int m_BackTorch_Num;
 	int m_BackAlways_Num;
-	//™‚ÌŒü‚«
-	enum ThornDir {
-		Up,
-		Down,
-		Right,
-		Left
-	};
+
 
 	//ƒQ[ƒ€‚Ìƒ€[ƒr[
 	int m_AppTimer = 0;

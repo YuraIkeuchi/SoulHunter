@@ -408,6 +408,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerHealEffect.cpp">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\EnemyManager.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -781,6 +784,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerHealEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\EnemyManager.h">
+      <Filter>SourceCords\gamesystem\enemy\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
