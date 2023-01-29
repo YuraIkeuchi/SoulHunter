@@ -53,8 +53,4 @@ private:
 	unique_ptr<BossStagObj> bossstagobj = nullptr;
 	//ボス登場シーンの画面暗転
 	unique_ptr<BossSceneChange> bossscenechange = nullptr;
-	//魂クラス
-	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
 };

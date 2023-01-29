@@ -15,9 +15,11 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	pause = new Pause();
 	mapchange = new MapChange();
 	save = new Save();
-	backlight = new BackLight();
+
 	chest = new Chest();
 	camerawork = new CameraWork();
+	enemymanager = new EnemyManager();
+	backmanager = new BackObjManager();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(false);
 	//‹¤’Ê‚Ì‰Šú‰»
@@ -39,15 +41,15 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-	enemyedit = new EnemyEdit();
-	objedit = new ObjEdit();
 	//ƒ‰ƒCƒg
 	spotLightDir[0] = 0;
 	spotLightDir[1] = 0;
 	spotLightDir[2] = 1;
 	StartGame();
-	LoadEnemyParam(StageNumber);
-	LoadObjParam(StageNumber);
+	enemymanager->SetPause(pause);
+	enemymanager->SetChest(chest);
+	enemymanager->LoadEnemyParam(StageNumber,player,block,lightGroup);
+	backmanager->LoadObjParam(StageNumber,player,lightGroup);
 	BGMStart = true;
 
 	//ƒGƒfƒBƒ^ƒ‚[ƒh‚ÍÅ‰‚Í“G‚ðŽ~‚ß‚é
@@ -72,36 +74,32 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	//ƒGƒfƒBƒ^Žž‚ÍHP‚ªŒ¸‚ç‚È‚¢
-	player->SetHP(5);
-	
+	player->SetHP(5);	
 	//ƒ}ƒbƒv‚Ì“Ç‚Ýž‚Ý
 	MapInitialize();
-	
 	//“G‚ÌˆÊ’uƒZ[ƒu
 	if (m_EditorSave) {
-		OpenEnemyParam(StageNumber);
-		SaveEnemyParam(StageNumber);
+		enemymanager->OpenEnemyParam(StageNumber);
+		enemymanager->SaveEnemyParam(StageNumber);
 		m_EditorSave = false;
 	}
 
 	//“G‚ÌˆÊ’uƒ[ƒh
 	if (m_EditorLoad) {
-		//OpenEnemyParam(StageNumber);
-		LoadEnemyParam(StageNumber);
+		enemymanager->LoadEnemyParam(StageNumber,player,block, lightGroup);
 		m_EditorLoad = false;
 	}
 
 	//”wŒiOBJ‚ÌˆÊ’uƒZ[ƒu
 	if (m_ObjSave) {
-		OpenObjParam(StageNumber);
-		SaveObjParam(StageNumber);
+		backmanager->OpenObjParam(StageNumber);
+		backmanager->SaveObjParam(StageNumber);
 		m_ObjSave = false;
 	}
 
 	//”wŒiOBJ‚ÌˆÊ’uƒ[ƒh
 	if (m_ObjLoad) {
-		//OpenEnemyParam(StageNumber);
-		LoadObjParam(StageNumber);
+		backmanager->LoadObjParam(StageNumber, player, lightGroup);
 		m_ObjLoad = false;
 	}
 
@@ -117,12 +115,12 @@ void EditorScene::Update(DirectXCommon* dxCommon)
 
 	//—v‘f‘Síœ(“G)
 	if (m_EnemyDelete) {
-		EnemyDelete();
+		enemymanager->DeleteEnemy();
 		m_EnemyDelete = false;
 	}
 	//—v‘f‘Síœ(OBJ)
 	if (m_ObjDelete) {
-		ObjDelete();
+		backmanager->ObjDelete();
 		m_ObjDelete = false;
 	}
 }
@@ -173,32 +171,15 @@ void EditorScene::ModelDraw(DirectXCommon* dxCommon) {
 void EditorScene::BackDraw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
-	//ƒXƒe[ƒW‚Ì•`‰æ
-	for (BackObjAlways* newalways : m_BackObjAlways) {
-		if (newalways != nullptr) {
-			newalways->Draw(dxCommon);
-		}
-	}
+	backmanager->AlwaysDraw(dxCommon);
 	block->Draw(m_PlayerPos);
 	if (StageNumber != BossMap) {
-		BackObjDraw(m_BackRocks, dxCommon);
-		BackObjDraw(m_BackBoxs, dxCommon);
-		BackObjDraw(m_BackTorchs, dxCommon);
+		backmanager->Draw(dxCommon);
 	}
-	backlight->Draw();
 	save->Draw();
 	//“G‚Ì•`‰æ
-	EnemyDraw(m_Enemys, dxCommon);
-	EnemyDraw(m_ThornEnemys, dxCommon);
-	EnemyDraw(m_BoundEnemys, dxCommon);
-	EnemyDraw(m_BirdEnemys, dxCommon);
+	enemymanager->Draw(dxCommon);
 
-	//ž™‚ÌOBJ
-	for (ThornObj* thornobj : m_ThornObjs) {
-		if (thornobj != nullptr) {
-			thornobj->Draw(dxCommon);
-		}
-	}
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->Draw();
 	}
@@ -217,19 +198,14 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 }
 //ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ª‚©‚©‚ç‚È‚¢
 void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
-
 	IKEObject3d::PreDraw();
-
 	IKESprite::PreDraw();
 	ui->Draw();
 	mapchange->Draw();
 	pause->Draw();
 	chest->ExplainDraw();
 	scenechange->Draw();
-	EnemyMapDraw(m_Enemys);
-	EnemyMapDraw(m_ThornEnemys);
-	EnemyMapDraw(m_BoundEnemys);
-	EnemyMapDraw(m_BirdEnemys);
+	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
 	IKESprite::PostDraw();
 #pragma endregion
 }
@@ -322,11 +298,7 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::SetWindowSize(ImVec2(280, 150));
 		if (ImGui::Button("EnemySave", ImVec2(90, 50))) {
 			m_EditorSave = true;
-			m_Enemy_Num = m_NormalEnemyCount;
-			m_BoundEnemy_Num = m_BoundEnemyCount;
-			m_BirdEnemy_Num = m_BirdEnemyCount;
-			m_ThornObj_Num = m_ThornObjCount;
-
+			enemymanager->SaveNum();
 		}
 		if (ImGui::Button("EnemyLoad", ImVec2(90, 50))) {
 			m_EditorLoad = true;
@@ -334,7 +306,7 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 
 		if (ImGui::Button("OBJSave", ImVec2(90, 50))) {
 			m_ObjSave = true;
-			m_BackObj_Num = m_BackObjCount;
+			backmanager->SaveNum();
 		}
 		if (ImGui::Button("OBJLoad", ImVec2(90, 50))) {
 			m_ObjLoad = true;
@@ -347,8 +319,8 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 //ƒ}ƒbƒv‚Ì“Ç‚Ýž‚Ý‚Æ‚»‚ê‚É‡‚í‚¹‚½‰Šú‰»
 void EditorScene::MapInitialize() {
 	if (StageChange) {
-		EnemyDelete();
-		ObjDelete();
+		enemymanager->DeleteEnemy();
+		backmanager->ObjDelete();
 		switch (StageNumber)
 		{
 		case Map1:
@@ -382,9 +354,9 @@ void EditorScene::MapInitialize() {
 		for (int i = 0; i < tutorialtext.size(); i++) {
 			tutorialtext[i]->InitBoard(StageNumber, i);
 		}
-		LoadEnemyParam(StageNumber);
-		LoadObjParam(StageNumber);
-		LoadBackObjAlways(StageNumber);
+		enemymanager->LoadEnemyParam(StageNumber,player,block, lightGroup);
+		backmanager->LoadObjParam(StageNumber, player, lightGroup);
+		backmanager->LoadBackObjAlways(StageNumber);
 		chest->InitChest(StageNumber);
 		StageChange = false;
 		player->SetGoalDir(0);
@@ -398,25 +370,6 @@ void EditorScene::StageMapChange(int StageNumber) {
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->InitBoard(StageNumber, i);
 	}
-}
-//—v‘f‘Síœ(“G)
-void EditorScene::EnemyDelete() {
-	m_Enemys.clear();
-	m_ThornEnemys.clear();
-	m_BoundEnemys.clear();
-	m_BirdEnemys.clear();
-	m_ThornObjs.clear();
-	m_NormalEnemyCount = 0;
-	m_ThornObjCount = 0;
-	m_BoundEnemyCount = 0;
-	m_EnemyCount = 0;
-}
-//—v‘f‘Síœ(”wŒiOBJ)
-void EditorScene::ObjDelete() {
-	m_BackRocks.clear();
-	m_BackBoxs.clear();
-	m_BackTorchs.clear();
-	m_BackObjCount = 0;
 }
 //ƒQ[ƒ€ƒf[ƒ^‚ÌƒZ[ƒu(ˆÊ’u‚Æƒ}ƒbƒv”Ô†)
 void EditorScene::SaveGame() {
@@ -525,46 +478,15 @@ void EditorScene::AllUpdate() {
 	}
 
 	//Ý’u‚µ‚½“G‚ÌXV
-		//•’Ê‚Ì“G
-	EnemyUpdate(m_Enemys);
-	//ž™‚Ì“G
-	EnemyUpdate(m_ThornEnemys);
-	//‰H‚Ì“G
-	EnemyUpdate(m_BoundEnemys);
-	//’¹‚Ì“G
-	EnemyUpdate(m_BirdEnemys);
-	//ž™‚ÌOBJ
-	for (ThornObj* thornobj : m_ThornObjs) {
-		if (thornobj != nullptr) {
-			if (!pause->GetIsPause() && !chest->GetExplain()) {
-				thornobj->Update();
-			}
-			else {
-				thornobj->Pause();
-			}
-		}
-	}
-	//’Œ
-	BackObjUpdate(m_BackRocks);
-	//Šâ
-	BackObjUpdate(m_BackBoxs);
-	//¼–¾
-	BackObjUpdate(m_BackTorchs);
-	//”wŒi‚ÌŠâ
-	for (BackObjAlways* newalways : m_BackObjAlways) {
-		if (newalways != nullptr) {
-			newalways->Update();
-		}
-	}
-
+	enemymanager->Update(m_MoveEnemy);
+	backmanager->Update();
+	
 	for (int i = 0; i < tutorialtext.size(); i++) {
 		tutorialtext[i]->Update(i);
-
 	}
 
 	//‚»‚Ì‘¼‚ÌXV
 	ParticleEmitter::GetInstance()->Update();
-	backlight->Update();
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
@@ -585,65 +507,14 @@ void EditorScene::LightSet() {
 	lightGroup->SetPointLightColor(1, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(1, XMFLOAT3(pointLightAtten));
 
-	for (BackObjCommon* torch : m_BackTorchs) {
-		for (int i = 0; i < m_BackTorch_Num; i++) {
-			if (torch != nullptr) {
-				lightGroup->SetPointLightPos(i + 2, XMFLOAT3({ m_BackTorchs[i]->GetPosition().x, m_BackTorchs[i]->GetPosition().y + 3.0f, m_BackTorchs[i]->GetPosition().z + 3.0f }));
-				lightGroup->SetPointLightColor(i + 2, XMFLOAT3(pointLightColor));
-				lightGroup->SetPointLightAtten(i + 2, XMFLOAT3(pointLightAtten));
-			}
-		}
-	}
-
 	//ŠÛ‰e
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ player->GetPosition().x, player->GetPosition().y, player->GetPosition().z }));
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	for (InterEnemy* enemy : m_Enemys) {
-		for (int i = 0; i < m_Enemy_Num; i++) {
-			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ m_Enemys[i]->GetPosition().x, m_Enemys[i]->GetPosition().y, m_Enemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-			}
-		}
-	}
-
-	for (InterEnemy* enemy : m_ThornEnemys) {
-		for (int i = 0; i < m_ThornEnemy_Num; i++) {
-			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + m_Enemy_Num, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + m_Enemy_Num, XMFLOAT3({ m_ThornEnemys[i]->GetPosition().x,  m_ThornEnemys[i]->GetPosition().y,  m_ThornEnemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + m_Enemy_Num, XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + m_Enemy_Num, XMFLOAT2(circleShadowFactorAngle));
-			}
-		}
-	}
-
-	for (InterEnemy* enemy : m_BoundEnemys) {
-		for (int i = 0; i < m_BoundEnemy_Num; i++) {
-			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3({ m_BoundEnemys[i]->GetPosition().x,  m_BoundEnemys[i]->GetPosition().y,  m_BoundEnemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
-			}
-		}
-	}
-
-	for (InterEnemy* enemy : m_BirdEnemys) {
-		for (int i = 0; i < m_BirdEnemy_Num; i++) {
-			if (enemy != nullptr) {
-				lightGroup->SetCircleShadowDir(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightGroup->SetCircleShadowCasterPos(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3({ m_BirdEnemys[i]->GetPosition().x, m_BirdEnemys[i]->GetPosition().y,  m_BirdEnemys[i]->GetPosition().z }));
-				lightGroup->SetCircleShadowAtten(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT3(circleShadowAtten));
-				lightGroup->SetCircleShadowFactorAngle(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), XMFLOAT2(circleShadowFactorAngle));
-			}
-		}
-	}
+	enemymanager->LightSet(StageNumber, lightGroup);
+	backmanager->LightSet(StageNumber,lightGroup);
 }
 //ƒV[ƒ“•ÏX‚È‚Ç
 void EditorScene::ChangeUpdate() {
@@ -698,102 +569,82 @@ void EditorScene::EditorUpdate() {
 	if (imguieditor->GetEnemyArgment()) {
 		//•’Ê
 		if (imguieditor->GetEnemyType() == Normal) {
-			enemyedit->NormalEnemyArgment(m_Enemys, player, block);
-			m_NormalEnemyCount++;
+			enemymanager->EnemyBirth(Normal, player, block);
 		}
 		//ž™‚Ì‚â‚Â
 		else if (imguieditor->GetEnemyType() == Thorn) {
-			enemyedit->ThornEnemyArgment(m_ThornEnemys, player);
+			enemymanager->EnemyBirth(Thorn, player, block);
 		}
 		//‰H‚Ì“G
 		else if (imguieditor->GetEnemyType() == Bound) {
-			enemyedit->BoundEnemyArgment(m_BoundEnemys, player,block);
-			m_BoundEnemyCount++;
+			enemymanager->EnemyBirth(Bound, player, block);
 		}
 		//’¹‚Ì“G
 		else {
-			enemyedit->BirdEnemyArgment(m_BirdEnemys, player,block);
-			m_BirdEnemyCount++;
+			enemymanager->EnemyBirth(Bird, player, block);
 		}
 		imguieditor->SetEnemyArgment(false);
 	}
 	//ž™‚Ì‚â‚Â(OBJ)
 	if (imguieditor->GetThornObjArgment()) {
-		ThornObj* newThornObj;
-		newThornObj = new ThornObj();
-		newThornObj->Initialize();
-		newThornObj->SetPlayer(player);
-		newThornObj->SetDir(imguieditor->GetThornDir());
-		newThornObj->SetThornObjPos(player->GetPosition());
-		newThornObj->SetPosition(player->GetPosition());
-		m_ThornObjs.push_back(newThornObj);
-		m_ThornObjCount++;
+		enemymanager->ThornBirth(imguieditor->GetThornObjArgment(),player,imguieditor->GetThornDir());
+	
 		imguieditor->SetThornObjArgment(false);
 	}
 	//”wŒiobj‚Ì¶¬
 	if (imguieditor->GetBackObjArgment()) {
 		//’Œ
 		if (imguieditor->GetBackObjType() == Rock) {
-			m_BackObjCount++;
-			objedit->RockArgment(m_BackRocks, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+			backmanager->ObjBirth(Rock, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//Šâ
 		else if (imguieditor->GetBackObjType() == Box) {
-			m_BackObjCount++;
-			objedit->BoxArgment(m_BackBoxs, player, imguieditor->GetPosition(),imguieditor->GetRotation());
+			backmanager->ObjBirth(Box, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//¼–¾
 		else {
-			m_BackObjCount++;
-			objedit->TorchArgment(m_BackTorchs, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+			backmanager->ObjBirth(Torch, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		imguieditor->SetBackObjArgment(false);
 	}
 	//ƒGƒlƒ~[‚Ìíœ
 	//•’Ê
 	if (imguieditor->GetEnemyDelete()) {
-		if (imguieditor->GetEnemyType() == Normal && m_Enemys.size() > 0) {
-			m_Enemys.pop_back();
-			m_NormalEnemyCount--;
+		if (imguieditor->GetEnemyType() == Normal) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		//‚Æ‚°
-		else if (imguieditor->GetEnemyType() == Thorn && m_ThornEnemys.size() > 0) {
-			m_ThornEnemys.pop_back();
+		else if (imguieditor->GetEnemyType() == Thorn) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		//‰H
-		else if (imguieditor->GetEnemyType() == Bound && m_BoundEnemys.size() > 0) {
-			m_BoundEnemys.pop_back();
-			m_BoundEnemyCount--;
+		else if (imguieditor->GetEnemyType() == Bound) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		//’¹
-		else if (imguieditor->GetEnemyType() == Bird && m_BirdEnemys.size() > 0) {
-			m_BirdEnemys.pop_back();
-			m_BirdEnemyCount--;
+		else if (imguieditor->GetEnemyType() == Bird) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		imguieditor->SetEnemyDelete(false);
 	}
 	//‚Æ‚°(OBJ)
-	if (imguieditor->GetDeleteThornObj() && m_ThornObjs.size() > 0) {
-		m_ThornObjs.pop_back();
-		m_ThornObjCount--;
+	if (imguieditor->GetDeleteThornObj()) {
+		enemymanager->DeleteThornPop();
 		imguieditor->SetDeleteThornObj(false);
 	}
 	//obj‚Ìíœ
 	if (imguieditor->GetBackObjDelete()) {
 		//’Œ
-		if (imguieditor->GetBackObjType() == Rock && m_BackRocks.size() > 0) {
-			m_BackRocks.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Rock) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//Šâ
-		if (imguieditor->GetBackObjType() == Box && m_BackBoxs.size() > 0) {
-			m_BackBoxs.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Box) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//¼–¾
-		if (imguieditor->GetBackObjType() == Torch && m_BackTorchs.size() > 0) {
-			m_BackTorchs.pop_back();
-			m_BackObjCount--;
+		if (imguieditor->GetBackObjType() == Torch) {
+			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		imguieditor->SetBackObjDelete(false);
 	}

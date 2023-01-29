@@ -53,3 +53,19 @@ enum BlendType
 	SubBlendType,
 };
 
+
+//“G‚ÌŽí—Þ
+enum EnemyType {
+	Normal,
+	Thorn,
+	Bound,
+	Bird,
+};
+
+//”wŒiOBJ‚ÌŽí—Þ
+enum BackObjType {
+	Rock,
+	Box,
+	Torch,
+};
+

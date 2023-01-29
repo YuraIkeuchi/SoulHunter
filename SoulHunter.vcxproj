@@ -260,6 +260,7 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackLight.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjAlways.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjCommon.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObjManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackRock.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackTorch.cpp" />
@@ -285,6 +286,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\enemy\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\ThornObj.cpp" />
@@ -385,6 +387,7 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackLight.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjAlways.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjCommon.h" />
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObjManager.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackRock.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackBox.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackTorch.h" />
@@ -411,6 +414,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />
+    <ClInclude Include="SourceCode\gamesystem\enemy\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\ThornObj.h" />

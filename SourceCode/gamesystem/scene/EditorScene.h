@@ -1,8 +1,6 @@
 #pragma once
 #include "BaseScene.h"
 #include "ImGuiEditor.h"
-#include "EnemyEdit.h"
-#include "ObjEdit.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
@@ -25,10 +23,6 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void PostImGuiDraw(DirectXCommon* dxCommon);
-
-	//要素全削除
-	void EnemyDelete();
-	void ObjDelete();
 	//マップの初期化
 	void MapInitialize();
 	//マップの切り替えの関数
@@ -50,7 +44,4 @@ public:
 private:
 	//エディタ
 	unique_ptr<ImGuiEditor> imguieditor;
-	EnemyEdit* enemyedit = nullptr;
-	ObjEdit* objedit = nullptr;
-
 };

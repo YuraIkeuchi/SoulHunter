@@ -4,10 +4,6 @@
 #include "DirectXCommon.h"
 #include "PostEffect.h"
 #include "ParticleManager.h"
-#include "Enemy.h"
-#include "ThornEnemy.h"
-#include "BirdEnemy.h"
-#include "BoundEnemy.h"
 #include "ResPornEnemy.h"
 #include "Save.h"
 #include "UI.h"
@@ -17,16 +13,11 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "BackObjCommon.h"
-#include "BackRock.h"
-#include "BackBox.h"
-#include "BackTorch.h"
 #include "MapChange.h"
-#include "BackObjAlways.h"
-#include "BackLight.h"
 #include "TutorialText.h"
 #include "VolumManager.h"
-#include "ThornObj.h"
+#include "EnemyManager.h"
+#include "BackObjManager.h"
 #include "CameraWork.h"
 #include "SceneChange.h"
 #include "FPSManager.h"
@@ -78,54 +69,10 @@ public:
 	void BackObjInitialize();
 	//ゲームの始まり
 	void StartGame();
-	//csv関係(敵)
-	//普通の敵
-	void NormalEnemySpecity(const char* vsShaderName);
-	//棘の敵
-	void ThornEnemySpecity(const char* vsShaderName);
-	//羽の敵
-	void BoundEnemySpecity(const char* vsShaderName);
-	//鳥の敵
-	void BirdEnemySpecity(const char* vsShaderName);
-	//棘のOBJ
-	void ThornObjSpecity(const char* vsShaderName);
-	//csv開く
-	void OpenEnemyParam(const int StageNumber);
-	//csvかきこみ
-	void SaveEnemyParam(const int StageNumber);
-	//csvよびだし
-	void LoadEnemyParam(const int StageNumber);
-	//OBJ
-	//csv開く
-	void OpenObjParam(const int StageNumber);
-	//csvかきこみ
-	void SaveObjParam(const int StageNumber);
-	//CSV指定
-	void ObjSpecity(const char* vsShaderName);
-	//csvよびだし
-	void LoadObjParam(const int StageNumber);
-	//共通の背景
-	//csv開く
-	void OpenBackObjAlwaysParam(const int StageNumber);
-	//csV呼び出し
-	void LoadBackObjAlways(const int StageNumber);
 	//プレイヤーとステージの読み書き
 	void SaveGame();
 	void LoadGame();
-	void ReloadEnemy();
-	//敵の更新
-	void EnemyUpdate(std::vector<InterEnemy*> m_Enemys);
-	//敵の描画(前
-	void EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* dxCommon);
-	//敵の描画(前
-	void EnemyMapDraw(std::vector<InterEnemy*> m_Enemys);
-	//敵の解放
-	void EnemyFinalize(std::vector<InterEnemy*> m_Enemys);
-	//背景OBjの更新
-	void BackObjUpdate(std::vector<BackObjCommon*> objs);
-	//背景OBJの描画
-	void BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon* dxCommon);
-	
+
 protected:
 	//定数
 	static const int Soul_Max = 3;//ソウルの最大数
@@ -160,6 +107,11 @@ public:
 	std::vector<std::vector<int>> map6; //マップチップ(6マップ)
 	std::vector<std::vector<int>> bossmap; //マップチップ(ボスマップ)
 	std::vector<std::vector<int>> tutorialmap; //マップチップ(チュートリアル)
+
+	//ゲームデータ
+	std::ifstream m_GameFile;
+	std::stringstream m_GamePopcom;
+	std::string m_GameLine;
 
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
@@ -196,67 +148,17 @@ public:
 	//エフェクト関係
 	IKESprite* BlackFilter = nullptr;
 	XMFLOAT4 BlackColor = { 0.0f,0.0f,0.0f,0.0f };
-	//エディタ関係
-
+	//敵を管理するクラス
+	EnemyManager* enemymanager = nullptr;
+	//背景OBJを管理するクラス
+	BackObjManager* backmanager = nullptr;
 	//敵を動かすかどうか
 	bool m_MoveEnemy = false;
-
-	//ザコ敵
-	std::vector<InterEnemy*> m_Enemys;
-	std::vector<InterEnemy*> m_ThornEnemys;
-	std::vector<InterEnemy*> m_BoundEnemys;
-	std::vector<InterEnemy*> m_BirdEnemys;
-	std::vector<ThornObj*> m_ThornObjs;
-
-	//敵の種類
-	enum EnemyType {
-		Normal,
-		Thorn,
-		Bound,
-		Bird,
-	};
-	int m_NormalEnemyCount = 0;//ザコ敵の数
-	int m_BoundEnemyCount = 0;//ザコ敵の数
-	int m_BirdEnemyCount = 0;//ザコ敵の数
-	int m_ThornObjCount = 0;//ザコ敵の数
-	int m_EnemyCount = 0;
-	int StartStage;
-	std::vector<XMFLOAT3>m_EnemyPosition;
-	std::vector<XMFLOAT3>m_ThornEnemyPosition;
-	std::vector<XMFLOAT3>m_BoundEnemyPosition;
-	std::vector<XMFLOAT3>m_BirdEnemyPosition;
-	std::vector<XMFLOAT3>m_ThornObjPosition;
-	std::vector<XMFLOAT3> m_EnemyStartPos;
-	std::vector<XMFLOAT3> m_ThornEnemyStartPos;
-	std::vector<XMFLOAT3> m_BoundEnemyStartPos;
-	std::vector<XMFLOAT3> m_BirdEnemyStartPos;
-	std::vector<XMFLOAT3>m_ThornObjStartPos;
-	std::vector<float> m_EnemyAngle;
-	std::vector<float> m_SetThornEnemyPosY;
-	std::vector<XMFLOAT3> m_SetThornObjPos;
-	std::vector<int> m_SetThornObjDir;
-	std::vector<int> m_SetThornObjTargetTimer;
 	XMFLOAT3 m_PlayerStartPos;
-
+	int StartStage;
 	//ステージ
 	bool StageChange = true;
 	int StageNumber = 7;
-
-	//OBJ
-	//背景pbj
-	//柱
-	std::vector<BackObjCommon*> m_BackRocks;
-	//岩
-	std::vector<BackObjCommon*> m_BackBoxs;
-	//松明
-	std::vector<BackObjCommon*> m_BackTorchs;
-	//背景OBJの種類
-	enum BackObjType {
-		Rock,
-		Box,
-		Torch,
-	};
-	int m_BackObjCount = 0;//ザコ敵の数
 	//newを最初の一回だけにしたい
 	static bool s_New;
 	//BGMスタート
@@ -270,8 +172,6 @@ public:
 	static Block* block;
 	//ポストエフェクト指定
 	PostEffect* postEffect = nullptr;
-	
-	//ヒットストップ
 	//シーン遷移のためのもの
 	SceneChange* scenechange = nullptr;
 	MapChange* mapchange = nullptr;
@@ -284,9 +184,6 @@ public:
 	Option* option = nullptr;
 	//宝箱
 	Chest* chest = nullptr;
-	//背景のobj
-	std::vector<BackObjAlways*> m_BackObjAlways;
-	BackLight* backlight = nullptr;
 	//UI関係
 	UI* ui = nullptr;
 	//チュートリアルのテキスト
@@ -300,66 +197,6 @@ public:
 	bool m_ObjSave = false;
 	bool m_ObjLoad = false;
 	static bool m_GameLoad;
-	//普通の敵
-	std::ifstream m_EnemyFile;
-	std::stringstream m_EnemyPopcom;
-	std::string m_EnemyLine;
-	//棘の敵
-	std::ifstream m_ThornEnemyFile;
-	std::stringstream m_ThornEnemyPopcom;
-	std::string m_ThornEnemyLine;
-	//羽の敵
-	std::ifstream m_BoundEnemyFile;
-	std::stringstream m_BoundEnemyPopcom;
-	std::string m_BoundEnemyLine;
-	//鳥の敵
-	std::ifstream m_BirdEnemyFile;
-	std::stringstream m_BirdEnemyPopcom;
-	std::string m_BirdEnemyLine;
-	//棘のOBJ
-	std::ifstream m_ThornObjFile;
-	std::stringstream m_ThornObjPopcom;
-	std::string m_ThornObjLine;
-	//背景のOBJ
-	std::ifstream m_BackObjFile;
-	std::stringstream m_BackObjPopcom;
-	std::string m_BackObjLine;
-
-	std::vector<XMFLOAT3> m_BackRockStartPos;
-	std::vector<XMFLOAT3> m_BackBoxStartPos;
-	std::vector<XMFLOAT3> m_BackTorchStartPos;
-
-	std::vector<XMFLOAT3> m_BackRockStartRot;
-	std::vector<XMFLOAT3> m_BackBoxStartRot;
-	std::vector<XMFLOAT3> m_BackTorchStartRot;
-
-	std::vector<XMFLOAT3> m_BackAlwaysStartPos;
-
-	//共通の背景岩
-	std::ifstream m_AlwaysFile;
-	std::stringstream m_AlwaysPopcom;
-	std::string m_AlwaysLine;
-	//ゲームデータ
-	std::ifstream m_GameFile;
-	std::stringstream m_GamePopcom;
-	std::string m_GameLine;
-	int m_Enemy_Num;
-	int m_ThornEnemy_Num;
-	int m_BoundEnemy_Num;
-	int m_BirdEnemy_Num;
-	int m_ThornObj_Num;
-	int m_BackObj_Num;
-	int m_BackRock_Num;
-	int m_BackBox_Num;
-	int m_BackTorch_Num;
-	int m_BackAlways_Num;
-	//棘の向き
-	enum ThornDir {
-		Up,
-		Down,
-		Right,
-		Left
-	};
 
 	//ゲームのムービー
 	int m_AppTimer = 0;
