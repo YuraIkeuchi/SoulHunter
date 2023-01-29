@@ -216,7 +216,6 @@ void FirstStage::NormalUpdate() {
 	}
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->Update();
-	//ParticleManager::GetInstance()->Update();
 	backlight->Update();
 	minimap->SetMiniPlayerPos(StageNumber);
 	pause->Update();
@@ -417,9 +416,9 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		BlackFilter->Draw();
 	}
 	IKESprite::PostDraw();
-	//プレイヤーの描画
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
+	//プレイヤーの描画
 	player->Draw(dxCommon);
 	// 3Dオブジェクト描画後処理
 	IKEObject3d::PostDraw();

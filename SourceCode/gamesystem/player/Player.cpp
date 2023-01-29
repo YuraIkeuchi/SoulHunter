@@ -625,10 +625,10 @@ void Player::PlayerDush() {
 			m_SideFrame = 0.0f;
 			ResetAttack();
 			if (m_PlayerDir == Right) {
-				m_SideVelocity = 2.5f;
+				m_SideVelocity = 1.5f;
 			}
 			else if (m_PlayerDir == Left) {
-				m_SideVelocity = -2.5f;
+				m_SideVelocity = -1.5f;
 			}
 			PlayerAnimetion(Dush, 4);
 
@@ -639,7 +639,7 @@ void Player::PlayerDush() {
 	//ダッシュ中は横に自動で動く
 	if (m_Dush) {
 		if (m_SideFrame < 1.0f) {
-			m_SideFrame += 0.1f;
+			m_SideFrame += 0.05f;
 		}
 		else {
 			m_SideFrame = 0.0f;
@@ -660,10 +660,10 @@ void Player::PlayerRolling() {
 			m_SideFrame = 0.0f;
 			ResetAttack();
 			if (m_PlayerDir == Right) {
-				m_SideVelocity = 1.5f;
+				m_SideVelocity = 1.2f;
 			}
 			else if (m_PlayerDir == Left) {
-				m_SideVelocity = -1.5f;
+				m_SideVelocity = -1.2f;
 			}
 			PlayerAnimetion(Rolling, 2);
 		}
@@ -672,7 +672,7 @@ void Player::PlayerRolling() {
 	//ローリング中は横に自動で動く
 	if (m_Rolling) {
 		if (m_SideFrame < 1.0f) {
-			m_SideFrame += 0.1f;
+			m_SideFrame += 0.05f;
 		}
 		else {
 			m_SideFrame = 0.0f;
