@@ -175,6 +175,8 @@ public:
 	/// </summary>
 	virtual void Draw(DirectXCommon* dxCommon)override;
 
+	virtual void ImGuiDraw() = 0;
+
 	virtual void MapDraw(XMFLOAT4 Color) = 0;
 
 

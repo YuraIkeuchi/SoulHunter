@@ -1,6 +1,7 @@
 #include "ImGuiEditor.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 ImGuiEditor::ImGuiEditor() {
 	//ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 	modelBox = ModelManager::GetInstance()->GetModel(ModelManager::BackBox);
@@ -107,12 +108,17 @@ const void ImGuiEditor::EditorImGuiDraw() {
 
 			if (ImGui::Button("BoundEnemy", ImVec2(90, 50))) {
 				m_EnemyArgment = true;
-				m_EnemyType = Wing;
+				m_EnemyType = Bound;
 			}
 
 			if (ImGui::Button("BirdEnemy", ImVec2(90, 50))) {
 				m_EnemyArgment = true;
 				m_EnemyType = Bird;
+			}
+
+			if (ImGui::Button("FollowEnemy", ImVec2(90, 50))) {
+				m_EnemyArgment = true;
+				m_EnemyType = Follow;
 			}
 			ImGui::End();
 
@@ -131,12 +137,17 @@ const void ImGuiEditor::EditorImGuiDraw() {
 
 			if (ImGui::Button("DeleteBoundEnemy", ImVec2(90, 50))) {
 				m_DeleteEnemy = true;
-				m_EnemyType = Wing;
+				m_EnemyType = Bound;
 			}
 
 			if (ImGui::Button("DeleteBirdEnemy", ImVec2(90, 50))) {
 				m_DeleteEnemy = true;
 				m_EnemyType = Bird;
+			}
+
+			if (ImGui::Button("DeleteFollowEnemy", ImVec2(90, 50))) {
+				m_DeleteEnemy = true;
+				m_EnemyType = Follow;
 			}
 			ImGui::End();
 		}

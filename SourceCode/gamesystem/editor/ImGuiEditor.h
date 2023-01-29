@@ -68,12 +68,6 @@ private:
 	bool m_DeleteThornObj = false;
 	//敵の種類
 	int m_EnemyType = 0;
-	enum EnemyType {
-		Normal,
-		Thorn,
-		Wing,
-		Bird,
-	};
 	//エディタのタイプ
 	int m_EditorType = 0;
 	enum EditorType {
@@ -88,11 +82,6 @@ private:
 
 	//背景OBJの種類
 	int m_BackObjType = 0;
-	enum BackObjType {
-		Rock,
-		Box,
-		Torch
-	};
 	
 	//棘の向き
 	int m_ThornDir = 0;

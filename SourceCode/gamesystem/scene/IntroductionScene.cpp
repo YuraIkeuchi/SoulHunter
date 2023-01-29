@@ -86,7 +86,6 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 		scenechange->SetAddStartChange(true);
 	}
 	
-	
 	//演出
 	Movie();
 
@@ -98,7 +97,6 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 	IntroSprite->SetColor(m_TextColor);
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
-	ChangePostEffect(PostType);
 	postEffect->SetSepia(m_Sepia);
 }
 //描画
@@ -190,54 +188,10 @@ void IntroductionScene::Finalize() {
 }
 //ポストエフェクトのImgui
 void IntroductionScene::PostImGuiDraw(DirectXCommon* dxCommon) {
-	{
-		if (PlayPostEffect) {
-			ImGui::Begin("PostType");
-			ImGui::SetWindowPos(ImVec2(600, 450));
-			ImGui::SetWindowSize(ImVec2(280, 150));
-			ImGui::Text("m_ChangePostEffect:%d", m_ChangePostEffect);
-			if (ImGui::RadioButton("Stripe", &PostType)) {
-
-				PostType = Stripe;
-				m_ChangePostEffect = true;
-				//ChangePostEffect(PostType);
-			}
-			if (ImGui::RadioButton("Gaussian", &PostType)) {
-				PostType = Blur;
-				m_ChangePostEffect = true;
-
-			}
-			ImGui::End();
-		}
-	}
-	{
-		ImGui::Begin("postEffect");
-		ImGui::SetWindowPos(ImVec2(700, 150));
-		ImGui::SetWindowSize(ImVec2(280, 150));
-		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-			PlayPostEffect = true;
-		}
-		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-			PlayPostEffect = false;
-		}
-		ImGui::End();
-	}
+	
 }
 //ポストエフェクトの種類
 void IntroductionScene::ChangePostEffect(int PostType) {
-	if (m_ChangePostEffect) {
-
-		if (PostType == Stripe) {
-
-			postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/PostEffectTestPS.hlsl");
-		}
-		else if (PostType == Blur) {
-
-			postEffect->CreateGraphicsPipeline(L"Resources/Shaders/GaussianVS.hlsl", L"Resources/Shaders/GaussianPS.hlsl");
-		}
-
-		m_ChangePostEffect = false;
-	}
 }
 //演出
 void IntroductionScene::Movie() {

@@ -280,3 +280,11 @@ void Enemy::MapDraw(XMFLOAT4 Color) {
 		MiniEnemySprite->Draw();
 	}
 }
+
+void Enemy::ImGuiDraw() {
+	ImGui::Begin("Normal");
+	ImGui::Text("X:%f", m_Position.x);
+	ImGui::Text("Y:%f", m_Position.y);
+	ImGui::Text("Z:%f", m_Position.z);
+	ImGui::End();
+}

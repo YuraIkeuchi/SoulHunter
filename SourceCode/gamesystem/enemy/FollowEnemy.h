@@ -2,9 +2,9 @@
 #include"InterEnemy.h"
 using namespace std;         //  名前空間指定
 //上下に動く敵
-class ThornEnemy :public InterEnemy {
+class FollowEnemy :public InterEnemy {
 public:
-	ThornEnemy();
+	FollowEnemy();
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	bool Initialize() override;//初期化
 	void Action()override;//更新
@@ -16,10 +16,10 @@ public:
 	void RotMove();
 	//bool Collision(XMFLOAT3 position, float radius);
 	bool ThornCollision();
-	
+
 public:
 	//gettersetter
-	
+
 private:
 	//回転のための変数
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
@@ -27,7 +27,7 @@ private:
 
 	int m_RotNumber = 0;
 	int m_Interval = 0;
-	
+
 	enum RotNumber {
 		Stop,
 		Right,

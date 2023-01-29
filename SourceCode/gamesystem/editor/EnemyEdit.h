@@ -20,6 +20,7 @@ public://Še“G‚Ì¶¬(ˆø”‚ª‘½‚¢‚Ì‚ÅŒãXC³‚·‚é)
 		Block* block);
 	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
 		Block* block);
+	void FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player);
 private:
 	
 };

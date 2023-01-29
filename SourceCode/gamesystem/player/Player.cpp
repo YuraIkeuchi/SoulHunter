@@ -252,13 +252,13 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	}
 }
 void Player::ImGuiDraw() {
-	//ImGui::Begin("player");
-	////ImGui::SetWindowPos(ImVec2(1000, 450));
-	////ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("m_PosX:%f", m_Position.x);
-	//ImGui::Text("m_PosY:%f", m_Position.y);
-	//ImGui::Text("m_PosZ:%f", m_Position.z);
-	//ImGui::End();
+	ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_PosX:%f", m_Position.x);
+	ImGui::Text("m_PosY:%f", m_Position.y);
+	ImGui::Text("m_PosZ:%f", m_Position.z);
+	ImGui::End();
 }
 //åïÇÃçXêV
 void Player::SwordUpdate() {

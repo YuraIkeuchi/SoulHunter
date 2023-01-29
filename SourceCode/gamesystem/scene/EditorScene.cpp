@@ -41,10 +41,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-	//ƒ‰ƒCƒg
-	spotLightDir[0] = 0;
-	spotLightDir[1] = 0;
-	spotLightDir[2] = 1;
 	StartGame();
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
@@ -137,6 +133,8 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
+		player->ImGuiDraw();
+		enemymanager->ImGuiDraw();
 		//FPSManager::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
@@ -580,8 +578,11 @@ void EditorScene::EditorUpdate() {
 			enemymanager->EnemyBirth(Bound, player, block);
 		}
 		//’¹‚Ì“G
-		else {
+		else if (imguieditor->GetEnemyType() == Bird) {
 			enemymanager->EnemyBirth(Bird, player, block);
+		}
+		else {
+			enemymanager->EnemyBirth(Follow, player, block);
 		}
 		imguieditor->SetEnemyArgment(false);
 	}
@@ -623,6 +624,10 @@ void EditorScene::EditorUpdate() {
 		}
 		//’¹
 		else if (imguieditor->GetEnemyType() == Bird) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
+		}
+		//’Ç]
+		else if (imguieditor->GetEnemyType() == Follow) {
 			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		imguieditor->SetEnemyDelete(false);

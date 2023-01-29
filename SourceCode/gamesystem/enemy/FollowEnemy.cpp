@@ -1,10 +1,10 @@
-#include "ThornEnemy.h"
+#include "FollowEnemy.h"
 #include"Collision.h"
 #include "ModelManager.h"
 #include <Easing.h>
 using namespace DirectX;
 
-ThornEnemy::ThornEnemy() {
+FollowEnemy::FollowEnemy() {
 	IKESprite::LoadTexture(26, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
 	MiniEnemySprite_ = IKESprite::Create(26, { 0.0f,0.0f });
@@ -14,8 +14,8 @@ ThornEnemy::ThornEnemy() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::ThornEnemy);
 }
 //初期化
-bool ThornEnemy::Initialize() {
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+bool FollowEnemy::Initialize() {
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	IKEObject3d* m_Object_ = new IKEObject3d();
 	m_Object_ = IKEObject3d::Create();
 	m_Object_->SetModel(m_Model);
@@ -32,15 +32,12 @@ bool ThornEnemy::Initialize() {
 	return true;
 }
 //更新
-void ThornEnemy::Action() {
-	//sin波によって上下に動く
-	m_Angle += 1.0f;
-	m_Angle2 = m_Angle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
+void FollowEnemy::Action() {
+	
 	RotMove();
 	if (m_Alive && UpdateCollide()) {
 		ThornCollision();
-		PlayerCollide();	
+		PlayerCollide();
 		Obj_SetParam();
 	}
 	//パーティクル生成
@@ -58,14 +55,14 @@ void ThornEnemy::Action() {
 	MapEnemy();
 }
 //描画
-void ThornEnemy::Draw(DirectXCommon* dxCommon) {
+void FollowEnemy::Draw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	if (m_Alive && DrawCollide()) {
 		Obj_Draw();
 	}
 }
 //ダメージを受ける(この敵は受けない　弾かれる)
-bool ThornEnemy::ThornCollision() {
+bool FollowEnemy::ThornCollision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
@@ -99,15 +96,15 @@ bool ThornEnemy::ThornCollision() {
 	return true;
 }
 //ポーズ
-void ThornEnemy::Pause() {
+void FollowEnemy::Pause() {
 	//ミニマップに表示させる
 	MapEnemy();
-	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
+	//m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	Obj_SetParam();
 	m_Object->Update();
 }
 //回転の動き
-void ThornEnemy::RotMove() {
+void FollowEnemy::RotMove() {
 	switch (m_RotNumber) {
 	case Stop:
 		m_Interval++;
@@ -142,7 +139,7 @@ void ThornEnemy::RotMove() {
 			m_Frame = 0.0f;
 			break;
 		}
-		
+
 	case Turn:
 		if (m_Frame < 1.0f) {
 			m_Frame += 0.01f;
@@ -155,15 +152,15 @@ void ThornEnemy::RotMove() {
 			break;
 		}
 	}
-	
+
 	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
 }
 //解放
-void ThornEnemy::Finalize() {
+void FollowEnemy::Finalize() {
 	//enemyeffects.pop_back();
 }
 
-void ThornEnemy::MapDraw(XMFLOAT4 Color) {
+void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
 	if (m_EnemyPosition.x != 0.0f && m_EnemyPosition.y != 0.0f && m_Alive) {
@@ -171,8 +168,8 @@ void ThornEnemy::MapDraw(XMFLOAT4 Color) {
 	}
 }
 
-void ThornEnemy::ImGuiDraw() {
-	ImGui::Begin("Thorn");
+void FollowEnemy::ImGuiDraw() {
+	ImGui::Begin("Follow");
 	ImGui::Text("X:%f", m_Position.x);
 	ImGui::Text("Y:%f", m_Position.y);
 	ImGui::Text("Z:%f", m_Position.z);

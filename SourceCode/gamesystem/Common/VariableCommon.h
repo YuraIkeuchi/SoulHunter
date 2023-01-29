@@ -60,6 +60,7 @@ enum EnemyType {
 	Thorn,
 	Bound,
 	Bird,
+	Follow,
 };
 
 //”wŒiOBJ‚ÌŽí—Þ

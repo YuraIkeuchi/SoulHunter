@@ -13,6 +13,7 @@ public:
 	void Pause() override;//ポーズのとき
 	void Draw(DirectXCommon* dxCommon) override;//描画
 	void MapDraw(XMFLOAT4 Color) override;//ミニマップのとき
+	void ImGuiDraw()override;
 	void DeathMove();//死んだときの動き
 	bool BirdLockOn();
 	void Move();
