@@ -11,6 +11,7 @@ public:
 	void Action()override;//更新
 	void Pause() override;//ポーズのとき
 	void MapDraw(XMFLOAT4 Color) override;//ミニマップのとき
+	void ImGuiDraw()override;
 	void Move();//普通の移動
 	void AttackExtra();//攻撃前の予備動作
 	void Tackle();//タックル

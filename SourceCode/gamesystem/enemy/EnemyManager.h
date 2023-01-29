@@ -52,12 +52,15 @@ public:
 	void Update(bool Move);
 	//•`‰æ
 	void Draw(DirectXCommon* dxCommon);
+	void ImGuiDraw();
 	void MapDraw(int MapType, XMFLOAT4 MapColor);
 	//“G‚ÌXV
 	void EnemyUpdate(std::vector<InterEnemy*> m_Enemys, bool Move);
 	//“G‚Ì•`‰æ(‘O
 	void EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* dxCommon);
-	//“G‚Ì•`‰æ(‘O
+	//“G‚Ì•`‰æ(Imgui)
+	void EnemyImguiDraw(std::vector<InterEnemy*> m_Enemys);
+	//“G‚Ì•`‰æ(ƒ}ƒbƒv)
 	void EnemyMapDraw(std::vector<InterEnemy*> m_Enemys,int MapType,XMFLOAT4 MapColor);
 	//“G‚Ì‰ğ•ú
 	void EnemyFinalize(std::vector<InterEnemy*> m_Enemys);

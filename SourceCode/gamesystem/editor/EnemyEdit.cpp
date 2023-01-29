@@ -56,7 +56,7 @@ void EnemyEdit::FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* play
 	newFollowEnemy = new FollowEnemy();
 	newFollowEnemy->Initialize();
 	newFollowEnemy->SetPlayer(player);
-	newFollowEnemy->SetThornPos(player->GetPosition().y - 5.0f);
-	newFollowEnemy->SetPosition({ player->GetPosition().x, 0.0f, player->GetPosition().z });
+	newFollowEnemy->SetPosition(player->GetPosition());
+	newFollowEnemy->SetStartPos(player->GetPosition());
 	enemy.push_back(newFollowEnemy);
 }

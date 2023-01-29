@@ -133,6 +133,8 @@ void EditorScene::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
+		player->ImGuiDraw();
+		enemymanager->ImGuiDraw();
 		//FPSManager::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();

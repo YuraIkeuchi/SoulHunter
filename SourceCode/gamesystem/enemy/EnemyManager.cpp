@@ -163,10 +163,9 @@ void EnemyManager::FollowEnemySpecity(const char* vsShaderName) {
 	followofs << "Enemy_Quantity2" << "," << m_FollowEnemys.size() << std::endl;
 	for (int i = 0; i < m_FollowEnemys.size(); i++) {
 		followofs << "Wait" << "," << 120 << std::endl;
-		followofs << "POP" << "," << m_FollowEnemys[i]->GetStartPos().x
+		followofs << "POP" << "," << m_FollowEnemys[i]->GetPosition().x
 			<< "," << m_FollowEnemys[i]->GetPosition().y
-			<< "," << m_FollowEnemys[i]->GetStartPos().z << std::endl;
-
+			<< "," << m_FollowEnemys[i]->GetPosition().z << std::endl;
 	}
 	m_FollowEnemyPosition.resize(m_FollowEnemys.size());
 }
@@ -689,6 +688,14 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 }
+//ImGui
+void EnemyManager::ImGuiDraw() {
+	EnemyImguiDraw(m_Enemys);
+	EnemyImguiDraw(m_ThornEnemys);
+	EnemyImguiDraw(m_BoundEnemys);
+	EnemyImguiDraw(m_BirdEnemys);
+	EnemyImguiDraw(m_FollowEnemys);
+}
 //ƒ}ƒbƒv‚Ì•`‰æ
 void EnemyManager::MapDraw(int MapType, XMFLOAT4 MapColor) {
 	EnemyMapDraw(m_Enemys,MapType,MapColor);
@@ -715,6 +722,14 @@ void EnemyManager::EnemyDraw(std::vector<InterEnemy*> m_Enemys, DirectXCommon* d
 	for (InterEnemy* enemy : m_Enemys) {
 		if (enemy != nullptr) {
 			enemy->Draw(dxCommon);
+		}
+	}
+}
+//Imgui
+void EnemyManager::EnemyImguiDraw(std::vector<InterEnemy*> m_Enemys) {
+	for (InterEnemy* enemy : m_Enemys) {
+		if (enemy != nullptr) {
+			enemy->ImGuiDraw();
 		}
 	}
 }

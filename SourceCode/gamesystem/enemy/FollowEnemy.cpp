@@ -56,9 +56,6 @@ void FollowEnemy::Action() {
 }
 //描画
 void FollowEnemy::Draw(DirectXCommon* dxCommon) {
-	ImGui::Begin("FOllow");
-	ImGui::Text("a");
-	ImGui::End();
 	IKEObject3d::PreDraw();
 	if (m_Alive && DrawCollide()) {
 		Obj_Draw();
@@ -102,7 +99,7 @@ bool FollowEnemy::ThornCollision() {
 void FollowEnemy::Pause() {
 	//ミニマップに表示させる
 	MapEnemy();
-	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
+	//m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	Obj_SetParam();
 	m_Object->Update();
 }
@@ -169,4 +166,12 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 	if (m_EnemyPosition.x != 0.0f && m_EnemyPosition.y != 0.0f && m_Alive) {
 		MiniEnemySprite->Draw();
 	}
+}
+
+void FollowEnemy::ImGuiDraw() {
+	ImGui::Begin("Follow");
+	ImGui::Text("X:%f", m_Position.x);
+	ImGui::Text("Y:%f", m_Position.y);
+	ImGui::Text("Z:%f", m_Position.z);
+	ImGui::End();
 }

@@ -193,6 +193,8 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
 		ImGuiDraw(dxCommon);
+		player->ImGuiDraw();
+		enemymanager->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
