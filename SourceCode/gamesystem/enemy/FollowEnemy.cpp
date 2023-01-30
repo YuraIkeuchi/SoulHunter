@@ -30,18 +30,33 @@ bool FollowEnemy::Initialize() {
 	//敵の種類
 	m_EnemyType = Thorn;
 	return true;
+	m_HP = 3;
+	
 }
 //更新
 void FollowEnemy::Action() {
-	
-	RotMove();
+	//X方向
+	m_Radius.x = 2.0f;
+	//下方向
+	m_Radius.y = 2.0f;
+	m_OldPos = m_Position;
 	if (m_Alive && UpdateCollide()) {
-		ThornCollision();
-		PlayerCollide();
+		if (m_HP >= 1) {
+			FollowMove();
+		}
+		if (PlayerCollide()) {
+			m_Follow = false;
+			m_FollowTimer = 0;
+		}
 		Obj_SetParam();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Update(m_Position, m_Effect);
+			}
+		}
 	}
-	//パーティクル生成
-	BirthParticle();
+
 	//ダメージのインターバル
 	if (m_Damage) {
 		m_DamageTimer--;
@@ -50,7 +65,20 @@ void FollowEnemy::Action() {
 			m_DamageTimer = 0;
 		}
 	}
-
+	//当たり判定
+	if (block->FollowEnemyMapCollideCommon(m_Position, m_Radius, m_OldPos)) {
+	}
+	//敵が消える
+	VanishFollowEnemy();
+	//パーティクル生成
+	BirthParticle();
+	DeathBirthParticle();
+	//ダメージ時動き
+	FollowDamageAct();
+	//エフェクト関係
+	ArgEffect();
+	//魂関係
+	ArgSoul();
 	//ミニマップに表示させる
 	MapEnemy();
 }
@@ -59,10 +87,16 @@ void FollowEnemy::Draw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	if (m_Alive && DrawCollide()) {
 		Obj_Draw();
+		//エフェクト関係
+		for (EnemyEffect* enemyeffect : enemyeffects) {
+			if (enemyeffect != nullptr) {
+				enemyeffect->Draw();
+			}
+		}
 	}
 }
 //ダメージを受ける(この敵は受けない　弾かれる)
-bool FollowEnemy::ThornCollision() {
+bool FollowEnemy::FollowCollision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
@@ -74,8 +108,10 @@ bool FollowEnemy::ThornCollision() {
 	if (player->GetRotation().y == 90.0f) {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 50;
-			player->PlayerThornHit(m_Position);
+			m_DamageTimer = 20;
+			m_EffectArgment = true;
+			m_HP--;
+			m_Effect = true;
 			return true;
 		}
 		else {
@@ -83,81 +119,107 @@ bool FollowEnemy::ThornCollision() {
 		}
 	}
 	else {
+
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 50;
-			player->PlayerThornHit(m_Position);
+			m_DamageTimer = 20;
+			m_EffectArgment = true;
+			m_HP--;
+			m_Effect = true;
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
+
 	return true;
 }
 //ポーズ
 void FollowEnemy::Pause() {
 	//ミニマップに表示させる
 	MapEnemy();
-	//m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	Obj_SetParam();
 	m_Object->Update();
 }
-//回転の動き
-void FollowEnemy::RotMove() {
-	switch (m_RotNumber) {
-	case Stop:
-		m_Interval++;
-		if (m_Interval > 10) {
-			m_Interval = 0;
-			m_RotNumber = Right;
-			m_AfterRot.x = 90.0f;
-			break;
+//追従
+void FollowEnemy::FollowMove() {
+	XMFLOAT3 position{};
+	position.x = (player->GetSwordPosition().x - m_Position.x);
+	position.y = (player->GetSwordPosition().y - m_Position.y);
+	m_FollowVel.x = sin(-atan2f(position.x, position.y)) * 0.15f;
+	m_FollowVel.y = cos(-atan2f(position.x, position.y)) * 0.15f;
+	m_Rotation.x = (atan2f(position.x, position.y) * (180.0f / XM_PI));
+
+	//攻撃まで一定フレームある
+	if (!m_Follow) {
+		m_FollowTimer++;
+		if (m_FollowTimer >= 30) {
+			m_Follow = true;
 		}
+	}
+	else {
+		m_Position.x -= m_FollowVel.x;
+		m_Position.y += m_FollowVel.y;
+	}
+}
 
-
-	case Right:
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.01f;
-			break;
+bool FollowEnemy::VanishFollowEnemy() {
+	if (m_HP < 1 && m_AddPower <= 0.0f) {
+		if (DeathTimer < 30 && !m_Disolve) {
+			m_DeathParticleCount++;
+			DeathTimer++;
 		}
 		else {
-			m_RotNumber = Left;
-			m_AfterRot.x = -90.0f;
-			m_Frame = 0.0f;
-			break;
-		}
-
-	case Left:
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.01f;
-			break;
-		}
-		else {
-			m_RotNumber = Turn;
-			m_AfterRot.x = 720.0f;
-			m_Frame = 0.0f;
-			break;
-		}
-
-	case Turn:
-		if (m_Frame < 1.0f) {
-			m_Frame += 0.01f;
-			break;
-		}
-		else {
-			m_RotNumber = Stop;
-			m_Rotation.x = 0.0f;
-			m_Frame = 0.0f;
-			break;
+			m_Disolve = true;
+			DeathTimer = 0;
 		}
 	}
 
-	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
+	if (m_Disolve && m_Alive) {
+		if (m_Addcolor.x <= 1.0f) {
+			m_Addcolor.x += 0.025f;
+			m_Addcolor.y += 0.025f;
+			m_Addcolor.z += 0.025f;
+		}
+		else {
+			m_Addcolor.x = 1.0f;
+			m_Addcolor.y = 1.0f;
+			m_Addcolor.z = 1.0f;
+		}
+		if (m_AddDisolve < 5.0f) {
+			m_AddDisolve += 0.2f;
+		}
+		else {
+			m_DeathParticleCount = 0;
+			m_Soul = true;
+			m_Alive = false;
+		}
+	}
+	return true;
+}
+//ダメージ時の動き
+void FollowEnemy::FollowDamageAct() {
+	if (FollowCollision()) {
+		m_Distance.x = player->GetPosition().x - m_Position.x;
+		m_Distance.y = player->GetPosition().y - m_Position.y;
+		m_Rebound.x = (sin(atan2f(m_Distance.x, m_Distance.y)) * 2.0f) * -1.0f;
+		m_Rebound.y = (cos(atan2f(m_Distance.x, m_Distance.y)) * 2.0f) * -1.0f;
+		m_Follow = false;
+		m_FollowTimer = 0;
+	}
+	if (m_Damage) {
+		m_Rebound = {
+		Ease(In,Cubic,0.5f,m_Rebound.x,0.0f),
+		Ease(In,Cubic,0.5f,m_Rebound.y,0.0f),
+		};
+
+		m_Position.x += m_Rebound.x;
+		m_Position.y += m_Rebound.y;
+	}
 }
 //解放
 void FollowEnemy::Finalize() {
-	//enemyeffects.pop_back();
 }
 
 void FollowEnemy::MapDraw(XMFLOAT4 Color) {
@@ -170,8 +232,7 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 
 void FollowEnemy::ImGuiDraw() {
 	ImGui::Begin("Follow");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::Text("Y:%f", m_Position.y);
-	ImGui::Text("Z:%f", m_Position.z);
+	ImGui::Text("Follow:%d", m_Follow);
+	ImGui::Text("Timer:%d", m_FollowTimer);
 	ImGui::End();
 }

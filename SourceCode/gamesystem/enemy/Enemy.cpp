@@ -76,8 +76,6 @@ void Enemy::Action() {
 		m_Air = false;
 	}
 
-	VanishEnemy();
-
 	//エネミーの左右移動
 	if (m_OnGround && m_HP >= 1) {
 		//プレイヤーをロックオンしていない
@@ -94,15 +92,19 @@ void Enemy::Action() {
 
 	}
 
+	//敵が消える
+	VanishEnemy();
+	//ロックオン
+	LockOn();
+	//パーティクル生成
+	BirthParticle();
 	//ダメージ時の動き
 	DamageAct();
 	//死んだときの挙動
 	DeathMove();
-	//パーティクル生成
-	BirthParticle();
+	
 	DeathBirthParticle();
-	//ロックオン
-	LockOn();
+	
 	//エフェクト関係
 	ArgEffect();
 	//魂関係

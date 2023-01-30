@@ -169,58 +169,55 @@ void Block::MapCreate(int mapNumber, int StageNumber)
 	for (int y = 0; y < map_max_y; y++) {//(yが15)
 		for (int x = 0; x < map_max_x; x++) {//(xが59)
 
-			if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 1)
+			if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Normal)
 			{
 				//位置と大きさの変更
-				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
 				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 7.5 });
 			}
 
-			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 2)
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Air)
 			{
 				m_AirType[y][x] = AirBlock;
 				//位置と大きさの変更
 				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
 				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 0 });
 			}
-			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 3 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 4 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 5 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 6) {
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Down_Goal || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Up_Goal || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Right_Goal || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Left_Goal) {
 				objNormalBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 5 });
-				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 3) {
+				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Down_Goal) {
 					m_GoalType[y][x] = DownGoal;
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 4) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Up_Goal) {
 					m_GoalType[y][x] = UpGoal;
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 5) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Right_Goal) {
 					m_GoalType[y][x] = RightGoal;
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 6) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Left_Goal) {
 					m_GoalType[y][x] = LeftGoal;
 				}
 			}
 
-			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 7 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 8 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 9 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 10)
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Up_Thorn || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Down_Thorn || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Left_Thorn || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Right_Thorn)
 			{
 				//位置と大きさの変更
-				//objNormalBlock[l_MapPosY][l_MapPosX]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
 				objToge[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 0 });
-				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 7) {
+				if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Up_Thorn) {
 					objToge[y][x]->SetRotation({ 0.0f,0.0f,0.0f });
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 8) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Down_Thorn) {
 					objToge[y][x]->SetRotation({ 0.0f,0.0f,180.0f });
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 9) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Left_Thorn) {
 					objToge[y][x]->SetRotation({ 0.0f,0.0f,270.0f });
 				}
-				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 10) {
+				else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_Right_Thorn) {
 					objToge[y][x]->SetRotation({ 0.0f,0.0f,90.0f });
 				}
 			}
-			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 11) {
+			else if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == Chip_In_Block) {
 				objInBlock[y][x]->SetPosition({ x * LAND_SCALE,  -y * LAND_SCALE, 7.5 });
 			}
-
 		}
 	}
 }
@@ -262,7 +259,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 				continue;
 			}
 
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -317,7 +314,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			}
 
 			//ゴールとの当たり判定
-			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 3 && !m_Down_Goal && m_GoalType[h][w] == DownGoal)
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Down_Goal && !m_Down_Goal && m_GoalType[h][w] == DownGoal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -364,7 +361,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			}
 
 			//ゴールとの当たり判定
-			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 4 && !m_Up_Goal && m_GoalType[h][w] == UpGoal)
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Up_Goal && !m_Up_Goal && m_GoalType[h][w] == UpGoal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -411,7 +408,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			}
 
 			//ゴールとの当たり判定
-			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 5 && !m_Right_Goal && m_GoalType[h][w] == RightGoal)
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Right_Goal && !m_Right_Goal && m_GoalType[h][w] == RightGoal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -458,7 +455,7 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			}
 
 			//ゴールとの当たり判定
-			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 6 && !m_Left_Goal && m_GoalType[h][w] == LeftGoal)
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Left_Goal && !m_Left_Goal && m_GoalType[h][w] == LeftGoal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -507,8 +504,8 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 
 
 			//棘との当たり判定
-			else if ((MapChip::GetChipNum(w, h, stagemap[0]) == 7 || MapChip::GetChipNum(w, h, stagemap[0]) == 8 ||
-				MapChip::GetChipNum(w, h, stagemap[0]) == 9 || MapChip::GetChipNum(w, h, stagemap[0]) == 10)
+			else if ((MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Up_Thorn || MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Down_Thorn ||
+				MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Left_Thorn || MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Right_Thorn)
 				&& objToge[h][w]->GetPosition().z != 1000.0f)
 			{
 				l_MapPosX = objToge[h][w]->GetPosition().x;
@@ -602,7 +599,7 @@ bool Block::AttackMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3
 			{
 				continue;
 			}
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -672,7 +669,7 @@ bool Block::LimitMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 
 			{
 				continue;
 			}
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -744,7 +741,7 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 			{
 				continue;
 			}
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -767,7 +764,6 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 						pos.y = l_MapPosY - l_RadiusY - radius.y;
 						if (is_jump == false)
 						{
-						
 							l_IsHit = true;
 						}
 						else
@@ -782,11 +778,9 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						touchWall = Left;
-						//touchLeft = true;
 						pos.x = l_MapPosX + l_RadiusX + radius.x;
 						if (is_jump == false)
 						{
-							//touchLeft = false;
 							touchWall = Left;
 							l_IsHit = true;
 						}
@@ -804,7 +798,7 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					}
 				}
 			}
-			else if (MapChip::GetChipNum(w, h, stagemap[0]) == 2 && m_AirType[h][w] == AirBlock && HP >= 1)
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Air && m_AirType[h][w] == AirBlock && HP >= 1)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -827,7 +821,6 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 						pos.y = l_MapPosY - l_RadiusY - radius.y;
 						if (is_jump == false)
 						{
-
 							l_IsHit = true;
 						}
 						else
@@ -842,11 +835,9 @@ bool Block::EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
 					{
 						touchWall = Left;
-						//touchLeft = true;
 						pos.x = l_MapPosX + l_RadiusX + radius.x;
 						if (is_jump == false)
 						{
-							//touchLeft = false;
 							touchWall = Left;
 							l_IsHit = true;
 						}
@@ -902,7 +893,7 @@ bool Block::BirdEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, int& touch
 			{
 				continue;
 			}
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
@@ -964,6 +955,118 @@ bool Block::BirdEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, int& touch
 
 	return l_IsHit;
 }
+
+bool Block::FollowEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, const XMFLOAT3& old_pos) {
+	//マップチップ
+	//X, Y
+	float l_MapPosX = 0;
+	float l_MapPosY = 0;
+	//Radius
+	float l_RadiusX = 0;
+	float l_RadiusY = 0;
+
+	//フラグ
+	bool l_IsHit = false;
+
+	//判定
+	int l_MapMaxX = static_cast<int>((pos.x + radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMinX = static_cast<int>((pos.x - radius.x + LAND_SCALE / 2) / LAND_SCALE);
+	int l_MapMaxY = -static_cast<int>((pos.y - radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+	int l_MapMinY = -static_cast<int>((pos.y + radius.y + LAND_SCALE / 2) / LAND_SCALE - 1);
+
+	for (int h = l_MapMinY; h <= l_MapMaxY; h++)
+	{
+		if (h < 0)
+		{
+			continue;
+		}
+		for (int w = l_MapMinX; w <= l_MapMaxX; w++)
+		{
+			if (w < 0)
+			{
+				continue;
+			}
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
+			{
+				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
+				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						l_IsHit = true;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						l_IsHit = true;
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						l_IsHit = true;
+					}
+				}
+			}
+			else if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_In_Block)
+			{
+				l_MapPosX = objInBlock[h][w]->GetPosition().x;
+				l_MapPosY = objInBlock[h][w]->GetPosition().y;
+				l_RadiusX = 2.5f;
+				l_RadiusY = 2.5f;
+
+				if (pos.x <= l_MapPosX + l_RadiusX && l_MapPosX - l_RadiusX <= pos.x)
+				{
+					//下の当たり判定
+					if (l_MapPosY + l_RadiusY + radius.y > pos.y && l_MapPosY < old_pos.y)
+					{
+						pos.y = l_MapPosY + l_RadiusY + radius.y;
+						l_IsHit = true;
+					}
+					//上の当たり判定
+					else if (l_MapPosY - l_RadiusY - radius.y < pos.y && l_MapPosY > old_pos.y)
+					{
+						pos.y = l_MapPosY - l_RadiusY - radius.y;
+						l_IsHit = true;
+					}
+				}
+				if (pos.y <= l_MapPosY + l_RadiusY && l_MapPosY - l_RadiusY <= pos.y)
+				{
+					//左の当たり判定
+					if (l_MapPosX + l_RadiusX + radius.x > pos.x && l_MapPosX < old_pos.x)
+					{
+						pos.x = l_MapPosX + l_RadiusX + radius.x;
+						l_IsHit = true;
+					}
+					//右の当たり判定
+					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					{
+						pos.x = l_MapPosX - l_RadiusX - radius.x;
+						l_IsHit = true;
+					}
+				}
+			}
+		}
+	}
+
+	return l_IsHit;
+}
 //魂とブロック当たり判定
 bool Block::PlayerSoulMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 	const XMFLOAT3& old_pos, bool& is_jump, float& addPower)
@@ -998,7 +1101,7 @@ bool Block::PlayerSoulMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 				continue;
 			}
 
-			if (MapChip::GetChipNum(w, h, stagemap[0]) == 1)
+			if (MapChip::GetChipNum(w, h, stagemap[0]) == Chip_Normal)
 			{
 				l_MapPosX = objNormalBlock[h][w]->GetPosition().x;
 				l_MapPosY = objNormalBlock[h][w]->GetPosition().y;
