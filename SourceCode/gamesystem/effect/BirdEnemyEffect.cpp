@@ -7,7 +7,6 @@ BirdEnemyEffect::BirdEnemyEffect() {
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		JumpDamageEffect_[i] = IKETexture::Create(ImageManager::WingEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		JumpDamageEffect_[i]->TextureCreate();
-		//DushEffecttexture->SetRotation({ 90,0,0 });
 		JumpDamageEffect_[i]->SetScale(m_JumpDamageScale[i]);
 		JumpDamageEffect[i].reset(JumpDamageEffect_[i]);
 	}
@@ -45,12 +44,6 @@ void BirdEnemyEffect::Update(const XMFLOAT3& pos) {
 }
 //•`‰æ
 void BirdEnemyEffect::Draw() {
-	//bool BirdEnemyEffect = Jump->GetEffect();
-	/*ImGui::Begin("BirdEnemyEffect");
-	for (int i = 0; i < JumpDamageEffect.size(); i++) {
-		ImGui::Text("m_Effect::%d", m_Birth[i]);
-	}
-	ImGui::End();*/
 	IKETexture::PreDraw(0);
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		if (m_Effect[i]) {

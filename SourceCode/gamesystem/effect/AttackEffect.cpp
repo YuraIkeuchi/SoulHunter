@@ -3,37 +3,27 @@
 using namespace DirectX;
 //“Ç‚Ýž‚Ý
 AttackEffect::AttackEffect() {
-
 	IKETexture* AttackEffecttexture_;
 	AttackEffecttexture_ = IKETexture::Create(ImageManager::AttackEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	AttackEffecttexture_->TextureCreate();
-	//DushEffecttexture->SetRotation({ 90,0,0 });
 	AttackEffecttexture_->SetScale(m_Scale);
 	AttackEffecttexture.reset(AttackEffecttexture_);
 }
 //‰Šú‰»
 void AttackEffect::Initialize() {
-	
 }
 //XV
 void AttackEffect::Update() {
-
 	if (m_AttackAlive) {
 		EffectMove();
-		//object3d->Update();
 		AttackEffecttexture->Update();
 	}
 	AttackEffecttexture->SetColor(m_Color);
 	AttackEffecttexture->SetPosition(m_Pos);
-	//AttackEffecttexture->SetRotation(m_rot[i]);
 	AttackEffecttexture->SetScale(m_Scale);
 }
 //•`‰æ
 void AttackEffect::Draw() {
-	////bool AttackEffect = Jump->GetEffect();
-	//ImGui::Begin("AttackEffect");
-	//ImGui::Text("m_Pos.x::%f", m_Color.w);
-	//ImGui::End();
 	IKETexture::PreDraw(0);
 	if (m_AttackAlive) {
 		AttackEffecttexture->Draw();

@@ -17,7 +17,6 @@ void IntroductionObj::Initialize() {
 	//Json
 	jsonData = JsonLoader::LoadFile("Introduction");
 
-
 	//Json“Ç‚İ‚İ‚ÌOBJ
 	for (auto& objectData : jsonData->objects) {
 		//•’Ê‚ÌOBJ

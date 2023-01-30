@@ -10,8 +10,6 @@ TutorialText::TutorialText() {
 	objboard_ = IKEObject3d::Create();
 	objboard_->SetModel(modelboard);
 	m_BoardPosition = {35.0f,-132.0f,7.0f};
-	/*m_BoardPosition = { 41.0f,-132.0f,7.0f };
-	m_BoardPosition = { 29.0f,-132.0f,7.0f };*/
 	objboard_->SetPosition(m_BoardPosition);
 	objboard_->SetRotation({ 0.0f,180.0f,0.0f });
 	objboard_->SetScale({ 3.0f,3.0f,3.0f });
@@ -76,7 +74,6 @@ void TutorialText::Update(int TexNumber) {
 }
 //•`‰æ
 const void TutorialText::Draw() {
-	
 	IKESprite::PreDraw();
 	for (int i = 0; i < Tutorial_Max; i++) {
 			TutorialSprite[i][m_AnimeCount]->Draw();
@@ -85,8 +82,6 @@ const void TutorialText::Draw() {
 	if (m_BoardAlive) {
 		objboard->Draw();
 	}
-
-
 }
 //“–‚½‚è”»’è
 bool TutorialText::Collide(int TexNumber) {

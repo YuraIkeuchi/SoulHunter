@@ -17,12 +17,6 @@ void BackObjCommon::Update() {
 
 //描画
 void BackObjCommon::Draw(DirectXCommon* dxCommon) {
-//	specialDraw();
-//	//オブジェクトの描画
-//	IKEObject3d::PreDraw();
-//	if (DrawCollide()) {
-//		Obj_Draw();
-//	}
 }
 
 //更新を範囲内に入った時のみ

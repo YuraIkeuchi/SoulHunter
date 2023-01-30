@@ -24,15 +24,7 @@ void InterBoss::Update() {
 		m_HP = 0;
 		m_DeathTimer++;
 		m_DeathParticleCount++;
-		////パーティクルが発生する
-		//if (m_Scale.x > 0.0f) {
-		//	++;
-		//}
-		//else {
-		//	m_DeathParticleCount = 0;
-		//}
 	}
-
 
 	//ダメージのインターバル
 	if (m_Damage) {
@@ -51,16 +43,9 @@ void InterBoss::Update() {
 			bosseffect->Update(m_Position, m_Effect, m_HitDir);
 		}
 	}
-	//パーティクル
-	//particletex->SetStartColor({ 1.0f,0.0f,0.0f,1.0f });
-	//particletex->SetParticleBreak(true);
-	//particletex->Update(m_Position, m_DeathParticleCount, 1, EndPart);
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("Boss");
-	//ImGui::Text("PosX : %f", m_Position.y);
-	//ImGui::End();
 	//ボスの描画
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
@@ -74,7 +59,6 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//パーティクルの描画
-	//particletex->Draw();
 	//ボスごとのオブジェクトの描画
 	specialDraw(dxCommon);
 }
@@ -176,11 +160,9 @@ void InterBoss::BirthParticle() {
 	float s_scale = 1.0f;
 	float e_scale = 0.0f;
 	//足元
-		//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 5; ++i) {
 			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
-			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FootParticleCount = 0;
 	}

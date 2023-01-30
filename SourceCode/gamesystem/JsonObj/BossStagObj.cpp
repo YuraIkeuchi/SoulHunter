@@ -7,9 +7,7 @@
 using namespace DirectX;
 //初期化
 void BossStagObj::Initialize() {
-
 	jsonData = JsonLoader::LoadFile("BossApp");
-
 	//リスポーン位置
 	for (auto& objectData : jsonData->objects) {
 		if (objectData.GimmickName == "NoGimmick") {
@@ -107,10 +105,6 @@ const void BossStagObj::FrontDraw() {
 }
 //背景描画
 const void BossStagObj::BackDraw() {
-	ImGui::Begin("BossApp");
-	ImGui::Text("m_EndTimer:%d", m_EndTimer);
-	ImGui::End();
-
 	IKEObject3d::PreDraw();
 	//Json用
 	for (auto& object : objects) {
@@ -120,9 +114,7 @@ const void BossStagObj::BackDraw() {
 }
 //解放
 void BossStagObj::Finalize() {
-
 }
-
 //死んだ時のパーティクル
 void BossStagObj::DeathParticle() {
 	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,1.0f };

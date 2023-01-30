@@ -21,6 +21,11 @@ void EnemyManager::SoulSet(Player* player, Block* block) {
 			birdplayersoul[i][j]->Initialize();
 			birdplayersoul[i][j]->SetBlock(block);
 			birdplayersoul[i][j]->SetPlayer(player);
+
+			followplayersoul[i][j] = new PlayerSoul();
+			followplayersoul[i][j]->Initialize();
+			followplayersoul[i][j]->SetBlock(block);
+			followplayersoul[i][j]->SetPlayer(player);
 		}
 	}
 }
@@ -923,6 +928,12 @@ void EnemyManager::SoulUpdate() {
 			birdplayersoul[i][j]->Update(m_BirdEnemys[j]);
 		}
 	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_FollowEnemyCount; j++) {
+			followplayersoul[i][j]->Update(m_FollowEnemys[j]);
+		}
+	}
 }
 //ç∞ÇÃï`âÊ
 void EnemyManager::SoulDraw() {
@@ -942,6 +953,12 @@ void EnemyManager::SoulDraw() {
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_BirdEnemyCount; j++) {
 			birdplayersoul[i][j]->Draw();
+		}
+	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_FollowEnemyCount; j++) {
+			followplayersoul[i][j]->Draw();
 		}
 	}
 }

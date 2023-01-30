@@ -12,7 +12,6 @@ void BossEndParticle::Initialize() {
 		particleobj_[i] = new IKEObject3d();
 		particleobj_[i] = IKEObject3d::Create();
 		m_Gravity[i] = 0.05f;
-		//object_[i]->CreateGraphicsPipeline(L"Resources/shaders/BasicVS.hlsl", L"Resources/shaders/BasicPS.hlsl");
 		particleobj_[i]->SetModel(model);
 		particleobj[i].reset(particleobj_[i]);
 		m_RockAlive[i] = false;
@@ -32,12 +31,6 @@ void BossEndParticle::ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetT
 }
 //•`‰æ
 void BossEndParticle::Draw() {
-	/*ImGui::Begin("Particle");
-	ImGui::SliderFloat("pos[0].y", &m_RockPos[0].y, 300, -300);
-	ImGui::SliderFloat("pos.x", &m_RockPos[0].x, 300, -300);
-	ImGui::SliderFloat("power[0].y", &m_RockAddPower[0].y, 300, -300);
-	ImGui::Text("RockAlive[0] %d", m_RockAlive[0]);
-	ImGui::End();*/
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_RockAlive[i]) {
@@ -47,9 +40,7 @@ void BossEndParticle::Draw() {
 }
 
 void BossEndParticle::ImGuiDraw() {
-
 }
-
 void BossEndParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {

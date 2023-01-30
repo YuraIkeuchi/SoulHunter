@@ -159,7 +159,6 @@ const void MiniMap::Draw() {
 void MiniMap::Finalize() {
 
 }
-
 //プレイヤーの位置を描画するかどうか
 void MiniMap::UseCompass() {
 	if (PlayerSkill::GetInstance()->GetUseCompass()) {
@@ -169,7 +168,7 @@ void MiniMap::UseCompass() {
 		LookPlayer = false;
 	}
 }
-
+//CSV読み込み
 void MiniMap::InitMap(std::vector<std::vector<int>>& map, int StageNumber) {
 	stagemap = map;
 	//ステージによってマップの読み込みが変わる
@@ -210,21 +209,18 @@ void MiniMap::InitMap(std::vector<std::vector<int>>& map, int StageNumber) {
 //ブロック配置
 void MiniMap::MapCreate(int mapNumber, int StageNumber)
 {
-
 	for (int y = 0; y < map_max_y; y++) {//(yが15)
 		for (int x = 0; x < map_max_x; x++) {//(xが59)
 
 			if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 1 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 11)
 			{
 				//位置と大きさの変更
-				//objNormalBlock[y][x]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
 				MiniBlockSprite[y][x]->SetPosition({ x * m_LAND_SCALEX,  y * m_LAND_SCALEY });
 			}
 
 			if (MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 7 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 8 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 9 || MapChip::GetChipNum(x, y, stagemap[mapNumber]) == 10)
 			{
 				//位置と大きさの変更
-				//objNormalBlock[y][x]->SetScale({ LAND_SCALE, LAND_SCALE, LAND_SCALE });
 				MiniBlockTogeSprite[y][x]->SetPosition({ x * m_LAND_SCALEX,  y * m_LAND_SCALEY });
 			}
 		}

@@ -11,15 +11,12 @@ void ParticleObj::Initialize() {
 	for (int i = 0; i < object.size(); i++) {
 		object_[i] = new IKEObject3d();
 		object_[i] = IKEObject3d::Create();
-		//object_[i]->CreateGraphicsPipeline(L"Resources/shaders/BasicVS.hlsl", L"Resources/shaders/BasicPS.hlsl");
 		object_[i]->SetModel(model);
 		object_[i]->SetColor(m_StartColor);
-		//object_[i]->SetScale({ 5.0f,15.0f,5.0f });
 		object[i].reset(object_[i]);
 		m_Alive[i] = false;
 		m_scale[i] = { 0.0f,0.0f,0.0f };
 	}
-
 }
 //更新
 void ParticleObj::Update(const XMFLOAT3& StartPos, int Timer, int TargetTimer, int ParticleType) {
@@ -42,19 +39,6 @@ void ParticleObj::Update(const XMFLOAT3& StartPos, int Timer, int TargetTimer, i
 			object[i]->Update();
 		}
 	}
-	//else if (ParticleType == Wide) {
-
-	//	WideParticle(StartPos, Timer, TargetTimer);
-	//	for (int i = 0; i < m_WideParticleCount; i++) {
-	//		object[i]->SetPosition(m_pos[i]);
-	//		object[i]->SetScale(m_scale[i]);
-	//		object[i]->SetColor(m_color);
-	//		if (m_Alive[i]) {
-	//			object[i]->Update();
-	//		}
-	//	}
-	//}
-
 }
 //描画
 void ParticleObj::Draw() {
@@ -67,18 +51,6 @@ void ParticleObj::Draw() {
 }
 //ImGuiの描画
 void ParticleObj::ImGuiDraw() {
-	//ImGui::Begin("color");
-	//ImGui::SetWindowPos(ImVec2(0, 500));
-	//ImGui::SetWindowSize(ImVec2(280, 240));
-	//ImGui::SliderFloat("m_power[0].y", &m_power[0], 100, -100);
-	//ImGui::SliderFloat("m_scale[0].y", &m_scale[0].x, 100, -100);
-	//ImGui::SliderFloat("color.r", &m_color.x, 1, 0);
-	//ImGui::SliderFloat("color.g", &m_color.y, 1, 0);
-	//ImGui::SliderFloat("color.b", &m_color.z, 1, 0);
-	//ImGui::SliderFloat("color.a", &m_color.w, 1, 0);
-	//ImGui::Text("m_EndCount:%d", m_EndCount);
-	////ImGui::SliderInt("ParticleCount", &m_ParticleCount, 100, 1, "%d");
-	//ImGui::End();
 }
 
 //普通のパーティクル
@@ -89,13 +61,9 @@ void ParticleObj::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
-				/*m_AddPower[i].x = (float)(rand() % 3 - 1);
-				m_AddPower[i].y = (float)(rand() % 2 - 1);*/
 				m_Angle[i] = (float)(rand() % 360);
 				m_speed[i] = { 0.02f,0.02f };
 				m_Number[i] = rand() % 2;
-				/*	m_AddPower[i].x = m_AddPower[i].x / 10;
-					m_AddPower[i].y = m_AddPower[i].y / 20;*/
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -115,8 +83,6 @@ void ParticleObj::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 			m_AddScale = 0.02f;
 			m_pos[i].x += (cos(m_Angle[i]) * m_speed[i].x);
 			m_pos[i].y += (sin(m_Angle[i]) * m_speed[i].y);
-			/*	m_speed[i].x += 0.05f;
-				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
 				m_scale[i].x += m_AddScale;
 				m_scale[i].y += m_AddScale;
@@ -146,13 +112,9 @@ void ParticleObj::WideParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 		for (int i = 0; i < m_WideParticleCount; i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i] && !m_End[i]) {
-				/*m_AddPower[i].x = (float)(rand() % 3 - 1);
-				m_AddPower[i].y = (float)(rand() % 2 - 1);*/
 				m_Angle[i] = (float)(rand() % 360);
 				m_speed[i] = { 0.02f,0.02f };
 				m_Number[i] = rand() % 2;
-				/*	m_AddPower[i].x = m_AddPower[i].x / 10;
-					m_AddPower[i].y = m_AddPower[i].y / 20;*/
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -191,8 +153,6 @@ void ParticleObj::WideParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 			}
 			m_pos[i].x += (cos(m_Angle[i]) * m_speed[i].x + m_power[i]);
 			m_pos[i].y += (sin(m_Angle[i]) * m_speed[i].y);
-			/*	m_speed[i].x += 0.05f;
-				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
 				m_scale[i].x += 0.02f;
 				m_scale[i].y += 0.02f;
@@ -217,7 +177,6 @@ void ParticleObj::WideParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 
 	//すべてのパーティクルが消えたあとまた全てをセットする
 	if (m_EndCount == 1) {
-
 		m_EndCount = 0;
 		for (int i = 0; i < m_WideParticleCount; i++) {
 			m_End[i] = false;
@@ -233,13 +192,8 @@ void ParticleObj::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_Alive[i]) {
-				/*m_AddPower[i].x = (float)(rand() % 3 - 1);
-				m_AddPower[i].y = (float)(rand() % 2 - 1);*/
-			
 				m_speed[i] = { 0.1f,0.02f };
 				m_Number[i] = rand() % 2;
-				/*	m_AddPower[i].x = m_AddPower[i].x / 10;
-					m_AddPower[i].y = m_AddPower[i].y / 20;*/
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -266,8 +220,6 @@ void ParticleObj::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 			m_AddPower[i].y = m_AddPower[i].y / 10;
 			m_pos[i].y += m_AddPower[i].y;
 			m_AddScale = 0.005f;
-			/*	m_speed[i].x += 0.05f;
-				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
 				m_scale[i].x += m_AddScale;
 				m_scale[i].y += m_AddScale;
@@ -293,17 +245,12 @@ void ParticleObj::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 //敵をたおした時のパーティクル
 void ParticleObj::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
 	m_StartPos = StartPos;
-
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			if (!m_Alive[i]) {
-				/*m_AddPower[i].x = (float)(rand() % 3 - 1);
-				m_AddPower[i].y = (float)(rand() % 2 - 1);*/
 				m_Angle[i] = (float)(rand() % 360);
 				m_speed[i] = { 0.3f,0.3f };
 				m_Number[i] = rand() % 2;
-				/*	m_AddPower[i].x = m_AddPower[i].x / 10;
-					m_AddPower[i].y = m_AddPower[i].y / 20;*/
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -332,8 +279,6 @@ void ParticleObj::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTim
 				m_speed[i].x = 0.0f;
 				m_speed[i].y = 0.0f;
 			}
-			/*	m_speed[i].x += 0.05f;
-				m_speed[i].y += 0.05f;*/
 			if (!m_ScaleChange[i]) {
 				m_scale[i].x += m_AddScale;
 				m_scale[i].y += m_AddScale;

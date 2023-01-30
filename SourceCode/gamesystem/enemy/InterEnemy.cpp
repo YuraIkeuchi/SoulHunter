@@ -13,7 +13,6 @@ void InterEnemy::Update() {
 }
 //•`‰æ
 void InterEnemy::Draw(DirectXCommon* dxCommon) {
-
 }
 
 //“G‚ªƒ_ƒ[ƒWH‚ç‚¤
@@ -96,11 +95,9 @@ void InterEnemy::BirthParticle() {
 	float s_scale = 1.0f;
 	float e_scale = 0.0f;
 	//‘«Œ³
-		//ParticleEmitter::GetInstance()->FireEffect(m_Position);
 	if (m_FootParticleCount >= 3 && m_Alive) {
 		for (int i = 0; i < 5; ++i) {
 			ParticleEmitter::GetInstance()->HootEffect(30, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color);
-			//ParticleManager::GetInstance()->Add(30, { m_FoodParticlePos.x,(m_FoodParticlePos.y - 1.0f),m_FoodParticlePos.z }, vel, XMFLOAT3(), 1.2f, 0.6f);
 		}
 		m_FootParticleCount = 0;
 	}

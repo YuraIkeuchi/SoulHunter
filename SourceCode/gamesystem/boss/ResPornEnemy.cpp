@@ -2,9 +2,6 @@
 #include "imgui.h"
 //‰Šú‰»
 void ResPornEnemy::Initialize() {
-	//ParticleTex* particletex_ = new ParticleTex();
-	//particletex_->Initialize();
-	//particletex.reset(particletex_);
 }
 //XV
 void  ResPornEnemy::Update(InterBoss* boss) {
@@ -38,17 +35,7 @@ void  ResPornEnemy::Update(InterBoss* boss) {
 	else {
 		m_ParticleCount = 0;
 	}
-
-	//particletex->SetStartColor({ 0.7f,0.3f,0.7f,1.0f });
-	//particletex->SetStartScale(0.5f);
-	//particletex->SetParticleBreak(true);
-	//particletex->SetAddScale(0.01f);
-	//particletex->Update(m_ResPornPos, m_ParticleCount, 1, 0);
 }
 //•`‰æ
 const void ResPornEnemy::Draw() {
-	//ImGui::Begin("ResPorn");
-	//ImGui::Text("m_ResPornTimer::%d", m_ResPornTimer);
-	//ImGui::End();
-	//particletex->Draw();
 }

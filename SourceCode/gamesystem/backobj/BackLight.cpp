@@ -2,7 +2,6 @@
 #include "ImageManager.h"
 //‰Šú‰»
 void BackLight::Initialize() {
-
 	//”wŒiƒeƒNƒXƒ`ƒƒ
 	IKETexture* backlightTex_ = IKETexture::Create(ImageManager::LightTex, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	backlightTex_->TextureCreate();

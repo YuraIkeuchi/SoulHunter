@@ -7,9 +7,7 @@ EnemyEffect::EnemyEffect() {
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		ParticleEffect_[i] = IKETexture::Create(ImageManager::DamageEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		ParticleEffect_[i]->TextureCreate();
-		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
-		
 		ParticleEffect_[i]->SetScale(m_Scale[i]);
 		ParticleEffect[i].reset(ParticleEffect_[i]);
 	}
@@ -36,7 +34,6 @@ void EnemyEffect::Update(const XMFLOAT3& pos, bool& Effect) {
 	SetHitEffect(pos, Effect);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i]) {
-			//object3d->Update();
 			ParticleEffect[i]->Update();
 			HitEffectTexture->Update();
 		}
@@ -51,9 +48,6 @@ void EnemyEffect::Update(const XMFLOAT3& pos, bool& Effect) {
 }
 //•`‰æ
 void EnemyEffect::Draw() {
-	/*ImGui::Begin("Effect");
-	ImGui::Text("ScaleX : %f", m_Scale[0].x);
-	ImGui::End();*/
 	IKETexture::PreDraw(1);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.4f)) {

@@ -56,6 +56,10 @@ void FollowEnemy::Action() {
 			}
 		}
 	}
+	else {
+		m_Follow = false;
+		m_FollowTimer = 0;
+	}
 
 	//ダメージのインターバル
 	if (m_Damage) {
@@ -63,11 +67,12 @@ void FollowEnemy::Action() {
 		if (m_DamageTimer < 0) {
 			m_Damage = false;
 			m_DamageTimer = 0;
+			m_Frame = 0.0f;
+			m_Rotation.x = m_Rotation.x - 360.0f;
 		}
 	}
 	//当たり判定
-	if (block->FollowEnemyMapCollideCommon(m_Position, m_Radius, m_OldPos)) {
-	}
+	block->FollowEnemyMapCollideCommon(m_Position, m_Radius, m_OldPos);
 	//敵が消える
 	VanishFollowEnemy();
 	//パーティクル生成
@@ -119,7 +124,6 @@ bool FollowEnemy::FollowCollision() {
 		}
 	}
 	else {
-
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 			m_Damage = true;
 			m_DamageTimer = 20;
@@ -163,7 +167,7 @@ void FollowEnemy::FollowMove() {
 		m_Position.y += m_FollowVel.y;
 	}
 }
-
+//消える
 bool FollowEnemy::VanishFollowEnemy() {
 	if (m_HP < 1 && m_AddPower <= 0.0f) {
 		if (DeathTimer < 30 && !m_Disolve) {
@@ -205,6 +209,7 @@ void FollowEnemy::FollowDamageAct() {
 		m_Distance.y = player->GetPosition().y - m_Position.y;
 		m_Rebound.x = (sin(atan2f(m_Distance.x, m_Distance.y)) * 2.0f) * -1.0f;
 		m_Rebound.y = (cos(atan2f(m_Distance.x, m_Distance.y)) * 2.0f) * -1.0f;
+		m_AfterRot.x = m_Rotation.x + 360.0f;
 		m_Follow = false;
 		m_FollowTimer = 0;
 	}
@@ -216,12 +221,20 @@ void FollowEnemy::FollowDamageAct() {
 
 		m_Position.x += m_Rebound.x;
 		m_Position.y += m_Rebound.y;
+
+		if (m_Frame < 1.0f) {
+			m_Frame += 0.05f;
+		}
+		else {
+			m_Frame = 1.0f;
+		}
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
 	}
 }
 //解放
 void FollowEnemy::Finalize() {
 }
-
+//マップの描画
 void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
@@ -229,10 +242,9 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 		MiniEnemySprite->Draw();
 	}
 }
-
+//ImGui
 void FollowEnemy::ImGuiDraw() {
 	ImGui::Begin("Follow");
-	ImGui::Text("Follow:%d", m_Follow);
-	ImGui::Text("Timer:%d", m_FollowTimer);
+	ImGui::Text("RotX:%f", m_Rotation.x);
 	ImGui::End();
 }

@@ -22,9 +22,6 @@ UINT ParticleManager::descriptorHandleIncrementSize = 0u;
 std::string ParticleManager::directoryPath;
 std::string ParticleManager::extensionPath = ".png";
 
-
-
-
 static const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs) {
 	XMFLOAT3 result;
 	result.x = lhs.x + rhs.x;

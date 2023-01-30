@@ -120,18 +120,12 @@ void Pause::Update() {
 		PausePartsSprite[i]->SetSize(m_PartsSize[i]);
 		PausePartsSprite[i]->SetColor(m_PauseColor);
 	}
-	//PauseBack->SetColor(m_PauseColor);
 	PauseSprite->SetColor(m_PauseColor);
 }
 
 //描画
 const void Pause::Draw() {
 	IKESprite::PreDraw();
-	//ImGui::Begin("Game");
-	//ImGui::Text("m_ColorChangeType::%d", m_ColorChangeType);
-	//ImGui::Text("m_PauseColor.w::%f", m_PauseColor.w);
-	////ImGui::Text("m_MenuNumber::%d", m_MenuNumber);
-	//ImGui::End();
 	//メニューによって描画クラスが変わる
 	if (m_IsPause) {
 		PauseBack->Draw();
@@ -152,27 +146,14 @@ const void Pause::Draw() {
 			}
 
 		}
-	
-		//
-		//
 	}
 }
 
 void Pause::Finalize() {
-	//delete PauseSprite;
-	//delete select;
-	//for (int i = 0; i < SkillMax; i++) {
-	//	delete SkillSprite[i];
-	//}
-	//for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
-	//	delete SetSkillSprite[i];
-	//}
 }
 
 void Pause::ResetPause() {
-	
 }
-
 void Pause::PartsMove() {
 	Input* input = Input::GetInstance();
 	//どのメニューを選んだかで更新するクラスが変わる

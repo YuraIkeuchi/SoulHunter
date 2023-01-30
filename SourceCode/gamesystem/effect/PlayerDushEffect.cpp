@@ -2,14 +2,12 @@
 #include"ImageManager.h"
 //読み込み
 PlayerDushEffect::PlayerDushEffect() {
-
 }
 //初期化
 void PlayerDushEffect::Initialize() {
 	//エフェクトの初期化
 	IKETexture* DushEffecttexture_ = IKETexture::Create(ImageManager::DushEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	DushEffecttexture_->TextureCreate();
-	//DushEffecttexture->SetRotation({ 90,0,0 });
 	DushEffecttexture_->SetScale(m_DushEffectscale);
 	DushEffecttexture.reset(DushEffecttexture_);
 }

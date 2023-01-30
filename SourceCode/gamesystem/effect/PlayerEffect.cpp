@@ -43,7 +43,6 @@ void PlayerEffect::CreateEffect(const std::string& newname, XMFLOAT3 pos, int di
 }
 
 void PlayerEffect::Initialize() {
-
 }
 
 void PlayerEffect::Update() {

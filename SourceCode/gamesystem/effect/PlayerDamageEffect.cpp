@@ -4,7 +4,6 @@
 using namespace DirectX;
 //読み込み
 PlayerDamageEffect::PlayerDamageEffect() {
-
 }
 //初期化
 void PlayerDamageEffect::Initialize() {
@@ -74,7 +73,6 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 			m_DamageEffectpos[i] = pos;
 			m_DamageAlive[i] = true;
 		}
-		
 	}
 }
 
@@ -131,7 +129,6 @@ void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 
 //ヒットエフェクト動く
 void PlayerDamageEffect::HitEffectMove() {
-
 	//エフェクト動く
 	if (m_HitEffect) {
 		m_HitScale.x += 0.1f;

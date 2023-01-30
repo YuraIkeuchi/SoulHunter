@@ -538,7 +538,6 @@ void Player::PlayerAttack() {
 	//攻撃のインターバル
 	if (m_Attack) {
 		m_AttackTimer++;
-
 		if (m_AttackTimer <= 20) {
 			m_SwordParticleNum = 1;
 		}

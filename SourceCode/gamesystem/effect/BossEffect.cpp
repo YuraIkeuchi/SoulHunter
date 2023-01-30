@@ -8,7 +8,6 @@ BossEffect::BossEffect() {
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		ParticleEffect_[i] = IKETexture::Create(ImageManager::DamageEffect, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		ParticleEffect_[i]->TextureCreate();
-		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
 
 		ParticleEffect_[i]->SetScale(m_Scale[i]);
@@ -37,7 +36,6 @@ void BossEffect::Update(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 	SetHitEffect(pos, Effect);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i]) {
-			//object3d->Update();
 			ParticleEffect[i]->Update();
 		
 		}
@@ -52,9 +50,6 @@ void BossEffect::Update(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 }
 //•`‰æ
 void BossEffect::Draw() {
-	/*ImGui::Begin("Effect");
-	ImGui::Text("ScaleX : %f", m_AddScale[0]);
-	ImGui::End();*/
 	IKETexture::PreDraw(1);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.5f)) {
