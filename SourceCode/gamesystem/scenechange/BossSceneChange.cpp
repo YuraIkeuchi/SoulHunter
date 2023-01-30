@@ -23,11 +23,6 @@ void BossSceneChange::Update() {
 }
 //•`‰æ
 const void BossSceneChange::Draw() {
-	/*ImGui::Begin("filter");
-	ImGui::Text("%d", m_AddStartChange);
-	ImGui::Text("%d", m_SubStartChange);
-	ImGui::Text("%f", s_color.w);
-	ImGui::End();*/
 	IKESprite::PreDraw();
 	change->Draw();
 }

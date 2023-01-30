@@ -8,10 +8,8 @@ ClearObj::ClearObj() {
 }
 //‰Šú‰»
 void ClearObj::Initialize() {
-	
 	//Json
 	jsonData = JsonLoader::LoadFile("Clear");
-
 	//Json“Ç‚Ýž‚Ý‚ÌOBJ
 	for (auto& objectData : jsonData->objects) {
 		//•’Ê‚ÌOBJ
@@ -44,7 +42,6 @@ void ClearObj::Initialize() {
 			newObject->SetScale(scale);
 
 			newObject->SetTiling(50.0f);
-			//newObject->SetFog(true);
 			// ”z—ñ‚É“o˜^
 			objects.push_back(newObject);
 		}

@@ -24,11 +24,6 @@ void MapChange::Update() {
 }
 //•`‰æ
 const void MapChange::Draw() {
-	/*ImGui::Begin("mapfilter");
-	ImGui::Text("%d", m_AddStartChange);
-	ImGui::Text("%d", m_SubStartChange);
-	ImGui::Text("%f", s_color.w);
-	ImGui::End();*/
 	IKESprite::PreDraw();
 	change->Draw();
 }

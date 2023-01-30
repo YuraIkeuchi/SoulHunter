@@ -94,6 +94,7 @@ private:
 	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* followplayersoul[Soul_Max][Enemy_Max];
 	//ŠÛ‰e
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowPos[3] = { 1,2,0 };

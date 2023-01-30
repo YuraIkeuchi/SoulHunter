@@ -27,11 +27,6 @@ void MarkEffect::Update(XMFLOAT3 StartPos) {
 }
 //•`‰æ
 void MarkEffect::Draw() {
-	//ImGui::Begin("Mark");
-	//ImGui::Text("m_Frame:%f", m_Frame);
-	//ImGui::Text("m_Scale.x:%f", m_Scale.x);
-	//ImGui::Text("m_Color.w:%f", m_Color.w);
-	//ImGui::End();
 	IKETexture::PreDraw(0);
 	markEffect->Draw();
 }

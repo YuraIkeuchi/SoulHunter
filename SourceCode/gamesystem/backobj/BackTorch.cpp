@@ -34,9 +34,6 @@ void BackTorch::specialDraw() {
 }
 
 void BackTorch::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("a");
-	ImGui::Text("%d", m_Particle);
-	ImGui::End();*/
 	//オブジェクトの描画
 	IKEObject3d::PreDraw();
 	if (DrawCollide()) {

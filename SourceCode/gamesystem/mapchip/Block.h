@@ -17,7 +17,6 @@ public:
 	Block();
 
 	void Initialize(std::vector<std::vector<int>>& map, int mapNumber,int StageNumber);
-	void Finalize();
 	void Update(XMFLOAT3& pos);
 	void Draw(XMFLOAT3& pos);
 
@@ -40,6 +39,8 @@ public:
 	//マップチップ当たり判定(飛んでる敵)
 	bool BirdEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, int &touchWall,
 		const XMFLOAT3& old_pos, bool& Attack);
+	//追従敵
+	bool FollowEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,const XMFLOAT3& old_pos);
 	//マップチップ当たり判定(魂)
 	bool PlayerSoulMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, 
 		const XMFLOAT3& old_pos, bool& is_jump, float& addPower);
@@ -123,5 +124,20 @@ private:
 		LeftThorn,
 		UpThorn,
 		DownThorn,
+	};
+
+	enum ChipType {
+		None,
+		Chip_Normal,
+		Chip_Air,
+		Chip_Down_Goal,
+		Chip_Up_Goal,
+		Chip_Right_Goal,
+		Chip_Left_Goal,
+		Chip_Up_Thorn,
+		Chip_Down_Thorn,
+		Chip_Left_Thorn,
+		Chip_Right_Thorn,
+		Chip_In_Block,
 	};
 };

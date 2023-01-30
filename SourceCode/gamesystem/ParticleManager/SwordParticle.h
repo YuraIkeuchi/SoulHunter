@@ -13,15 +13,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	//void SetPlayer(Player* player) { this->player.reset(player); }
 	SwordParticle();
-
-	/// <summary>
-	/// 3Dオブジェクト生成
-	/// </summary>
-	/// <returns></returns>
-	//static Player* Create(Model* model = nullptr);
-
 public:
 
 	/// <summary>

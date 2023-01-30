@@ -64,7 +64,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	pointLightAtten[0] = 20.0f;
 	pointLightAtten[1] = 20.0f;
 	pointLightAtten[2] = 20.0f;
-	//ParticleEmitter::GetInstance()->AllDelete();
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
@@ -77,7 +76,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetPointLightPos(0, m_LightPos);
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
-	//lightGroup->SetPointLightPower(0, XMFLOAT3(pointLightPower));
 	//ニューゲームかロードゲームかを選択する
 	if (!scenechange->GetAddStartChange()) {
 		if (m_TitleSelect == NewGame && input->LeftTriggerStick(input->Down)) {
@@ -135,7 +133,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 }
 //描画
 void TitleScene::Draw(DirectXCommon* dxCommon) {
-	
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -258,5 +255,4 @@ void TitleScene::PartsBirth() {
 	}
 
 	m_TitleColor.w = Ease(In, Cubic, m_Frame, m_TitleColor.w, 1.0f);
-
 }

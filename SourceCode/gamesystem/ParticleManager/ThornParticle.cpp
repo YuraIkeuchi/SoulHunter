@@ -12,7 +12,6 @@ void ThornParticle::Initialize() {
 		particletex_[i] = IKETexture::Create(ImageManager::SmokeTex, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		particletex_[i]->TextureCreate();
 		particletex_[i]->SetPosition({ 0.0f,90.0f,0.0f });
-		//DushEffecttexture->SetRotation({ 90,0,0 });
 		m_scale[i] = { 0.0f,0.0f,0.0f };
 		m_SmokeAlive[i] = false;
 		particletex_[i]->SetScale(m_scale[i]);
@@ -24,7 +23,6 @@ void ThornParticle::Initialize() {
 		particleobj_[i] = new IKEObject3d();
 		particleobj_[i] = IKEObject3d::Create();
 		m_Gravity[i] = 0.05f;
-		//object_[i]->CreateGraphicsPipeline(L"Resources/shaders/BasicVS.hlsl", L"Resources/shaders/BasicPS.hlsl");
 		particleobj_[i]->SetModel(model);
 		particleobj[i].reset(particleobj_[i]);
 		m_RockAlive[i] = false;
@@ -78,12 +76,6 @@ void ThornParticle::ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTim
 }
 //•`‰æ
 void ThornParticle::Draw() {
-	/*ImGui::Begin("Particle");
-	ImGui::SliderFloat("pos[0].y", &m_RockPos[0].y, 300, -300);
-	ImGui::SliderFloat("pos.x", &m_RockPos[0].x, 300, -300);
-	ImGui::SliderFloat("power[0].y", &m_RockAddPower[0].y, 300, -300);
-	ImGui::Text("RockAlive[0] %d", m_RockAlive[0]);
-	ImGui::End();*/
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_RockAlive[i]) {
@@ -99,7 +91,6 @@ void ThornParticle::Draw() {
 }
 
 void ThornParticle::ImGuiDraw() {
-
 }
 
 //Še•ûŒü‚ÌXV

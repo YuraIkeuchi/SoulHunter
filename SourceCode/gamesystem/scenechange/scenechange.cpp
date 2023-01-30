@@ -26,11 +26,6 @@ void SceneChange::Update() {
 }
 
 const void SceneChange::Draw() {
-	//ImGui::Begin("filter");
-	//ImGui::Text("%d", m_AddStartChange);
-	//ImGui::Text("%d", m_SubStartChange);
-	//ImGui::Text("%f", s_color.w);
-	//ImGui::End();
 	IKESprite::PreDraw();
 	change->Draw();
 }

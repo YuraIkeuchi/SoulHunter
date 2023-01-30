@@ -19,14 +19,10 @@ bool BackBox::Initialize() {
 
 //ƒZƒbƒg
 void BackBox::SetObj() {
-	/*object3d->SetPosition(m_pos);
-	object3d->SetRotation(m_rot);
-	object3d->SetScale(m_scale);*/
 }
 
 //“Á•Ê‚È•`‰æ
 void BackBox::specialDraw() {
-
 }
 
 void BackBox::Draw(DirectXCommon* dxCommon) {

@@ -33,7 +33,6 @@ UI::UI(Player* player, InterBoss* boss) {
 	//魂
 		//スプライト生成
 	IKESprite* SoulSprite_[72];
-	//gaussian = new PostEffect();
 	const int SoulCount = 72;
 	m_Soul = player->GetSoulCount();
 	for (int i = 0; i < SoulSprite.size(); i++) {
@@ -54,8 +53,6 @@ UI::UI(Player* player, InterBoss* boss) {
 	SoulGageSprite_ = IKESprite::Create(3, { 0.0f,0.0f });
 	SoulGageSprite_->SetPosition({ 32.0f,32.0f });
 	SoulGageSprite.reset(SoulGageSprite_);
-	
-	//this->player = player;
 	//ボスのHP
 	if (boss) {
 		m_BossHP = interboss->GetHP();
@@ -108,7 +105,6 @@ void UI::Update(InterBoss* boss) {
 }
 //描画
 const void UI::Draw() {
-	
 	//プレイヤーのHP
 	IKESprite::PreDraw();
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
@@ -127,5 +123,4 @@ const void UI::Draw() {
 }
 //解放
 void UI::Finalize() {
-
 }

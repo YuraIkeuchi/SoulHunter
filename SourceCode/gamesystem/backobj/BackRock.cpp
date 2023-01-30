@@ -19,9 +19,6 @@ bool BackRock::Initialize() {
 
 //ƒZƒbƒg
 void BackRock::SetObj() {
-	/*object3d->SetPosition(m_pos);
-	object3d->SetRotation(m_rot);
-	object3d->SetScale(m_scale);*/
 }
 
 //“Á•Ê‚È•`‰æ

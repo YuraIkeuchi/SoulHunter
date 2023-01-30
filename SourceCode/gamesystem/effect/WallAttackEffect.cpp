@@ -35,9 +35,6 @@ void WallAttackEffect::Update() {
 }
 //•`‰æ
 void WallAttackEffect::Draw() {
-	/*ImGui::Begin("Walll");
-	ImGui::Text("Alive:%f", m_Scale[0].x);
-	ImGui::End();*/
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {

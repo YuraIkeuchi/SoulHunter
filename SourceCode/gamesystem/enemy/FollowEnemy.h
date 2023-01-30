@@ -13,26 +13,24 @@ public:
 	void MapDraw(XMFLOAT4 Color) override;//É~ÉjÉ}ÉbÉvÇÃÇ∆Ç´
 	void ImGuiDraw()override;
 	void Draw(DirectXCommon* dxCommon) override;//ï`âÊ
-	void RotMove();
-	//bool Collision(XMFLOAT3 position, float radius);
-	bool ThornCollision();
-
+	void FollowMove();
+	bool FollowCollision();
+	bool VanishFollowEnemy();
+	void FollowDamageAct();
 public:
 	//gettersetter
 
 private:
+	bool m_Follow = false;
+	int m_FollowTimer = 0;
 	//âÒì]ÇÃÇΩÇﬂÇÃïœêî
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	float m_Frame = 0.0f;
 
-	int m_RotNumber = 0;
-	int m_Interval = 0;
-
-	enum RotNumber {
-		Stop,
-		Right,
-		Left,
-		Turn
-	};
+	//í«è]ä÷åW
+	XMFLOAT2 m_FollowVel{};
+	XMFLOAT2 m_Rebound{};
+	XMFLOAT2 m_Distance{};
+	
 };
 

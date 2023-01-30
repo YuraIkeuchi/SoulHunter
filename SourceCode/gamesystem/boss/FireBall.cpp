@@ -13,9 +13,6 @@ FireBall::FireBall() {
 bool FireBall::Initialize() {
 	m_Scale = { 0.4f, 0.4f, 0.4f };
 	m_Color = { 1.0f,0.5f,0.0f,1.0f };
-	/*ParticleTex* particletex_ = new ParticleTex();
-	particletex_->Initialize();
-	particletex.reset(particletex_);*/
 	return true;
 }
 //更新
@@ -33,26 +30,16 @@ void FireBall::Update() {
 	firetex->SetColor({ 1.0f,0.5f,0.0f,1.0f });
 	firetex->SetPosition(m_Position);
 	firetex->SetScale(m_Scale);
-	//パーティクルの更新
-	//particletex->SetStartColor({ 1.0f,0.5f,0.0f,0.5f });
-	//particletex->SetParticleBreak(true);
-	/*for (int i = 0; i < 2; i++) {
-		particletex->Update(m_Position, m_ParticleCount, 2, 0);
-	}*/
 }
 //ポーズ時
 void FireBall::Pause() {
 	if (m_Alive) {
 		firetex->Update();
-		//m_Object->Update();
 	}
 }
 //描画
 void FireBall::Draw(DirectXCommon* dxCommon) {
 	IKETexture::PreDraw(1);
-	//ImGui::Begin("Ball");
-	//ImGui::Text("m_Alive:%d", m_Alive);
-	//ImGui::End();
 	if (m_Alive) {
 	firetex->Draw();
 	}
