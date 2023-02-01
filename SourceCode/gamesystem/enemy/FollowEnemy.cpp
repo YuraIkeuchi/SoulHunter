@@ -148,6 +148,7 @@ void FollowEnemy::Pause() {
 }
 //’Ç]
 void FollowEnemy::FollowMove() {
+	m_TargetTimer++;
 	XMFLOAT3 position{};
 	position.x = (player->GetSwordPosition().x - m_Position.x);
 	position.y = (player->GetSwordPosition().y - m_Position.y);
@@ -244,7 +245,7 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 }
 //ImGui
 void FollowEnemy::ImGuiDraw() {
-	ImGui::Begin("Follow");
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::End();
+	//ImGui::Begin("Follow");
+	//ImGui::Text("RotX:%f", m_Rotation.x);
+	//ImGui::End();
 }

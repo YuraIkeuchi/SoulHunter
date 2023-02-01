@@ -28,9 +28,10 @@ private:
 	float m_Frame = 0.0f;
 
 	//í«è]ä÷åW
+	int m_TargetTimer = 0;
 	XMFLOAT2 m_FollowVel{};
 	XMFLOAT2 m_Rebound{};
 	XMFLOAT2 m_Distance{};
-	
+	XMFLOAT3 m_TargetPos{};
 };
 
