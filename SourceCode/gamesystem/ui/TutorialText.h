@@ -14,15 +14,17 @@ public:
 	void Update();
 	//描画
 	const void Draw();
+	void ImGuiDraw();
 	//当たり判定
 	bool Collide();
 	//マップごとの初期化
 	void InitBoard(int StageNumber);
-	//テクスチャの動き
-	void MoveTex();
 	//スプライトの出現
 	void SpriteAppear();
-	
+	//チュートリアルの状況
+	void Mission();
+	//看板の動き
+	void MoveBoard();
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -52,6 +54,14 @@ private:
 	array<XMFLOAT3,Tutorial_Max> m_BoardPosition;//看板の位置
 	////看板があるか
 	array<bool,Tutorial_Max> m_BoardAlive;
+	//チュートリアルの進行状況
+	int m_TutorialMission = 0;
+	//看板の動き方
+	array<int, Tutorial_Max> m_BoardState;
+	//看板の位置(Y軸のみ)
+	array<float, Tutorial_Max> m_AfterPosY;
+	//フレーム
+	array<float, Tutorial_Max> m_Frame;
 	////sin波に使うもの
 	//float m_Angle = 0.0f;
 	//float m_Angle2 = 0.0f;
@@ -78,4 +88,20 @@ private:
 		Map,
 		Attack,
 	};
+
+	enum TutorialMission {
+		FirstMission,
+		SecondMission,
+		ThirdMission,
+		FinishMission,
+	};
+
+	enum BoardState {
+		NoMove,
+		UpBoard,
+		DownBoard
+	};
+
+	//チュートリアルの状況
+	int m_MoveCount = 0;
 };

@@ -1,5 +1,6 @@
 #include "TutorialText.h"
 #include "Collision.h"
+#include "Input.h"
 #include <Easing.h>
 #include "VariableCommon.h"
 //読み込みと初期化
@@ -16,6 +17,9 @@ TutorialText::TutorialText() {
 		objboard_[i]->SetRotation({ 0.0f,180.0f,0.0f });
 		objboard_[i]->SetScale({ 3.0f,3.0f,3.0f });
 		objboard[i].reset(objboard_[i]);
+		m_AfterPosY[i] = 0.0f;
+		m_BoardState[i] = NoMove;
+		m_Frame[i] = 0.0f;
 	}
 	////看板を読むと出てくる文字
 	////データ読み込み
@@ -53,6 +57,8 @@ void TutorialText::Update() {
 	Collide();
 	//スプライトの出現
 	SpriteAppear();
+	//チュートリアル進行状況
+	Mission();
 	////アニメーションのタイマー
 	//if (m_AnimeTimer <= 20) {
 	//	m_AnimeTimer++;
@@ -78,16 +84,31 @@ void TutorialText::Update() {
 }
 //描画
 const void TutorialText::Draw() {
+	
 	/*IKESprite::PreDraw();
 	for (int i = 0; i < Tutorial_Max; i++) {
 			TutorialSprite[i][m_AnimeCount]->Draw();
 	}*/
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < objboard.size(); i++) {
+		objboard[i]->Draw();
 		if (m_BoardAlive[i]) {
-			objboard[i]->Draw();
+		
 		}
 	}
+}
+
+void TutorialText::ImGuiDraw() {
+	ImGui::Begin("Tutorial");
+	ImGui::Text("Alive[Move]:%d",m_BoardAlive[Move]);
+	ImGui::Text("Alive[Rolling]:%d", m_BoardAlive[Rolling]);
+	ImGui::Text("Pos[Move]:%f", m_BoardPosition[Move].y);
+	ImGui::Text("Pos[Rolling]:%f", m_BoardPosition[Rolling].y);
+	ImGui::Text("Alive[Map]:%d", m_BoardAlive[Map]);
+	ImGui::Text("Alive[Attack]:%d", m_BoardAlive[Attack]);
+	ImGui::Text("Pos[Map]:%f", m_BoardPosition[Map].y);
+	ImGui::Text("Pos[Attack]:%f", m_BoardPosition[Attack].y);
+	ImGui::End();
 }
 //当たり判定
 bool TutorialText::Collide() {
@@ -111,53 +132,19 @@ bool TutorialText::Collide() {
 void TutorialText::InitBoard(int StageNumber) {
 	for (int i = 0; i < objboard.size(); i++) {
 		if (StageNumber == TutoRial) {
-			m_BoardAlive[i] = true;
+			m_BoardAlive[i] = false;
 			m_BoardPosition[Move] = { 20.0f,-280.0f,7.0f };
-			m_BoardPosition[Rolling] = { 20.0f,-280.0f,7.0f };
-			m_BoardPosition[Jump] = { 35.0f,-280.0f,7.0f };
-			m_BoardPosition[Pause] = { 50.0f,-280.0f,7.0f };
-			m_BoardPosition[Map] = { 66.0f,-280.0f,7.0f };
-			m_BoardPosition[Attack] = { 66.0f,-280.0f,7.0f };
+			m_BoardPosition[Rolling] = { 20.0f,-290.0f,7.0f };
+			m_BoardPosition[Jump] = { 35.0f,-290.0f,7.0f };
+			m_BoardPosition[Pause] = { 50.0f,-290.0f,7.0f };
+			m_BoardPosition[Map] = { 66.0f,-290.0f,7.0f };
+			m_BoardPosition[Attack] = { 66.0f,-290.0f,7.0f };
 		}
 
 		else {
 			m_BoardAlive[i] = false;
 		}
 	}
-	//
-	///*	if (TexNumber == 0) {
-	//		m_BoardAlive = true;
-	//		m_BoardPosition = { 19.0f,-281.0f,7.0f };
-	//	}
-	//	else if (TexNumber == 1) {
-	//		m_BoardAlive = true;
-	//		m_BoardPosition = { 95.0f,-281.0f,7.0f };
-	//	}
-	//	else if (TexNumber == 2) {
-	//		m_BoardAlive = true;
-	//		m_BoardPosition = { 155.0f,-241.0f,7.0f };
-	//	}
-	//	else if (TexNumber == 3) {
-	//		m_BoardAlive = true;
-	//		m_BoardPosition = { 215.0f,-191.0f,7.0f };
-	//	}
-	//	else if (TexNumber == 4) {
-	//		m_BoardAlive = true;
-	//		m_BoardPosition = { 55.0f,-281.0f,7.0f };
-	//	}*/
-	//}
-	//else {
-	//	m_BoardAlive = false;
-	//}
-}
-//テクスチャの動き
-void TutorialText::MoveTex() {
-	////sin波によって上下に動く
-	//m_Angle += 1.0f;
-	//m_Angle2 = m_Angle * (3.14f / 180.0f);
-	//m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_BoardPosition.y + 7.0f);
-	//m_TexPosition.x = m_BoardPosition.x;
-	//m_TexPosition.z = m_BoardPosition.z;
 }
 //スプライトの出現
 void TutorialText::SpriteAppear() {
@@ -203,4 +190,70 @@ void TutorialText::SpriteAppear() {
 	//		m_Frame[m_TextNumber] += 0.01f;
 	//	}
 	//}
+}
+//チュートリアルの状況
+void TutorialText::Mission() {
+	Input* input = Input::GetInstance();
+	if (m_TutorialMission == FirstMission) {
+		m_BoardAlive[Move] = true;
+		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
+			m_MoveCount++;
+		}
+
+		if (m_MoveCount == 100) {
+			m_MoveCount = 0;
+			m_BoardAlive[Move] = false;
+			m_BoardState[Move] = DownBoard;
+			for (int i = Rolling; i < Attack; i++) {
+				m_BoardAlive[i] = true;
+				m_BoardState[i] = UpBoard;
+			}
+			m_TutorialMission = SecondMission;
+		}
+	}
+	else if (m_TutorialMission == SecondMission) {
+		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
+			m_MoveCount++;
+		}
+		if (m_MoveCount == 100) {
+			m_MoveCount = 0;
+			for (int i = Rolling; i < Attack; i++) {
+				m_BoardAlive[i] = false;
+				m_BoardState[i] = DownBoard;
+				m_TutorialMission = ThirdMission;
+			}
+		}
+	}
+	else {
+		m_BoardAlive[Attack] = true;
+		m_BoardState[Attack] = UpBoard;
+	}
+
+	MoveBoard();
+}
+
+void TutorialText::MoveBoard() {
+	for (int i = 0; i < objboard.size(); i++) {
+		if (m_BoardState[i] == UpBoard) {
+			m_AfterPosY[i] = -280.0f;
+			if (m_Frame[i] < m_FrameMax) {
+				m_Frame[i] += 0.01f;
+			}
+			else {
+				m_BoardState[i] = NoMove;
+				m_Frame[i] = m_FrameMin;
+			}
+		}
+		else if(m_BoardState[i] == DownBoard) {
+			m_AfterPosY[i] = -290.0f;
+			if (m_Frame[i] < m_FrameMax) {
+				m_Frame[i] += 0.01f;
+			}
+			else {
+				m_BoardState[i] = NoMove;
+				m_Frame[i] = m_FrameMin;
+			}
+		}
+		m_BoardPosition[i].y = Ease(In, Cubic, m_Frame[i], m_BoardPosition[i].y, m_AfterPosY[i]);
+	}
 }

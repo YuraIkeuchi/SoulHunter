@@ -274,6 +274,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::End();
 	}
 	player->ImGuiDraw();
+	tutorialtext->ImGuiDraw();
 }
 //•’Ê‚Ì•`‰æ
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
