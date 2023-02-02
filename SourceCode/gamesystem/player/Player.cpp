@@ -1069,6 +1069,7 @@ void Player::ResPornPlayer() {
 void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 	m_Position = StartPos;
 	m_fbxObject->SetPosition(m_Position);
+	m_TutorialFinish = true;
 	block->SetThornDir(0);
 	block->SetThornHit(false);
 }
