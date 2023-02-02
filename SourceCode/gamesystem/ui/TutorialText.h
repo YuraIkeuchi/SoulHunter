@@ -14,6 +14,7 @@ public:
 	void Update();
 	//描画
 	const void Draw();
+	const void SpriteDraw();//説明分描画
 	void ImGuiDraw();
 	//当たり判定
 	bool Collide();
@@ -48,7 +49,7 @@ private:
 	IKEModel* modelboard = nullptr;
 	array<unique_ptr <IKEObject3d>,Tutorial_Max> objboard;
 	//テクスチャやスプライト
-	//unique_ptr<IKESprite> TutorialSprite[Tutorial_Max][TutorialAnime_Max];
+	array<unique_ptr<IKESprite>,Tutorial_Max> TutorialSprite;
 	//その他変数
 	//XMFLOAT3 m_TexPosition;//テキストの位置
 	array<XMFLOAT3,Tutorial_Max> m_BoardPosition;//看板の位置
@@ -70,11 +71,9 @@ private:
 	//bool m_TexAlive = false;
 	//int m_TextNumber = 0;
 	////テキストの変数
-	//array<bool, Tutorial_Max> m_ReadTex;
-	//array<float, Tutorial_Max> m_Frame;
-	//array<bool, Tutorial_Max> m_InCount;
-	//array<bool, Tutorial_Max> m_OutCount;
-	//array<XMFLOAT2, Tutorial_Max> m_TexSize;
+	array<bool, Tutorial_Max> m_ReadTex;
+	array<float, Tutorial_Max> m_TexFrame;
+	array<XMFLOAT2, Tutorial_Max> m_TexSize;
 	//
 	//int m_AnimeTimer = 0;
 	//int m_AnimeCount = 0;

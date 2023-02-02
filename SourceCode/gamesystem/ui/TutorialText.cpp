@@ -23,33 +23,24 @@ TutorialText::TutorialText() {
 	}
 	////看板を読むと出てくる文字
 	////データ読み込み
-	//IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStick.png");
-	//IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialButtunB.png");
-	//IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialButtunA.png");
-	//IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialPushBack.png");
-	//IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushStart.png");
-	//const int TutorialCount = 2;
-	//IKESprite* TutorialSprite_[Tutorial_Max][TutorialAnime_Max];
-	//for (int i = 0; i < Tutorial_Max; i++) {
-	//	for (int j = 0; j < TutorialAnime_Max; j++) {
-	//		TutorialSprite_[0][j] = IKESprite::Create(5, { 0.0f,0.0f });
-	//		TutorialSprite_[1][j] = IKESprite::Create(6, { 0.0f,0.0f });
-	//		TutorialSprite_[2][j] = IKESprite::Create(7, { 0.0f,0.0f });
-	//		TutorialSprite_[3][j] = IKESprite::Create(8, { 0.0f,0.0f });
-	//		TutorialSprite_[4][j] = IKESprite::Create(9, { 0.0f,0.0f });
-	//		int number_index_y = j / TutorialCount;
-	//		int number_index_x = j % TutorialCount;
-	//		TutorialSprite_[i][j]->SetTextureRect(
-	//			{ static_cast<float>(number_index_x) * TutorialWidth_Cut, static_cast<float>(number_index_y) * TutorialHeight_Cut },
-	//			{ static_cast<float>(TutorialWidth_Cut), static_cast<float>(TutorialHeight_Cut) });
-	//		TutorialSprite_[i][j]->SetSize({ TutorialWidth_Cut,TutorialHeight_Cut });
-	//		m_TexSize[i] = { 0.0f,0.0f };
-	//		TutorialSprite_[i][j]->SetSize(m_TexSize[i]);
-	//		TutorialSprite_[i][j]->SetAnchorPoint({ 0.5f,1.0f });
-	//		TutorialSprite_[i][j]->SetPosition({ 640,250.0f });
-	//		TutorialSprite[i][j].reset(TutorialSprite_[i][j]);
-	//	}
-	//}
+	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStick.png");
+	IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialButtunB.png");
+	IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialRB.png");
+	IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialPushBack.png");
+	IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushStart.png");
+	IKESprite::LoadTexture(10, L"Resources/2d/Tutorial/TutorialButtunA.png");
+	
+	IKESprite* TutorialSprite_[Tutorial_Max];
+	for (int i = 0; i < TutorialSprite.size(); i++) {
+		TutorialSprite_[i] = IKESprite::Create(i + 5, { 0.0f,0.0f });
+		TutorialSprite_[i]->SetPosition({ 640.0f,200.0f });
+		//TutorialSprite_[i]->SetSize({0.0f,0.0f});
+		TutorialSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		TutorialSprite[i].reset(TutorialSprite_[i]);
+		m_ReadTex[i] = false;
+		m_TexFrame[i] = false;
+		m_TexSize[i] = { 0.0f,0.0f };
+	}
 }
 //更新
 void TutorialText::Update() {
@@ -97,7 +88,15 @@ const void TutorialText::Draw() {
 		}
 	}
 }
-
+//スプライトの描画
+const void TutorialText::SpriteDraw() {
+	IKESprite::PreDraw();
+	for (int i = 0; i < TutorialSprite.size(); i++) {
+		if (m_ReadTex[i]) {
+			TutorialSprite[i]->Draw();
+		}
+	}
+}
 void TutorialText::ImGuiDraw() {
 	ImGui::Begin("Tutorial");
 	ImGui::Text("Alive[Move]:%d",m_BoardAlive[Move]);
@@ -112,20 +111,17 @@ void TutorialText::ImGuiDraw() {
 }
 //当たり判定
 bool TutorialText::Collide() {
-	/*XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_BoardPosition.x, m_BoardPosition.y, 2.5f, m_PlayerPos.x, m_PlayerPos.y, 2.5f) && m_BoardAlive) {
-		m_InCount[0] = true;
-		m_OutCount[0] = false;
-		m_TexAlive = true;
-		return true;
+	XMFLOAT3 l_plaPos = player->GetPosition();
+	for (int i = 0; i < TutorialSprite.size(); i++) {
+		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f, m_BoardPosition[i].x, m_BoardPosition[i].y, 3.0f) && m_BoardAlive[i]
+			) {
+			m_ReadTex[i] = true;
+			break;
+		}
+		else {
+			m_ReadTex[i] = false;
+		}
 	}
-	else {
-		m_OutCount[0] = true;
-		m_InCount[0] = false;
-		m_TexAlive = false;
-		return false;
-	}*/
-
 	return true;
 }
 //マップごとの看板の位置
@@ -215,7 +211,7 @@ void TutorialText::Mission() {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
 			m_MoveCount++;
 		}
-		if (m_MoveCount == 100) {
+		if (m_MoveCount == 10000) {
 			m_MoveCount = 0;
 			for (int i = Rolling; i < Attack; i++) {
 				m_BoardAlive[i] = false;

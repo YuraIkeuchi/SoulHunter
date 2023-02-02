@@ -245,8 +245,9 @@ void FirstStage::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	if (player->GetHP() != 0) {
-		pause->Draw();
 		chest->ExplainDraw();
+		tutorialtext->SpriteDraw();
+		pause->Draw();
 		BlackFilter->Draw();
 		enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
 	}

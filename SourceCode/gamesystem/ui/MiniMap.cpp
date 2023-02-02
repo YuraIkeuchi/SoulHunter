@@ -7,41 +7,41 @@
 #include "PlayerSkill.h"
 //‰Šú‰»
 MiniMap::MiniMap() {
-	IKESprite::LoadTexture(10, L"Resources/2d/sceneback/PauseBack.png");
-	IKESprite::LoadTexture(11, L"Resources/2d/sceneback/MiniMapPlayer.png");
-	IKESprite::LoadTexture(12, L"Resources/2d/sceneback/MiniMapSave.png");
-	IKESprite::LoadTexture(13, L"Resources/2d/Skill/Dush.png");
-	IKESprite::LoadTexture(14, L"Resources/2d/sceneback/WholeMap.png");
-	IKESprite::LoadTexture(15, L"Resources/2d/sceneback/MapState.png");
-	IKESprite::LoadTexture(16, L"Resources/2d/sceneback/MiniBlock.png");
-	IKESprite::LoadTexture(17, L"Resources/2d/sceneback/MiniBlockToge.png");
+	IKESprite::LoadTexture(11, L"Resources/2d/sceneback/PauseBack.png");
+	IKESprite::LoadTexture(12, L"Resources/2d/sceneback/MiniMapPlayer.png");
+	IKESprite::LoadTexture(13, L"Resources/2d/sceneback/MiniMapSave.png");
+	IKESprite::LoadTexture(14, L"Resources/2d/Skill/Dush.png");
+	IKESprite::LoadTexture(15, L"Resources/2d/sceneback/WholeMap.png");
+	IKESprite::LoadTexture(16, L"Resources/2d/sceneback/MapState.png");
+	IKESprite::LoadTexture(17, L"Resources/2d/sceneback/MiniBlock.png");
+	IKESprite::LoadTexture(18, L"Resources/2d/sceneback/MiniBlockToge.png");
 	IKESprite* MiniMapSprite_;
-	MiniMapSprite_ = IKESprite::Create(10,{ 0.0f,0.0f });
+	MiniMapSprite_ = IKESprite::Create(11,{ 0.0f,0.0f });
 	MiniMapSprite.reset(MiniMapSprite_);
 
 	IKESprite* MiniPlayerSprite_;
-	MiniPlayerSprite_ = IKESprite::Create(11, { 0.0f,0.0f });
+	MiniPlayerSprite_ = IKESprite::Create(12, { 0.0f,0.0f });
 	MiniPlayerSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniPlayerSprite.reset(MiniPlayerSprite_);
 
 	IKESprite* MiniSaveSprite_;
-	MiniSaveSprite_ = IKESprite::Create(12, { 0.0f,0.0f });
+	MiniSaveSprite_ = IKESprite::Create(13, { 0.0f,0.0f });
 	MiniSaveSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniSaveSprite_->SetScale(0.7f);
 	MiniSaveSprite.reset(MiniSaveSprite_);
 
 	IKESprite* MiniDushSprite_;
-	MiniDushSprite_ = IKESprite::Create(13, { 0.0f,0.0f });
+	MiniDushSprite_ = IKESprite::Create(14, { 0.0f,0.0f });
 	MiniDushSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniDushSprite_->SetScale(0.3f);
 	MiniDushSprite.reset(MiniDushSprite_);
 
 	IKESprite* WholeMapSprite_;
-	WholeMapSprite_ = IKESprite::Create(14, { 0.0f,0.0f });
+	WholeMapSprite_ = IKESprite::Create(15, { 0.0f,0.0f });
 	WholeMapSprite.reset(WholeMapSprite_);
 
 	IKESprite* MapStateSprite_;
-	MapStateSprite_ = IKESprite::Create(15, { 0.0f,0.0f });
+	MapStateSprite_ = IKESprite::Create(16, { 0.0f,0.0f });
 	m_StatePos = { 1280.0f,640.0f };
 	MapStateSprite.reset(MapStateSprite_);
 
