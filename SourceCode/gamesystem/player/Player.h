@@ -304,6 +304,6 @@ private:
 	std::string m_PlayerLine;
 
 	//チュートリアル時の変数
-	bool m_TutorialFinish = true;
+	bool m_TutorialFinish = false;
 };
 

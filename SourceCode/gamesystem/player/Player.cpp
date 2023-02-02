@@ -337,7 +337,7 @@ void Player::PlayerMove() {
 	}
 
 	//チュートリアル時移動距離に限界がある
-	if (m_TutorialFinish && m_Position.x >= 73.0f) {
+	if (!m_TutorialFinish && m_Position.x >= 73.0f) {
 		m_Position.x = 73.0f;
 	}
 	//地面にいる間は攻撃モーションで動き止まる
@@ -959,6 +959,7 @@ void Player::Pause() {
 }
 //エディター時の動き
 void Player::Editor() {
+	m_TutorialFinish = true;
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;

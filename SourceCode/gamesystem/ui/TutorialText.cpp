@@ -20,7 +20,19 @@ TutorialText::TutorialText() {
 		m_AfterPosY[i] = 0.0f;
 		m_BoardState[i] = NoMove;
 		m_Frame[i] = 0.0f;
+		m_BoardDraw[i] = false;
 	}
+
+	modelblock = ModelManager::GetInstance()->GetModel(ModelManager::BackRock);
+	IKEObject3d* objblock_ = new IKEObject3d();
+	objblock_ = IKEObject3d::Create();
+	objblock_->SetModel(modelblock);
+	objblock_->SetPosition(m_blockPosition);
+	objblock_->SetScale(m_blockScale);
+	objblock_->SetColor(m_blockColor);
+	objblock_->SetTiling(20.0f);
+	objblock.reset(objblock_);
+
 	////看板を読むと出てくる文字
 	////データ読み込み
 	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStick.png");
@@ -37,155 +49,109 @@ TutorialText::TutorialText() {
 		//TutorialSprite_[i]->SetSize({0.0f,0.0f});
 		TutorialSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
 		TutorialSprite[i].reset(TutorialSprite_[i]);
-		m_ReadTex[i] = false;
-		m_TexFrame[i] = false;
+		m_SpriteState[i] = NoSize;
 		m_TexSize[i] = { 0.0f,0.0f };
+		m_AfterTexSize[i] = { 0.0f,0.0f };
 	}
 }
 //更新
 void TutorialText::Update() {
 	//当たり判定
 	Collide();
-	//スプライトの出現
-	SpriteAppear();
+	//岩の状態
+	RockState();
 	//チュートリアル進行状況
 	Mission();
-	////アニメーションのタイマー
-	//if (m_AnimeTimer <= 20) {
-	//	m_AnimeTimer++;
-	//}
-	//else {
-	//	m_AnimeTimer = 0;
-	//	m_AnimeCount++;
-	//}
-
-	//if (m_AnimeCount == 2) {
-	//	m_AnimeCount = 0;
-	//}
-	//
 	for (int i = 0; i < objboard.size(); i++) {
 		objboard[i]->SetPosition(m_BoardPosition[i]);
 		objboard[i]->Update();
 	}
-	/*for (int i = 0; i < Tutorial_Max; i++) {
-		for (int j = 0; j < TutorialAnime_Max; j++) {
-			TutorialSprite[i][j]->SetSize(m_TexSize[i]);
+	for (int i = 0; i < TutorialSprite.size(); i++) {
+		TutorialSprite[i]->SetSize(m_TexSize[i]);
+	}
+
+	objblock->SetColor(m_blockColor);
+	if (m_blockColor.w != 0.0f) {
+		objblock->Update();
+	}
+
+	//エフェクト更新
+	for (PlayerEffect* neweffect : effects) {
+		if (neweffect != nullptr) {
+			neweffect->Update();
 		}
-	}*/
+	}
 }
 //描画
 const void TutorialText::Draw() {
-	
-	/*IKESprite::PreDraw();
-	for (int i = 0; i < Tutorial_Max; i++) {
-			TutorialSprite[i][m_AnimeCount]->Draw();
-	}*/
 	IKEObject3d::PreDraw();
-	for (int i = 0; i < objboard.size(); i++) {
-		objboard[i]->Draw();
-		if (m_BoardAlive[i]) {
-		
+	//エフェクトの描画
+	for (PlayerEffect* neweffect : effects) {
+		if (neweffect != nullptr) {
+			neweffect->Draw();
 		}
+	}
+	for (int i = 0; i < objboard.size(); i++) {
+		if (m_BoardDraw[i]) {
+			objboard[i]->Draw();
+		}
+	}
+	if (m_blockColor.w != 0.0f) {
+		objblock->Draw();
 	}
 }
 //スプライトの描画
 const void TutorialText::SpriteDraw() {
 	IKESprite::PreDraw();
 	for (int i = 0; i < TutorialSprite.size(); i++) {
-		if (m_ReadTex[i]) {
+		if (m_BoardDraw[i]) {
 			TutorialSprite[i]->Draw();
 		}
 	}
 }
 void TutorialText::ImGuiDraw() {
-	ImGui::Begin("Tutorial");
-	ImGui::Text("Alive[Move]:%d",m_BoardAlive[Move]);
-	ImGui::Text("Alive[Rolling]:%d", m_BoardAlive[Rolling]);
-	ImGui::Text("Pos[Move]:%f", m_BoardPosition[Move].y);
-	ImGui::Text("Pos[Rolling]:%f", m_BoardPosition[Rolling].y);
-	ImGui::Text("Alive[Map]:%d", m_BoardAlive[Map]);
-	ImGui::Text("Alive[Attack]:%d", m_BoardAlive[Attack]);
-	ImGui::Text("Pos[Map]:%f", m_BoardPosition[Map].y);
-	ImGui::Text("Pos[Attack]:%f", m_BoardPosition[Attack].y);
-	ImGui::End();
+	/*ImGui::Begin("Tutorial");
+	ImGui::Text("%d[", m_AttackCount);
+	ImGui::End();*/
 }
 //当たり判定
 bool TutorialText::Collide() {
 	XMFLOAT3 l_plaPos = player->GetPosition();
 	for (int i = 0; i < TutorialSprite.size(); i++) {
-		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f, m_BoardPosition[i].x, m_BoardPosition[i].y, 3.0f) && m_BoardAlive[i]
+		if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 2.5f, m_BoardPosition[i].x, m_BoardPosition[i].y, 2.5f) && m_BoardAlive[i]
 			) {
-			m_ReadTex[i] = true;
+			m_SpriteState[i] = WideSprite;
 			break;
 		}
 		else {
-			m_ReadTex[i] = false;
+			m_SpriteState[i] = ShrinkSprite;
 		}
 	}
+
+	//当たったかどうかで描画サイズ変わる
+	ChangeSprite();
 	return true;
 }
 //マップごとの看板の位置
 void TutorialText::InitBoard(int StageNumber) {
+	effects.clear();
 	for (int i = 0; i < objboard.size(); i++) {
 		if (StageNumber == TutoRial) {
 			m_BoardAlive[i] = false;
 			m_BoardPosition[Move] = { 20.0f,-280.0f,7.0f };
-			m_BoardPosition[Rolling] = { 20.0f,-290.0f,7.0f };
-			m_BoardPosition[Jump] = { 35.0f,-290.0f,7.0f };
+			m_BoardPosition[Jump] = { 20.0f,-290.0f,7.0f };
+			m_BoardPosition[Rolling] = { 35.0f,-290.0f,7.0f };
 			m_BoardPosition[Pause] = { 50.0f,-290.0f,7.0f };
 			m_BoardPosition[Map] = { 66.0f,-290.0f,7.0f };
-			m_BoardPosition[Attack] = { 66.0f,-290.0f,7.0f };
+			m_BoardPosition[Attack] = { 68.0f,-290.0f,7.0f };
+			m_BoardDraw[i] = true;
 		}
 
 		else {
 			m_BoardAlive[i] = false;
+			m_BoardDraw[i] = false;
 		}
 	}
-}
-//スプライトの出現
-void TutorialText::SpriteAppear() {
-	////チュートリアルのスプライトの出現
-	//if (m_InCount[TexNumber] == true && m_OutCount[TexNumber] == false) {
-	//	if (!m_ReadTex[m_TextNumber]) {
-	//		m_TextNumber = TexNumber;
-	//		m_ReadTex[m_TextNumber] = true;
-	//		m_Frame[m_TextNumber] = 0.0f;
-	//	}
-	//}
-	//else if (m_InCount[TexNumber] == false && m_OutCount[TexNumber] == true) {
-	//	if (m_ReadTex[m_TextNumber]) {
-	//		m_ReadTex[m_TextNumber] = false;
-	//		m_Frame[m_TextNumber] = 0.0f;
-	//	}
-	//}
-
-	////イージングで出現する
-	//if (m_ReadTex[m_TextNumber]) {
-	//	m_TexSize[m_TextNumber] = {
-	//		Ease(In,Quad,m_Frame[m_TextNumber],m_TexSize[m_TextNumber].x,256.0f),
-	//		Ease(In,Quad,m_Frame[m_TextNumber],m_TexSize[m_TextNumber].y,128.0f)
-	//	};
-
-	//	if (m_Frame[m_TextNumber] >= 1.0f) {
-	//		m_Frame[m_TextNumber] = 1.0f;
-	//	}
-	//	else {
-	//		m_Frame[m_TextNumber] += 0.01f;
-	//	}
-	//}
-	//else {
-	//	m_TexSize[m_TextNumber] = {
-	//		Ease(In,Quad,m_Frame[m_TextNumber],m_TexSize[m_TextNumber].x,0.0f),
-	//		Ease(In,Quad,m_Frame[m_TextNumber],m_TexSize[m_TextNumber].y,0.0f)
-	//	};
-
-	//	if (m_Frame[m_TextNumber] >= 1.0f) {
-	//		m_Frame[m_TextNumber] = 1.0f;
-	//	}
-	//	else {
-	//		m_Frame[m_TextNumber] += 0.01f;
-	//	}
-	//}
 }
 //チュートリアルの状況
 void TutorialText::Mission() {
@@ -196,11 +162,12 @@ void TutorialText::Mission() {
 			m_MoveCount++;
 		}
 
-		if (m_MoveCount == 100) {
+		if (m_MoveCount == 150) {
+			m_ClearCount++;
 			m_MoveCount = 0;
 			m_BoardAlive[Move] = false;
 			m_BoardState[Move] = DownBoard;
-			for (int i = Rolling; i < Attack; i++) {
+			for (int i = Jump; i < Attack; i++) {
 				m_BoardAlive[i] = true;
 				m_BoardState[i] = UpBoard;
 			}
@@ -208,16 +175,37 @@ void TutorialText::Mission() {
 		}
 	}
 	else if (m_TutorialMission == SecondMission) {
-		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
-			m_MoveCount++;
+		//それぞれのタスクをクリアするとクリアカウントが加算される
+		//ジャンプ
+		if ((m_SpriteState[Jump] == WideSprite) && (m_BoardAlive[Jump]) && input->TriggerButton(input->Button_B)) {
+			m_ClearCount++;
+			m_BoardAlive[Jump] = false;
 		}
-		if (m_MoveCount == 10000) {
-			m_MoveCount = 0;
-			for (int i = Rolling; i < Attack; i++) {
-				m_BoardAlive[i] = false;
+		//ローリング
+		if ((m_SpriteState[Rolling] == WideSprite) && (m_BoardAlive[Rolling]) && input->TriggerButton(input->Button_RB)) {
+			m_ClearCount++;
+			m_BoardAlive[Rolling] = false;
+		}
+		//ポーズ
+		if ((m_SpriteState[Pause] == WideSprite) && (m_BoardAlive[Pause]) && input->TriggerButton(input->Select)) {
+			m_ClearCount++;
+			m_BoardAlive[Pause] = false;
+		}
+		//ミニマップ
+		if ((m_SpriteState[Map] == WideSprite) && (m_BoardAlive[Map]) && input->TriggerButton(input->Start)) {
+			m_ClearCount++;
+			m_BoardAlive[Map] = false;
+		}
+
+
+		for (int i = Jump; i < Attack; i++) {
+			if (!m_BoardAlive[i]) {
 				m_BoardState[i] = DownBoard;
-				m_TutorialMission = ThirdMission;
 			}
+		}
+
+		if (m_ClearCount == 5) {
+			m_TutorialMission = ThirdMission;
 		}
 	}
 	else {
@@ -225,9 +213,10 @@ void TutorialText::Mission() {
 		m_BoardState[Attack] = UpBoard;
 	}
 
+	//看板が動く
 	MoveBoard();
 }
-
+//ボードが動く
 void TutorialText::MoveBoard() {
 	for (int i = 0; i < objboard.size(); i++) {
 		if (m_BoardState[i] == UpBoard) {
@@ -252,4 +241,76 @@ void TutorialText::MoveBoard() {
 		}
 		m_BoardPosition[i].y = Ease(In, Cubic, m_Frame[i], m_BoardPosition[i].y, m_AfterPosY[i]);
 	}
+}
+//スプライトの大きさ変更
+void TutorialText::ChangeSprite() {
+	for (int i = 0; i < TutorialSprite.size(); i++) {
+		if (m_SpriteState[i] == WideSprite) {
+			m_AfterTexSize[i] = {64.0f,64.0f};
+		}
+		else if (m_SpriteState[i] == ShrinkSprite) {
+			m_AfterTexSize[i] = { 0.0f,0.0f };
+		}
+		m_TexSize[i] = { Ease(In, Cubic,0.5f, m_TexSize[i].x,  m_AfterTexSize[i].x),
+			Ease(In, Cubic, 0.5f, m_TexSize[i].y, m_AfterTexSize[i].y),
+		};
+	}
+}
+//岩の状態
+void TutorialText::RockState() {
+	//位置フレーム分のみ当たり判定を取る
+	if (m_Damage) {
+		m_DamageTimer--;
+		if (m_DamageTimer < 0) {
+			m_Damage = false;
+			m_DamageTimer = 0;
+		}
+	}
+
+	//攻撃カウントが3になったら岩が消える
+	if (m_AttackCount == 3) {
+		m_blockColor.w -= 0.05f;
+
+		if (m_blockColor.w < 0.0f) {
+			m_blockColor.w = 0.0f;
+			player->SetTutorialFinish(true);
+			for (int i = 0; i < objboard.size(); i++) {
+				m_BoardAlive[i] = false;
+				m_BoardState[i] = DownBoard;
+			}
+		}
+	}
+
+	//当たり判定
+	RockCollide();
+}
+//岩の当たり判定
+bool TutorialText::RockCollide() {
+	OBB1.SetParam_Pos(m_blockPosition);
+	OBB1.SetParam_Scl({5.0f,5.0f,10.0f});
+	OBB1.SetParam_Rot(objblock->GetMatrot());
+	OBB2.SetParam_Pos(player->GetSwordPosition());
+	OBB2.SetParam_Scl(player->GetSwordScale());
+	OBB2.SetParam_Rot(player->GetSwordMatrot());
+
+	//OBBと向きで判定取る
+	if (player->GetRotation().y == 90.0f) {
+		if (Collision::OBBCollision(OBB1, OBB2) && (player->CheckAttack()) && (player->GetPosition().x < m_blockPosition.x) && (!m_Damage) && (m_AttackCount < 3)) {
+			m_Damage = true;
+			m_DamageTimer = 10;
+			m_AttackCount++;
+			//エフェクトの発生
+			PlayerEffect* newEffect;
+			newEffect = new PlayerEffect();
+			newEffect->CreateEffect("Wall", { m_blockPosition.x - 2.0f,m_blockPosition.y,0.0f }, 0);
+			newEffect->Initialize();
+			effects.push_back(newEffect);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	return true;
 }
