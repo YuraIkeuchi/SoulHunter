@@ -92,10 +92,8 @@ void BaseScene::HelperInitialize() {
 	//UI
 	ui = new UI(player, firstboss);
 	//チュートリアル
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i] = new TutorialText();
-		tutorialtext[i]->SetPlayer(player);
-	}
+	tutorialtext = new TutorialText();
+	tutorialtext->SetPlayer(player);
 	//セーブ関係
 	save->Initialize();
 	save->SetPlayer(player);

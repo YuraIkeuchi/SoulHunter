@@ -140,9 +140,7 @@ void FirstStage::NormalUpdate() {
 	enemymanager->SoulUpdate();
 	backmanager->Update();
 	
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->Update(i);
-	}
+	tutorialtext->Update();
 
 	//その他の更新
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
@@ -193,7 +191,6 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
 		ImGuiDraw(dxCommon);
-		player->ImGuiDraw();
 		enemymanager->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
@@ -290,9 +287,7 @@ void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		save->Draw();
 		//チュートリアル
-		for (int i = 0; i < tutorialtext.size(); i++) {
-			tutorialtext[i]->Draw();
-		}
+		tutorialtext->Draw();
 		//たからばこ
 		chest->Draw();
 		//敵の描画
@@ -370,9 +365,7 @@ void FirstStage::MapInitialize() {
 		}
 		player->InitPlayer(StageNumber);
 		save->InitSave(StageNumber);
-		for (int i = 0; i < tutorialtext.size(); i++) {
-			tutorialtext[i]->InitBoard(StageNumber, i);
-		}
+		tutorialtext->InitBoard(StageNumber);
 		chest->InitChest(StageNumber);
 		enemymanager->LoadEnemyParam(StageNumber, player, block, lightGroup);
 		backmanager->LoadObjParam(StageNumber,player, lightGroup);

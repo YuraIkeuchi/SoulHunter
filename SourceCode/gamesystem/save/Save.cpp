@@ -117,7 +117,7 @@ void Save::InitSave(int StageNumber) {
 	}
 	else if (StageNumber == TutoRial) {
 		m_Alive = true;
-		m_Position = { 40.0f,-282.0f,10.0f };
+		m_Position = { 100.0f,-282.0f,10.0f };
 	}
 
 	objSave->SetPosition(m_Position);

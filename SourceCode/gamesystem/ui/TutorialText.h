@@ -11,17 +11,17 @@ public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	TutorialText();
 	//更新
-	void Update(int TexNumber);
+	void Update();
 	//描画
 	const void Draw();
 	//当たり判定
-	bool Collide(int TexNumber);
+	bool Collide();
 	//マップごとの初期化
-	void InitBoard(int StageNumber,int TexNumber);
+	void InitBoard(int StageNumber);
 	//テクスチャの動き
 	void MoveTex();
 	//スプライトの出現
-	void SpriteAppear(int TexNumber);
+	void SpriteAppear();
 	
 private:
 	// DirectX::を省略
@@ -32,42 +32,50 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
 	//定数
-	static const int Tutorial_Max = 5;//チュートリアルの数
-	static const int TutorialAnime_Max = 2;//チュートリアルのアニメの数
+	static const int Tutorial_Max = 6;//チュートリアルの数
+
 public:
-	//getter
-	const XMFLOAT3& GetPosition() { return m_BoardPosition; }
-	bool GetAlive() { return m_BoardAlive; }
-	//setter
-	void SetPosition(const XMFLOAT3& m_BoardPosition) { this->m_BoardPosition = m_BoardPosition; }
-	void SetBoardAlive(bool m_BoardAlive) { this->m_BoardAlive = m_BoardAlive; }
+	////getter
+	//const XMFLOAT3& GetPosition() { return m_BoardPosition; }
+	////setter
+	//void SetPosition(const XMFLOAT3& m_BoardPosition) { this->m_BoardPosition = m_BoardPosition; }
 private:
 	//クラス
 	unique_ptr<Player> player = nullptr;
-	//unique_ptr<TextBoard> textboard = nullptr;
 	//OBJ
 	IKEModel* modelboard = nullptr;
-	unique_ptr <IKEObject3d> objboard;
+	array<unique_ptr <IKEObject3d>,Tutorial_Max> objboard;
 	//テクスチャやスプライト
-	unique_ptr<IKESprite> TutorialSprite[Tutorial_Max][TutorialAnime_Max];
+	//unique_ptr<IKESprite> TutorialSprite[Tutorial_Max][TutorialAnime_Max];
 	//その他変数
-	XMFLOAT3 m_TexPosition;//テキストの位置
-	XMFLOAT3 m_BoardPosition;//看板の位置
-	//sin波に使うもの
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
-	//看板があるか
-	bool m_BoardAlive = true;
-	//テキストが出るか
-	bool m_TexAlive = false;
-	int m_TextNumber = 0;
-	//テキストの変数
-	array<bool, Tutorial_Max> m_ReadTex;
-	array<float, Tutorial_Max> m_Frame;
-	array<bool, Tutorial_Max> m_InCount;
-	array<bool, Tutorial_Max> m_OutCount;
-	array<XMFLOAT2, Tutorial_Max> m_TexSize;
+	//XMFLOAT3 m_TexPosition;//テキストの位置
+	array<XMFLOAT3,Tutorial_Max> m_BoardPosition;//看板の位置
+	////看板があるか
+	array<bool,Tutorial_Max> m_BoardAlive;
+	////sin波に使うもの
+	//float m_Angle = 0.0f;
+	//float m_Angle2 = 0.0f;
 	
-	int m_AnimeTimer = 0;
-	int m_AnimeCount = 0;
+	////テキストが出るか
+	//bool m_TexAlive = false;
+	//int m_TextNumber = 0;
+	////テキストの変数
+	//array<bool, Tutorial_Max> m_ReadTex;
+	//array<float, Tutorial_Max> m_Frame;
+	//array<bool, Tutorial_Max> m_InCount;
+	//array<bool, Tutorial_Max> m_OutCount;
+	//array<XMFLOAT2, Tutorial_Max> m_TexSize;
+	//
+	//int m_AnimeTimer = 0;
+	//int m_AnimeCount = 0;
+
+
+	enum TutorialType {
+		Move,
+		Rolling,
+		Jump,
+		Pause,
+		Map,
+		Attack,
+	};
 };

@@ -253,13 +253,13 @@ void Player::Draw(DirectXCommon* dxCommon) {
 }
 //Imgui
 void Player::ImGuiDraw() {
-	//ImGui::Begin("player");
-	////ImGui::SetWindowPos(ImVec2(1000, 450));
-	////ImGui::SetWindowSize(ImVec2(280, 300));
-	//ImGui::Text("m_PosX:%f", m_Position.x);
-	//ImGui::Text("m_PosY:%f", m_Position.y);
-	//ImGui::Text("m_PosZ:%f", m_Position.z);
-	//ImGui::End();
+	ImGui::Begin("player");
+	//ImGui::SetWindowPos(ImVec2(1000, 450));
+	//ImGui::SetWindowSize(ImVec2(280, 300));
+	ImGui::Text("m_PosX:%f", m_Position.x);
+	ImGui::Text("m_PosY:%f", m_Position.y);
+	ImGui::Text("m_PosZ:%f", m_Position.z);
+	ImGui::End();
 }
 //剣の更新
 void Player::SwordUpdate() {
@@ -334,6 +334,11 @@ void Player::PlayerMove() {
 	}
 	else {
 		m_RightLimit = false;
+	}
+
+	//チュートリアル時移動距離に限界がある
+	if (m_TutorialFinish && m_Position.x >= 73.0f) {
+		m_Position.x = 73.0f;
 	}
 	//地面にいる間は攻撃モーションで動き止まる
 	if (m_AddPower == 0.0f) {
