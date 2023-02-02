@@ -4,6 +4,8 @@
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include <array>
+#include "CollisionPrimitive.h"
+#include "PlayerEffect.h"
 using namespace std;         //  名前空間指定
 //チュートリアルのクラス(看板)
 class TutorialText {
@@ -11,18 +13,25 @@ public:
 	void SetPlayer(Player* player) { this->player.reset(player); }
 	TutorialText();
 	//更新
-	void Update(int TexNumber);
+	void Update();
 	//描画
 	const void Draw();
+	const void SpriteDraw();//説明分描画
+	void ImGuiDraw();
 	//当たり判定
-	bool Collide(int TexNumber);
+	bool Collide();
 	//マップごとの初期化
-	void InitBoard(int StageNumber,int TexNumber);
-	//テクスチャの動き
-	void MoveTex();
-	//スプライトの出現
-	void SpriteAppear(int TexNumber);
-	
+	void InitBoard(int StageNumber);
+	//チュートリアルの状況
+	void Mission();
+	//看板の動き
+	void MoveBoard();
+	//スプライトの動き
+	void ChangeSprite();
+	//岩と剣の当たり判定
+	bool RockCollide();
+	//岩の状態
+	void RockState();
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -32,42 +41,81 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
 	//定数
-	static const int Tutorial_Max = 5;//チュートリアルの数
-	static const int TutorialAnime_Max = 2;//チュートリアルのアニメの数
+	static const int Tutorial_Max = 6;//チュートリアルの数
+
 public:
-	//getter
-	const XMFLOAT3& GetPosition() { return m_BoardPosition; }
-	bool GetAlive() { return m_BoardAlive; }
-	//setter
-	void SetPosition(const XMFLOAT3& m_BoardPosition) { this->m_BoardPosition = m_BoardPosition; }
-	void SetBoardAlive(bool m_BoardAlive) { this->m_BoardAlive = m_BoardAlive; }
+
 private:
 	//クラス
+	vector<PlayerEffect*> effects;
 	unique_ptr<Player> player = nullptr;
-	//unique_ptr<TextBoard> textboard = nullptr;
+	//OBB
+	OBB OBB1 = {};
+	OBB OBB2 = {};
 	//OBJ
 	IKEModel* modelboard = nullptr;
-	unique_ptr <IKEObject3d> objboard;
+	array<unique_ptr <IKEObject3d>,Tutorial_Max> objboard;
+
+	IKEModel* modelblock = nullptr;
+	unique_ptr<IKEObject3d> objblock;
+	XMFLOAT3 m_blockPosition = {83.0f,-280.0f,5.0f};
+	XMFLOAT3 m_blockScale = {1.0f,1.5f,2.5f};
+	XMFLOAT4 m_blockColor = {1.0f,1.0f,1.0f,1.0f};
 	//テクスチャやスプライト
-	unique_ptr<IKESprite> TutorialSprite[Tutorial_Max][TutorialAnime_Max];
+	array<unique_ptr<IKESprite>,Tutorial_Max> TutorialSprite;
 	//その他変数
-	XMFLOAT3 m_TexPosition;//テキストの位置
-	XMFLOAT3 m_BoardPosition;//看板の位置
-	//sin波に使うもの
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
-	//看板があるか
-	bool m_BoardAlive = true;
-	//テキストが出るか
-	bool m_TexAlive = false;
-	int m_TextNumber = 0;
-	//テキストの変数
-	array<bool, Tutorial_Max> m_ReadTex;
+	//XMFLOAT3 m_TexPosition;//テキストの位置
+	array<XMFLOAT3,Tutorial_Max> m_BoardPosition;//看板の位置
+	////看板があるか
+	array<bool,Tutorial_Max> m_BoardAlive;
+	array<bool, Tutorial_Max> m_BoardDraw;
+	//チュートリアルの進行状況
+	int m_TutorialMission = 0;
+	//看板の動き方
+	array<int, Tutorial_Max> m_BoardState;
+	//看板の位置(Y軸のみ)
+	array<float, Tutorial_Max> m_AfterPosY;
+	//フレーム
 	array<float, Tutorial_Max> m_Frame;
-	array<bool, Tutorial_Max> m_InCount;
-	array<bool, Tutorial_Max> m_OutCount;
+	////テキストの変数
+	array<int, Tutorial_Max> m_SpriteState;
 	array<XMFLOAT2, Tutorial_Max> m_TexSize;
-	
-	int m_AnimeTimer = 0;
-	int m_AnimeCount = 0;
+	array<XMFLOAT2, Tutorial_Max> m_AfterTexSize;
+
+	bool m_Damage = false;
+	int m_DamageTimer = 0;
+	int m_ClearCount = 0;
+	enum TutorialType {
+		Move,
+		Jump,
+		Rolling,
+		Pause,
+		Map,
+		Attack,
+	};
+
+	enum TutorialMission {
+		FirstMission,
+		SecondMission,
+		ThirdMission,
+		FinishMission,
+	};
+
+	enum BoardState {
+		NoMove,
+		UpBoard,
+		DownBoard
+	};
+
+	enum SpriteState {
+		NoSize,
+		WideSprite,
+		ShrinkSprite
+	};
+
+	//チュートリアルの状況
+	int m_MoveCount = 0;
+
+	//岩を叩いた回数
+	int m_AttackCount = 0;
 };

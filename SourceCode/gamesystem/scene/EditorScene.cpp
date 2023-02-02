@@ -177,10 +177,7 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	save->Draw();
 	//敵の描画
 	enemymanager->Draw(dxCommon);
-
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->Draw();
-	}
+	tutorialtext->Draw();
 	ParticleEmitter::GetInstance()->SmokeDrawAll();
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	//たからばこ
@@ -349,9 +346,7 @@ void EditorScene::MapInitialize() {
 			break;
 		}
 		save->InitSave(StageNumber);
-		for (int i = 0; i < tutorialtext.size(); i++) {
-			tutorialtext[i]->InitBoard(StageNumber, i);
-		}
+		tutorialtext->InitBoard(StageNumber);
 		enemymanager->LoadEnemyParam(StageNumber,player,block, lightGroup);
 		backmanager->LoadObjParam(StageNumber, player, lightGroup);
 		backmanager->LoadBackObjAlways(StageNumber);
@@ -365,9 +360,7 @@ void EditorScene::StageMapChange(int StageNumber) {
 	m_MoveEnemy = false;
 	mapchange->SetAddStartChange(true);
 	save->InitSave(StageNumber);
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->InitBoard(StageNumber, i);
-	}
+	tutorialtext->InitBoard(StageNumber);
 }
 //ゲームデータのセーブ(位置とマップ番号)
 void EditorScene::SaveGame() {
@@ -479,9 +472,7 @@ void EditorScene::AllUpdate() {
 	enemymanager->Update(m_MoveEnemy);
 	backmanager->Update();
 	
-	for (int i = 0; i < tutorialtext.size(); i++) {
-		tutorialtext[i]->Update(i);
-	}
+	tutorialtext->Update();
 
 	//その他の更新
 	ParticleEmitter::GetInstance()->Update();

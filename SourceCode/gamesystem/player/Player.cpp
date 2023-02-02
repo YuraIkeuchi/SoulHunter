@@ -251,6 +251,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 		swordparticle->Draw();
 	}
 }
+//Imgui
 void Player::ImGuiDraw() {
 	ImGui::Begin("player");
 	//ImGui::SetWindowPos(ImVec2(1000, 450));
@@ -333,6 +334,11 @@ void Player::PlayerMove() {
 	}
 	else {
 		m_RightLimit = false;
+	}
+
+	//チュートリアル時移動距離に限界がある
+	if (!m_TutorialFinish && m_Position.x >= 73.0f) {
+		m_Position.x = 73.0f;
 	}
 	//地面にいる間は攻撃モーションで動き止まる
 	if (m_AddPower == 0.0f) {
@@ -953,6 +959,7 @@ void Player::Pause() {
 }
 //エディター時の動き
 void Player::Editor() {
+	m_TutorialFinish = true;
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
 		m_Position.x += 0.3f;

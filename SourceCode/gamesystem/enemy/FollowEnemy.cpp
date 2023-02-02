@@ -5,9 +5,9 @@
 using namespace DirectX;
 
 FollowEnemy::FollowEnemy() {
-	IKESprite::LoadTexture(26, L"Resources/2d/sceneback/MiniMapEnemy.png");
+	IKESprite::LoadTexture(27, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
-	MiniEnemySprite_ = IKESprite::Create(26, { 0.0f,0.0f });
+	MiniEnemySprite_ = IKESprite::Create(27, { 0.0f,0.0f });
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
@@ -148,6 +148,7 @@ void FollowEnemy::Pause() {
 }
 //’Ç]
 void FollowEnemy::FollowMove() {
+	m_TargetTimer++;
 	XMFLOAT3 position{};
 	position.x = (player->GetSwordPosition().x - m_Position.x);
 	position.y = (player->GetSwordPosition().y - m_Position.y);
@@ -244,7 +245,7 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 }
 //ImGui
 void FollowEnemy::ImGuiDraw() {
-	ImGui::Begin("Follow");
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::End();
+	//ImGui::Begin("Follow");
+	//ImGui::Text("RotX:%f", m_Rotation.x);
+	//ImGui::End();
 }

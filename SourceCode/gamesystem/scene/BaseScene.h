@@ -167,8 +167,7 @@ public:
 	//UI関係
 	UI* ui = nullptr;
 	//チュートリアルのテキスト
-	array<TutorialText*, Tutorial_Max> tutorialtext;
-	array<int, Tutorial_Max> CollideCount;
+	TutorialText* tutorialtext = nullptr;
 	//カメラワーククラス
 	CameraWork* camerawork = nullptr;
 	//セーブアンドロード用

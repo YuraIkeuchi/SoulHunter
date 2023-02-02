@@ -141,6 +141,7 @@ public:
 	void SetCollideChest(bool m_CollideChest) { this->m_CollideChest = m_CollideChest; }
 	void SetMovie(bool m_Movie) { this->m_Movie = m_Movie; }
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
+	void SetTutorialFinish(bool m_TutorialFinish) { this->m_TutorialFinish = m_TutorialFinish; }
 
 private:
 	
@@ -234,8 +235,6 @@ private:
 	float m_Frame = 0.0f;
 	//ムービー中の動き
 	bool m_Movie = false;
-	//ディゾルブ
-	float Disolve = -1.0f;
 	//復活処理
 	int m_SaveTimer = 0;
 	XMFLOAT3 m_RespornPos = { 0.0f,0.0f,0.0f };
@@ -303,5 +302,8 @@ private:
 	std::ifstream m_PlayerFile;
 	std::stringstream m_PlayerPopcom;
 	std::string m_PlayerLine;
+
+	//チュートリアル時の変数
+	bool m_TutorialFinish = false;
 };
 

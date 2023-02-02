@@ -5,9 +5,9 @@
 using namespace DirectX;
 
 BoundEnemy::BoundEnemy() {
-	IKESprite::LoadTexture(26, L"Resources/2d/sceneback/MiniMapEnemy.png");
+	IKESprite::LoadTexture(27, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
-	MiniEnemySprite_ = IKESprite::Create(26, { 0.0f,0.0f });
+	MiniEnemySprite_ = IKESprite::Create(27, { 0.0f,0.0f });
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
