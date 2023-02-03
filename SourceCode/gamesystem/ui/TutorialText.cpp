@@ -340,7 +340,7 @@ void TutorialText::BirthParticle() {
 	float e_scale = 0.0f;
 
 	for (int i = 0; i < objboard.size(); i++) {
-		if (m_BoardPosition[i].y != -280.0f && m_BoardPosition[i].y != -290.0f) {
+		if (m_BoardPosition[i].y != -280.0f && m_BoardPosition[i].y != -290.0f && m_BoardAlive[i]) {
 			ParticleEmitter::GetInstance()->BoardEffect(50, { m_BoardPosition[i].x,-282.0f,m_BoardPosition[i].z}, s_scale, e_scale, s_color, e_color);
 		}
 	}
