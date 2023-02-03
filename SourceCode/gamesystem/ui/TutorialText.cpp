@@ -3,6 +3,7 @@
 #include "Input.h"
 #include <Easing.h>
 #include "VariableCommon.h"
+#include "ParticleEmitter.h"
 //読み込みと初期化
 TutorialText::TutorialText() {
 	//看板
@@ -62,6 +63,8 @@ void TutorialText::Update() {
 	RockState();
 	//チュートリアル進行状況
 	Mission();
+	//パーティクル
+	BirthParticle();
 	for (int i = 0; i < objboard.size(); i++) {
 		objboard[i]->SetPosition(m_BoardPosition[i]);
 		objboard[i]->Update();
@@ -81,6 +84,7 @@ void TutorialText::Update() {
 			neweffect->Update();
 		}
 	}
+
 }
 //描画
 const void TutorialText::Draw() {
@@ -110,9 +114,9 @@ const void TutorialText::SpriteDraw() {
 	}
 }
 void TutorialText::ImGuiDraw() {
-	/*ImGui::Begin("Tutorial");
-	ImGui::Text("%d[", m_AttackCount);
-	ImGui::End();*/
+	//ImGui::Begin("Tutorial");
+
+	//ImGui::End();
 }
 //当たり判定
 bool TutorialText::Collide() {
@@ -143,7 +147,7 @@ void TutorialText::InitBoard(int StageNumber) {
 			m_BoardPosition[Rolling] = { 35.0f,-290.0f,7.0f };
 			m_BoardPosition[Pause] = { 50.0f,-290.0f,7.0f };
 			m_BoardPosition[Map] = { 66.0f,-290.0f,7.0f };
-			m_BoardPosition[Attack] = { 68.0f,-290.0f,7.0f };
+			m_BoardPosition[Attack] = { 70.0f,-290.0f,7.0f };
 			m_BoardDraw[i] = true;
 		}
 
@@ -208,9 +212,16 @@ void TutorialText::Mission() {
 			m_TutorialMission = ThirdMission;
 		}
 	}
-	else {
+	else if(m_TutorialMission == ThirdMission) {
 		m_BoardAlive[Attack] = true;
 		m_BoardState[Attack] = UpBoard;
+	}
+	else {
+		player->SetTutorialFinish(true);
+		for (int i = 0; i < objboard.size(); i++) {
+			m_BoardAlive[i] = false;
+			m_BoardState[i] = DownBoard;
+		}
 	}
 
 	//看板が動く
@@ -229,7 +240,7 @@ void TutorialText::MoveBoard() {
 				m_Frame[i] = m_FrameMin;
 			}
 		}
-		else if(m_BoardState[i] == DownBoard) {
+		else if (m_BoardState[i] == DownBoard) {
 			m_AfterPosY[i] = -290.0f;
 			if (m_Frame[i] < m_FrameMax) {
 				m_Frame[i] += 0.01f;
@@ -273,11 +284,7 @@ void TutorialText::RockState() {
 
 		if (m_blockColor.w < 0.0f) {
 			m_blockColor.w = 0.0f;
-			player->SetTutorialFinish(true);
-			for (int i = 0; i < objboard.size(); i++) {
-				m_BoardAlive[i] = false;
-				m_BoardState[i] = DownBoard;
-			}
+			m_TutorialMission = FinishMission;
 		}
 	}
 
@@ -313,4 +320,28 @@ bool TutorialText::RockCollide() {
 	}
 
 	return true;
+}
+//ロードゲーム時
+void TutorialText::LoadGame() {
+	m_TutorialMission = ThirdMission;
+	for (int i = 0; i < objboard.size(); i++) {
+		m_BoardDraw[i] = false;
+		m_BoardAlive[i] = false;
+		m_BoardState[i] = NoMove;
+	}
+
+	m_blockColor.w = 0.0f;
+}
+//パーティクル
+void TutorialText::BirthParticle() {
+	XMFLOAT4 s_color = { 0.8f,0.8f,0.8f,0.3f };
+	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+
+	for (int i = 0; i < objboard.size(); i++) {
+		if (m_BoardPosition[i].y != -280.0f && m_BoardPosition[i].y != -290.0f) {
+			ParticleEmitter::GetInstance()->BoardEffect(50, { m_BoardPosition[i].x,-282.0f,m_BoardPosition[i].z}, s_scale, e_scale, s_color, e_color);
+		}
+	}
 }

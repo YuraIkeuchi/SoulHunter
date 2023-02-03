@@ -32,6 +32,10 @@ public:
 	bool RockCollide();
 	//岩の状態
 	void RockState();
+	//ロードゲーム時の場合
+	void LoadGame();
+	//パーティクル
+	void BirthParticle();
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -69,6 +73,7 @@ private:
 	////看板があるか
 	array<bool,Tutorial_Max> m_BoardAlive;
 	array<bool, Tutorial_Max> m_BoardDraw;
+	array<int, Tutorial_Max> m_ParticleCount;
 	//チュートリアルの進行状況
 	int m_TutorialMission = 0;
 	//看板の動き方

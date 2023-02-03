@@ -121,6 +121,7 @@ void BaseScene::StartGame() {
 		LoadGame();
 		StageNumber = StartStage;
 		player->LoadPlayer(m_PlayerStartPos);
+		tutorialtext->LoadGame();
 		save->InitSave(StageNumber);
 		chest->InitChest(StageNumber);
 		if (StageNumber == TutoRial) {

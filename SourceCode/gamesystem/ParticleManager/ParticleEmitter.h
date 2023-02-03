@@ -41,6 +41,8 @@ public: //メンバ関数
 	void HealEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
 	//足元の煙
 	void HootEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
+	//看板の煙
+	void BoardEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor);
 	//死んだ時のエフェクト
 	void DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor,float velocity);
 	//削除
@@ -61,4 +63,6 @@ private: //メンバ変数
 	unique_ptr<ParticleManager> deathParticle;
 	//煙
 	unique_ptr<ParticleManager> smokeParticle;
+	//煙
+	unique_ptr<ParticleManager> boardParticle;
 };
