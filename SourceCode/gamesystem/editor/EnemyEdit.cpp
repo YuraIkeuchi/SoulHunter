@@ -51,12 +51,13 @@ void EnemyEdit::BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player
 	enemy.push_back(newBirdEnemy);
 }
 //í«è]ÇÃìGÇÃê∂ê¨
-void EnemyEdit::FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player) {
+void EnemyEdit::FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,Block* block) {
 	InterEnemy* newFollowEnemy;
 	newFollowEnemy = new FollowEnemy();
 	newFollowEnemy->Initialize();
 	newFollowEnemy->SetPlayer(player);
 	newFollowEnemy->SetPosition(player->GetPosition());
 	newFollowEnemy->SetStartPos(player->GetPosition());
+	newFollowEnemy->SetBlock(block);
 	enemy.push_back(newFollowEnemy);
 }

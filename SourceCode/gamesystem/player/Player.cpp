@@ -890,13 +890,13 @@ void Player::InitPlayer(int StageNumber) {
 	effects.clear();
 	if (StageNumber == Map1) {
 		if (m_GoalDir == LeftGoal) {
-			m_Position = { 275.0f,-110.0,0.0f };
+			m_Position = { 275.0f,-70.0,0.0f };
 		}
 		else if (m_GoalDir == UpGoal) {
-			m_Position = { 49.0f,-220.0,0.0f };
+			m_Position = { 27.0f,-260.0,0.0f };
 		}
 		else if (m_GoalDir == RightGoal) {
-			m_Position = { 24.0f,-191.0,0.0f };
+			m_Position = { 22.0f,-135.0,0.0f };
 		}
 	}
 	else if (StageNumber == Map2) {
@@ -904,7 +904,7 @@ void Player::InitPlayer(int StageNumber) {
 			m_Position = { 27.0f,-110.0f,0.0f };
 		}
 		else if (m_GoalDir == LeftGoal) {
-			m_Position = { 267.0f,-70.0f,0.0f };
+			m_Position = { 279.0f,-84.0f,0.0f };
 		}
 	}
 	else if (StageNumber == Map3) {
@@ -952,7 +952,7 @@ void Player::InitPlayer(int StageNumber) {
 
 	else if (StageNumber == TutoRial) {
 		if (m_GoalDir == LeftGoal) {
-			m_Position = { 270.0f,-190.0f,0.0f };
+			m_Position = { 270.0f,-120.0f,0.0f };
 		}
 	}
 }

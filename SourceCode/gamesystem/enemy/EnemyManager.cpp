@@ -141,7 +141,7 @@ void EnemyManager::BoundEnemySpecity(const char* vsShaderName) {
 	for (int i = 0; i < m_BoundEnemys.size(); i++) {
 		birdofs << "Wait" << "," << 120 << std::endl;
 		birdofs << "POP" << "," << m_BoundEnemys[i]->GetStartPos().x
-			<< "," << m_BoundEnemys[i]->GetStartPos().y
+			<< "," << m_BoundEnemys[i]->GetPosition().y
 			<< "," << m_BoundEnemys[i]->GetStartPos().z << std::endl;
 
 	}
@@ -798,7 +798,7 @@ void EnemyManager::EnemyBirth(int EnemyType, Player* player, Block* block) {
 		m_BirdEnemyCount++;
 	}
 	else {
-		enemyedit->FollowEnemyArgment(m_FollowEnemys, player);
+		enemyedit->FollowEnemyArgment(m_FollowEnemys, player,block);
 		m_FollowEnemyCount++;
 	}
 }
