@@ -4,6 +4,7 @@
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
 #include "FollowEnemy.h"
+#include "ChestEnemy.h"
 #include "ThornObj.h"
 #include "Block.h"
 #include "Player.h"
@@ -36,6 +37,8 @@ public:
 	void BirdEnemySpecity(const char* vsShaderName);
 	//’Ç]‚Ì“G
 	void FollowEnemySpecity(const char* vsShaderName);
+	//•ó” ‚Ì“G
+	void ChestEnemySpecity(const char* vsShaderName);
 	//™‚ÌOBJ
 	void ThornObjSpecity(const char* vsShaderName);
 	//csvŠJ‚­
@@ -95,6 +98,7 @@ private:
 	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
 	PlayerSoul* followplayersoul[Soul_Max][Enemy_Max];
+	PlayerSoul* chestplayersoul[Soul_Max][Enemy_Max];
 	//ŠÛ‰e
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowPos[3] = { 1,2,0 };
@@ -106,12 +110,14 @@ private:
 	std::vector<InterEnemy*> m_BoundEnemys;
 	std::vector<InterEnemy*> m_BirdEnemys;
 	std::vector<InterEnemy*> m_FollowEnemys;
+	std::vector<InterEnemy*> m_ChestEnemys;
 	std::vector<ThornObj*> m_ThornObjs;
 
 	int m_NormalEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_BoundEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_BirdEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_FollowEnemyCount = 0;//ƒUƒR“G‚Ì”
+	int m_ChestEnemyCount = 0;//ƒUƒR“G‚Ì”
 	int m_ThornObjCount = 0;//ƒUƒR“G‚Ì”
 	int m_EnemyCount = 0;
 	std::vector<XMFLOAT3>m_EnemyPosition;
@@ -119,12 +125,14 @@ private:
 	std::vector<XMFLOAT3>m_BoundEnemyPosition;
 	std::vector<XMFLOAT3>m_BirdEnemyPosition;
 	std::vector<XMFLOAT3>m_FollowEnemyPosition;
+	std::vector<XMFLOAT3>m_ChestEnemyPosition;
 	std::vector<XMFLOAT3>m_ThornObjPosition;
 	std::vector<XMFLOAT3> m_EnemyStartPos;
 	std::vector<XMFLOAT3> m_ThornEnemyStartPos;
 	std::vector<XMFLOAT3> m_BoundEnemyStartPos;
 	std::vector<XMFLOAT3> m_BirdEnemyStartPos;
 	std::vector<XMFLOAT3> m_FollowEnemyStartPos;
+	std::vector<XMFLOAT3> m_ChestEnemyStartPos;
 	std::vector<XMFLOAT3>m_ThornObjStartPos;
 	std::vector<float> m_EnemyAngle;
 	std::vector<float> m_SetThornEnemyPosY;
@@ -152,6 +160,10 @@ private:
 	std::ifstream m_FollowEnemyFile;
 	std::stringstream m_FollowEnemyPopcom;
 	std::string m_FollowEnemyLine;
+	//•ó” ‚Ì“G
+	std::ifstream m_ChestEnemyFile;
+	std::stringstream m_ChestEnemyPopcom;
+	std::string m_ChestEnemyLine;
 	//™‚ÌOBJ
 	std::ifstream m_ThornObjFile;
 	std::stringstream m_ThornObjPopcom;
@@ -162,6 +174,7 @@ private:
 	int m_BoundEnemy_Num;
 	int m_BirdEnemy_Num;
 	int m_FollowEnemy_Num;
+	int m_ChestEnemy_Num;
 	int m_ThornObj_Num;
 
 	//™‚ÌŒü‚«

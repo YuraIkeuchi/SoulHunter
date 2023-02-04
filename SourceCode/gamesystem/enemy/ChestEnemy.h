@@ -2,9 +2,9 @@
 #include"InterEnemy.h"
 using namespace std;         //  名前空間指定
 //上下に動く敵
-class FollowEnemy :public InterEnemy {
+class ChestEnemy :public InterEnemy {
 public:
-	FollowEnemy();
+	ChestEnemy();
 	bool Initialize() override;//初期化
 	void Action()override;//更新
 	void Finalize() override;//開放
@@ -14,8 +14,7 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 	void FollowMove();
 	bool FollowCollision();
-	bool VanishFollowEnemy();
-	void FollowDamageAct();
+	bool VanishChestEnemy();
 public:
 	//gettersetter
 

@@ -120,6 +120,11 @@ const void ImGuiEditor::EditorImGuiDraw() {
 				m_EnemyArgment = true;
 				m_EnemyType = Follow;
 			}
+
+			if (ImGui::Button("ChestEnemy", ImVec2(90, 50))) {
+				m_EnemyArgment = true;
+				m_EnemyType = FakeChest;
+			}
 			ImGui::End();
 
 			ImGui::Begin("m_DeleteEnemy");
@@ -148,6 +153,11 @@ const void ImGuiEditor::EditorImGuiDraw() {
 			if (ImGui::Button("DeleteFollowEnemy", ImVec2(90, 50))) {
 				m_DeleteEnemy = true;
 				m_EnemyType = Follow;
+			}
+
+			if (ImGui::Button("DeleteChestEnemy", ImVec2(90, 50))) {
+				m_DeleteEnemy = true;
+				m_EnemyType = FakeChest;
 			}
 			ImGui::End();
 		}

@@ -570,8 +570,11 @@ void EditorScene::EditorUpdate() {
 		else if (imguieditor->GetEnemyType() == Bird) {
 			enemymanager->EnemyBirth(Bird, player, block);
 		}
-		else {
+		else if(imguieditor->GetEnemyType() == Follow) {
 			enemymanager->EnemyBirth(Follow, player, block);
+		}
+		else {
+			enemymanager->EnemyBirth(FakeChest, player, block);
 		}
 		imguieditor->SetEnemyArgment(false);
 	}
@@ -617,6 +620,10 @@ void EditorScene::EditorUpdate() {
 		}
 		//’Ç]
 		else if (imguieditor->GetEnemyType() == Follow) {
+			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
+		}
+		//•ó” 
+		else if (imguieditor->GetEnemyType() == FakeChest) {
 			enemymanager->DeleteEnemyPop(imguieditor->GetEnemyType());
 		}
 		imguieditor->SetEnemyDelete(false);

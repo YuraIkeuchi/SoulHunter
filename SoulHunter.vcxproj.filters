@@ -417,6 +417,9 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\FollowEnemy.cpp">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\enemy\ChestEnemy.cpp">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -798,6 +801,9 @@
       <Filter>SourceCords\gamesystem\backobj\Common</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\enemy\FollowEnemy.h">
+      <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\enemy\ChestEnemy.h">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClInclude>
   </ItemGroup>
