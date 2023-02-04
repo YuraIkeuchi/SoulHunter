@@ -17,6 +17,7 @@ void ParticleEmitter::Initialize()
 	healParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	smokeParticle.reset(ParticleManager::Create(ImageManager::Smoke));
+	boardParticle.reset(ParticleManager::Create(ImageManager::Smoke));
 }
 
 void ParticleEmitter::Update()
@@ -26,6 +27,7 @@ void ParticleEmitter::Update()
 	healParticle->Update();
 	deathParticle->Update();
 	smokeParticle->Update();
+	boardParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
@@ -40,6 +42,7 @@ void ParticleEmitter::SmokeDrawAll()
 {
 	//パーティクルマネージャー描画
 	smokeParticle->Draw(AlphaBlendType);
+	boardParticle->Draw(AlphaBlendType);
 }
 
 void ParticleEmitter::FireEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor)
@@ -78,6 +81,17 @@ void ParticleEmitter::HootEffect(int life, XMFLOAT3 l_pos, float startscale, flo
 	smokeParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
 }
 
+void ParticleEmitter::BoardEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor) {
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.08f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+	boardParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
+}
+
 void ParticleEmitter::DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity) {
 	XMFLOAT3 pos = l_pos;
 	float angle = (float)rand() / RAND_MAX * 360.0f;
@@ -96,6 +110,7 @@ void ParticleEmitter::AllDelete()
 	deathParticle->AllDelete();
 	smokeParticle->AllDelete();
 	healParticle->AllDelete();
+	boardParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

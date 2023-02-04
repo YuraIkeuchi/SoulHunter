@@ -229,7 +229,5 @@ void BirdEnemy::BirdArgment() {
 void BirdEnemy::ImGuiDraw() {
 	ImGui::Begin("Bird");
 	ImGui::Text("X:%f", m_Position.x);
-	ImGui::Text("Y:%f", m_Position.y);
-	ImGui::Text("Z:%f", m_Position.z);
 	ImGui::End();
 }

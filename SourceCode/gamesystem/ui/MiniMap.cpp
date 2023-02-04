@@ -50,7 +50,7 @@ MiniMap::MiniMap() {
 	{
 		for (int x = 0; x < map_max_x; x++)
 		{
-			MiniBlockSprite_[y][x] = IKESprite::Create(16, { 0.0f,0.0f });
+			MiniBlockSprite_[y][x] = IKESprite::Create(17, { 0.0f,0.0f });
 			MiniBlockSprite_[y][x]->SetPosition({ 2000.0f,0.0f });
 			MiniBlockSprite_[y][x]->SetAnchorPoint({ 0.5f,0.5f });
 			MiniBlockSprite_[y][x]->SetSize({ 22.0f,11.5f });
@@ -63,7 +63,7 @@ MiniMap::MiniMap() {
 	{
 		for (int x = 0; x < map_max_x; x++)
 		{
-			MiniBlockTogeSprite_[y][x] = IKESprite::Create(17, { 0.0f,0.0f });
+			MiniBlockTogeSprite_[y][x] = IKESprite::Create(18, { 0.0f,0.0f });
 			MiniBlockTogeSprite_[y][x]->SetPosition({ 2000.0f,0.0f });
 			MiniBlockTogeSprite_[y][x]->SetAnchorPoint({ 0.5f,0.5f });
 			MiniBlockTogeSprite_[y][x]->SetSize({ 20.0f,20.0f });
