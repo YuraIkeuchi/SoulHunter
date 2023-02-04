@@ -314,8 +314,6 @@ void EditorScene::ImGuiDraw(DirectXCommon* dxCommon) {
 //マップの読み込みとそれに合わせた初期化
 void EditorScene::MapInitialize() {
 	if (StageChange) {
-		enemymanager->DeleteEnemy();
-		backmanager->ObjDelete();
 		switch (StageNumber)
 		{
 		case Map1:
@@ -345,22 +343,22 @@ void EditorScene::MapInitialize() {
 		default:
 			break;
 		}
-		save->InitSave(StageNumber);
-		tutorialtext->InitBoard(StageNumber);
-		enemymanager->LoadEnemyParam(StageNumber,player,block, lightGroup);
-		backmanager->LoadObjParam(StageNumber, player, lightGroup);
-		backmanager->LoadBackObjAlways(StageNumber);
-		chest->InitChest(StageNumber);
 		StageChange = false;
 		player->SetGoalDir(0);
 	}
 }
 //マップ切り替えの関数
 void EditorScene::StageMapChange(int StageNumber) {
+	enemymanager->DeleteEnemy();
+	backmanager->ObjDelete();
 	m_MoveEnemy = false;
 	mapchange->SetAddStartChange(true);
 	save->InitSave(StageNumber);
 	tutorialtext->InitBoard(StageNumber);
+	chest->InitChest(StageNumber);
+	enemymanager->LoadEnemyParam(StageNumber, player, block, lightGroup);
+	backmanager->LoadObjParam(StageNumber, player, lightGroup);
+	backmanager->LoadBackObjAlways(StageNumber);
 }
 //ゲームデータのセーブ(位置とマップ番号)
 void EditorScene::SaveGame() {
