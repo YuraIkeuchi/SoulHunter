@@ -186,17 +186,18 @@ void Player::Update()
 			}
 			//HP回復
 			PlayerHeal();
-			//ダメージ
-			PlayerDamage();
-			//復活処理
-			ResPornPlayer();
 		}
 		else {
 			//ゴール後の動き
 			GoalMove();
 		}
 	}
-
+	if (m_GoalDir == No && !m_Death) {
+		//ダメージ
+		PlayerDamage();
+		//復活処理
+		ResPornPlayer();
+	}
 	//自動落下
 	PlayerFall();
 
@@ -259,6 +260,9 @@ void Player::ImGuiDraw() {
 	ImGui::Text("m_PosX:%f", m_Position.x);
 	ImGui::Text("m_PosY:%f", m_Position.y);
 	ImGui::Text("m_PosZ:%f", m_Position.z);
+	ImGui::Text("SaveTimer:%d", m_SaveTimer);
+	ImGui::Text("ResTimer:%d", m_RespornTimer);
+	ImGui::Text("Alive:%d", m_Alive);
 	ImGui::End();
 }
 //剣の更新
@@ -622,10 +626,9 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_SoulCount >= 2.0f) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetUseDush())) {
+	if ((!m_Dush) && (m_AddPower != 0.0f) /*&& (PlayerSkill::GetInstance()->GetUseDush()*/) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Dush = true;
-			m_SoulCount -= 2.0f;
 			m_AddPower = 0.0f;
 			m_SideFrame = 0.0f;
 			ResetAttack();
@@ -659,7 +662,7 @@ void Player::PlayerDush() {
 void Player::PlayerRolling() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0)) {
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && !m_Jump) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Rolling = true;
 			m_SideFrame = 0.0f;
@@ -763,6 +766,7 @@ void Player::PlayerDamage() {
 				m_AddPower = 0.7f;
 				m_BoundPower = 0.0f;
 			}
+			m_Alive = false;
 		}
 		else {
 			m_AddPower = 0.0f;
@@ -773,13 +777,13 @@ void Player::PlayerDamage() {
 				m_Death = true;
 			}
 		}
-		m_Alive = false;
+		
 		block->SetThornDir(NoHit);
 		block->SetThornHit(false);
 	}
 
 	//復活処理
-	if (!m_Alive && m_HP >= 1) {
+	if (!m_Alive) {
 		if (m_HP != 0) {
 			m_Rotation.x--;
 			m_RespornTimer++;
