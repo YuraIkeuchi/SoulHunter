@@ -245,7 +245,7 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 }
 //ImGui
 void FollowEnemy::ImGuiDraw() {
-	//ImGui::Begin("Follow");
-	//ImGui::Text("RotX:%f", m_Rotation.x);
-	//ImGui::End();
+	ImGui::Begin("Follow");
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::End();
 }

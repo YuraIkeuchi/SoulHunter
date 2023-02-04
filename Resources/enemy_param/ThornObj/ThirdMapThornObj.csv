@@ -1,13 +1,1 @@
-Enemy_Quantity2,3
-Wait,120
-Dir,0
-Target,89
-StartPos,77,-304.399,0
-Wait,120
-Dir,0
-Target,68
-StartPos,47.2999,-304.399,0
-Wait,120
-Dir,3
-Target,47
-StartPos,149.901,-275.9,0
+Enemy_Quantity2,0
