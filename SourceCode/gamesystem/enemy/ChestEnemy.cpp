@@ -224,7 +224,7 @@ void ChestEnemy::MapDraw(XMFLOAT4 Color) {
 }
 //ImGui
 void ChestEnemy::ImGuiDraw() {
-	ImGui::Begin("Follow");
+	ImGui::Begin("Chest");
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::End();
 }

@@ -112,6 +112,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 	m_BoundEnemyFile.close();
 	m_BirdEnemyFile.close();
 	m_FollowEnemyFile.close();
+	m_ChestEnemyFile.close();
 	m_ThornObjFile.close();
 }
 //CSVŽw’è(•’Ê‚Ì“G)
@@ -519,6 +520,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_BoundEnemys[i]->SetPlayer(player);
 		m_BoundEnemys[i]->SetBlock(block);
 		m_BoundEnemys[i]->SetPosition(m_BoundEnemyStartPos[i]);
+		m_BoundEnemys[i]->SetStartPos(m_BoundEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num), true);
 	}
 
@@ -576,6 +578,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_BirdEnemys[i]->SetPlayer(player);
 		m_BirdEnemys[i]->SetBlock(block);
 		m_BirdEnemys[i]->SetPosition(m_BirdEnemyStartPos[i]);
+		m_BirdEnemys[i]->SetStartPos(m_BirdEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), true);
 	}
 
@@ -633,6 +636,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_FollowEnemys[i]->SetPlayer(player);
 		m_FollowEnemys[i]->SetBlock(block);
 		m_FollowEnemys[i]->SetPosition(m_FollowEnemyStartPos[i]);
+		m_FollowEnemys[i]->SetStartPos(m_FollowEnemyStartPos[i]);
 	}
 
 	//•ó” ‚Ì“G
