@@ -102,7 +102,7 @@ void Enemy::Action() {
 	DamageAct();
 	//死んだときの挙動
 	DeathMove();
-	
+	//パーティクル
 	DeathBirthParticle();
 	
 	//エフェクト関係
@@ -284,7 +284,9 @@ void Enemy::MapDraw(XMFLOAT4 Color) {
 }
 
 void Enemy::ImGuiDraw() {
-	ImGui::Begin("Normal");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Normal");
+		ImGui::Text("X:%f", m_Position.x);
+		ImGui::End();
+	}
 }

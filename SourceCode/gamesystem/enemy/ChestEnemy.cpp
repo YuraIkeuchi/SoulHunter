@@ -2,7 +2,9 @@
 #include"Collision.h"
 #include "ModelManager.h"
 #include "ImageManager.h"
+#include "Input.h"
 #include <Easing.h>
+#include "VariableCommon.h"
 using namespace DirectX;
 
 ChestEnemy::ChestEnemy() {
@@ -20,6 +22,10 @@ ChestEnemy::ChestEnemy() {
 	chestTex_->SetRotation({ 0,0,0 });
 	chestTex_->SetScale({ 0.6f,0.3f,0.3f });
 	chestTex.reset(chestTex_);
+
+
+	Shake* shake_ = new Shake();
+	shake.reset(shake_);
 }
 //初期化
 bool ChestEnemy::Initialize() {
@@ -36,9 +42,10 @@ bool ChestEnemy::Initialize() {
 	m_Object_->SetLightEffect(false);
 	m_Object.reset(m_Object_);
 	//敵の種類
-	m_EnemyType = Thorn;
+	m_EnemyType = ChestType;
+	m_HP = 1;
 	return true;
-	m_HP = 3;
+
 
 }
 //更新
@@ -57,23 +64,7 @@ void ChestEnemy::Action() {
 			}
 		}
 	}
-	else {
-		m_Follow = false;
-		m_FollowTimer = 0;
-	}
-
-	//ダメージのインターバル
-	if (m_Damage) {
-		m_DamageTimer--;
-		if (m_DamageTimer < 0) {
-			m_Damage = false;
-			m_DamageTimer = 0;
-			m_Frame = 0.0f;
-			m_Rotation.x = m_Rotation.x - 360.0f;
-		}
-	}
-
-
+	
 	////自然落下
 	//if (!m_Jump) {
 	//	m_Air = true;
@@ -90,7 +81,8 @@ void ChestEnemy::Action() {
 	//	m_AddPower = 0;
 	//	m_Air = false;
 	//}
-
+	//敵がダメージを受ける
+	ChestCollision();
 	//敵が消える
 	VanishChestEnemy();
 	//パーティクル生成
@@ -102,10 +94,14 @@ void ChestEnemy::Action() {
 	ArgSoul();
 	//ミニマップに表示させる
 	MapEnemy();
-	//テクスチャ当たり判定
-	TexCollide();
 	//テクスチャ動く
 	TexMove();
+	//テクスチャ当たり判定
+	TexCollide();
+	//プレイヤーとの当たり判定
+	PlayerCollide();
+	//動き
+	ChestMove();
 }
 //描画
 void ChestEnemy::Draw(DirectXCommon* dxCommon) {
@@ -122,12 +118,12 @@ void ChestEnemy::Draw(DirectXCommon* dxCommon) {
 
 	//テキスト
 	IKETexture::PreDraw(1);
-	if (m_Hit) {
+	if (m_Hit && !m_Attack) {
 		chestTex->Draw();
 	}
 }
-//ダメージを受ける(この敵は受けない　弾かれる)
-bool ChestEnemy::FollowCollision() {
+//ダメージを受ける
+bool ChestEnemy::ChestCollision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
@@ -135,31 +131,33 @@ bool ChestEnemy::FollowCollision() {
 	OBB2.SetParam_Scl(player->GetSwordScale());
 	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	//OBBと向きで判定取る
-	if (player->GetRotation().y == 90.0f) {
-		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
-			m_Damage = true;
-			m_DamageTimer = 20;
-			m_EffectArgment = true;
-			m_HP--;
-			m_Effect = true;
-			return true;
+	if (m_MoveNumber == IntervalChest) {
+		//OBBと向きで判定取る
+		if (player->GetRotation().y == 90.0f) {
+			if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
+				m_Damage = true;
+				m_DamageTimer = 20;
+				m_EffectArgment = true;
+				m_HP--;
+				m_Effect = true;
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
-			return false;
-		}
-	}
-	else {
-		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
-			m_Damage = true;
-			m_DamageTimer = 20;
-			m_EffectArgment = true;
-			m_HP--;
-			m_Effect = true;
-			return true;
-		}
-		else {
-			return false;
+			if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
+				m_Damage = true;
+				m_DamageTimer = 20;
+				m_EffectArgment = true;
+				m_HP--;
+				m_Effect = true;
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 	}
 
@@ -172,26 +170,87 @@ void ChestEnemy::Pause() {
 	Obj_SetParam();
 	m_Object->Update();
 }
-//追従
-void ChestEnemy::FollowMove() {
-	m_TargetTimer++;
-	XMFLOAT3 position{};
-	position.x = (player->GetSwordPosition().x - m_Position.x);
-	position.y = (player->GetSwordPosition().y - m_Position.y);
-	m_FollowVel.x = sin(-atan2f(position.x, position.y)) * 0.15f;
-	m_FollowVel.y = cos(-atan2f(position.x, position.y)) * 0.15f;
-	m_Rotation.x = (atan2f(position.x, position.y) * (180.0f / XM_PI));
-
-	//攻撃まで一定フレームある
-	if (!m_Follow) {
-		m_FollowTimer++;
-		if (m_FollowTimer >= 30) {
-			m_Follow = true;
-		}
+//宝箱の攻撃
+void ChestEnemy::ChestMove() {
+	Input* input = Input::GetInstance();
+	if ((input->TriggerButton(input->Button_A)) && (m_Hit) && (!m_Attack)) {
+		m_Attack = true;
+		m_Frame = 0.0f;
+		shake->SetShakeStart(true);
+		m_MoveNumber = ShakeChest;
+		m_AfterColor = { 1.0f,0.0f,0.0f,1.0f };
 	}
-	else {
-		m_Position.x -= m_FollowVel.x;
-		m_Position.y += m_FollowVel.y;
+
+	if (m_Attack) {
+		if (m_MoveNumber == ShakeChest) {			//シェイクする
+			shake->ShakePos(m_ShakePos.x, 11, 5, 50, 70);
+			shake->ShakePos(m_ShakePos.y, 11, 5, 50, 70);
+			if (!shake->GetShakeStart()) {
+				m_ShakePos = { 0.0f,0.0f,0.0f };
+				m_MoveNumber = SetChest;
+				m_Frame = 0.0f;
+				m_AfterPos = { m_StartPos.x,m_StartPos.y + 8.0f,0.0f };
+			}
+			else {
+				m_Position.x += m_ShakePos.x;
+				m_Position.y += m_ShakePos.y;
+			}
+		}
+		else if (m_MoveNumber == SetChest) {			//上に行く
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.1f;
+			}
+			else {
+				m_Frame = 1.0f;
+				m_IntervalTimer++;
+				if (m_IntervalTimer > 30) {
+					m_AfterPos = { m_Position.x,m_StartPos.y,m_Position.z };
+					m_Frame = 0.0f;
+					m_IntervalTimer = 0;
+					m_MoveNumber = AttackChest;
+				}
+			}
+		}
+		else if (m_MoveNumber == AttackChest) {			//攻撃
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.1f;
+			}
+			else {
+				m_Frame = 0.0f;
+				m_MoveNumber = IntervalChest;
+			}
+		}
+		else if (m_MoveNumber == IntervalChest) {			//攻撃後の硬直
+			m_IntervalTimer++;
+			if (m_IntervalTimer >= 50) {
+				m_IntervalTimer = 0;
+				m_MoveNumber = ReturnChest;
+				m_AfterPos = m_StartPos;
+				m_AfterColor = { 1.0f,1.0f,1.0f,1.0f };
+			}
+		}
+		else {			//戻る
+			if (m_Frame < m_FrameMax) {
+				m_Frame += 0.01f;
+			}
+			else {
+				m_Frame = 0.0f;
+				m_Attack = false;
+			}
+		}
+
+		m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+
+		m_Color = {
+Ease(In,Cubic,m_Frame,m_Color.x,m_AfterColor.x),
+Ease(In,Cubic,m_Frame,m_Color.y,m_AfterColor.y),
+	Ease(In,Cubic,m_Frame,m_Color.z,m_AfterColor.z),
+		Ease(In,Cubic,m_Frame,m_Color.w,m_AfterColor.w),
+		};
 	}
 }
 //消える
@@ -229,7 +288,6 @@ bool ChestEnemy::VanishChestEnemy() {
 	}
 	return true;
 }
-
 //テキストが動く(sin波)
 void ChestEnemy::TexMove() {
 	//sin波によって上下に動く
@@ -245,7 +303,6 @@ void ChestEnemy::TexMove() {
 	chestTex->SetPosition(m_TexPosition);
 	chestTex->Update();
 }
-
 //当たり判定
 bool ChestEnemy::TexCollide() {
 	XMFLOAT3 l_plaPos = player->GetPosition();
@@ -258,6 +315,21 @@ bool ChestEnemy::TexCollide() {
 		m_Hit = false;
 		player->SetCollideChest(false);
 	}
+	return true;
+}
+//プレイヤーとの当たり判定
+bool ChestEnemy::PlayerCollide() {
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	int Interval = player->GetInterVal();
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.0f, m_PlayerPos.x, m_PlayerPos.y, 1.0f) && (m_HP > 0) &&
+		Interval == 0 && player->GetHP() >= 1 && (m_MoveNumber == AttackChest || m_MoveNumber == IntervalChest) ) {
+		player->PlayerHit(m_Position);
+		return true;
+	}
+	else {
+		return false;
+	}
+
 	return true;
 }
 //解放
@@ -273,7 +345,9 @@ void ChestEnemy::MapDraw(XMFLOAT4 Color) {
 }
 //ImGui
 void ChestEnemy::ImGuiDraw() {
-	ImGui::Begin("Chest");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Chest");
+		ImGui::Text("HP:%d", m_HP);
+		ImGui::End();
+	}
 }

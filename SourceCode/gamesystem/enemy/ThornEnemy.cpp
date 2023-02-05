@@ -172,7 +172,9 @@ void ThornEnemy::MapDraw(XMFLOAT4 Color) {
 }
 
 void ThornEnemy::ImGuiDraw() {
-	ImGui::Begin("Thorn");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Thorn");
+		ImGui::Text("X:%f", m_Position.x);
+		ImGui::End();
+	}
 }
