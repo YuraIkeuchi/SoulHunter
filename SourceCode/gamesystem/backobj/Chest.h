@@ -107,7 +107,7 @@ private:
 	//宝箱を開けるテキストの変数関係
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
-	XMFLOAT3 m_TexPosition;
+	XMFLOAT3 m_TexPosition{};
 	//宝箱の状態
 	enum ChestState {
 		Close,

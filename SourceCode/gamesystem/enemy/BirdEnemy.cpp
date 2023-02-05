@@ -227,7 +227,9 @@ void BirdEnemy::BirdArgment() {
 	}
 }
 void BirdEnemy::ImGuiDraw() {
-	ImGui::Begin("Bird");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Bird");
+		ImGui::Text("X:%f", m_Position.x);
+		ImGui::End();
+	}
 }

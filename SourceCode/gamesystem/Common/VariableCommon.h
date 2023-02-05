@@ -61,6 +61,7 @@ enum EnemyType {
 	Bound,
 	Bird,
 	Follow,
+	FakeChest,
 };
 
 //”wŒiOBJ‚ÌŽí—Þ

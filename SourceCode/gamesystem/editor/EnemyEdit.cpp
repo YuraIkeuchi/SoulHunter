@@ -4,6 +4,7 @@
 #include "BirdEnemy.h"
 #include "BoundEnemy.h"
 #include "FollowEnemy.h"
+#include "ChestEnemy.h"
 //’Êí‚Ì“G‚Ì¶¬
 void EnemyEdit::NormalEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
 	Block* block){
@@ -60,4 +61,16 @@ void EnemyEdit::FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* play
 	newFollowEnemy->SetStartPos(player->GetPosition());
 	newFollowEnemy->SetBlock(block);
 	enemy.push_back(newFollowEnemy);
+}
+//’Êí‚Ì“G‚Ì¶¬
+void EnemyEdit::ChestEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+	Block* block) {
+	InterEnemy* newChestEnemy;
+	newChestEnemy = new ChestEnemy();
+	newChestEnemy->Initialize();
+	newChestEnemy->SetPlayer(player);
+	newChestEnemy->SetBlock(block);
+	newChestEnemy->SetPosition({ player->GetPosition().x,player->GetPosition().y,5.0f });
+	newChestEnemy->SetStartPos({ player->GetPosition().x,player->GetPosition().y,5.0f });
+	enemy.push_back(newChestEnemy);
 }

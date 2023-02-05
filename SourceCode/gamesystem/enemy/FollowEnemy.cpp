@@ -28,7 +28,7 @@ bool FollowEnemy::Initialize() {
 	m_Object_->SetLightEffect(false);
 	m_Object.reset(m_Object_);
 	//“G‚ÌŽí—Þ
-	m_EnemyType = Thorn;
+	m_EnemyType = FollowType;
 	return true;
 	m_HP = 3;
 	

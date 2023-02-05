@@ -255,8 +255,6 @@ void Player::Draw(DirectXCommon* dxCommon) {
 //Imgui
 void Player::ImGuiDraw() {
 	ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(1000, 450));
-	//ImGui::SetWindowSize(ImVec2(280, 300));
 	ImGui::Text("m_PosX:%f", m_Position.x);
 	ImGui::Text("m_PosY:%f", m_Position.y);
 	ImGui::Text("m_PosZ:%f", m_Position.z);
@@ -662,7 +660,7 @@ void Player::PlayerDush() {
 void Player::PlayerRolling() {
 	Input* input = Input::GetInstance();
 	//ƒ_ƒbƒVƒ…ˆ—
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && !m_Jump) {
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0)) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Rolling = true;
 			m_SideFrame = 0.0f;

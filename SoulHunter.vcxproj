@@ -285,6 +285,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\PlayerHealEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\WallAttackEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\BirdEnemy.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\enemy\ChestEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\Enemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\enemy\FollowEnemy.cpp" />
@@ -414,6 +415,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerHealEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\BirdEnemy.h" />
+    <ClInclude Include="SourceCode\gamesystem\enemy\ChestEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\Enemy.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\enemy\FollowEnemy.h" />

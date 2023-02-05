@@ -129,6 +129,8 @@ protected:
 		Thorn,
 		Wing,
 		Bird,
+		FollowType,
+		ChestType
 	};
 	//アニメーション
 	bool m_AnimationStop = false;

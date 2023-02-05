@@ -144,7 +144,9 @@ void BoundEnemy::MapDraw(XMFLOAT4 Color) {
 }
 
 void BoundEnemy::ImGuiDraw() {
-	ImGui::Begin("Bound");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Bound");
+		ImGui::Text("X:%f", m_Position.x);
+		ImGui::End();
+	}
 }

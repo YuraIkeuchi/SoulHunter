@@ -26,6 +26,11 @@ void EnemyManager::SoulSet(Player* player, Block* block) {
 			followplayersoul[i][j]->Initialize();
 			followplayersoul[i][j]->SetBlock(block);
 			followplayersoul[i][j]->SetPlayer(player);
+
+			chestplayersoul[i][j] = new PlayerSoul();
+			chestplayersoul[i][j]->Initialize();
+			chestplayersoul[i][j]->SetBlock(block);
+			chestplayersoul[i][j]->SetPlayer(player);
 		}
 	}
 }
@@ -39,6 +44,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/FirstMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/FirstMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/FirstMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/FirstMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/FirstMapThornObj.csv");
 	case Map2:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/SecondMapEnemy.csv");
@@ -46,6 +52,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/SecondMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/SecondMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/SecondMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/SecondMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/SecondMapThornObj.csv");
 	case Map3:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/ThirdMapEnemy.csv");
@@ -53,6 +60,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/ThirdMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/ThridMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/ThirdMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/ThirdMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/ThirdMapThornObj.csv");
 	case Map4:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/FourthMapEnemy.csv");
@@ -60,6 +68,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/FourthMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/FourthMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/FourthMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/FourthMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/FourthMapThornObj.csv");
 	case Map5:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/FifthMapEnemy.csv");
@@ -67,6 +76,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/FifthMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/FifthMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/FifthMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/FifthMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/FifthMapThornObj.csv");
 	case Map6:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/SixMapEnemy.csv");
@@ -74,6 +84,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/SixMapBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/SixMapBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/SixMapFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/SixMapChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/SixMapThornObj.csv");
 	case BossMap:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
@@ -83,6 +94,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_BoundEnemyFile.open("Resources/enemy_param/BoundEnemy/TutorialBoundEnemy.csv");
 		m_BirdEnemyFile.open("Resources/enemy_param/BirdEnemy/TutorialBirdEnemy.csv");
 		m_FollowEnemyFile.open("Resources/enemy_param/FollowEnemy/TutorialFollowEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/ChestEnemy/TutorialChestEnemy.csv");
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/TutorialMapThornObj.csv");
 	default:
 		break;
@@ -92,6 +104,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 	m_BoundEnemyPopcom << m_BoundEnemyFile.rdbuf();
 	m_BirdEnemyPopcom << m_BirdEnemyFile.rdbuf();
 	m_FollowEnemyPopcom << m_FollowEnemyFile.rdbuf();
+	m_ChestEnemyPopcom << m_ChestEnemyFile.rdbuf();
 	m_ThornObjPopcom << m_ThornObjFile.rdbuf();
 
 	m_EnemyFile.close();
@@ -99,6 +112,7 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 	m_BoundEnemyFile.close();
 	m_BirdEnemyFile.close();
 	m_FollowEnemyFile.close();
+	m_ChestEnemyFile.close();
 	m_ThornObjFile.close();
 }
 //CSV指定(普通の敵)
@@ -174,6 +188,21 @@ void EnemyManager::FollowEnemySpecity(const char* vsShaderName) {
 	}
 	m_FollowEnemyPosition.resize(m_FollowEnemys.size());
 }
+//宝箱
+void EnemyManager::ChestEnemySpecity(const char* vsShaderName) {
+	//普通の敵
+	std::ofstream normalofs(vsShaderName);  // ファイルパスを指定する
+	normalofs << "Enemy_Quantity" << "," << m_ChestEnemys.size() << std::endl;
+
+	for (int i = 0; i < m_ChestEnemys.size(); i++) {
+		normalofs << "Wait" << "," << 120 << std::endl;
+		normalofs << "POP" << "," << m_ChestEnemys[i]->GetStartPos().x
+			<< "," << m_ChestEnemys[i]->GetStartPos().y
+			<< "," << m_ChestEnemys[i]->GetStartPos().z << std::endl;
+
+	}
+	m_ChestEnemyPosition.resize(m_ChestEnemys.size());
+}
 //棘のOBJ
 void EnemyManager::ThornObjSpecity(const char* vsShaderName) {
 	std::ofstream thornobjofs(vsShaderName);  // ファイルパスを指定する
@@ -202,6 +231,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/FirstMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/FirstMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/FirstMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/FirstMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -217,6 +248,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/SecondMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/SecondMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/SecondMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/SecondMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -232,6 +265,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/ThirdMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/ThirdMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/ThirdMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/ThirdMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -247,6 +282,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/FourthMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/FourthMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/FourthMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/FourthMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -262,6 +299,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/FifthMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/FifthMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/FifthMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/FifthMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -277,9 +316,12 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/SixMapBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/SixMapFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/SixMapChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/SixMapThornObj.csv");  // ファイルパスを指定する
 	}
+	//チュートリアル
 	else if (StageNumber == TutoRial) {
 		//普通の敵
 		NormalEnemySpecity("Resources/enemy_param/NormalEnemy/TutorialEnemy.csv");  // ファイルパスを指定する
@@ -291,6 +333,8 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		BirdEnemySpecity("Resources/enemy_param/BirdEnemy/TutorialBirdEnemy.csv");  // ファイルパスを指定する
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/TutorialFollowEnemy.csv");  // ファイルパスを指定する
+		//宝箱
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/TutorialChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/TutorialMapThornObj.csv");  // ファイルパスを指定する
 	}
@@ -476,6 +520,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_BoundEnemys[i]->SetPlayer(player);
 		m_BoundEnemys[i]->SetBlock(block);
 		m_BoundEnemys[i]->SetPosition(m_BoundEnemyStartPos[i]);
+		m_BoundEnemys[i]->SetStartPos(m_BoundEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num), true);
 	}
 
@@ -533,6 +578,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_BirdEnemys[i]->SetPlayer(player);
 		m_BirdEnemys[i]->SetBlock(block);
 		m_BirdEnemys[i]->SetPosition(m_BirdEnemyStartPos[i]);
+		m_BirdEnemys[i]->SetStartPos(m_BirdEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), true);
 	}
 
@@ -590,8 +636,65 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 		m_FollowEnemys[i]->SetPlayer(player);
 		m_FollowEnemys[i]->SetBlock(block);
 		m_FollowEnemys[i]->SetPosition(m_FollowEnemyStartPos[i]);
+		m_FollowEnemys[i]->SetStartPos(m_FollowEnemyStartPos[i]);
 	}
 
+	//宝箱の敵
+	while (std::getline(m_ChestEnemyPopcom, m_ChestEnemyLine)) {
+		std::istringstream line_stream(m_ChestEnemyLine);
+		std::string word;
+		std::getline(line_stream, word, ',');
+
+		if (word.find("//") == 0) {
+			continue;
+		}
+		if (word.find("Enemy_Quantity") == 0) {
+			std::getline(line_stream, word, ',');
+			int quantity = (int)std::atof(word.c_str());
+			m_ChestEnemy_Num = quantity;
+			m_ChestEnemyCount = m_ChestEnemy_Num;
+			break;
+		}
+	}
+	m_ChestEnemyStartPos.resize(m_ChestEnemy_Num);
+	for (int i = 0; i < m_ChestEnemy_Num; i++) {
+		while (std::getline(m_ChestEnemyPopcom, m_ChestEnemyLine)) {
+			std::istringstream line_stream(m_ChestEnemyLine);
+			std::string word;
+			std::getline(line_stream, word, ',');
+
+			if (word.find("//") == 0) {
+				continue;
+			}
+			if (word.find("Number") == 0) {
+				std::getline(line_stream, word, ',');
+				int number = (int)std::atof(word.c_str());
+			}
+			else if (word.find("POP") == 0) {
+				std::getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str());
+
+				std::getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str());
+
+				std::getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+
+				m_ChestEnemyStartPos[i] = { x,y,z };
+				break;
+			}
+		}
+	}
+	m_ChestEnemys.resize(m_ChestEnemy_Num);
+
+	for (int i = 0; i < m_ChestEnemy_Num; i++) {
+		m_ChestEnemys[i] = new ChestEnemy();
+		m_ChestEnemys[i]->Initialize();
+		m_ChestEnemys[i]->SetPlayer(player);
+		m_ChestEnemys[i]->SetBlock(block);
+		m_ChestEnemys[i]->SetPosition(m_ChestEnemyStartPos[i]);
+		m_ChestEnemys[i]->SetStartPos(m_ChestEnemyStartPos[i]);
+	}
 
 	//棘OBJ
 	while (std::getline(m_ThornObjPopcom, m_ThornObjLine)) {
@@ -667,6 +770,8 @@ void EnemyManager::Update(bool Move) {
 	EnemyUpdate(m_BirdEnemys, Move);
 	//追従の敵
 	EnemyUpdate(m_FollowEnemys, Move);
+	//宝箱の敵
+	EnemyUpdate(m_ChestEnemys, Move);
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
@@ -686,6 +791,7 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	EnemyDraw(m_BoundEnemys, dxCommon);
 	EnemyDraw(m_BirdEnemys, dxCommon);
 	EnemyDraw(m_FollowEnemys, dxCommon);
+	EnemyDraw(m_ChestEnemys, dxCommon);
 	//棘のOBJ
 	for (ThornObj* thornobj : m_ThornObjs) {
 		if (thornobj != nullptr) {
@@ -700,6 +806,7 @@ void EnemyManager::ImGuiDraw() {
 	EnemyImguiDraw(m_BoundEnemys);
 	EnemyImguiDraw(m_BirdEnemys);
 	EnemyImguiDraw(m_FollowEnemys);
+	EnemyImguiDraw(m_ChestEnemys);
 }
 //マップの描画
 void EnemyManager::MapDraw(int MapType, XMFLOAT4 MapColor) {
@@ -708,6 +815,7 @@ void EnemyManager::MapDraw(int MapType, XMFLOAT4 MapColor) {
 	EnemyMapDraw(m_BoundEnemys, MapType, MapColor);
 	EnemyMapDraw(m_BirdEnemys, MapType, MapColor);
 	EnemyMapDraw(m_FollowEnemys, MapType, MapColor);
+	EnemyMapDraw(m_ChestEnemys, MapType, MapColor);
 }
 //敵の更新
 void EnemyManager::EnemyUpdate(std::vector<InterEnemy*> m_Enemys, bool Move) {
@@ -760,6 +868,7 @@ void EnemyManager::SaveNum() {
 	m_BoundEnemy_Num = m_BoundEnemyCount;
 	m_BirdEnemy_Num = m_BirdEnemyCount;
 	m_FollowEnemy_Num = m_FollowEnemyCount;
+	m_ChestEnemy_Num = m_ChestEnemyCount;
 	m_ThornObj_Num = m_ThornObjCount;
 }
 //敵削除
@@ -769,11 +878,13 @@ void EnemyManager::DeleteEnemy() {
 	m_BoundEnemys.clear();
 	m_BirdEnemys.clear();
 	m_FollowEnemys.clear();
+	m_ChestEnemys.clear();
 	m_ThornObjs.clear();
 	m_NormalEnemyCount = 0;
 	m_ThornObjCount = 0;
 	m_BoundEnemyCount = 0;
 	m_FollowEnemyCount = 0;
+	m_ChestEnemyCount = 0;
 	m_EnemyCount = 0;
 }
 //生成
@@ -797,9 +908,14 @@ void EnemyManager::EnemyBirth(int EnemyType, Player* player, Block* block) {
 		enemyedit->BirdEnemyArgment(m_BirdEnemys, player, block);
 		m_BirdEnemyCount++;
 	}
-	else {
+	//追従の敵
+	else if(EnemyType == Follow) {
 		enemyedit->FollowEnemyArgment(m_FollowEnemys, player,block);
 		m_FollowEnemyCount++;
+	}
+	else {
+		enemyedit->ChestEnemyArgment(m_ChestEnemys, player, block);
+		m_ChestEnemyCount++;
 	}
 }
 //棘生成
@@ -838,6 +954,11 @@ void EnemyManager::DeleteEnemyPop(int Type) {
 	else if (Type == Follow && m_FollowEnemys.size() > 0) {
 		m_FollowEnemys.pop_back();
 		m_FollowEnemyCount--;
+	}
+	//宝箱
+	else if (Type == FakeChest && m_ChestEnemys.size() > 0) {
+		m_ChestEnemys.pop_back();
+		m_ChestEnemyCount--;
 	}
 }
 //棘の敵の一要素削除
@@ -934,6 +1055,12 @@ void EnemyManager::SoulUpdate() {
 			followplayersoul[i][j]->Update(m_FollowEnemys[j]);
 		}
 	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_ChestEnemyCount; j++) {
+			chestplayersoul[i][j]->Update(m_ChestEnemys[j]);
+		}
+	}
 }
 //魂の描画
 void EnemyManager::SoulDraw() {
@@ -959,6 +1086,12 @@ void EnemyManager::SoulDraw() {
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < m_FollowEnemyCount; j++) {
 			followplayersoul[i][j]->Draw();
+		}
+	}
+
+	for (int i = 0; i < Soul_Max; i++) {
+		for (int j = 0; j < m_ChestEnemyCount; j++) {
+			chestplayersoul[i][j]->Draw();
 		}
 	}
 }

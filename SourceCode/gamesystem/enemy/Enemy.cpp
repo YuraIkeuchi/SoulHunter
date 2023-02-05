@@ -102,7 +102,7 @@ void Enemy::Action() {
 	DamageAct();
 	//死んだときの挙動
 	DeathMove();
-	
+	//パーティクル
 	DeathBirthParticle();
 	
 	//エフェクト関係
@@ -252,6 +252,7 @@ void Enemy::Tackle() {
 }
 //死んだときの動き
 void Enemy::DeathMove() {
+
 	//死んだとき跳ねるような挙動をする
 	if (m_DeathMotion && m_Jump) {
 		m_AddPower = 0.5f;
@@ -284,7 +285,9 @@ void Enemy::MapDraw(XMFLOAT4 Color) {
 }
 
 void Enemy::ImGuiDraw() {
-	ImGui::Begin("Normal");
-	ImGui::Text("X:%f", m_Position.x);
-	ImGui::End();
+	if (m_Alive) {
+		ImGui::Begin("Normal");
+		ImGui::Text("X:%f", m_Position.x);
+		ImGui::End();
+	}
 }
