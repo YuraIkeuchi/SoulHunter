@@ -1,6 +1,7 @@
 #include "ChestEnemy.h"
 #include"Collision.h"
 #include "ModelManager.h"
+#include "ImageManager.h"
 #include <Easing.h>
 using namespace DirectX;
 
@@ -12,6 +13,13 @@ ChestEnemy::ChestEnemy() {
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::CloseChest);
+
+	//宝箱に近づいたときのテクスチャ
+	IKETexture* chestTex_ = IKETexture::Create(ImageManager::ChestTex, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+	chestTex_->TextureCreate();
+	chestTex_->SetRotation({ 0,0,0 });
+	chestTex_->SetScale({ 0.6f,0.3f,0.3f });
+	chestTex.reset(chestTex_);
 }
 //初期化
 bool ChestEnemy::Initialize() {
@@ -94,6 +102,10 @@ void ChestEnemy::Action() {
 	ArgSoul();
 	//ミニマップに表示させる
 	MapEnemy();
+	//テクスチャ当たり判定
+	TexCollide();
+	//テクスチャ動く
+	TexMove();
 }
 //描画
 void ChestEnemy::Draw(DirectXCommon* dxCommon) {
@@ -106,6 +118,12 @@ void ChestEnemy::Draw(DirectXCommon* dxCommon) {
 				enemyeffect->Draw();
 			}
 		}
+	}
+
+	//テキスト
+	IKETexture::PreDraw(1);
+	if (m_Hit) {
+		chestTex->Draw();
 	}
 }
 //ダメージを受ける(この敵は受けない　弾かれる)
@@ -208,6 +226,37 @@ bool ChestEnemy::VanishChestEnemy() {
 			m_Soul = true;
 			m_Alive = false;
 		}
+	}
+	return true;
+}
+
+//テキストが動く(sin波)
+void ChestEnemy::TexMove() {
+	//sin波によって上下に動く
+	m_Angle += 1.0f;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+
+		if (m_Hit) {
+			m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_Position.y + 7.0f);
+			m_TexPosition.x = m_Position.x;
+			m_TexPosition.z = m_Position.z;
+		}
+
+	chestTex->SetPosition(m_TexPosition);
+	chestTex->Update();
+}
+
+//当たり判定
+bool ChestEnemy::TexCollide() {
+	XMFLOAT3 l_plaPos = player->GetPosition();
+	if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f,m_Position.x,m_Position.y,3.0f) && (m_HP != 0.0f) &&
+		player->GetAddPower() == 0.0f) {
+		m_Hit = true;
+		player->SetCollideChest(true);
+	}
+	else {
+		m_Hit = false;
+		player->SetCollideChest(false);
 	}
 	return true;
 }

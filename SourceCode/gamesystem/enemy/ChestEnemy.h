@@ -15,10 +15,14 @@ public:
 	void FollowMove();
 	bool FollowCollision();
 	bool VanishChestEnemy();
+	void TexMove();//テクスチャが動く
+	bool TexCollide();//テクスチャ当たり判定
 public:
 	//gettersetter
 
 private:
+	//テクスチャ
+	unique_ptr<IKETexture> chestTex = nullptr;
 	bool m_Follow = false;
 	int m_FollowTimer = 0;
 	//回転のための変数
@@ -31,5 +35,10 @@ private:
 	XMFLOAT2 m_Rebound{};
 	XMFLOAT2 m_Distance{};
 	XMFLOAT3 m_TargetPos{};
+	//宝箱を開けるテキストの変数関係
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
+	XMFLOAT3 m_TexPosition{};
+	bool m_Hit = false;
 };
 

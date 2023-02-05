@@ -334,7 +334,7 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 		//追従の敵
 		FollowEnemySpecity("Resources/enemy_param/FollowEnemy/TutorialFollowEnemy.csv");  // ファイルパスを指定する
 		//宝箱
-		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/TutorialMapChestEnemy.csv");  // ファイルパスを指定する
+		ChestEnemySpecity("Resources/enemy_param/ChestEnemy/TutorialChestEnemy.csv");  // ファイルパスを指定する
 		//棘のOBJ
 		ThornObjSpecity("Resources/enemy_param/ThornObj/TutorialMapThornObj.csv");  // ファイルパスを指定する
 	}
