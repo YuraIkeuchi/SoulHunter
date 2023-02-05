@@ -16,6 +16,7 @@ public:
 	void ChestMove();
 	bool ChestCollision();
 	bool VanishChestEnemy();
+	void DamageChestAct();//ダメージを受けた時の動き
 	void TexMove();//テクスチャが動く
 	bool TexCollide();//テクスチャ当たり判定
 	bool PlayerCollide();//プレイヤーとの当たり判定

@@ -65,29 +65,13 @@ void ChestEnemy::Action() {
 		}
 	}
 	
-	////自然落下
-	//if (!m_Jump) {
-	//	m_Air = true;
-	//	//下降度をマイナス
-	//	//ダッシュ中のときは重力がない
-	//	m_AddPower -= m_Gravity;
-	//	m_Position.y += m_AddPower;
-	//}
-	////マップチップとの当たり判定
-	//if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
-	//	m_OnGround = true;
-	//	m_Gravity = 0.02f;
-	//	//初期化
-	//	m_AddPower = 0;
-	//	m_Air = false;
-	//}
-	//敵がダメージを受ける
-	ChestCollision();
 	//敵が消える
 	VanishChestEnemy();
 	//パーティクル生成
 	BirthParticle();
 	DeathBirthParticle();
+	//ダメージ時の動き
+	DamageChestAct();
 	//エフェクト関係
 	ArgEffect();
 	//魂関係
@@ -100,6 +84,8 @@ void ChestEnemy::Action() {
 	TexCollide();
 	//プレイヤーとの当たり判定
 	PlayerCollide();
+	//宝箱の当たり判定(敵が食らう側)
+	ChestCollision();
 	//動き
 	ChestMove();
 }
@@ -131,10 +117,12 @@ bool ChestEnemy::ChestCollision() {
 	OBB2.SetParam_Scl(player->GetSwordScale());
 	OBB2.SetParam_Rot(player->GetSwordMatrot());
 
-	if (m_MoveNumber == IntervalChest) {
+	if (m_MoveNumber == IntervalChest && m_HP > 0) {
 		//OBBと向きで判定取る
 		if (player->GetRotation().y == 90.0f) {
-			if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
+			if (Collision::OBBCollision(OBB1, OBB2) && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
+				m_HitDir = HitLeft;
+				m_BoundPower.x = 1.3f;
 				m_Damage = true;
 				m_DamageTimer = 20;
 				m_EffectArgment = true;
@@ -147,7 +135,9 @@ bool ChestEnemy::ChestCollision() {
 			}
 		}
 		else {
-			if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
+			if (Collision::OBBCollision(OBB1, OBB2) && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
+				m_HitDir = HitRight;
+				m_BoundPower.x = -1.3f;
 				m_Damage = true;
 				m_DamageTimer = 20;
 				m_EffectArgment = true;
@@ -306,7 +296,7 @@ void ChestEnemy::TexMove() {
 //当たり判定
 bool ChestEnemy::TexCollide() {
 	XMFLOAT3 l_plaPos = player->GetPosition();
-	if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 3.0f,m_Position.x,m_Position.y,3.0f) && (m_HP != 0.0f) &&
+	if (Collision::CircleCollision(l_plaPos.x, l_plaPos.y, 2.0f,m_Position.x,m_Position.y,2.0f) && (m_HP != 0.0f) &&
 		player->GetAddPower() == 0.0f) {
 		m_Hit = true;
 		player->SetCollideChest(true);
@@ -321,7 +311,7 @@ bool ChestEnemy::TexCollide() {
 bool ChestEnemy::PlayerCollide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	int Interval = player->GetInterVal();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.0f, m_PlayerPos.x, m_PlayerPos.y, 1.0f) && (m_HP > 0) &&
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, 2.0f, m_PlayerPos.x, m_PlayerPos.y, 2.0f) && (m_HP > 0) &&
 		Interval == 0 && player->GetHP() >= 1 && (m_MoveNumber == AttackChest || m_MoveNumber == IntervalChest) ) {
 		player->PlayerHit(m_Position);
 		return true;
@@ -332,6 +322,32 @@ bool ChestEnemy::PlayerCollide() {
 
 	return true;
 }
+//ダメージ受けた時の動き
+void ChestEnemy::DamageChestAct() {
+	float l_Decrease = 0.05f;
+	//跳ね返り処理
+	if (m_HP == 0) {
+		m_DeathMotion = true;
+		if (m_HitDir == HitRight) {
+			if (m_BoundPower.x < 0.0f) {
+				m_BoundPower.x += l_Decrease;
+			}
+			else {
+				m_BoundPower.x = 0.0f;
+			}
+		}
+		else if (m_HitDir == HitLeft) {
+			if (m_BoundPower.x > 0.0f) {
+				m_BoundPower.x -= l_Decrease;
+			}
+			else {
+				m_BoundPower.x = 0.0f;
+			}
+		}
+		m_Position.x += m_BoundPower.x;
+	}
+}
+
 //解放
 void ChestEnemy::Finalize() {
 }
@@ -348,6 +364,7 @@ void ChestEnemy::ImGuiDraw() {
 	if (m_Alive) {
 		ImGui::Begin("Chest");
 		ImGui::Text("HP:%d", m_HP);
+		ImGui::Text("BoundX:%f", m_BoundPower.x);
 		ImGui::End();
 	}
 }

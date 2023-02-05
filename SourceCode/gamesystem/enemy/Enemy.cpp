@@ -252,6 +252,7 @@ void Enemy::Tackle() {
 }
 //Ž€‚ñ‚¾‚Æ‚«‚Ì“®‚«
 void Enemy::DeathMove() {
+
 	//Ž€‚ñ‚¾‚Æ‚«’µ‚Ë‚é‚æ‚¤‚È‹““®‚ð‚·‚é
 	if (m_DeathMotion && m_Jump) {
 		m_AddPower = 0.5f;
