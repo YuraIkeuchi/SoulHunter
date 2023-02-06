@@ -45,7 +45,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
 	//定数
-	static const int Tutorial_Max = 6;//チュートリアルの数
+	static const int Tutorial_Max = 7;//チュートリアルの数
 
 public:
 
@@ -92,6 +92,7 @@ private:
 	int m_ClearCount = 0;
 	enum TutorialType {
 		Move,
+		CameraMove,
 		Jump,
 		Rolling,
 		Pause,

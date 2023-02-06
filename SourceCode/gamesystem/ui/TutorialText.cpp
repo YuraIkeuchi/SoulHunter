@@ -36,12 +36,13 @@ TutorialText::TutorialText() {
 
 	////看板を読むと出てくる文字
 	////データ読み込み
-	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStick.png");
-	IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialButtunB.png");
-	IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialRB.png");
-	IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialPushBack.png");
-	IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushStart.png");
-	IKESprite::LoadTexture(10, L"Resources/2d/Tutorial/TutorialButtunA.png");
+	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStickL.png");
+	IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialStickR.png");
+	IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialButtunB.png");
+	IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialRB.png");
+	IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushBack.png");
+	IKESprite::LoadTexture(10, L"Resources/2d/Tutorial/TutorialPushStart.png");
+	IKESprite::LoadTexture(11, L"Resources/2d/Tutorial/TutorialButtunA.png");
 	
 	IKESprite* TutorialSprite_[Tutorial_Max];
 	for (int i = 0; i < TutorialSprite.size(); i++) {

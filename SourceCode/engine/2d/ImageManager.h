@@ -15,7 +15,7 @@ private:
 public:
 	//スプライトの名前
 	enum texName {
-		Title = 28,
+		Title = 29,
 		TitleParts,
 		BlackFilter,
 		PauseBack,
