@@ -115,9 +115,10 @@ const void TutorialText::SpriteDraw() {
 	}
 }
 void TutorialText::ImGuiDraw() {
-	//ImGui::Begin("Tutorial");
-
-	//ImGui::End();
+	ImGui::Begin("Tutorial");
+	ImGui::Text("MoveCount%d", m_MoveCount);
+	ImGui::Text("m_BoardAlive[CameraMove]%d", m_BoardAlive[CameraMove]);
+	ImGui::End();
 }
 //“–‚½‚è”»’è
 bool TutorialText::Collide() {
@@ -144,12 +145,15 @@ void TutorialText::InitBoard(int StageNumber) {
 		if (StageNumber == TutoRial) {
 			m_BoardAlive[i] = false;
 			m_BoardPosition[Move] = { 20.0f,-280.0f,7.0f };
+			m_BoardPosition[CameraMove] = { 35.0f,-280.0f,7.0f };
 			m_BoardPosition[Jump] = { 20.0f,-290.0f,7.0f };
 			m_BoardPosition[Rolling] = { 35.0f,-290.0f,7.0f };
 			m_BoardPosition[Pause] = { 50.0f,-290.0f,7.0f };
 			m_BoardPosition[Map] = { 66.0f,-290.0f,7.0f };
 			m_BoardPosition[Attack] = { 70.0f,-290.0f,7.0f };
 			m_BoardDraw[i] = true;
+			m_BoardAlive[Move] = true;
+			m_BoardAlive[CameraMove] = true;
 		}
 
 		else {
@@ -162,16 +166,20 @@ void TutorialText::InitBoard(int StageNumber) {
 void TutorialText::Mission() {
 	Input* input = Input::GetInstance();
 	if (m_TutorialMission == FirstMission) {
-		m_BoardAlive[Move] = true;
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
 			m_MoveCount++;
 		}
 
-		if (m_MoveCount == 150) {
+		if ((input->RightTiltStick(input->Up) || input->RightTiltStick(input->Down)) && (player->GetAddPower() == 0.0f) && (player->GetVelosity() == 0.0f)) {
+			m_BoardAlive[CameraMove] = false;
+		}
+
+		if (m_MoveCount >= 100 && !m_BoardAlive[CameraMove]) {
 			m_ClearCount++;
 			m_MoveCount = 0;
 			m_BoardAlive[Move] = false;
 			m_BoardState[Move] = DownBoard;
+			m_BoardState[CameraMove] = DownBoard;
 			for (int i = Jump; i < Attack; i++) {
 				m_BoardAlive[i] = true;
 				m_BoardState[i] = UpBoard;
