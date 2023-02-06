@@ -12,10 +12,10 @@
 //モデル読み込みと初期化
 Chest::Chest() {
 	//スプライト読み込み
-	IKESprite::LoadTexture(19, L"Resources/2d/SkillExplain/CompassExplain.png");
-	IKESprite::LoadTexture(20, L"Resources/2d/SkillExplain/LibraExplain.png");
-	IKESprite::LoadTexture(21, L"Resources/2d/SkillExplain/DushExplain.png");
-	IKESprite::LoadTexture(22, L"Resources/2d/SkillExplain/HealExplain.png");
+	IKESprite::LoadTexture(20, L"Resources/2d/SkillExplain/CompassExplain.png");
+	IKESprite::LoadTexture(21, L"Resources/2d/SkillExplain/LibraExplain.png");
+	IKESprite::LoadTexture(22, L"Resources/2d/SkillExplain/DushExplain.png");
+	IKESprite::LoadTexture(23, L"Resources/2d/SkillExplain/HealExplain.png");
 	//モデル
 	modelCloseChest = ModelManager::GetInstance()->GetModel(ModelManager::CloseChest);
 	modelOpenChest = ModelManager::GetInstance()->GetModel(ModelManager::OpenChest);
@@ -52,7 +52,7 @@ Chest::Chest() {
 	//コンパススキル
 	IKESprite* CompassExplain_[CompassExplain_Max];
 	for (int i = 0; i < CompassExplain_Max; i++) {
-		CompassExplain_[i] = IKESprite::Create(19, { 0.0f,0.0f });
+		CompassExplain_[i] = IKESprite::Create(20, { 0.0f,0.0f });
 		int number_index_y = i / CompassExplain_Max;
 		int number_index_x = i % CompassExplain_Max;
 		CompassExplain_[i]->SetTextureRect(
@@ -69,7 +69,7 @@ Chest::Chest() {
 	//ライブラ
 	IKESprite* LibraExplain_[LibraExplain_Max];
 	for (int i = 0; i < LibraExplain_Max; i++) {
-		LibraExplain_[i] = IKESprite::Create(20, { 0.0f,0.0f });
+		LibraExplain_[i] = IKESprite::Create(21, { 0.0f,0.0f });
 		int number_index_y = i / LibraExplain_Max;
 		int number_index_x = i % LibraExplain_Max;
 		LibraExplain_[i]->SetTextureRect(
@@ -87,7 +87,7 @@ Chest::Chest() {
 	//ダッシュスキル
 	IKESprite* DushExplain_[DushExplain_Max];
 	for (int i = 0; i < DushExplain_Max; i++) {
-		DushExplain_[i] = IKESprite::Create(21, { 0.0f,0.0f });
+		DushExplain_[i] = IKESprite::Create(22, { 0.0f,0.0f });
 		int number_index_y = i / DushExplain_Max;
 		int number_index_x = i % DushExplain_Max;
 		DushExplain_[i]->SetTextureRect(
@@ -104,7 +104,7 @@ Chest::Chest() {
 	//ヒール
 	IKESprite* HealExplain_[HealExplain_Max];
 	for (int i = 0; i < HealExplain_Max; i++) {
-		HealExplain_[i] = IKESprite::Create(22, { 0.0f,0.0f });
+		HealExplain_[i] = IKESprite::Create(23, { 0.0f,0.0f });
 		int number_index_y = i / HealExplain_Max;
 		int number_index_x = i % HealExplain_Max;
 		HealExplain_[i]->SetTextureRect(
@@ -214,9 +214,9 @@ const void Chest::ExplainDraw() {
 void Chest::InitChest(int StageNumber) {
 	m_Angle = 0.0f;
 	//ステージにスキルが有るかどうか
-	//コンパス
+	//ダッシュ
 	if (StageNumber == TutoRial) {
-		m_ChestPos[Dush] = { 230.0f,-190.0f,5.0f };
+		m_ChestPos[Dush] = { 254.0f,-220.0f,5.0f };
 		m_Alive[Dush] = true;
 	}
 	else {
@@ -230,7 +230,7 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Libra] = false;
 	}
-	//ダッシュ
+	//コンパス
 	if (StageNumber == Map6) {
 		m_ChestPos[Compass] = { 18.0f,-240.0f,5.0f };
 		m_Alive[Compass] = true;
@@ -240,7 +240,7 @@ void Chest::InitChest(int StageNumber) {
 	}
 	//ヒール
 	if (StageNumber == Map1) {
-		m_ChestPos[Heal] = { 167.0f,-75.0f,5.0f };
+		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
 		m_Alive[Heal] = true;
 	}
 	else {

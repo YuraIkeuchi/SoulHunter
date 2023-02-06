@@ -36,12 +36,13 @@ TutorialText::TutorialText() {
 
 	////看板を読むと出てくる文字
 	////データ読み込み
-	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStick.png");
-	IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialButtunB.png");
-	IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialRB.png");
-	IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialPushBack.png");
-	IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushStart.png");
-	IKESprite::LoadTexture(10, L"Resources/2d/Tutorial/TutorialButtunA.png");
+	IKESprite::LoadTexture(5, L"Resources/2d/Tutorial/TutorialStickL.png");
+	IKESprite::LoadTexture(6, L"Resources/2d/Tutorial/TutorialStickR.png");
+	IKESprite::LoadTexture(7, L"Resources/2d/Tutorial/TutorialButtunB.png");
+	IKESprite::LoadTexture(8, L"Resources/2d/Tutorial/TutorialRB.png");
+	IKESprite::LoadTexture(9, L"Resources/2d/Tutorial/TutorialPushBack.png");
+	IKESprite::LoadTexture(10, L"Resources/2d/Tutorial/TutorialPushStart.png");
+	IKESprite::LoadTexture(11, L"Resources/2d/Tutorial/TutorialButtunA.png");
 	
 	IKESprite* TutorialSprite_[Tutorial_Max];
 	for (int i = 0; i < TutorialSprite.size(); i++) {
@@ -114,9 +115,10 @@ const void TutorialText::SpriteDraw() {
 	}
 }
 void TutorialText::ImGuiDraw() {
-	//ImGui::Begin("Tutorial");
-
-	//ImGui::End();
+	/*ImGui::Begin("Tutorial");
+	ImGui::Text("MoveCount%d", m_MoveCount);
+	ImGui::Text("m_BoardAlive[CameraMove]%d", m_BoardAlive[CameraMove]);
+	ImGui::End();*/
 }
 //当たり判定
 bool TutorialText::Collide() {
@@ -143,12 +145,15 @@ void TutorialText::InitBoard(int StageNumber) {
 		if (StageNumber == TutoRial) {
 			m_BoardAlive[i] = false;
 			m_BoardPosition[Move] = { 20.0f,-280.0f,7.0f };
+			m_BoardPosition[CameraMove] = { 35.0f,-280.0f,7.0f };
 			m_BoardPosition[Jump] = { 20.0f,-290.0f,7.0f };
 			m_BoardPosition[Rolling] = { 35.0f,-290.0f,7.0f };
 			m_BoardPosition[Pause] = { 50.0f,-290.0f,7.0f };
 			m_BoardPosition[Map] = { 66.0f,-290.0f,7.0f };
 			m_BoardPosition[Attack] = { 70.0f,-290.0f,7.0f };
 			m_BoardDraw[i] = true;
+			m_BoardAlive[Move] = true;
+			m_BoardAlive[CameraMove] = true;
 		}
 
 		else {
@@ -161,16 +166,22 @@ void TutorialText::InitBoard(int StageNumber) {
 void TutorialText::Mission() {
 	Input* input = Input::GetInstance();
 	if (m_TutorialMission == FirstMission) {
-		m_BoardAlive[Move] = true;
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left))) {
 			m_MoveCount++;
 		}
 
-		if (m_MoveCount == 150) {
+		if ((input->RightTiltStick(input->Up) || input->RightTiltStick(input->Down)) && (player->GetAddPower() == 0.0f) && (player->GetVelosity() == 0.0f)) {
+			
+		}
+
+		m_BoardAlive[CameraMove] = false;
+
+		if (m_MoveCount >= 100 && !m_BoardAlive[CameraMove]) {
 			m_ClearCount++;
 			m_MoveCount = 0;
 			m_BoardAlive[Move] = false;
 			m_BoardState[Move] = DownBoard;
+			m_BoardState[CameraMove] = DownBoard;
 			for (int i = Jump; i < Attack; i++) {
 				m_BoardAlive[i] = true;
 				m_BoardState[i] = UpBoard;
@@ -279,7 +290,7 @@ void TutorialText::RockState() {
 	}
 
 	//攻撃カウントが3になったら岩が消える
-	if (m_AttackCount == 3) {
+	if (m_AttackCount == 1) {
 		m_blockColor.w -= 0.05f;
 
 		if (m_blockColor.w < 0.0f) {

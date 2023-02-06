@@ -120,7 +120,7 @@ void CameraWork::IntroductionCamera() {
 }
 //通常時のカメラ(プレイヤーについてくる)
 void CameraWork::NormalCamera() {
-	RightStickCamera();
+	//RightStickCamera();
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	//カメラの位置調整(端まで行くとカメラが止まる)
 	if (m_PlayerPos.x >= 27.0f && m_PlayerPos.x <= 270.0f) {
@@ -152,7 +152,7 @@ void CameraWork::NormalCamera() {
 		}
 	}
 	
-	m_eyePos.z = m_PlayerPos.z - (50.0f);
+	m_eyePos.z = m_PlayerPos.z - (30.0f);
 	m_targetPos.z = m_PlayerPos.z;
 }
 //ボス登場時のカメラ

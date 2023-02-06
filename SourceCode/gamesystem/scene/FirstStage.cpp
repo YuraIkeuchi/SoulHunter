@@ -191,8 +191,8 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
 		ImGuiDraw(dxCommon);
-		enemymanager->ImGuiDraw();
-		camerawork->ImGuiDraw();
+		//enemymanager->ImGuiDraw();
+		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -274,8 +274,8 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	player->ImGuiDraw();
-	tutorialtext->ImGuiDraw();
+	//player->ImGuiDraw();
+	//tutorialtext->ImGuiDraw();
 }
 //•’Ê‚Ì•`‰æ
 void FirstStage::NormalDraw(DirectXCommon* dxCommon) {
