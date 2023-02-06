@@ -214,9 +214,9 @@ const void Chest::ExplainDraw() {
 void Chest::InitChest(int StageNumber) {
 	m_Angle = 0.0f;
 	//ステージにスキルが有るかどうか
-	//コンパス
+	//ダッシュ
 	if (StageNumber == TutoRial) {
-		m_ChestPos[Dush] = { 230.0f,-190.0f,5.0f };
+		m_ChestPos[Dush] = { 254.0f,-220.0f,5.0f };
 		m_Alive[Dush] = true;
 	}
 	else {
@@ -230,7 +230,7 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Libra] = false;
 	}
-	//ダッシュ
+	//コンパス
 	if (StageNumber == Map6) {
 		m_ChestPos[Compass] = { 18.0f,-240.0f,5.0f };
 		m_Alive[Compass] = true;
@@ -240,7 +240,7 @@ void Chest::InitChest(int StageNumber) {
 	}
 	//ヒール
 	if (StageNumber == Map1) {
-		m_ChestPos[Heal] = { 167.0f,-75.0f,5.0f };
+		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
 		m_Alive[Heal] = true;
 	}
 	else {

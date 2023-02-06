@@ -624,7 +624,7 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ƒ_ƒbƒVƒ…ˆ—
-	if ((!m_Dush) && (m_AddPower != 0.0f) /*&& (PlayerSkill::GetInstance()->GetUseDush()*/) {
+	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetUseDush())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Dush = true;
 			m_AddPower = 0.0f;

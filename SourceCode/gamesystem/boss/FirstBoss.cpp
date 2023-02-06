@@ -250,8 +250,8 @@ void FirstBoss::NotAttack() {
 		m_RandFire = rand() % 3;
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
-		//m_Action = (rand() % 4);
-		m_Action = 3;
+		m_Action = (rand() % 4);
+		//m_Action = 3;
 		m_Active = true;
 	}
 	else {

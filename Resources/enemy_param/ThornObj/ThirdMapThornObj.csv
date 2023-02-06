@@ -1,1 +1,5 @@
-Enemy_Quantity2,0
+Enemy_Quantity2,1
+Wait,120
+Dir,3
+Target,11
+StartPos,143.301,-275.4,0

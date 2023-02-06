@@ -115,10 +115,10 @@ const void TutorialText::SpriteDraw() {
 	}
 }
 void TutorialText::ImGuiDraw() {
-	ImGui::Begin("Tutorial");
+	/*ImGui::Begin("Tutorial");
 	ImGui::Text("MoveCount%d", m_MoveCount);
 	ImGui::Text("m_BoardAlive[CameraMove]%d", m_BoardAlive[CameraMove]);
-	ImGui::End();
+	ImGui::End();*/
 }
 //“–‚½‚è”»’è
 bool TutorialText::Collide() {
@@ -171,8 +171,10 @@ void TutorialText::Mission() {
 		}
 
 		if ((input->RightTiltStick(input->Up) || input->RightTiltStick(input->Down)) && (player->GetAddPower() == 0.0f) && (player->GetVelosity() == 0.0f)) {
-			m_BoardAlive[CameraMove] = false;
+			
 		}
+
+		m_BoardAlive[CameraMove] = false;
 
 		if (m_MoveCount >= 100 && !m_BoardAlive[CameraMove]) {
 			m_ClearCount++;
@@ -288,7 +290,7 @@ void TutorialText::RockState() {
 	}
 
 	//UŒ‚ƒJƒEƒ“ƒg‚ª3‚É‚È‚Á‚½‚çŠâ‚ªÁ‚¦‚é
-	if (m_AttackCount == 3) {
+	if (m_AttackCount == 1) {
 		m_blockColor.w -= 0.05f;
 
 		if (m_blockColor.w < 0.0f) {
