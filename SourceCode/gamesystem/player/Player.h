@@ -178,8 +178,7 @@ private:
 	//座標
 	XMFLOAT3 m_OldPos = {0.0f,0.0f,0.0f};
 	//プレイヤーのマップチップの当たり判定をより正確に行うための処理
-	XMFLOAT3 m_LimitRightPos = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 m_LimitLeftPos = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_LimitPos = { 0.0f,0.0f,0.0f };
 	bool m_RightLimit = false;
 	bool m_LeftLimit = false;
 	//中心点からの大きさ

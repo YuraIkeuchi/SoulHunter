@@ -676,6 +676,7 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* 
 				int number = (int)std::atof(word.c_str());
 			}
 			else if (word.find("POP") == 0) {
+
 				std::getline(line_stream, word, ',');
 				float x = (float)std::atof(word.c_str());
 
@@ -806,6 +807,12 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
+	ImGui::Begin("Manager");
+	ImGui::Text("NormalNum:%d", m_Enemy_Num);
+	ImGui::Text("ThornNum:%d", m_ThornEnemy_Num);
+	ImGui::Text("BoundNum:%d", m_BoundEnemy_Num);
+	ImGui::Text("ChestNum:%d", m_ChestEnemy_Num);
+	ImGui::End();
 	EnemyImguiDraw(m_Enemys);
 	EnemyImguiDraw(m_ThornEnemys);
 	EnemyImguiDraw(m_BoundEnemys);
@@ -918,7 +925,7 @@ void EnemyManager::EnemyBirth(int EnemyType, Player* player, Block* block) {
 		enemyedit->FollowEnemyArgment(m_FollowEnemys, player,block);
 		m_FollowEnemyCount++;
 	}
-	else {
+	else if(EnemyType == FakeChest) {
 		enemyedit->ChestEnemyArgment(m_ChestEnemys, player, block);
 		m_ChestEnemyCount++;
 	}

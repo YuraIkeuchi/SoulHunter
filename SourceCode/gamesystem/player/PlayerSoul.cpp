@@ -19,6 +19,7 @@ void PlayerSoul::Initialize() {
 	m_Radius.x = 2.0f;
 	m_Radius.y = 0.8f;
 	m_Effect = false;
+	m_EndSoul = false;
 }
 //‰ð•ú
 void PlayerSoul::Finalize() {
