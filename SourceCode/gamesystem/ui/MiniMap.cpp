@@ -161,7 +161,7 @@ void MiniMap::Finalize() {
 }
 //プレイヤーの位置を描画するかどうか
 void MiniMap::UseCompass() {
-	if (PlayerSkill::GetInstance()->GetUseCompass()) {
+	if (PlayerSkill::GetInstance()->GetCompassSkill()) {
 		LookPlayer = true;
 	}
 	else {

@@ -28,8 +28,6 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
-	//定数
-	static const int Set_Max = 2;//セットできるスキル
 	static const int Skill_Max = 4;//スキルの数
 
 public:
@@ -50,17 +48,20 @@ private:
 	unique_ptr<IKESprite> select = nullptr;
 	array<unique_ptr<IKESprite>, Skill_Max> NoItemSprite;
 	array<unique_ptr<IKESprite>, Skill_Max> ExplainSprite;
-	array<unique_ptr<IKESprite>, Set_Max> SetSkillSprite;
 	//変数
-	static XMFLOAT2 m_SetSkillPos[Set_Max];
-	static bool m_SetSkill[Set_Max];
-	int m_SelectNumber = 0;
-	int m_SelectDir;
+	int m_SelectHeight = 0;
+	int m_SelectWeight = 0;
 	int m_SetNumber = 0;
 	XMFLOAT2 m_SelectPos = { 0.0f,0.0f };
-	enum SelectDir {
-		Down,
+	enum SelectHeight {
 		Up,
+		Down,
+	};
+
+	enum SelectWight {
+		LeftSide,
+		CenterSide,
+		RightSide,
 	};
 
 	enum SkillName {

@@ -297,18 +297,26 @@ bool Block::PlayerMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 						pos.x = l_MapPosX + l_RadiusX + radius.x;
 						if (is_jump == false)
 						{
+							m_LimitLeft = true;
 							l_IsHit = true;
 						}
 					}
+					else {
+						m_LimitLeft = false;
+					}
 					//右の当たり判定
-					else if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
+					if (l_MapPosX - l_RadiusX - radius.x < pos.x && l_MapPosX > old_pos.x)
 					{
 						m_HitDown = false;
 						pos.x = l_MapPosX - l_RadiusX - radius.x;
 						if (is_jump == false)
 						{
+							m_LimitRight = true;
 							l_IsHit = true;
 						}
+					}
+					else {
+						m_LimitRight = false;
 					}
 				}
 			}
@@ -639,9 +647,9 @@ bool Block::AttackMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3
 	return l_IsHit;
 }
 //移動限界用当たり判定(攻撃)
-bool Block::LimitMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 old_pos) {
+bool Block::LimitMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, const XMFLOAT3 old_pos) {
 	//マップチップ
-	//X, Y
+		//X, Y
 	float l_MapPosX = 0;
 	float l_MapPosY = 0;
 	//Radius

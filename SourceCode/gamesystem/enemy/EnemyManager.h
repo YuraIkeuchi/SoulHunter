@@ -86,7 +86,7 @@ public:
 protected:
 	//定数
 	static const int Soul_Max = 3;//ソウルの最大数
-	static const int Enemy_Max = 20;//敵の最大数
+	static const int Enemy_Max = 15;//敵の最大数
 private:
 	//クラス
 	unique_ptr<Pause> pause = nullptr;

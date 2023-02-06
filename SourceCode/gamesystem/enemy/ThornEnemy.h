@@ -27,6 +27,7 @@ private:
 
 	int m_RotNumber = 0;
 	int m_Interval = 0;
+	float m_AddAngle = 0.0f;
 	
 	enum RotNumber {
 		Stop,

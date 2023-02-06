@@ -179,6 +179,8 @@ void TutorialText::Mission() {
 		if (m_MoveCount >= 100 && !m_BoardAlive[CameraMove]) {
 			m_ClearCount++;
 			m_MoveCount = 0;
+			m_Frame[Move] = 0.0f;
+			m_Frame[CameraMove] = 0.0f;
 			m_BoardAlive[Move] = false;
 			m_BoardState[Move] = DownBoard;
 			m_BoardState[CameraMove] = DownBoard;
@@ -194,21 +196,25 @@ void TutorialText::Mission() {
 		//ジャンプ
 		if ((m_SpriteState[Jump] == WideSprite) && (m_BoardAlive[Jump]) && input->TriggerButton(input->Button_B)) {
 			m_ClearCount++;
+			m_Frame[Jump] = 0.0f;
 			m_BoardAlive[Jump] = false;
 		}
 		//ローリング
 		if ((m_SpriteState[Rolling] == WideSprite) && (m_BoardAlive[Rolling]) && input->TriggerButton(input->Button_RB)) {
 			m_ClearCount++;
+			m_Frame[Rolling] = 0.0f;
 			m_BoardAlive[Rolling] = false;
 		}
 		//ポーズ
 		if ((m_SpriteState[Pause] == WideSprite) && (m_BoardAlive[Pause]) && input->TriggerButton(input->Select)) {
 			m_ClearCount++;
+			m_Frame[Pause] = 0.0f;
 			m_BoardAlive[Pause] = false;
 		}
 		//ミニマップ
 		if ((m_SpriteState[Map] == WideSprite) && (m_BoardAlive[Map]) && input->TriggerButton(input->Start)) {
 			m_ClearCount++;
+			m_Frame[Map] = 0.0f;
 			m_BoardAlive[Map] = false;
 		}
 
@@ -258,6 +264,7 @@ void TutorialText::MoveBoard() {
 			}
 			else {
 				m_BoardState[i] = NoMove;
+				m_BoardDraw[i] = false;
 				m_Frame[i] = m_FrameMin;
 			}
 		}
@@ -317,6 +324,7 @@ bool TutorialText::RockCollide() {
 			m_Damage = true;
 			m_DamageTimer = 10;
 			m_AttackCount++;
+			m_Frame[Attack] = 0.0f;
 			//エフェクトの発生
 			PlayerEffect* newEffect;
 			newEffect = new PlayerEffect();
@@ -351,7 +359,7 @@ void TutorialText::BirthParticle() {
 	float e_scale = 0.0f;
 
 	for (int i = 0; i < objboard.size(); i++) {
-		if (m_BoardPosition[i].y != -280.0f && m_BoardPosition[i].y != -290.0f && m_BoardAlive[i]) {
+		if (m_BoardPosition[i].y != -280.0f && m_BoardPosition[i].y != -290.0f && m_BoardDraw[i]) {
 			ParticleEmitter::GetInstance()->BoardEffect(50, { m_BoardPosition[i].x,-282.0f,m_BoardPosition[i].z}, s_scale, e_scale, s_color, e_color);
 		}
 	}

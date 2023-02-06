@@ -16,7 +16,7 @@ public:
 	void InitPos();
 	void Update();
 	const void Draw();
-	void ChangeSize(const int SelectDir, const int SelectNumber, XMFLOAT2 Pos);
+	void ChangeSize(XMFLOAT2 Pos);
 
 public:
 	const XMFLOAT2& GetHealPos() { return s_HealPos; }

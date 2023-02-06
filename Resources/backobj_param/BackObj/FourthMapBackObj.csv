@@ -1,3 +1,15 @@
 RockCount,0
 BoxCount,0
-TorchCount,0
+TorchCount,4
+TorchWait,120
+TorchPOP,232.274,-27.9,8.265
+TorchROT,0,0,0
+TorchWait,120
+TorchPOP,266.774,-267.301,8.265
+TorchROT,0,0,0
+TorchWait,120
+TorchPOP,126.673,-217.201,8.265
+TorchROT,0,0,0
+TorchWait,120
+TorchPOP,30.9727,-227.402,8.265
+TorchROT,0,0,0

@@ -122,7 +122,7 @@ bool ChestEnemy::ChestCollision() {
 		if (player->GetRotation().y == 90.0f) {
 			if (Collision::OBBCollision(OBB1, OBB2) && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
 				m_HitDir = HitLeft;
-				m_BoundPower.x = 1.3f;
+				m_BoundPower.x = 0.6f;
 				m_Damage = true;
 				m_DamageTimer = 20;
 				m_EffectArgment = true;
@@ -137,7 +137,7 @@ bool ChestEnemy::ChestCollision() {
 		else {
 			if (Collision::OBBCollision(OBB1, OBB2) && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 				m_HitDir = HitRight;
-				m_BoundPower.x = -1.3f;
+				m_BoundPower.x = -0.6f;
 				m_Damage = true;
 				m_DamageTimer = 20;
 				m_EffectArgment = true;
@@ -171,7 +171,7 @@ void ChestEnemy::ChestMove() {
 		m_AfterColor = { 1.0f,0.0f,0.0f,1.0f };
 	}
 
-	if (m_Attack) {
+	if (m_Attack && m_HP != 0) {
 		if (m_MoveNumber == ShakeChest) {			//シェイクする
 			shake->ShakePos(m_ShakePos.x, 11, 5, 50, 70);
 			shake->ShakePos(m_ShakePos.y, 11, 5, 50, 70);
@@ -221,7 +221,7 @@ void ChestEnemy::ChestMove() {
 		}
 		else {			//戻る
 			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.01f;
+				m_Frame += 0.1f;
 			}
 			else {
 				m_Frame = 0.0f;
@@ -347,7 +347,6 @@ void ChestEnemy::DamageChestAct() {
 		m_Position.x += m_BoundPower.x;
 	}
 }
-
 //解放
 void ChestEnemy::Finalize() {
 }

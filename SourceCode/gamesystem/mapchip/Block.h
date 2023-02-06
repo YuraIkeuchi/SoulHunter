@@ -32,7 +32,7 @@ public:
 	//マップチップ当たり判定(攻撃)
 	bool AttackMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius,const XMFLOAT3 old_pos);
 	//移動限界用当たり判定(攻撃)
-	bool LimitMapCollideCommon(XMFLOAT3 pos, XMFLOAT2 radius, const XMFLOAT3 old_pos);
+	bool LimitMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, const XMFLOAT3 old_pos);
 	//マップチップ当たり判定(敵)
 	bool EnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius,
 		const XMFLOAT3& old_pos, bool& is_jump,float& EnemyaddPower,int& touchWall,int& HP);
@@ -47,6 +47,8 @@ public:
 
 	//getter
 	const bool& GetThornHit() { return  m_ThornHit; }
+	const bool& GetLimitRight() { return  m_LimitRight; }
+	const bool& GetLimitLeft() { return  m_LimitLeft; }
 	const int& GetThornDir() { return  m_ThornDir; }
 	const bool& GetLeftGoal() { return  m_Left_Goal; }
 	const bool& GetRightGoal() { return  m_Right_Goal; }
@@ -63,6 +65,9 @@ public:
 private:
 	//地面にあたっているか
 	bool m_HitDown = false;
+	//限界添加
+	bool m_LimitRight = false;
+	bool m_LimitLeft = false;
 	//棘に当たったか
 	bool m_ThornHit = false;
 	//どのゴールに当たったか

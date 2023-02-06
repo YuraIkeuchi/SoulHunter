@@ -255,12 +255,12 @@ void Player::Draw(DirectXCommon* dxCommon) {
 //Imgui
 void Player::ImGuiDraw() {
 	ImGui::Begin("player");
+	ImGui::Text("m_LimitPosX:%f", m_LimitPos.x);
 	ImGui::Text("m_PosX:%f", m_Position.x);
 	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_PosZ:%f", m_Position.z);
-	ImGui::Text("SaveTimer:%d", m_SaveTimer);
-	ImGui::Text("ResTimer:%d", m_RespornTimer);
-	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::Text("RotY:%f", m_Rotation.y);
+	ImGui::Text("LeftL:%d", m_LeftLimit);
+	ImGui::Text("RightL:%d", m_RightLimit);
 	ImGui::End();
 }
 //剣の更新
@@ -319,25 +319,6 @@ void Player::EffectUpdate() {
 //プレイヤーの移動
 void Player::PlayerMove() {
 	Input* input = Input::GetInstance();
-	//当たり判定を精密に取るため
-	m_LimitLeftPos = { m_Position.x - 1.3f,m_Position.y,m_Position.z };
-	m_LimitRightPos = { m_Position.x + 1.3f,m_Position.y,m_Position.z };
-
-	//当たり判定
-	if (block->LimitMapCollideCommon(m_LimitLeftPos, { 3.0f,1.0f }, m_LimitLeftPos)) {
-		m_LeftLimit = true;
-	}
-	else {
-		m_LeftLimit = false;
-	}
-
-	if (block->LimitMapCollideCommon(m_LimitRightPos, { 3.0f,1.0f }, m_LimitRightPos)) {
-		m_RightLimit = true;
-	}
-	else {
-		m_RightLimit = false;
-	}
-
 	//チュートリアル時移動距離に限界がある
 	if (!m_TutorialFinish && m_Position.x >= 73.0f) {
 		m_Position.x = 73.0f;
@@ -345,6 +326,29 @@ void Player::PlayerMove() {
 	//地面にいる間は攻撃モーションで動き止まる
 	if (m_AddPower == 0.0f) {
 		if ((input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left)) && (m_HealType == NoHeal) && (!m_Attack)) {
+			////当たり判定を精密に取るため
+			if (m_Rotation.y == 90.0f) {
+				m_LimitPos = { m_Position.x + 1.3f, m_Position.y, m_Position.z };
+			}
+			else if (m_Rotation.y == 270.0f) {
+				m_LimitPos = { m_Position.x - 1.3f, m_Position.y, m_Position.z };
+			}
+
+			//当たり判定
+			if (block->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 90.0f) {
+				m_RightLimit = true;
+			}
+			else {
+				m_RightLimit = false;
+			}
+
+			if (block->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 270.0f) {
+				m_LeftLimit = true;
+			}
+			else {
+				m_LeftLimit = false;
+			}
+
 			//動きやジャンプ
 			if (input->LeftTiltStick(input->Right) && (!m_Dush)) {
 				if (!m_RightLimit) {
@@ -439,7 +443,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
-	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
+	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 3) && (m_AddPower <= 0.3f)
 		&& (m_HealType == NoHeal) && (!m_Attack)) {
 		m_JumpCount++;
 		m_Jump = true;
@@ -452,9 +456,6 @@ void Player::PlayerJump() {
 			PlayerAnimetion(SecondJump, 2);
 		}
 		else if (m_JumpCount == 3) {
-			PlayerAnimetion(ThirdJump, 2);
-		}
-		else if (m_JumpCount == 4) {
 			PlayerAnimetion(FinalJump, 2);
 			m_JumpRot = true;
 			m_RotFrame = 0.0f;
@@ -624,7 +625,7 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetUseDush())) {
+	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Dush = true;
 			m_AddPower = 0.0f;
@@ -694,7 +695,7 @@ void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetUseHeal())) {
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetHealSkill())) {
 		m_HealType = UseHeal;
 	}
 
@@ -745,7 +746,7 @@ void Player::PlayerDamage() {
 	m_Position.x += m_BoundPower;
 	//死んだときの判定
 	if (block->GetThornHit()) {
-		if (m_HP >= 2) {
+		if (m_HP > 1) {
 			if (block->GetThornDir() == HitRight) {
 				m_AddPower = 0.0f;
 				m_BoundPower = 1.0f;
@@ -773,6 +774,7 @@ void Player::PlayerDamage() {
 				BirthEffect("Damege", m_Position, m_PlayerDir);
 				m_HP -= 1;
 				m_Death = true;
+				m_Alive = false;
 			}
 		}
 		
@@ -789,7 +791,7 @@ void Player::PlayerDamage() {
 	}
 
 	//棘にあたったときの動き
-	if (!m_Alive && m_RespornTimer == 1) {
+	if (!m_Alive && m_RespornTimer == 1 && !m_Death) {
 		BirthEffect("Damege", m_Position, m_PlayerDir);
 		m_Jump = true;
 	}
@@ -819,6 +821,8 @@ void Player::GoalMove() {
 //ゴールの動き
 bool Player::DeathMove() {
 	if (m_Death) {
+		block->SetThornDir(NoHit);
+		block->SetThornHit(false);
 		m_FlashCount = 0;
 		m_Interval = 0;
 		m_DeathTimer++;
@@ -933,7 +937,7 @@ void Player::InitPlayer(int StageNumber) {
 	else if (StageNumber == Map6) {
 
 		if (m_GoalDir == DownGoal) {
-			m_Position = { 40.0f,-30.0f,0.0f };
+			m_Position = { 30.0f,-30.0f,0.0f };
 		}
 		else {
 			m_Position = { 274.0f,-150.0f,0.0f };

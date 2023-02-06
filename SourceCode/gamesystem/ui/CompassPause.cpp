@@ -9,7 +9,7 @@ using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
 //静的メンバ変数の実体
-XMFLOAT2 CompassPause::s_CompassPos = { 450.0f,548.0f };
+XMFLOAT2 CompassPause::s_CompassPos = { 450.0f,200.0f };
 //初期化
 void CompassPause::Initialize() {
 	IKESprite::LoadTexture(24, L"Resources/2d/Skill/Compass.png");
@@ -22,7 +22,7 @@ void CompassPause::Initialize() {
 }
 //初期位置
 void CompassPause::InitPos() {
-	s_CompassPos = { 450.0f,548.0f };
+	s_CompassPos = { 450.0f,200.0f };
 }
 //更新
 void CompassPause::Update() {
@@ -40,34 +40,13 @@ const void CompassPause::Draw() {
 	CompassSprite->Draw();
 }
 //大きさの変更の動き(sin波)
-void CompassPause::ChangeSize(const int SelectDir, const int SelectNumber, XMFLOAT2 Pos) {
-	if (Pos.y == s_CompassPos.y) {
-		if (SelectDir == 0) {
-			if (SelectNumber == 2) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_CompassSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
-					(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_CompassSize = { 96.0f,96.0f };
-			}
-		}
-		else {
-			if (Pos.x == s_CompassPos.x) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_CompassSize = { (float)(sin(m_Angle2) * 16.0f) + (80.0f),
-					(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_CompassSize = { 96.0f,96.0f };
-			}
-		}
+void CompassPause::ChangeSize(XMFLOAT2 Pos) {
+	if (s_CompassPos.x == Pos.x && s_CompassPos.y == Pos.y) {
+		m_Angle += 2.0f;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		//選択時サイズも少し変わる
+		m_CompassSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
+			(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
 	}
 	else {
 		m_Angle = 0.0f;

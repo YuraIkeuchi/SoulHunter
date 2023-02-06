@@ -1,5 +1,13 @@
-Enemy_Quantity2,1
+Enemy_Quantity2,3
 Wait,120
 Dir,3
 Target,11
 StartPos,143.301,-275.4,0
+Wait,120
+Dir,0
+Target,30
+StartPos,46.6999,-301.199,0
+Wait,120
+Dir,0
+Target,87
+StartPos,77.6,-301.199,0

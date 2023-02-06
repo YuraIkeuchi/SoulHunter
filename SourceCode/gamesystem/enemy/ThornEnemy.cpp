@@ -29,12 +29,13 @@ bool ThornEnemy::Initialize() {
 	m_Object.reset(m_Object_);
 	//“G‚Ìí—Ş
 	m_EnemyType = Thorn;
+	m_AddAngle = (float)(rand() % 10 + 10) / 15;
 	return true;
 }
 //XV
 void ThornEnemy::Action() {
 	//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
-	m_Angle += 1.0f;
+	m_Angle += m_AddAngle;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
 	m_Position.y = (sin(m_Angle2) * 8.0f + 8.0f) + (m_ThornSetPos);
 	RotMove();
