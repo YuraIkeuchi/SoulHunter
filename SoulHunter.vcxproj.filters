@@ -614,9 +614,6 @@
     <ClInclude Include="SourceCode\gamesystem\ui\Option.h">
       <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ui\SkillPause.h">
-      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\Pause.h">
       <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
     </ClInclude>
@@ -805,6 +802,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\enemy\ChestEnemy.h">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\SkillPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

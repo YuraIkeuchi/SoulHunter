@@ -117,7 +117,7 @@ const void UI::Draw() {
 	}
 	SoulGageSprite->Draw();
 
-	if (interboss && PlayerSkill::GetInstance()->GetUseLibra() && interboss->GetAlive()) {
+	if (interboss && PlayerSkill::GetInstance()->GetLibraSkill() && interboss->GetAlive()) {
 		BossHpSprite->Draw();
 	}
 }

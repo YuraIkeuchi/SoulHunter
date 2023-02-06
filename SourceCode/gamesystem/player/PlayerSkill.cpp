@@ -7,11 +7,6 @@ bool PlayerSkill::s_LibraSkill = false;
 bool PlayerSkill::s_CompassSkill = false;
 bool PlayerSkill::s_HealSkill = false;
 
-bool PlayerSkill::s_UseDush = false;
-bool PlayerSkill::s_UseLibra = false;
-bool PlayerSkill::s_UseCompass = false;
-bool PlayerSkill::s_UseHeal = false;
-
 PlayerSkill* PlayerSkill::GetInstance()
 {
 	static PlayerSkill instance;
@@ -21,10 +16,6 @@ PlayerSkill* PlayerSkill::GetInstance()
 
 //スキルのリセット
 void PlayerSkill::ResetSkill() {
-	s_UseLibra = false;
-	s_UseDush = false;
-	s_UseCompass = false;
-	s_UseHeal = false;
 	s_DushSkill = false;
 	s_LibraSkill = false;
 	s_CompassSkill = false;

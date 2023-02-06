@@ -88,6 +88,11 @@ void EnemyManager::OpenEnemyParam(const int StageNumber) {
 		m_ThornObjFile.open("Resources/enemy_param/ThornObj/SixMapThornObj.csv");
 	case BossMap:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
+		m_ThornEnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
+		m_BoundEnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
+		m_BirdEnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
+		m_FollowEnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
+		m_ChestEnemyFile.open("Resources/enemy_param/NormalEnemy/BossMapEnemy.csv");
 	case TutoRial:
 		m_EnemyFile.open("Resources/enemy_param/NormalEnemy/TutorialEnemy.csv");
 		m_ThornEnemyFile.open("Resources/enemy_param/ThornEnemy/TutorialThornEnemy.csv");

@@ -8,7 +8,7 @@ using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
 //静的メンバ変数の実体
-XMFLOAT2 LibraPause::s_LibraPos = { 150.0f,548.0f };
+XMFLOAT2 LibraPause::s_LibraPos = { 150.0f,200.0f };
 //初期化
 void LibraPause::Initialize() {
 	IKESprite::LoadTexture(27, L"Resources/2d/Skill/Libra.png");
@@ -21,7 +21,7 @@ void LibraPause::Initialize() {
 }
 //初期位置
 void LibraPause::InitPos() {
-	s_LibraPos = { 150.0f,548.0f };
+	s_LibraPos = { 150.0f,200.0f };
 }
 //更新
 void LibraPause::Update() {
@@ -35,34 +35,13 @@ const void LibraPause::Draw() {
 	LibraSprite->Draw();
 }
 //大きさの変更の動き(sin波)
-void LibraPause::ChangeSize(const int SelectDir, const int SelectNumber, XMFLOAT2 Pos) {
-	if (Pos.y == s_LibraPos.y) {
-		if (SelectDir == 0) {
-			if (SelectNumber == 0) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_LibraSize = { (float)(sin(m_Angle2) * 16.0f - 16.0f) + (96.0f),
-					(float)(sin(m_Angle2) * 16.0f - 16.0f) + (96.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_LibraSize = { 96.0f,96.0f };
-			}
-		}
-		else {
-			if (Pos.x == s_LibraPos.x) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_LibraSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
-					(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_LibraSize = { 96.0f,96.0f };
-			}
-		}
+void LibraPause::ChangeSize(XMFLOAT2 Pos) {
+	if (s_LibraPos.x == Pos.x && s_LibraPos.y == Pos.y) {
+		m_Angle += 2.0f;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		//選択時サイズも少し変わる
+		m_LibraSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
+			(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
 	}
 	else {
 		m_Angle = 0.0f;

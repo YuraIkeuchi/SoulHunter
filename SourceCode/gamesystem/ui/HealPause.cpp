@@ -9,7 +9,7 @@ using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
 //静的メンバ変数の実体
-XMFLOAT2 HealPause::s_HealPos = { 600.0f,548.0f };
+XMFLOAT2 HealPause::s_HealPos = { 150.0f,400.0f };
 //初期化
 void HealPause::Initialize() {
 	IKESprite::LoadTexture(26, L"Resources/2d/Skill/Heal.png");
@@ -22,7 +22,7 @@ void HealPause::Initialize() {
 }
 //初期位置
 void HealPause::InitPos() {
-	s_HealPos = { 600.0f,548.0f };
+	s_HealPos = { 150.0f,400.0f };
 }
 //更新
 void HealPause::Update() {
@@ -39,34 +39,13 @@ const void HealPause::Draw() {
 	HealSprite->Draw();
 }
 //大きさの変更の動き(sin波)
-void HealPause::ChangeSize(const int SelectDir, const int SelectNumber, XMFLOAT2 Pos) {
-	if (Pos.y == s_HealPos.y) {
-		if (SelectDir == 0) {
-			if (SelectNumber == 3) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_HealSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
-					(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_HealSize = { 96.0f,96.0f };
-			}
-		}
-		else {
-			if (Pos.x == s_HealPos.x) {
-				m_Angle += 2.0f;
-				m_Angle2 = m_Angle * (3.14f / 180.0f);
-				//選択時サイズも少し変わる
-				m_HealSize = { (float)(sin(m_Angle2) * 16.0f) + (80.0f),
-					(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
-			}
-			else {
-				m_Angle = 0.0f;
-				m_HealSize = { 96.0f,96.0f };
-			}
-		}
+void HealPause::ChangeSize(XMFLOAT2 Pos) {
+	if (s_HealPos.x == Pos.x && s_HealPos.y == Pos.y) {
+		m_Angle += 2.0f;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		//選択時サイズも少し変わる
+		m_HealSize = { (float)(sin(m_Angle2) * (16.0f)) + (80.0f),
+			(float)(sin(m_Angle2) * 16.0f) + (80.0f) };
 	}
 	else {
 		m_Angle = 0.0f;

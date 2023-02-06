@@ -12,9 +12,6 @@ using XMFLOAT3 = DirectX::XMFLOAT3;
 using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
-//静的メンバ変数の実態
-bool SkillPause::m_SetSkill[Set_Max] = { false };
-XMFLOAT2 SkillPause::m_SetSkillPos[Set_Max] = {};
 //読み込み
 SkillPause::SkillPause() {
 	CompassPause* compasspause_;
@@ -45,7 +42,7 @@ SkillPause::SkillPause() {
 
 	IKESprite* select_;
 	select_ = IKESprite::Create(ImageManager::PauseSelect, { 0.0f,0.0f });
-	select_->SetPosition({ 150.0f, 548.0f });
+	select_->SetPosition({ 150.0f, 200.0f });
 	select_->SetAnchorPoint({ 0.5f,0.5f });
 	select_->SetSize({ 96.0f,96.0f });
 	select.reset(select_);
@@ -59,15 +56,6 @@ SkillPause::SkillPause() {
 	
 	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite[i].reset(NoItemSprite_[i]);
-	}
-
-	IKESprite* SetSkillSprite_[Set_Max];
-	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
-		SetSkillSprite_[i] = IKESprite::Create(ImageManager::NoItem, { 0.0f,0.0f });
-		SetSkillSprite_[i]->SetSize({ 48.0f,48.0f });
-		SetSkillSprite_[i]->SetPosition(m_SetSkillPos[i]);
-		SetSkillSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
-		SetSkillSprite[i].reset(SetSkillSprite_[i]);
 	}
 
 	//スキルの說明
@@ -91,15 +79,10 @@ void SkillPause::InitPos() {
 //初期化
 void SkillPause::Initialize() {
 	//セットできるスキルの数
-	m_SetSkillPos[0] = { 148.0f,188.0f };
-	m_SetSkillPos[1] = { 348.0f,188.0f };
-	NoItemSprite[0]->SetPosition({ 150.0f,548.0f });
-	NoItemSprite[1]->SetPosition({ 300.0f,548.0f });
-	NoItemSprite[2]->SetPosition({ 450.0f,548.0f });
-	NoItemSprite[3]->SetPosition({ 600.0f,548.0f });
-	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
-		SetSkillSprite[i]->SetPosition(m_SetSkillPos[i]);
-	}
+	NoItemSprite[0]->SetPosition({ 150.0f,200.0f });
+	NoItemSprite[1]->SetPosition({ 300.0f,200.0f });
+	NoItemSprite[2]->SetPosition({ 450.0f,200.0f });
+	NoItemSprite[3]->SetPosition({ 150.0f,400.0f });
 }
 //更新
 void SkillPause::Update() {
@@ -137,9 +120,6 @@ void SkillPause::Update() {
 		NoItemSprite[i]->SetColor(m_SkillColor);
 		ExplainSprite[i]->SetColor(m_SkillColor);
 	}
-	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
-		SetSkillSprite[i]->SetColor(m_SkillColor);
-	}
 	compasspause->SetColor(m_SkillColor);
 	dushpause->SetColor(m_SkillColor);
 	librapause->SetColor(m_SkillColor);
@@ -147,19 +127,22 @@ void SkillPause::Update() {
 	//スキル選択
 	SelectSkill();
 	//選択肢が合うとサイズが動く
-	compasspause->ChangeSize(m_SelectDir,m_SelectNumber,select->GetPosition());
-	dushpause->ChangeSize(m_SelectDir, m_SelectNumber, select->GetPosition());
-	librapause->ChangeSize(m_SelectDir, m_SelectNumber, select->GetPosition());
-	healpause->ChangeSize(m_SelectDir, m_SelectNumber, select->GetPosition());
+	compasspause->ChangeSize(select->GetPosition());
+	dushpause->ChangeSize(select->GetPosition());
+	librapause->ChangeSize(select->GetPosition());
+	healpause->ChangeSize(select->GetPosition());
 }
 //描画
 const void SkillPause::Draw() {
+	ImGui::Begin("Pause");
+	ImGui::Text("SelectWidth:%d", m_SelectWeight);
+	ImGui::Text("SelectHeight:%d", m_SelectHeight);
+	ImGui::Text("PosX:%f", select->GetPosition().x);
+	ImGui::Text("PosY:%f", select->GetPosition().y);
+	ImGui::End();
 	IKESprite::PreDraw();
 	PauseSprite->Draw();
-	for (std::size_t i = 0; i < SetSkillSprite.size(); i++) {
-		SetSkillSprite[i]->Draw();
-	}
-
+	
 	for (int i = 0; i < Skill_Max; i++) {
 		NoItemSprite[i]->Draw();
 	}
@@ -180,33 +163,21 @@ const void SkillPause::Draw() {
 		healpause->Draw();
 	}
 
-	if (m_SelectDir == Down) {
-		if (m_SelectNumber == 0 && PlayerSkill::GetInstance()->GetLibraSkill() && !PlayerSkill::GetInstance()->GetUseLibra()) {
-			ExplainSprite[0]->Draw();
-		}
-		else if (m_SelectNumber == 1 && PlayerSkill::GetInstance()->GetDushSkill() && !PlayerSkill::GetInstance()->GetUseDush()) {
-			ExplainSprite[1]->Draw();
-		}
-		else if (m_SelectNumber == 2 && PlayerSkill::GetInstance()->GetCompassSkill() && !PlayerSkill::GetInstance()->GetUseCompass()) {
-			ExplainSprite[2]->Draw();
-		}
-		else if (m_SelectNumber == 3 && PlayerSkill::GetInstance()->GetHealSkill() && !PlayerSkill::GetInstance()->GetUseHeal()) {
-			ExplainSprite[3]->Draw();
-		}
+	if ((select->GetPosition().x == librapause->GetLibraPos().x && select->GetPosition().y == librapause->GetLibraPos().y)
+		&& PlayerSkill::GetInstance()->GetLibraSkill()) {
+		ExplainSprite[0]->Draw();
 	}
-	else {
-		if (select->GetPosition().x == librapause->GetLibraPos().x && PlayerSkill::GetInstance()->GetUseLibra()) {
-			ExplainSprite[0]->Draw();
-		}
-		else if (select->GetPosition().x == dushpause->GetDushPos().x && PlayerSkill::GetInstance()->GetUseDush()) {
-			ExplainSprite[1]->Draw();
-		}
-		else if (select->GetPosition().x == compasspause->GetCompassPos().x && PlayerSkill::GetInstance()->GetUseCompass()) {
-			ExplainSprite[2]->Draw();
-		}
-		else if (select->GetPosition().x == healpause->GetHealPos().x && PlayerSkill::GetInstance()->GetUseHeal()) {
-			ExplainSprite[3]->Draw();
-		}
+	else if ((select->GetPosition().x == dushpause->GetDushPos().x && select->GetPosition().y == dushpause->GetDushPos().y)
+		&& PlayerSkill::GetInstance()->GetDushSkill()) {
+		ExplainSprite[1]->Draw();
+	}
+	else if ((select->GetPosition().x == compasspause->GetCompassPos().x && select->GetPosition().y == compasspause->GetCompassPos().y)
+		&& PlayerSkill::GetInstance()->GetCompassSkill()) {
+		ExplainSprite[2]->Draw();
+	}
+	else if ((select->GetPosition().x == healpause->GetHealPos().x && select->GetPosition().y == healpause->GetHealPos().y)
+		&& PlayerSkill::GetInstance()->GetHealSkill()) {
+		ExplainSprite[3]->Draw();
 	}
 	select->Draw();
 }
@@ -215,125 +186,40 @@ void SkillPause::Finalize() {
 }
 //スキルのリセット
 void SkillPause::ResetSkillPause() {
-	for (int i = 0; i < Set_Max; i++) {
-		m_SetSkill[i] = false;
-	}
+	
 }
 //スキルの選択
 void SkillPause::SelectSkill() {
 	Input* input = Input::GetInstance();
-	if (m_SelectDir == Down && input->LeftTriggerStick(input->Up)) {
-		m_SetNumber = 0;
-		m_SelectDir = Up;
-		select->SetPosition({ 148.0f,188.0f });
+	if (m_SelectHeight == Down && input->LeftTriggerStick(input->Up)) {
+		m_SelectHeight = Up;
+		m_SelectWeight = LeftSide;
+		select->SetPosition({ 150.0f,select->GetPosition().y - 200.0f });
 	}
-	else if (m_SelectDir == Up && input->LeftTriggerStick(input->Down)) {
-		m_SelectDir = Down;
-		m_SelectNumber = 0;
-		select->SetPosition({ 150.0f,548.0f });
+	else if (m_SelectHeight == Up && input->LeftTriggerStick(input->Down)) {
+		m_SelectHeight = Down;
+		m_SelectWeight = LeftSide;
+		select->SetPosition({ 150.0f,select->GetPosition().y + 200.0f });
 	}
-	//スキル選択中
-	if (m_SelectDir == Down) {
+	if (m_SelectHeight == Up) {
 		//選択の場所を変える
-		if (m_SelectNumber < 3 && input->LeftTriggerStick(input->Right)) {
+		if (m_SelectWeight < RightSide && input->LeftTriggerStick(input->Right)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_SelectNumber++;
-			select->SetPosition({ select->GetPosition().x + 150.0f,548.0f });
+			m_SelectWeight++;
+			select->SetPosition({ select->GetPosition().x + 150.0f,200.0f });
 		}
-
-		else if (m_SelectNumber > 0 && input->LeftTriggerStick(input->Left)) {
+		if (m_SelectWeight > LeftSide && input->LeftTriggerStick(input->Left)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_SelectNumber--;
-			select->SetPosition({ select->GetPosition().x - 150.0f,548.0f });
-		}
-
-		//スキルをセットする
-		if (input->TriggerButton(input->Button_A) && m_SkillColor.w == 1.0f) {
-			//ライブラスキル
-			if (m_SelectNumber == 0 && PlayerSkill::GetInstance()->GetLibraSkill() && !PlayerSkill::GetInstance()->GetUseLibra()) {
-				for (int i = 0; i < Set_Max; i++) {
-					if (!m_SetSkill[i]) {
-						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
-						m_SetSkill[i] = true;
-						librapause->SetLibraPos(m_SetSkillPos[i]);
-						PlayerSkill::GetInstance()->SetUseLibra(true);
-						break;
-					}
-				}
-			}
-			//ダッシュスキル
-			if (m_SelectNumber == 1 && PlayerSkill::GetInstance()->GetDushSkill() && !PlayerSkill::GetInstance()->GetUseDush()) {
-				for (int i = 0; i < Set_Max; i++) {
-					if (!m_SetSkill[i]) {
-						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
-						m_SetSkill[i] = true;
-						dushpause->SetDushPos(m_SetSkillPos[i]);
-						PlayerSkill::GetInstance()->SetUseDush(true);
-						break;
-					}
-				}
-			}
-			//コンパススキル
-			else if (m_SelectNumber == 2 && PlayerSkill::GetInstance()->GetCompassSkill() && !PlayerSkill::GetInstance()->GetUseCompass()) {
-				for (int i = 0; i < Set_Max; i++) {
-					if (!m_SetSkill[i]) {
-						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
-						m_SetSkill[i] = true;
-						compasspause->SetCompassPos(m_SetSkillPos[i]);
-						PlayerSkill::GetInstance()->SetUseCompass(true);
-						break;
-					}
-				}
-			}
-			//ヒールスキル
-			else if (m_SelectNumber == 3 && PlayerSkill::GetInstance()->GetHealSkill() && !PlayerSkill::GetInstance()->GetUseHeal()) {
-				for (int i = 0; i < Set_Max; i++) {
-					if (!m_SetSkill[i]) {
-						Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillSet.wav", VolumManager::GetInstance()->GetSEVolum());
-						m_SetSkill[i] = true;
-						healpause->SetHealPos(m_SetSkillPos[i]);
-						PlayerSkill::GetInstance()->SetUseHeal(true);
-						break;
-					}
-				}
-			}
+			m_SelectWeight--;
+			select->SetPosition({ select->GetPosition().x - 150.0f,200.0f });
 		}
 	}
 	else {
-		if (m_SetNumber < 1 && input->LeftTriggerStick(input->Right)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_SetNumber++;
-			select->SetPosition({ select->GetPosition().x + 200.0f,188.0f });
-		}
-
-		if (m_SetNumber > 0 && input->LeftTriggerStick(input->Left)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_SetNumber--;
-			select->SetPosition({ select->GetPosition().x - 200.0f,188.0f });
-		}
-		//スキルを外す
-		if (input->TriggerButton(input->Button_A) && m_SkillColor.w == 1.0f) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/SkillNo.wav", VolumManager::GetInstance()->GetSEVolum());
-			if (select->GetPosition().x == librapause->GetLibraPos().x)  {
-				PlayerSkill::GetInstance()->SetUseLibra(false);
-				librapause->SetLibraPos({ 150.0f,548.0f });
-			}else if(select->GetPosition().x == dushpause->GetDushPos().x){
-				PlayerSkill::GetInstance()->SetUseDush(false);
-				dushpause->SetDushPos({ 300.0f,548.0f });
-			}
-			else if (select->GetPosition().x == compasspause->GetCompassPos().x) {
-				PlayerSkill::GetInstance()->SetUseCompass(false);
-				compasspause->SetCompassPos({ 450.0f,548.0f });
-			}
-			else if (select->GetPosition().x == healpause->GetHealPos().x) {
-				PlayerSkill::GetInstance()->SetUseHeal(false);
-				healpause->SetHealPos({ 600.0f,548.0f });
-			}
-
-			
-			if (m_SetSkill[m_SetNumber]) {
-				m_SetSkill[m_SetNumber] = false;
-			}
-		}
+		////選択の場所を変える
+		//if (m_SelectWeight > LeftSide && input->LeftTriggerStick(input->Right)) {
+		//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+		//	m_SelectWeight--;
+		//	select->SetPosition({ select->GetPosition().x - 150.0f,400.0f });
+		//}
 	}
 }

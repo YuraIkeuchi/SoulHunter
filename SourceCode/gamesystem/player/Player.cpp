@@ -624,7 +624,7 @@ bool Player::CheckAttack() {
 void Player::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ƒ_ƒbƒVƒ…ˆ—
-	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetUseDush())) {
+	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Dush = true;
 			m_AddPower = 0.0f;
@@ -694,7 +694,7 @@ void Player::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//‰Ÿ‚µ‚Ä‚¢‚éŠÔ’™‚ß‚é
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetUseHeal())) {
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetHealSkill())) {
 		m_HealType = UseHeal;
 	}
 
