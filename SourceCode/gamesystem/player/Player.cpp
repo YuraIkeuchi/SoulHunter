@@ -261,6 +261,8 @@ void Player::ImGuiDraw() {
 	ImGui::Text("SaveTimer:%d", m_SaveTimer);
 	ImGui::Text("ResTimer:%d", m_RespornTimer);
 	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::Text("ThornHit:%d", block->GetThornHit());
+	ImGui::Text("ThornDir:%d", block->GetThornDir());
 	ImGui::End();
 }
 //Œ•‚ÌXV
@@ -742,7 +744,7 @@ void Player::PlayerDamage() {
 	m_Position.x += m_BoundPower;
 	//Ž€‚ñ‚¾‚Æ‚«‚Ì”»’è
 	if (block->GetThornHit()) {
-		if (m_HP >= 2) {
+		if (m_HP > 1) {
 			if (block->GetThornDir() == HitRight) {
 				m_AddPower = 0.0f;
 				m_BoundPower = 1.0f;
@@ -770,6 +772,7 @@ void Player::PlayerDamage() {
 				BirthEffect("Damege", m_Position, m_PlayerDir);
 				m_HP -= 1;
 				m_Death = true;
+				m_Alive = false;
 			}
 		}
 		
@@ -786,7 +789,7 @@ void Player::PlayerDamage() {
 	}
 
 	//ž™‚É‚ ‚½‚Á‚½‚Æ‚«‚Ì“®‚«
-	if (!m_Alive && m_RespornTimer == 1) {
+	if (!m_Alive && m_RespornTimer == 1 && !m_Death) {
 		BirthEffect("Damege", m_Position, m_PlayerDir);
 		m_Jump = true;
 	}
@@ -816,6 +819,8 @@ void Player::GoalMove() {
 //ƒS[ƒ‹‚Ì“®‚«
 bool Player::DeathMove() {
 	if (m_Death) {
+		block->SetThornDir(NoHit);
+		block->SetThornHit(false);
 		m_FlashCount = 0;
 		m_Interval = 0;
 		m_DeathTimer++;
@@ -930,7 +935,7 @@ void Player::InitPlayer(int StageNumber) {
 	else if (StageNumber == Map6) {
 
 		if (m_GoalDir == DownGoal) {
-			m_Position = { 40.0f,-30.0f,0.0f };
+			m_Position = { 30.0f,-30.0f,0.0f };
 		}
 		else {
 			m_Position = { 274.0f,-150.0f,0.0f };

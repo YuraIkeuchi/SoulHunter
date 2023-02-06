@@ -94,7 +94,7 @@ void Save::InitSave(int StageNumber) {
 	}
 	else if (StageNumber == Map2) {
 		m_Alive = false;
-		m_Position = { 130.0f,0.0f,10.0f };
+		m_Position = { 700.0f,0.0f,10.0f };
 	}
 	else if (StageNumber == Map3) {
 		m_Alive = true;
@@ -102,7 +102,7 @@ void Save::InitSave(int StageNumber) {
 	}
 	else if (StageNumber == Map4) {
 		m_Alive = false;
-		m_Position = { 130.0f,0.0f,10.0f };
+		m_Position = { 700.0f,0.0f,10.0f };
 	}
 	else if (StageNumber == Map5) {
 		m_Alive = true;
@@ -110,11 +110,11 @@ void Save::InitSave(int StageNumber) {
 	}
 	else if (StageNumber == Map6) {
 		m_Alive = false;
-		m_Position = { 130.0f,0.0f,10.0f };
+		m_Position = { 700.0f,0.0f,10.0f };
 	}
 	else if (StageNumber == BossMap) {
 		m_Alive = false;
-		m_Position = { 130.0f,0.0f,10.0f };
+		m_Position = { 700.0f,0.0f,10.0f };
 	}
 	else if (StageNumber == TutoRial) {
 		m_Alive = true;

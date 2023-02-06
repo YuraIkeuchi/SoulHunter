@@ -134,12 +134,12 @@ void SkillPause::Update() {
 }
 //描画
 const void SkillPause::Draw() {
-	ImGui::Begin("Pause");
+	/*ImGui::Begin("Pause");
 	ImGui::Text("SelectWidth:%d", m_SelectWeight);
 	ImGui::Text("SelectHeight:%d", m_SelectHeight);
 	ImGui::Text("PosX:%f", select->GetPosition().x);
 	ImGui::Text("PosY:%f", select->GetPosition().y);
-	ImGui::End();
+	ImGui::End();*/
 	IKESprite::PreDraw();
 	PauseSprite->Draw();
 	

@@ -221,7 +221,7 @@ void ChestEnemy::ChestMove() {
 		}
 		else {			//–ß‚é
 			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.01f;
+				m_Frame += 0.1f;
 			}
 			else {
 				m_Frame = 0.0f;

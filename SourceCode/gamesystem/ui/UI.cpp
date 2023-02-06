@@ -77,7 +77,7 @@ void UI::Update(InterBoss* boss) {
 	if (boss) {
 		m_BossHP = interboss->GetHP();
 	}
-	m_AfterBossHPSize = { (float)(m_BossHP * 25.0f), 34.0f };
+	m_AfterBossHPSize = { (float)(m_BossHP * 35.0f), 34.0f };
 	m_BossHPSize = {
 	Ease(In,Quad,0.5f,(float)BossHpSprite->GetSize().x,(float)m_AfterBossHPSize.x),
 	Ease(In,Quint,0.5f,(float)BossHpSprite->GetSize().y,(float)m_AfterBossHPSize.y),
