@@ -420,6 +420,9 @@
     <ClCompile Include="SourceCode\gamesystem\enemy\ChestEnemy.cpp">
       <Filter>SourceCords\gamesystem\enemy\Various\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\JumpPause.cpp">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -805,6 +808,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\SkillPause.h">
       <Filter>SourceCords\gamesystem\ui\Pause\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\JumpPause.h">
+      <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

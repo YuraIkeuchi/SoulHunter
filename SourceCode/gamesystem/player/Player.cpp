@@ -439,7 +439,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 void Player::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
-	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 4) && (m_AddPower <= 0.3f)
+	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 3) && (m_AddPower <= 0.3f)
 		&& (m_HealType == NoHeal) && (!m_Attack)) {
 		m_JumpCount++;
 		m_Jump = true;
@@ -452,9 +452,6 @@ void Player::PlayerJump() {
 			PlayerAnimetion(SecondJump, 2);
 		}
 		else if (m_JumpCount == 3) {
-			PlayerAnimetion(ThirdJump, 2);
-		}
-		else if (m_JumpCount == 4) {
 			PlayerAnimetion(FinalJump, 2);
 			m_JumpRot = true;
 			m_RotFrame = 0.0f;
