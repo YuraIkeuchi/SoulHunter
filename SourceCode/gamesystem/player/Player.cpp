@@ -660,8 +660,8 @@ void Player::PlayerDush() {
 //プレイヤーの回転
 void Player::PlayerRolling() {
 	Input* input = Input::GetInstance();
-	//ダッシュ処理
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0)) {
+	//ローリング
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (block->GetHitDown())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Rolling = true;
 			m_SideFrame = 0.0f;

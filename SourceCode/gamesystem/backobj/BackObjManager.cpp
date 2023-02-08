@@ -483,6 +483,9 @@ void BackObjManager::DeleteObjPop(int Type) {
 }
 //óvëfëSçÌèú(îwåiOBJ)
 void BackObjManager::ObjDelete() {
+	for (int i = 0; i < m_BackTorch_Num; i++) {
+		lightgroup->SetPointLightActive(i + 2, false);
+	}
 	m_BackRocks.clear();
 	m_BackBoxs.clear();
 	m_BackTorchs.clear();

@@ -320,11 +320,13 @@ bool TutorialText::RockCollide() {
 
 	//OBBと向きで判定取る
 	if (player->GetRotation().y == 90.0f) {
-		if (Collision::OBBCollision(OBB1, OBB2) && (player->CheckAttack()) && (player->GetPosition().x < m_blockPosition.x) && (!m_Damage) && (m_AttackCount < 3)) {
+		if (Collision::OBBCollision(OBB1, OBB2) && (player->CheckAttack()) && (player->GetPosition().x < m_blockPosition.x) && (!m_Damage) && (m_AttackCount < 1)) {
 			m_Damage = true;
 			m_DamageTimer = 10;
 			m_AttackCount++;
-			m_Frame[Attack] = 0.0f;
+			for (int i = 0; i < objboard.size(); i++) {
+				m_Frame[i] = 0.0f;
+			}
 			//エフェクトの発生
 			PlayerEffect* newEffect;
 			newEffect = new PlayerEffect();

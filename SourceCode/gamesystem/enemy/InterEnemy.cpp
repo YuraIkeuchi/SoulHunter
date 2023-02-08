@@ -77,8 +77,7 @@ bool InterEnemy::LockOn() {
 	//同じブロック上にいて距離が近かったらロックオン
 	m_DistanceY = m_Position.y - l_PlayerPos.y;
 	if (Collision::CircleCollision(m_Position.x, m_Position.y, 15.0f, l_PlayerPos.x, l_PlayerPos.y, 15.0f) && (m_HP > 0)
-		&& (m_DistanceY <= 2.0f && m_DistanceY >= -2.0f)) {
-
+		&& (m_DistanceY <= 2.0f && m_DistanceY >= -2.0f) && (player->GetAddPower() == 0.0f)) {
 		m_Lock = true;
 		return true;
 	}

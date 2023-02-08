@@ -190,7 +190,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		//enemymanager->ImGuiDraw();
 		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
@@ -335,7 +335,6 @@ void FirstStage::BossEndDraw(DirectXCommon* dxCommon) {
 void FirstStage::MapInitialize() {
 	//ƒ}ƒbƒv‚Ì“Ç‚Ýž‚Ý
 	if (StageChange) {
-		AllDelete();
 		switch (StageNumber)
 		{
 		case Map1:
@@ -365,6 +364,7 @@ void FirstStage::MapInitialize() {
 		default:
 			break;
 		}
+		AllDelete();
 		player->InitPlayer(StageNumber);
 		save->InitSave(StageNumber);
 		tutorialtext->InitBoard(StageNumber);
