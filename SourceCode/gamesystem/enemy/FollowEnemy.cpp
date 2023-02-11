@@ -2,6 +2,7 @@
 #include"Collision.h"
 #include "ModelManager.h"
 #include <Easing.h>
+#include "PlayerSword.h"
 using namespace DirectX;
 
 FollowEnemy::FollowEnemy() {
@@ -105,9 +106,9 @@ bool FollowEnemy::FollowCollision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 
 	//OBB‚ÆŒü‚«‚Å”»’èŽæ‚é
 	if (player->GetRotation().y == 90.0f) {
@@ -150,8 +151,8 @@ void FollowEnemy::Pause() {
 void FollowEnemy::FollowMove() {
 	m_TargetTimer++;
 	XMFLOAT3 position{};
-	position.x = (player->GetSwordPosition().x - m_Position.x);
-	position.y = (player->GetSwordPosition().y - m_Position.y);
+	position.x = (PlayerSword::GetInstance()->GetPosition().x - m_Position.x);
+	position.y = (PlayerSword::GetInstance()->GetPosition().y - m_Position.y);
 	m_FollowVel.x = sin(-atan2f(position.x, position.y)) * 0.15f;
 	m_FollowVel.y = cos(-atan2f(position.x, position.y)) * 0.15f;
 	m_Rotation.x = (atan2f(position.x, position.y) * (180.0f / XM_PI));

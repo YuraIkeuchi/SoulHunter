@@ -3,6 +3,7 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+#include "PlayerSword.h"
 bool InterEnemy::Initialize() {
 
 	return true;
@@ -20,9 +21,9 @@ bool InterEnemy::Collision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 	
 	//OBBと向きで判定取る
 	if (player->GetRotation().y == 90.0f) {
@@ -77,8 +78,7 @@ bool InterEnemy::LockOn() {
 	//同じブロック上にいて距離が近かったらロックオン
 	m_DistanceY = m_Position.y - l_PlayerPos.y;
 	if (Collision::CircleCollision(m_Position.x, m_Position.y, 15.0f, l_PlayerPos.x, l_PlayerPos.y, 15.0f) && (m_HP > 0)
-		&& (m_DistanceY <= 2.0f && m_DistanceY >= -2.0f)) {
-
+		&& (m_DistanceY <= 2.0f && m_DistanceY >= -2.0f) && (player->GetAddPower() == 0.0f)) {
 		m_Lock = true;
 		return true;
 	}

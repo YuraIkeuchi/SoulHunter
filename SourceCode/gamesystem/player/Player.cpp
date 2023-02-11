@@ -7,21 +7,16 @@
 #include "VolumManager.h"
 #include "ParticleEmitter.h"
 #include "Audio.h"
+#include "PlayerSword.h"
 #include <Easing.h>
 using namespace DirectX;
 //読み込み
 Player::Player() {
-	m_FollowModel = ModelManager::GetInstance()->GetModel(ModelManager::Sword);
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::PlayerFBX);
 }
 //初期化
 bool Player::Initialize()
 {
-	IKEObject3d* m_FollowObject_ = new IKEObject3d();
-	m_FollowObject_ = IKEObject3d::Create();
-	m_FollowObject_->SetModel(m_FollowModel);
-	m_FollowObject_->SetScale(m_SwordScale);
-	m_FollowObject.reset(m_FollowObject_);
 
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
 	fbxobject_->Initialize();
@@ -29,12 +24,10 @@ bool Player::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
-	SwordParticle* swordparticle_ = new SwordParticle();
-	swordparticle_->Initialize();
-	swordparticle.reset(swordparticle_);
-
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
+
+	PlayerSword::GetInstance()->Initialize();
 
 	return true;
 }
@@ -201,9 +194,6 @@ void Player::Update()
 	//自動落下
 	PlayerFall();
 
-	//剣の更新
-	SwordUpdate();
-	
 	//プレイモード
 	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
@@ -229,6 +219,9 @@ void Player::Update()
 	//エフェクトの更新
 	EffectUpdate();
 
+	//剣の更新
+	PlayerSword::GetInstance()->SetHandMat(m_HandMat);
+	PlayerSword::GetInstance()->Update();
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon) {	
@@ -240,8 +233,8 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	}
 	//点滅してるかどうかで描画が変わる
 	if (m_FlashCount % 2 == 0 && m_PlayMode) {
-		if (m_SwordColor.w >= 0.1f && m_HP != 0) {
-			FollowObj_Draw();
+		if (m_HP != 0) {
+			PlayerSword::GetInstance()->Draw(dxCommon);
 		}
 		if (m_AddDisolve <= 1.5f) {
 			Fbx_Draw(dxCommon);
@@ -249,7 +242,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	}
 	//パーティクルの描画
 	if (m_HP != 0) {
-		swordparticle->Draw();
+		PlayerSword::GetInstance()->ParticleDraw();
 	}
 }
 //Imgui
@@ -262,36 +255,10 @@ void Player::ImGuiDraw() {
 	ImGui::Text("LeftL:%d", m_LeftLimit);
 	ImGui::Text("RightL:%d", m_RightLimit);
 	ImGui::End();
+
+	PlayerSword::GetInstance()->ImGuiDraw();
 }
-//剣の更新
-void Player::SwordUpdate() {
-	XMVECTOR l_VectorSwordPos;
-	//行列を求める
-	l_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
-	l_VectorSwordPos.m128_f32[1] = m_HandMat.r[3].m128_f32[1];
-	l_VectorSwordPos.m128_f32[2] = m_HandMat.r[3].m128_f32[2];
-	//変換
-	m_SwordPos.x = l_VectorSwordPos.m128_f32[0];
-	m_SwordPos.y = l_VectorSwordPos.m128_f32[1];
-	m_SwordPos.z = l_VectorSwordPos.m128_f32[2];
-	
-	m_SwordMatRot = m_FollowObject->GetMatrot();
-	if (m_SwordEase) {
-		if (m_SwordFrame < m_FrameMax) {
-			m_SwordFrame += 0.1f;
-		}
-		else {
-			m_SwordFrame = 0.0f;
-			m_SwordEase = false;
-			m_SwordType = NoSword;
-		}
-		m_SwordColor.w = Ease(In, Cubic, m_SwordFrame, m_SwordColor.w, m_SwordAfterAlpha);
-	}
-	m_FollowObject->SetRotation(m_SwordRotation);
-	m_FollowObject->SetScale(m_SwordScale);
-	m_FollowObject->SetColor(m_SwordColor);
-	m_FollowObject->FollowUpdate(m_HandMat);
-}
+
 //エフェクトの更新
 void Player::EffectUpdate() {
 	//パーティクル生成
@@ -299,22 +266,12 @@ void Player::EffectUpdate() {
 	DeathBirthParticle();
 	HealParticle();
 
-	//剣のパーティクルの場所を決める
-	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
-			 static_cast<float>(rand() % 1) + 1,
-			0 };
-
 	//エフェクト更新
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
 			neweffect->Update();
 		}
 	}
-	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });
-	for (int i = 0; i < m_SwordParticleNum; i++) {
-		swordparticle->SetParticle(m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
-	}
-	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 }
 //プレイヤーの移動
 void Player::PlayerMove() {
@@ -523,22 +480,18 @@ void Player::PlayerAttack() {
 		if (!m_CollideChest) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Sword.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Attack = true;
+			PlayerSword::GetInstance()->SwordBirth();
 			//攻撃回数によって動きが変わる
 			m_AttackCount++;
 			if (m_AttackCount == 1) {
-				m_SwordRotation = { 32.0f,91.0f,48.0f };
+				PlayerSword::GetInstance()->SetRotation({ 32.0f,91.0f,48.0f });
 				PlayerAnimetion(FirstAttack, 3);
 			}
 			else if(m_AttackCount == 2) {
 				m_AttackCount = 0;
-				m_SwordRotation = { 0.0f,90.0f,60.0f };
+				PlayerSword::GetInstance()->SetRotation({ 0.0f, 90.0f, 60.0f });
 				PlayerAnimetion(SecondAttack, 3);
 			}
-			//剣の処理
-			m_SwordEase = true;
-			m_SwordFrame = 0.0f;
-			m_SwordType = ArgSword;
-			m_SwordAfterAlpha = 1.0f;
 		}
 		else {
 			m_fbxObject->StopAnimation();
@@ -548,15 +501,14 @@ void Player::PlayerAttack() {
 	if (m_Attack) {
 		m_AttackTimer++;
 		if (m_AttackTimer <= 20) {
-			m_SwordParticleNum = 1;
+			PlayerSword::GetInstance()->SetSwordParticleNum(1);
 		}
 		else if(m_AttackTimer >= 21 && m_AttackTimer <= 30) {
-			m_SwordParticleNum = 7;
+			PlayerSword::GetInstance()->SetSwordParticleNum(7);
 		}
 		else {
-			m_SwordParticleNum = 0;
+			PlayerSword::GetInstance()->SetSwordParticleNum(0);
 		}
-		m_SwordParticleCount = 1;
 
 		//攻撃エフェクトの出現
 		if (m_AttackTimer == 20) {
@@ -579,14 +531,7 @@ void Player::PlayerAttack() {
 
 		//一定フレームで攻撃終了
 		if (m_AttackTimer >= 35) {
-			m_SecondTimer = 0;
-			m_AttackTimer = 0;
-			m_Attack = false;
-			m_SwordEase = true;
-			m_SwordFrame = 0.0f;
-			m_SwordType = DeleteSword;
-			m_SwordAfterAlpha = 0.0f;
-			m_SwordParticleCount = 0;
+			ResetAttack();
 		}
 	}
 	else {
@@ -660,8 +605,8 @@ void Player::PlayerDush() {
 //プレイヤーの回転
 void Player::PlayerRolling() {
 	Input* input = Input::GetInstance();
-	//ダッシュ処理
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0)) {
+	//ローリング
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (block->GetHitDown())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Rolling = true;
 			m_SideFrame = 0.0f;
@@ -960,7 +905,7 @@ void Player::InitPlayer(int StageNumber) {
 }
 //ポーズ開いたときはキャラが動かない
 void Player::Pause() {
-	SwordUpdate();
+	PlayerSword::GetInstance()->Update();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
 //エディター時の動き
@@ -983,7 +928,7 @@ void Player::Editor() {
 	}
 	//プレイモードではない
 	m_PlayMode = false;
-	SwordUpdate();
+	PlayerSword::GetInstance()->Update();
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
@@ -1032,11 +977,7 @@ void Player::ResetAttack() {
 	m_SecondTimer = 0;
 	m_AttackTimer = 0;
 	m_Attack = false;
-	m_SwordEase = true;
-	m_SwordFrame = 0.0f;
-	m_SwordType = DeleteSword;
-	m_SwordAfterAlpha = 0.0f;
-	m_SwordParticleNum = 0;
+	PlayerSword::GetInstance()->SwordFinish();
 }
 //アニメーションの共通変数
 void Player::PlayerAnimetion(int Number, int AnimeSpeed) {

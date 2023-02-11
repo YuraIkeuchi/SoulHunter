@@ -4,6 +4,7 @@
 #include <Easing.h>
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+#include "PlayerSword.h"
 //読み込みと初期化
 TutorialText::TutorialText() {
 	//看板
@@ -314,17 +315,19 @@ bool TutorialText::RockCollide() {
 	OBB1.SetParam_Pos(m_blockPosition);
 	OBB1.SetParam_Scl({5.0f,5.0f,10.0f});
 	OBB1.SetParam_Rot(objblock->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 
 	//OBBと向きで判定取る
 	if (player->GetRotation().y == 90.0f) {
-		if (Collision::OBBCollision(OBB1, OBB2) && (player->CheckAttack()) && (player->GetPosition().x < m_blockPosition.x) && (!m_Damage) && (m_AttackCount < 3)) {
+		if (Collision::OBBCollision(OBB1, OBB2) && (player->CheckAttack()) && (player->GetPosition().x < m_blockPosition.x) && (!m_Damage) && (m_AttackCount < 1)) {
 			m_Damage = true;
 			m_DamageTimer = 10;
 			m_AttackCount++;
-			m_Frame[Attack] = 0.0f;
+			for (int i = 0; i < objboard.size(); i++) {
+				m_Frame[i] = 0.0f;
+			}
 			//エフェクトの発生
 			PlayerEffect* newEffect;
 			newEffect = new PlayerEffect();

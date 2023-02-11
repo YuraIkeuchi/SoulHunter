@@ -423,6 +423,9 @@
     <ClCompile Include="SourceCode\gamesystem\ui\JumpPause.cpp">
       <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerSword.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\JumpPause.h">
       <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSword.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
