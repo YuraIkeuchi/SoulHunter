@@ -3,6 +3,7 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+#include "PlayerSword.h"
 bool InterEnemy::Initialize() {
 
 	return true;
@@ -20,9 +21,9 @@ bool InterEnemy::Collision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 	
 	//OBB‚ÆŒü‚«‚Å”»’èŽæ‚é
 	if (player->GetRotation().y == 90.0f) {

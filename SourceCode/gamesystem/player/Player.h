@@ -1,7 +1,7 @@
 #pragma once
 #include "Block.h"
 #include "DirectXCommon.h"
-#include "SwordParticle.h"
+
 #include "ObjCommon.h"
 #include "Shake.h"
 #include "PlayerEffect.h"
@@ -34,8 +34,7 @@ public:
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon) override;
 	void ImGuiDraw();
-	//剣の更新
-	void SwordUpdate();
+
 	//エフェクトの更新
 	void EffectUpdate();
 	//プレイヤーの挙動
@@ -129,10 +128,6 @@ public:
 	bool GetChangeInterVal() { return  m_ChangeInterVal; }
 	bool GetReadText() { return  m_ReadText; }
 
-	const XMFLOAT3& GetSwordScale() { return  m_SwordScale; }
-	const XMFLOAT3& GetSwordPosition() { return  m_SwordPos; }
-	XMMATRIX GetSwordMatrot() { return m_SwordMatRot; }
-
 	void SetHP(int HP) { this->m_HP = HP; }
 	void SetSoulCount(float SoulCount) { this->m_SoulCount = SoulCount; }
 	void SetInterval(int Interval) { this->m_Interval = Interval; }
@@ -147,8 +142,7 @@ private:
 	
 private:
 	vector<PlayerEffect*> effects;
-	//パーティクル
-	unique_ptr<SwordParticle> swordparticle = nullptr;
+
 	//クラス
 	unique_ptr<Block> block = nullptr;
 	
@@ -210,9 +204,7 @@ private:
 	int m_FootParticleCount = 0;
 	//普通のパーティクル
 	int m_DeathParticleCount = 0;
-	//剣のパーティクル
-	int m_SwordParticleCount = 0;
-	XMFLOAT3 m_SwordParticlePos = { 0.0f,0.0f,0.0f };
+
 	//ゴールしたときの変数
 	bool m_ChangeInterVal = false;
 	int m_GoalIntervalTimer = 0;
@@ -250,21 +242,6 @@ private:
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//手行列
 	XMMATRIX m_HandMat;
-	XMFLOAT3 m_SwordPos;//剣の座標
-	XMFLOAT3 m_SwordRotation = { 32.0f,91.0f,48.0f };
-	XMFLOAT3 m_SwordScale = { 4.5f,4.5f,4.5f };
-	XMFLOAT4 m_SwordColor = { 1.0f,1.0f,0.0f,0.0f };
-	float m_SwordFrame = 0.0f;
-	bool m_SwordEase = false;
-	int m_SwordType = 0;
-	int m_SwordParticleNum = 0;
-	float m_SwordAfterAlpha = 0.0f;
-	XMMATRIX m_SwordMatRot;
-	enum SwordType {
-		NoSword,
-		ArgSword,
-		DeleteSword,
-	};
 
 	//死んだ動き
 	bool m_Death = false;

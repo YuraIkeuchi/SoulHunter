@@ -310,6 +310,7 @@
     <ClCompile Include="SourceCode\gamesystem\player\PlayerBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSkill.cpp" />
     <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\player\PlayerSword.cpp" />
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\BossSceneChange.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scenechange\MapChange.cpp" />
@@ -441,6 +442,7 @@
     <ClInclude Include="SourceCode\gamesystem\player\PlayerBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h" />
     <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h" />
+    <ClInclude Include="SourceCode\gamesystem\player\PlayerSword.h" />
     <ClInclude Include="SourceCode\gamesystem\save\Save.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\BossSceneChange.h" />
     <ClInclude Include="SourceCode\gamesystem\scenechange\MapChange.h" />

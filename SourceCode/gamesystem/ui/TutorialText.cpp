@@ -4,6 +4,7 @@
 #include <Easing.h>
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+#include "PlayerSword.h"
 //“Ç‚Ýž‚Ý‚Æ‰Šú‰»
 TutorialText::TutorialText() {
 	//ŠÅ”Â
@@ -314,9 +315,9 @@ bool TutorialText::RockCollide() {
 	OBB1.SetParam_Pos(m_blockPosition);
 	OBB1.SetParam_Scl({5.0f,5.0f,10.0f});
 	OBB1.SetParam_Rot(objblock->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 
 	//OBB‚ÆŒü‚«‚Å”»’èŽæ‚é
 	if (player->GetRotation().y == 90.0f) {

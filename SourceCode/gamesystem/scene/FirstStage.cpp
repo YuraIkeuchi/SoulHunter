@@ -190,7 +190,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		//FPSManager::GetInstance()->ImGuiDraw();
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		//enemymanager->ImGuiDraw();
 		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();

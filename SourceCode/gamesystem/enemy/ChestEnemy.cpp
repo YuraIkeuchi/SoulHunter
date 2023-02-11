@@ -5,6 +5,7 @@
 #include "Input.h"
 #include <Easing.h>
 #include "VariableCommon.h"
+#include "PlayerSword.h"
 using namespace DirectX;
 
 ChestEnemy::ChestEnemy() {
@@ -113,9 +114,9 @@ bool ChestEnemy::ChestCollision() {
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
-	OBB2.SetParam_Pos(player->GetSwordPosition());
-	OBB2.SetParam_Scl(player->GetSwordScale());
-	OBB2.SetParam_Rot(player->GetSwordMatrot());
+	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
+	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
+	OBB2.SetParam_Rot(PlayerSword::GetInstance()->GetSwordMatrot());
 
 	if (m_MoveNumber == IntervalChest && m_HP > 0) {
 		//OBB‚ÆŒü‚«‚Å”»’èŽæ‚é
