@@ -70,7 +70,7 @@ void EnemyEdit::ChestEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* p
 	newChestEnemy->Initialize();
 	newChestEnemy->SetPlayer(player);
 	newChestEnemy->SetBlock(block);
-	newChestEnemy->SetPosition({ player->GetPosition().x,player->GetPosition().y,5.0f });
-	newChestEnemy->SetStartPos({ player->GetPosition().x,player->GetPosition().y,5.0f });
+	newChestEnemy->SetPosition({ player->GetPosition().x,player->GetPosition().y,player->GetPosition().z + 5.0f });
+	newChestEnemy->SetStartPos({ player->GetPosition().x,player->GetPosition().y,player->GetPosition().z + 5.0f });
 	enemy.push_back(newChestEnemy);
 }

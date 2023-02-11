@@ -37,7 +37,6 @@ ImGuiEditor::ImGuiEditor() {
 	argobj.reset(argobj_);
 
 }
-
 //XV
 void ImGuiEditor::Update(const XMFLOAT3& pos) {
 	m_Pos = { pos.x,pos.y,pos.z + m_Distance };
@@ -51,7 +50,6 @@ void ImGuiEditor::Update(const XMFLOAT3& pos) {
 	argobj->SetColor({ 1.0f,1.0f,1.0f,0.5f });
 	argobj->Update();
 }
-
 //•`‰æ
 const void ImGuiEditor::ObjDraw() {
 	IKEObject3d::PreDraw();
@@ -71,7 +69,6 @@ const void ImGuiEditor::ObjDraw() {
 		argobj->Draw();
 	}
 }
-
 //“G‚Ì¶¬Imgui
 const void ImGuiEditor::EditorImGuiDraw() {
 	{

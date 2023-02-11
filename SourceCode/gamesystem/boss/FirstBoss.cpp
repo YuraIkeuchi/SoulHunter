@@ -112,8 +112,7 @@ void FirstBoss::App() {
 		if (m_AppTimer == NoMoveLimit) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
-			m_Number = 1;
-			m_AnimeSpeed = 1;
+			m_Number = StopWing;
 			m_fbxObject->PlayAnimation(m_Number);
 			m_Position = { 60.0f,30.0f,10.0f };
 			m_Rotation = { 45.0f,270.0f,0.0f };
@@ -132,8 +131,7 @@ void FirstBoss::App() {
 		if (m_AppTimer == SecondMoveLimit) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
-			m_Number = 0;
-			m_AnimeSpeed = 1;
+			m_Number = MoveWing;
 			m_fbxObject->PlayAnimation(m_Number);
 			m_AfterPos = { 0.0f,25.0f,7.0f };
 			m_AfterRot = { 45.0f,180.0f,0.0f };
@@ -191,8 +189,6 @@ void FirstBoss::Dead() {
 	m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->Update(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 	Fbx_SetParam();
-	//enemyobj->SetScale(m_Scale);
-	//enemyobj->SetRotation(m_rot);
 }
 //ボス終了
 void FirstBoss::End() {
@@ -249,8 +245,7 @@ void FirstBoss::NotAttack() {
 		if (m_AttackCount == 5) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
-			m_Number = 0;
-			m_AnimeSpeed = 1;
+			m_Number = MoveWing;
 			m_fbxObject->PlayAnimation(m_Number);
 		}
 	}
@@ -259,8 +254,7 @@ void FirstBoss::NotAttack() {
 void FirstBoss::BesideAttack() {
 	//アニメーションのためのやつ
 	m_AnimeLoop = true;
-	m_Number = 1;
-	m_AnimeSpeed = 1;
+	m_Number = StopWing;
 	m_fbxObject->PlayAnimation(m_Number);
 	m_ParticlePos = m_Position;
 	//攻撃の動き
@@ -534,8 +528,7 @@ Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 void FirstBoss::SpecialAttack() {
 	//アニメーションのためのやつ
 	m_AnimeLoop = true;
-	m_Number = 1;
-	m_AnimeSpeed = 1;
+	m_Number = StopWing;
 	m_fbxObject->PlayAnimation(m_Number);
 	//攻撃の動き
 	if (m_Pat == 1) {
@@ -609,14 +602,13 @@ void FirstBoss::FireBallArgment() {
 }
 //ボス登場シーンのイージング関数(座標)
 void FirstBoss::AppBossMove(XMFLOAT3 AfterPos, float AddFrame) {
-	if (m_Frame < 1.0f)
+	if (m_Frame < m_FrameMax)
 	{
 		m_Frame += AddFrame;
 	}
 	else {
 		m_AfterPos = AfterPos;
-		//m_AfterTarget = AfterTarget;
-		m_Frame = 1.0f;
+		m_Frame = m_FrameMax;
 	}
 
 	m_Position = {
@@ -627,14 +619,13 @@ Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
 }
 //ボス登場シーンのイージング関数(回転)
 void FirstBoss::AppBossRot(XMFLOAT3 AfterRot, float AddFrame) {
-	if (m_RotFrame  < 1.0f)
+	if (m_RotFrame  < m_FrameMax)
 	{
 		m_RotFrame  += AddFrame;
 	}
 	else {
 		m_AfterRot = AfterRot;
-		//m_AfterTarget = AfterTarget;
-		m_RotFrame = 1.0f;
+		m_RotFrame = m_FrameMax;
 	}
 
 	m_Rotation = {
@@ -645,7 +636,6 @@ Ease(In,Cubic,m_RotFrame,m_Rotation.y,AfterRot.y),
 }
 //バトルのイージング関数
 void FirstBoss::FrameMove(XMFLOAT3 AfterPos, XMFLOAT3 AfterRot, float addframe,int TargetTimer) {
-
 	if (m_Frame < m_FrameMax) {
 		m_Frame += addframe;
 	}
@@ -684,7 +674,7 @@ void FirstBoss::StateManager() {
 		m_AttackCount += 5;
 	}
 }
-
+//ポーズ
 void FirstBoss::Pause() {
 	Fbx_SetParam();
 	m_fbxObject->StopAnimation();

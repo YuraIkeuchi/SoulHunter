@@ -94,4 +94,9 @@ private:
 		FourthMoveLimit = 750,
 		LastLimit = 800
 	};
+
+	enum AnimeTypa {
+		MoveWing,
+		StopWing,
+	};
 };

@@ -547,7 +547,7 @@ void FirstStage::ChangeUpdate() {
 			else if (m_SceneMigration == Title) {
 				m_GameLoop = true;
 				Audio::GetInstance()->StopWave(0);
-				SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
+				SceneManager::GetInstance()->ChangeScene("TITLE");
 			}
 			m_SceneChange = false;
 		}
