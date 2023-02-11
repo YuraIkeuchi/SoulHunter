@@ -25,10 +25,7 @@ FirstBoss::FirstBoss() {
 bool FirstBoss::Initialize() {
 	assert(player);
 	m_Position = { 205.0f, -145.0f,0.0f };
-	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
-	m_HitRadius = 2.2f;
-
 	return true;
 }
 //バトル開始時の初期化
@@ -36,11 +33,8 @@ bool FirstBoss::BattleInitialize() {
 	assert(player);
 	m_Position = { 205.0f, -154.0f,0.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
-	//m_Position = { 5.0f,10.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
 	m_OBBScale = { 3.0f,0.25f,0.5f };
-	m_HitRadius = 2.2f;
-
 	return true;
 }
 //行動
@@ -49,26 +43,22 @@ void FirstBoss::Spec() {
 	if (!m_Active) {
 		//攻撃していない
 		NotAttack();
-		m_HitRadius = 2.2f;
 	}
 	else {
 		//行動開始
-		if (m_Action == 0) {
+		if (m_Action == BesideAttackType) {
 			//横移動
 			BesideAttack();	
-			m_HitRadius = 2.2f;
 		}
-		else if (m_Action == 1) {
+		else if (m_Action == StabbingAttackType) {
 			//突き刺してくる攻撃
 			StabbingAttack();
-			m_HitRadius = 2.2f;
 		}
-		else if (m_Action == 2) {
+		else if (m_Action == FireAttackType) {
 			//炎の攻撃
 			FireAttack();
-			m_HitRadius = 2.2f;
 		}
-		else if (m_Action == 3) {
+		else if (m_Action == SpecialAttackType) {
 			//必殺アタック
 			SpecialAttack();
 		}
@@ -93,19 +83,7 @@ void FirstBoss::Spec() {
 }
 //各ボス特有の描画
 void FirstBoss::specialDraw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("Boss");
-	///*ImGui::SliderFloat("PosX", &m_Position.x, 150, 250);
-	//ImGui::SliderFloat("PosY", &m_Position.y, -90, -150);
-	//ImGui::SliderFloat("PosZ", &m_Position.z, 30, -30);
-	//ImGui::SliderFloat("RotX", &m_Rotation.x, 360, -360);
-	//ImGui::SliderFloat("RotY", &m_Rotation.y, 360, -360);
-	//ImGui::SliderFloat("RotZ", &m_Rotation.z, 360, -360);*/
-	//ImGui::Text("HP:%f", m_HP);
-	//ImGui::Text("m_Action:%d", m_Action);
-	//ImGui::Text("m_DamageTimer:%d", m_DamageTimer);
-	//ImGui::Text("m_AttackCount:%d", m_AttackCount);
-	//ImGui::End();
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	if (m_DrawArea) {
 		OutAreatexture->Draw();
 	}
@@ -126,12 +104,12 @@ void FirstBoss::specialDrawEnd() {
 }
 //登場ムービー
 void FirstBoss::App() {
-	if (m_AppTimer < 800) {
+	if (m_AppTimer < LastLimit) {
 		m_AppTimer++;
 	}
 
 	if (m_AppNumber == NoMove) {
-		if (m_AppTimer == 1) {
+		if (m_AppTimer == NoMoveLimit) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
 			m_Number = 1;
@@ -141,7 +119,7 @@ void FirstBoss::App() {
 			m_Rotation = { 45.0f,270.0f,0.0f };
 		}
 
-		if (m_AppTimer ==350) {
+		if (m_AppTimer == FirstMoveLimit) {
 			m_AfterPos = { -60.0f,25.0f,7.0f };
 			m_Frame = 0.0f;
 			m_RotFrame = 0.0f;
@@ -149,8 +127,9 @@ void FirstBoss::App() {
 		}
 	}
 	else if (m_AppNumber == FirstMove) {
-		AppBossMove(m_AfterPos, 0.003f);
-		if (m_AppTimer == 500) {
+		m_AddFrame = 0.003f;
+		AppBossMove(m_AfterPos, m_AddFrame);
+		if (m_AppTimer == SecondMoveLimit) {
 			//アニメーションのためのやつ
 			m_AnimeLoop = true;
 			m_Number = 0;
@@ -164,9 +143,10 @@ void FirstBoss::App() {
 		}
 	}
 	else if (m_AppNumber == SecondMove) {
-		AppBossMove(m_AfterPos,0.003f);
-		AppBossRot(m_AfterRot, 0.003f);
-		if (m_AppTimer == 720) {
+		m_AddFrame = 0.003f;
+		AppBossMove(m_AfterPos,m_AddFrame);
+		AppBossRot(m_AfterRot, m_AddFrame);
+		if (m_AppTimer == ThirdMoveLimit) {
 			m_AfterRot = { -25.0f,180.0f,0.0f };
 			m_Frame = 0.0f;
 			m_RotFrame = 0.0f;
@@ -174,8 +154,9 @@ void FirstBoss::App() {
 		}
 	}
 	else if (m_AppNumber == ThirdMove) {
-		AppBossRot(m_AfterRot, 0.05f);
-		if (m_AppTimer == 750) {
+		m_AddFrame = 0.05f;
+		AppBossRot(m_AfterRot, m_AddFrame);
+		if (m_AppTimer == FourthMoveLimit) {
 			m_AfterRot = { 45.0f,180.0f,0.0f };
 			m_Frame = 0.0f;
 			m_RotFrame = 0.0f;
@@ -183,7 +164,8 @@ void FirstBoss::App() {
 		}
 	}
 	else {
-		AppBossRot(m_AfterRot, 0.1f);
+		m_AddFrame = 0.1f;
+		AppBossRot(m_AfterRot, m_AddFrame);
 	}
 
 	//生きてる時しか更新しない
@@ -195,11 +177,13 @@ void FirstBoss::App() {
 }
 //倒した後の動き
 void FirstBoss::Dead() {
-	m_Rotation.y += 5.0f;
+	float l_SubScale = 0.0001f;
+	float l_AddRot = 5.0f;
+	m_Rotation.y += l_AddRot;
 	if (m_Scale.x > 0.0f) {
-		m_Scale.x -= 0.0001f;
-		m_Scale.y -= 0.0001f;
-		m_Scale.z -= 0.0001f;
+		m_Scale.x -= l_SubScale;
+		m_Scale.y -= l_SubScale;
+		m_Scale.z -= l_SubScale;
 	}
 	else {
 		m_Scale = { 0.0f,0.0f,0.0f };
@@ -221,21 +205,23 @@ void FirstBoss::End() {
 }
 //突き刺してくる攻撃のエリア表示
 void FirstBoss::DrawOutArea() {
+	//加算される色
+	float l_AddColor = 0.1f;
 	if (m_DrawArea) {
-		if (m_OutColor.w < 1.0f) {
-			m_OutColor.w += 0.1f;
+		if (m_OutColor.w < m_ColorMax) {
+			m_OutColor.w += l_AddColor;
 		}
 		else {
-			m_OutColor.w = 1.0f;
+			m_OutColor.w = m_ColorMax;
 		}
 	}
 	else {
-		if (m_OutColor.w > 0.0f) {
-			m_OutColor.w -= 0.1f;
+		if (m_OutColor.w > m_ColorMin) {
+			m_OutColor.w -= l_AddColor;
 		}
 		else {
 			m_DrawArea = false;
-			m_OutColor.w = 0.0f;
+			m_OutColor.w = m_ColorMin;
 		}
 	}
 
@@ -257,7 +243,7 @@ void FirstBoss::NotAttack() {
 	else {
 		//sin波によって上下に動く
 		m_Angle += 1.0f;
-		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		m_Angle2 = m_Angle * (XM_PI / 180.0f);
 		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-154.0f);
 		StateManager();
 		if (m_AttackCount == 5) {

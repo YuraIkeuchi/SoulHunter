@@ -265,7 +265,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackTorch.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\Chest.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\boss\BossName.cpp" />
     <ClCompile Include="SourceCode\gamesystem\boss\FireBall.cpp" />
     <ClCompile Include="SourceCode\gamesystem\boss\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\boss\InterBoss.cpp" />
@@ -397,7 +396,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackBox.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackTorch.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\Chest.h" />
-    <ClInclude Include="SourceCode\gamesystem\boss\BossName.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\FireBall.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\InterBoss.h" />

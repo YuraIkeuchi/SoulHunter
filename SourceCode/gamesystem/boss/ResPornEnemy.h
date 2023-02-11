@@ -40,4 +40,10 @@ private:
 		Wing,
 		Bird,
 	};
+
+	enum LimitTimer {
+		EnemySet = 1200,
+		ParticleBirth = 1250,
+		EnemyBirth = 1350,
+	};
 };

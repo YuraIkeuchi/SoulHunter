@@ -174,9 +174,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\Chest.cpp">
       <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\boss\BossName.cpp">
-      <Filter>SourceCords\gamesystem\boss\Various</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\boss\FirstBoss.cpp">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
     </ClCompile>
@@ -559,9 +556,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\backobj\Chest.h">
       <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\boss\BossName.h">
-      <Filter>SourceCords\gamesystem\boss\Various</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>

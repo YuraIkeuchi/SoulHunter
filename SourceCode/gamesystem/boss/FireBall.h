@@ -39,6 +39,8 @@ public:
 
 	bool Collide(XMFLOAT3 pos);
 
+	void BirthParticle();//パーティクル
+
 public:
 	//gettersetter
 	bool GetAlive() { return  m_Alive; }
@@ -55,7 +57,7 @@ private:
 	XMFLOAT3 m_Position = {0.0f,0.0f,0.0f};
 	XMFLOAT3 m_Rotation = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_Scale = { 0.0f,0.0f,0.0f };
-	XMFLOAT4 m_Color = { 0.0f,0.0f,0.0f,0.0f };
+	XMFLOAT4 m_Color = { 1.0f,0.5f,0.0f,1.0f };
 	//変数
 	XMFLOAT3 m_OldPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT2 m_Radius = { 0.5f,0.5f };

@@ -1,5 +1,6 @@
 #include "BackLight.h"
 #include "ImageManager.h"
+#include "VariableCommon.h"
 //‰Šú‰»
 void BackLight::Initialize() {
 	//”wŒiƒeƒNƒXƒ`ƒƒ
@@ -20,6 +21,6 @@ void BackLight::Update() {
 
 //•`‰æ
 const void BackLight::Draw() {
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	backlightTex->Draw();
 }

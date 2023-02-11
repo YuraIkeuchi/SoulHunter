@@ -258,7 +258,6 @@ void GamePlayer::ImGuiDraw() {
 
 	PlayerSword::GetInstance()->ImGuiDraw();
 }
-
 //エフェクトの更新
 void GamePlayer::EffectUpdate() {
 	//パーティクル生成
