@@ -5,7 +5,7 @@ using namespace std;         //  名前空間指定
 class Enemy :public InterEnemy {
 public:
 	Enemy();
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	bool Initialize() override;//初期化
 	void Finalize() override;//開放
 	void Action()override;//更新

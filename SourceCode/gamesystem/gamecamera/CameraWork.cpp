@@ -96,7 +96,7 @@ void CameraWork::IntroductionCamera() {
 	//注視点の位置
 	//最後は見上げる感じになる
 	if (m_IntroTimer <= 359) {
-		m_targetPos = player->GetPosition();
+		m_targetPos = introplayer->GetPosition();
 	}
 	else {
 		if (m_IntroTimer == 360) {
@@ -259,8 +259,8 @@ void CameraWork::EndCamera() {
 //クリア時のカメラ
 void CameraWork::ClearCamera() {
 	m_ClearTimer++;
-	m_eyePos = { 5.0f,player->GetPosition().y + 5.0f,player->GetPosition().z + 7.0f };
-	m_targetPos = player->GetPosition();
+	m_eyePos = { 5.0f,clearplayer->GetPosition().y + 5.0f,clearplayer->GetPosition().z + 7.0f };
+	m_targetPos = clearplayer->GetPosition();
 }
 //ImGuiの描画
 void CameraWork::ImGuiDraw() {

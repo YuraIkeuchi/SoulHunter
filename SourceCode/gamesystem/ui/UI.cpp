@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "PlayerSkill.h"
 //“Ç‚Ýž‚Ý
-UI::UI(Player* player, InterBoss* boss) {
+UI::UI(GamePlayer* player, InterBoss* boss) {
 
 	this->player.reset(player);
 	this->interboss.reset(boss);

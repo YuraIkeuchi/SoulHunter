@@ -9,7 +9,7 @@
 void EditorScene::Initialize(DirectXCommon* dxCommon)
 {
 	//ŠeƒNƒ‰ƒX‚Ìnew
-	player = new Player();
+	player = new GamePlayer();
 	skillpause = new SkillPause();
 	option = new Option();
 	pause = new Pause();

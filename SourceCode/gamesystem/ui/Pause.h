@@ -3,7 +3,7 @@
 #include "SkillPause.h"
 #include "MiniMap.h"
 #include "Option.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include <array>   
 #include <memory> 
 using namespace std;         //  名前空間指定
@@ -11,7 +11,7 @@ using namespace std;         //  名前空間指定
 class Pause {
 public:
 	Pause();
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	void SetSkillPause(SkillPause* skillpause) { this->skillpause.reset(skillpause); }
 	void SetMiniMap(MiniMap* minimap) { this->minimap.reset(minimap); }
 	void SetOption(Option* option) { this->option.reset(option); }
@@ -44,7 +44,7 @@ private:
 	unique_ptr<SkillPause> skillpause = nullptr;
 	unique_ptr<Option> option = nullptr;
 	unique_ptr<MiniMap> minimap = nullptr;
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	//スプライト
 	unique_ptr<IKESprite> PauseBack;
 	unique_ptr<IKESprite> PauseSprite;

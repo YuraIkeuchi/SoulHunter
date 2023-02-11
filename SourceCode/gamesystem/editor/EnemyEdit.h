@@ -1,6 +1,6 @@
 #pragma once
 #include "InterEnemy.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "Block.h"
 //エネミーのエディタクラス
 class EnemyEdit {
@@ -13,16 +13,16 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public://各敵の生成(引数が多いので後々修正する)
-	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,Player* player,
+	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,GamePlayer* player,
 	Block* block);
-	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player);
-	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
+	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
 		Block* block);
-	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
 		Block* block);
-	void FollowEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+	void FollowEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
 		Block* block);
-	void ChestEnemyArgment(std::vector<InterEnemy*>& enemy, Player* player,
+	void ChestEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
 		Block* block);
 private:
 	

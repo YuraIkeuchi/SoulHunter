@@ -47,12 +47,11 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	scenechange->SetSubStartChange(true);
 	
 	//プレイヤー
-	player = new Player();
-	player->Initialize();
-	player->StateInitialize();
-	
+	introplayer = new IntroPlayer();
+	introplayer->Initialize();
+
 	//プレイヤーが必要
-	camerawork->SetPlayer(player);
+	camerawork->SetIntroPlayer(introplayer);
 	
 	//ライト
 	lightGroup->SetDirLightActive(0, true);
@@ -71,7 +70,7 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->Update();
 	//丸影
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ player->GetPosition().x, player->GetPosition().y, player->GetPosition().z }));
+	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ introplayer->GetPosition().x, introplayer->GetPosition().y, introplayer->GetPosition().z }));
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
@@ -80,7 +79,8 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 	camerawork->Update(camera);
 	camerawork->SetIntroTimer(m_Timer);
 	//プレイヤーの更新
-	player->IntroductionUpdate(m_Timer);
+	introplayer->Update();
+	introplayer->IntroMove(m_Timer);
 
 	if (input->TriggerButton(input->Button_A) && !scenechange->GetSubStartChange()) {
 		scenechange->SetAddStartChange(true);
@@ -143,7 +143,7 @@ void IntroductionScene::ModelDraw(DirectXCommon* dxCommon) {
 	Introductionobj->BackDraw();
 
 	IKEObject3d::PostDraw();
-	player->IntroductionDraw(dxCommon);
+	introplayer->Draw(dxCommon);
 }
 //前面描画
 void IntroductionScene::FrontDraw() {

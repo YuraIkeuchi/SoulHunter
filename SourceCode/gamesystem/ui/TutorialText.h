@@ -1,6 +1,6 @@
 #pragma once
 #include"IKESprite.h"
-#include"Player.h"
+#include"GamePlayer.h"
 #include "IKEObject3d.h"
 #include"IKEModel.h"
 #include <array>
@@ -10,7 +10,7 @@ using namespace std;         //  名前空間指定
 //チュートリアルのクラス(看板)
 class TutorialText {
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	TutorialText();
 	//更新
 	void Update();
@@ -52,7 +52,7 @@ public:
 private:
 	//クラス
 	vector<PlayerEffect*> effects;
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	//OBB
 	OBB OBB1 = {};
 	OBB OBB2 = {};

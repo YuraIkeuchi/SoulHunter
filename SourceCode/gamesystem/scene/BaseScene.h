@@ -145,7 +145,7 @@ public:
 	bool BGMStart = false;
 	//各クラス
 	//プレイヤー
-	Player* player;
+	GamePlayer* player;
 	//ボス
 	InterBoss* firstboss = nullptr;
 	ResPornEnemy* respornenemy = nullptr;

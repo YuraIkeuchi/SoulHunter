@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h"
+#include "GamePlayer.h"
 #include "IKETexture.h"
 #include "BossEffect.h"
 #include "CollisionPrimitive.h"
@@ -17,7 +17,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 
 	//gettersetter
 	bool GetEffect() { return  m_Effect; }
@@ -69,7 +69,7 @@ public:
 protected:
 	//ŠeƒNƒ‰ƒX
 	std::vector<BossEffect*> bosseffects;
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	//OBB
 	OBB OBB1 = {};
 	OBB OBB2 = {};

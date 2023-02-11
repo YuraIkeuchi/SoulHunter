@@ -14,7 +14,7 @@ void FirstStage::PlaySceneInitialize() {
 void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//Å‰‚Énew‚·‚é
-	player = new Player();
+	player = new GamePlayer();
 	skillpause = new SkillPause();
 	option = new Option();
 	pause = new Pause();
@@ -547,7 +547,7 @@ void FirstStage::ChangeUpdate() {
 			else if (m_SceneMigration == Title) {
 				m_GameLoop = true;
 				Audio::GetInstance()->StopWave(0);
-				SceneManager::GetInstance()->ChangeScene("TITLE");
+				SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
 			}
 			m_SceneChange = false;
 		}

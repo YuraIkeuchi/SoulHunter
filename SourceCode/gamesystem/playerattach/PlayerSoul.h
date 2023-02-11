@@ -1,7 +1,7 @@
 #pragma once
 #include "InterEnemy.h"
 #include "IKETexture.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "Block.h"
 #include <memory> 
 using namespace std;         //  名前空間指定
@@ -9,7 +9,7 @@ using namespace std;         //  名前空間指定
 class PlayerSoul {
 public:
 	void SetBlock(Block* block_) { this->block.reset(block_); }
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	PlayerSoul();
 
 	void Initialize();//初期化
@@ -39,7 +39,7 @@ private:
 	//テクスチャ
 	unique_ptr<IKETexture> soultex;
 	//クラス
-	unique_ptr<Player> player = nullptr;//
+	unique_ptr<GamePlayer> player = nullptr;//
 	unique_ptr<Block> block = nullptr;
 	//変数
 	XMFLOAT3 m_Position;//座標

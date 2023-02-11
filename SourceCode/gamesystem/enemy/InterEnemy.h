@@ -1,6 +1,6 @@
 #pragma once
 #include "Block.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "EnemyEffect.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
@@ -19,7 +19,7 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	void SetBlock(Block* block) { this->block.reset(block); }
 
 	/// getter
@@ -53,7 +53,7 @@ public:
 	
 protected:
 	//ƒNƒ‰ƒX
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	

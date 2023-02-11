@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h"
+#include "GamePlayer.h"
 #include "ObjCommon.h"
 #include "DirectXCommon.h"
 #include "ThornParticle.h"
@@ -16,7 +16,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	bool Initialize() override;
 	void Update() override;
 	//‚»‚ê‚¼‚ê‚Ì•ûŒü‚Ì“®‚«
@@ -41,7 +41,7 @@ public:
 private:
 	//ƒNƒ‰ƒX
 	unique_ptr<ThornParticle> thornparticle;
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	XMFLOAT3 m_Afterpos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_HitArea = { 5.0f,20.0f,5.0f };
 	XMFLOAT3 StartPos = {0.0f,0.0f,0.0f};

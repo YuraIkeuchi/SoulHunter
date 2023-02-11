@@ -1,6 +1,6 @@
 #pragma once
 #include "IKESprite.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "CompassPause.h"
 #include "LibraPause.h"
 #include "DushPause.h"
@@ -12,7 +12,7 @@ using namespace std;         //  名前空間指定
 class SkillPause {
 public:
 	SkillPause();
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	void Initialize();//初期化
 	void InitPos();//最初の位置
 	void Update();//更新
@@ -38,7 +38,7 @@ public:
 	void SetChangeColorType(int m_ColorChangeType) { this->m_ColorChangeType = m_ColorChangeType; }
 private:
 	//クラス
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	unique_ptr<CompassPause> compasspause = nullptr;
 	unique_ptr<DushPause> dushpause = nullptr;
 	unique_ptr<LibraPause> librapause = nullptr;

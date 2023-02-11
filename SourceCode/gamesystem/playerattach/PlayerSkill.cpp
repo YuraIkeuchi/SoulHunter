@@ -23,14 +23,4 @@ void PlayerSkill::ResetSkill() {
 }
 
 void PlayerSkill::ImGuiDraw() {
-	/*ImGui::Begin("skill");
-	ImGui::Text("UseLibra:%d", s_UseLibra);
-	ImGui::Text("UseDush:%d", s_UseDush);
-	ImGui::Text("UseHeal:%d", s_UseHeal);
-	ImGui::Text("UseCompass:%d", s_UseCompass);
-	ImGui::Text("GetLibra:%d", s_LibraSkill);
-	ImGui::Text("GetDush:%d", s_DushSkill);
-	ImGui::Text("GetHeal:%d", s_HealSkill);
-	ImGui::Text("GetCompass:%d", s_CompassSkill);
-	ImGui::End();*/
 }

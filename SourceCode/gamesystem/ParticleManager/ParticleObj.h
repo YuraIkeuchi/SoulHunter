@@ -77,7 +77,7 @@ private:
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
 
 	//各パーティクルの数
-	//unique_ptr<Player> player;
+	//unique_ptr<GamePlayer> player;
 	int m_NormalParticleCount = 60;
 	int m_WideParticleCount = 10;
 	int m_ParticleType = 0;

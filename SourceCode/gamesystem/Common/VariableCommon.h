@@ -71,3 +71,20 @@ enum BackObjType {
 	Torch,
 };
 
+//プレイヤーのアニメーション
+enum AnimationType {
+	FirstAttack,
+	SecondAttack,
+	Rolling,
+	Walk,
+	FirstJump,
+	Wait,
+	Death,
+	SecondJump,
+	ThirdJump,
+	FinalJump,
+	Dush,
+	Damage,
+	Fall
+};
+

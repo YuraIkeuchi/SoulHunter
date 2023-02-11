@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "IntroductionObj.h"
+#include "IntroPlayer.h"
 /// タイトルシーン
 class IntroductionScene : public BaseScene {
 public:
@@ -21,6 +22,7 @@ public:
 	//演出
 	void Movie();
 private://メンバ変数
+	IntroPlayer* introplayer = nullptr;
 	//Json読み込みのクラス
 	static IntroductionObj* Introductionobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;
