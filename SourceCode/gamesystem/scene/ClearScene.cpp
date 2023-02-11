@@ -47,16 +47,15 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	scenechange->SetSubStartChange(true);
 
 	//プレイヤー
-	player = new Player();
-	player->Initialize();
-	player->StateInitialize();
+	clearplayer = new ClearPlayer();
+	clearplayer->Initialize();
 	lightGroup->SetPointLightActive(0, false);
 	lightGroup->SetPointLightActive(1, false);
 	//ライト
 	m_LightPos = { 5.0f,5.0f,-80.0f };
 
 	//プレイヤーが必要
-	camerawork->SetPlayer(player);
+	camerawork->SetClearPlayer(clearplayer);
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {
@@ -65,7 +64,7 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->Update();
 	//丸影
 	lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ player->GetPosition().x, player->GetPosition().y, player->GetPosition().z }));
+	lightGroup->SetCircleShadowCasterPos(0, XMFLOAT3({ clearplayer->GetPosition().x, clearplayer->GetPosition().y, clearplayer->GetPosition().z }));
 	lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightGroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
@@ -80,8 +79,8 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 
 	//演出
 	Movie();
-
-	player->ClearUpdate(m_Timer);
+	clearplayer->ClearMove(m_Timer);
+	clearplayer->Update();
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
@@ -135,7 +134,7 @@ void ClearScene::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	clearobj->BackDraw();
 	IKEObject3d::PostDraw();
-	player->ClearDraw(dxCommon);
+	clearplayer->Draw(dxCommon);
 }
 //前面描画
 void ClearScene::FrontDraw() {

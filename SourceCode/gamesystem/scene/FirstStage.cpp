@@ -14,7 +14,7 @@ void FirstStage::PlaySceneInitialize() {
 void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//ç≈èâÇ…newÇ∑ÇÈ
-	player = new Player();
+	player = new GamePlayer();
 	skillpause = new SkillPause();
 	option = new Option();
 	pause = new Pause();

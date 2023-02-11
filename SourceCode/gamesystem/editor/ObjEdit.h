@@ -1,6 +1,6 @@
 #pragma once
 #include "BackObjCommon.h"
-#include "Player.h"
+#include "GamePlayer.h"
 //背景OBJのエディタクラス
 class ObjEdit {
 protected:
@@ -13,8 +13,8 @@ protected:
 
 public:
 	//各OBJの生成(引数が多いので後々修正する)
-	void RockArgment(std::vector<BackObjCommon*>& objs,Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
-	void BoxArgment(std::vector<BackObjCommon*>& objs, Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
-	void TorchArgment(std::vector<BackObjCommon*>& objs, Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
+	void RockArgment(std::vector<BackObjCommon*>& objs,GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
+	void BoxArgment(std::vector<BackObjCommon*>& objs, GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
+	void TorchArgment(std::vector<BackObjCommon*>& objs, GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot);
 private:
 };

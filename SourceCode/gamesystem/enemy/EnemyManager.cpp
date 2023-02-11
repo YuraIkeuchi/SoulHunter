@@ -3,7 +3,7 @@
 EnemyManager::EnemyManager() {
 	enemyedit = new EnemyEdit();
 }
-void EnemyManager::SoulSet(Player* player, Block* block) {
+void EnemyManager::SoulSet(GamePlayer* player, Block* block) {
 	//ç∞
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < Enemy_Max; j++) {
@@ -345,7 +345,7 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 	}
 }
 //CSVÇ©ÇÁílÇì«Ç›çûÇÒÇ≈Ç¢ÇÈ(ìG)
-void EnemyManager::LoadEnemyParam(const int StageNumber, Player* player, Block* block, LightGroup* light) {
+void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Block* block, LightGroup* light) {
 	lightgroup = light;
 	OpenEnemyParam(StageNumber);
 	//ïÅí ÇÃìG
@@ -807,7 +807,7 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
-	ImGui::Begin("Manager");
+	/*ImGui::Begin("Manager");
 	ImGui::Text("NormalNum:%d", m_Enemy_Num);
 	ImGui::Text("ThornNum:%d", m_ThornEnemy_Num);
 	ImGui::Text("BoundNum:%d", m_BoundEnemy_Num);
@@ -818,7 +818,7 @@ void EnemyManager::ImGuiDraw() {
 	EnemyImguiDraw(m_BoundEnemys);
 	EnemyImguiDraw(m_BirdEnemys);
 	EnemyImguiDraw(m_FollowEnemys);
-	EnemyImguiDraw(m_ChestEnemys);
+	EnemyImguiDraw(m_ChestEnemys);*/
 }
 //É}ÉbÉvÇÃï`âÊ
 void EnemyManager::MapDraw(int MapType, XMFLOAT4 MapColor) {
@@ -900,7 +900,7 @@ void EnemyManager::DeleteEnemy() {
 	m_EnemyCount = 0;
 }
 //ê∂ê¨
-void EnemyManager::EnemyBirth(int EnemyType, Player* player, Block* block) {
+void EnemyManager::EnemyBirth(int EnemyType, GamePlayer* player, Block* block) {
 	//ïÅí 
 	if (EnemyType == Normal) {
 		enemyedit->NormalEnemyArgment(m_Enemys, player, block);
@@ -931,7 +931,7 @@ void EnemyManager::EnemyBirth(int EnemyType, Player* player, Block* block) {
 	}
 }
 //ûôê∂ê¨
-void EnemyManager::ThornBirth(bool Argment, Player* player, int Dir) {
+void EnemyManager::ThornBirth(bool Argment, GamePlayer* player, int Dir) {
 	ThornObj* newThornObj;
 	newThornObj = new ThornObj();
 	newThornObj->Initialize();

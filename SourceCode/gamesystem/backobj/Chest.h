@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include"Player.h"
+#include"GamePlayer.h"
 #include "IKESprite.h"
 #include "IKETexture.h"
 #include <array>
@@ -7,7 +7,7 @@ using namespace std;         //  名前空間指定
 //宝箱用のクラス
 class Chest {
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	Chest();
 	void Update();//更新
 	const void Draw();//描画
@@ -43,7 +43,7 @@ public:
 	
 private:
 	//クラス
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	//絶対に必要なOBJ
 	//開いてる宝箱
 	IKEModel* modelOpenChest = nullptr;

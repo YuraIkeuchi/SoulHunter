@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "ClearObj.h"
+#include "ClearPlayer.h"
 /// タイトルシーン
 class ClearScene : public BaseScene {
 public:
@@ -21,6 +22,7 @@ public:
 	//演出
 	void Movie();
 private://メンバ変数
+	ClearPlayer* clearplayer = nullptr;
 	//Json読み込みのクラス
 	static ClearObj* clearobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;

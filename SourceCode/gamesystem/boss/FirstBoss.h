@@ -48,6 +48,7 @@ private:
 	int m_EndTimer = 0;
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
+	float m_AddFrame = 0.0f;
 	enum AppNumber {
 		NoMove,
 		FirstMove,
@@ -74,4 +75,28 @@ private:
 	//•KE‹Z‚Ì•Ï”
 	double speedX = 0.0f;
 	double speedY = 0.0f;
+
+	//UŒ‚‚Ìí—Ş
+	enum AttackType {
+		BesideAttackType,
+		StabbingAttackType,
+		FireAttackType,
+		SpecialAttackType
+	};
+
+	//“oêƒV[ƒ“‚ÌƒŠƒ~ƒbƒgŠÇ—
+	enum  AppLimitTimer
+	{
+		NoMoveLimit = 1,
+		FirstMoveLimit = 350,
+		SecondMoveLimit = 500,
+		ThirdMoveLimit = 720,
+		FourthMoveLimit = 750,
+		LastLimit = 800
+	};
+
+	enum AnimeTypa {
+		MoveWing,
+		StopWing,
+	};
 };

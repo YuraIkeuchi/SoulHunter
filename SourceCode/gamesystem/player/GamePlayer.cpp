@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "GamePlayer.h"
 #include "Input.h"
 #include "ModelManager.h"
 #include "ParticleManager.h"
@@ -11,11 +11,11 @@
 #include <Easing.h>
 using namespace DirectX;
 //読み込み
-Player::Player() {
+GamePlayer::GamePlayer() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::PlayerFBX);
 }
 //初期化
-bool Player::Initialize()
+bool GamePlayer::Initialize()
 {
 
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
@@ -32,7 +32,7 @@ bool Player::Initialize()
 	return true;
 }
 //csvを開く
-void Player::OpenCsv() {
+void GamePlayer::OpenCsv() {
 	m_PlayerFile.open("Resources/player_state/Player_State.csv");
 
 	m_PlayerPopcom << m_PlayerFile.rdbuf();
@@ -40,7 +40,7 @@ void Player::OpenCsv() {
 	m_PlayerFile.close();
 }
 //CSVのロード
-void Player::LoadCsv() {
+void GamePlayer::LoadCsv() {
 
 	while (getline(m_PlayerPopcom,m_PlayerLine)) {
 		//解析しやすくする
@@ -148,14 +148,14 @@ void Player::LoadCsv() {
 	}
 }
 //変数の初期化(必要な物のみ)
-void Player::StateInitialize() {
+void GamePlayer::StateInitialize() {
 	//CSVを開く
 	OpenCsv();
 	//CSVから値読み込み
 	LoadCsv();
 }
 //更新
-void Player::Update()
+void GamePlayer::Update()
 {
 	//手のボーン取得
 	m_HandMat = m_fbxObject->GetWorldMat();
@@ -224,7 +224,7 @@ void Player::Update()
 	PlayerSword::GetInstance()->Update();
 }
 //描画
-void Player::Draw(DirectXCommon* dxCommon) {	
+void GamePlayer::Draw(DirectXCommon* dxCommon) {	
 	//エフェクトの描画
 	for (PlayerEffect* neweffect : effects) {
 		if (neweffect != nullptr) {
@@ -246,7 +246,7 @@ void Player::Draw(DirectXCommon* dxCommon) {
 	}
 }
 //Imgui
-void Player::ImGuiDraw() {
+void GamePlayer::ImGuiDraw() {
 	ImGui::Begin("player");
 	ImGui::Text("m_LimitPosX:%f", m_LimitPos.x);
 	ImGui::Text("m_PosX:%f", m_Position.x);
@@ -258,9 +258,8 @@ void Player::ImGuiDraw() {
 
 	PlayerSword::GetInstance()->ImGuiDraw();
 }
-
 //エフェクトの更新
-void Player::EffectUpdate() {
+void GamePlayer::EffectUpdate() {
 	//パーティクル生成
 	BirthParticle();
 	DeathBirthParticle();
@@ -274,7 +273,7 @@ void Player::EffectUpdate() {
 	}
 }
 //プレイヤーの移動
-void Player::PlayerMove() {
+void GamePlayer::PlayerMove() {
 	Input* input = Input::GetInstance();
 	//チュートリアル時移動距離に限界がある
 	if (!m_TutorialFinish && m_Position.x >= 73.0f) {
@@ -357,7 +356,7 @@ void Player::PlayerMove() {
 
 }
 //歩きアニメーション
-void Player::WalkAnimation() {
+void GamePlayer::WalkAnimation() {
 	Input* input = Input::GetInstance();
 	//歩きモーション
 	if (input->LeftTiltStick(input->Right) || input->LeftTiltStick(input->Left) && (m_HealType == NoHeal) && (m_AddPower == 0.0f)) {
@@ -388,7 +387,7 @@ void Player::WalkAnimation() {
 	}
 }
 //移動の共通処理
-void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
+void GamePlayer::MoveCommon(float Velocity, int Dir, float RotationY) {
 	m_Velocity = Velocity;
 	m_PlayerDir = Dir;
 	m_Rotation.y = RotationY;
@@ -397,7 +396,7 @@ void Player::MoveCommon(float Velocity, int Dir, float RotationY) {
 	}
 }
 //プレイヤーのジャンプ
-void Player::PlayerJump() {
+void GamePlayer::PlayerJump() {
 	Input* input = Input::GetInstance();
 	//プレイヤージャンプ処理
 	if (input->TriggerButton(input->Button_B) && (m_JumpCount < 3) && (m_AddPower <= 0.3f)
@@ -434,7 +433,7 @@ void Player::PlayerJump() {
 	//エフェクトの発生
 }
 //プレイヤーの落下
-void Player::PlayerFall() {
+void GamePlayer::PlayerFall() {
 	if (m_HP != 0) {
 		m_Gravity = 0.02f;
 	}
@@ -473,7 +472,7 @@ void Player::PlayerFall() {
 	}
 }
 //プレイヤーの攻撃
-void Player::PlayerAttack() {
+void GamePlayer::PlayerAttack() {
 	Input* input = Input::GetInstance();
 	//攻撃
 	if (input->TriggerButton(input->Button_A) && !m_Attack && (m_HealType == NoHeal)) {
@@ -546,7 +545,7 @@ void Player::PlayerAttack() {
 	}
 }
 //攻撃判定を取るか
-bool Player::CheckAttack() {
+bool GamePlayer::CheckAttack() {
 	//攻撃モーションによって判定取るフレームが違う
 	if (m_AttackCount == 1) {
 		if ((m_Attack) && (m_AttackTimer >= 21 && m_AttackTimer <= 30)) {
@@ -567,7 +566,7 @@ bool Player::CheckAttack() {
 	return false;
 }
 //プレイヤーのダッシュ
-void Player::PlayerDush() {
+void GamePlayer::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
 	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill())) {
@@ -603,7 +602,7 @@ void Player::PlayerDush() {
 	}
 }
 //プレイヤーの回転
-void Player::PlayerRolling() {
+void GamePlayer::PlayerRolling() {
 	Input* input = Input::GetInstance();
 	//ローリング
 	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (block->GetHitDown())) {
@@ -636,7 +635,7 @@ void Player::PlayerRolling() {
 	}
 }
 //プレイヤーのHP回復
-void Player::PlayerHeal() {
+void GamePlayer::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
@@ -668,7 +667,7 @@ void Player::PlayerHeal() {
 	}
 }
 //ダメージを食らう
-void Player::PlayerDamage() {
+void GamePlayer::PlayerDamage() {
 	//ダメージ時の跳ね返り
 	if (m_HitDir == HitRight) {
 		if (m_BoundPower > 0.0f) {
@@ -755,7 +754,7 @@ void Player::PlayerDamage() {
 	}
 }
 //ゴール後の動き
-void Player::GoalMove() {
+void GamePlayer::GoalMove() {
 	if (m_GoalDir == RightGoal) {
 		m_Position.x += 0.3f;
 	}
@@ -764,7 +763,7 @@ void Player::GoalMove() {
 	}
 }
 //ゴールの動き
-bool Player::DeathMove() {
+bool GamePlayer::DeathMove() {
 	if (m_Death) {
 		block->SetThornDir(NoHit);
 		block->SetThornHit(false);
@@ -826,11 +825,11 @@ bool Player::DeathMove() {
 	return false;
 }
 //解放
-void Player::Finalize()
+void GamePlayer::Finalize()
 {
 }
 //各マップごとの位置初期化
-void Player::InitPlayer(int StageNumber) {
+void GamePlayer::InitPlayer(int StageNumber) {
 	m_AddPower = 0.0f;
 	m_FlashCount = 0;
 	m_Interval = 0;
@@ -904,12 +903,12 @@ void Player::InitPlayer(int StageNumber) {
 	}
 }
 //ポーズ開いたときはキャラが動かない
-void Player::Pause() {
+void GamePlayer::Pause() {
 	PlayerSword::GetInstance()->Update();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
 //エディター時の動き
-void Player::Editor() {
+void GamePlayer::Editor() {
 	m_TutorialFinish = true;
 	Input* input = Input::GetInstance();
 	if (input->LeftTiltStick(input->Right)) {
@@ -933,7 +932,7 @@ void Player::Editor() {
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
 }
 //パーティクルが出てくる
-void Player::BirthParticle() {
+void GamePlayer::BirthParticle() {
 	XMFLOAT4 s_color = { 0.8f,0.8f,0.8f,0.3f };
 	XMFLOAT4 e_color = { 0.8f,0.8f,0.8f,0.3f };
 	float s_scale = 1.0f;
@@ -946,7 +945,7 @@ void Player::BirthParticle() {
 	}
 }
 //死んだ時のパーティクル
-void Player::DeathBirthParticle() {
+void GamePlayer::DeathBirthParticle() {
 	XMFLOAT4 s_color = { 1.0f,0.9f,0.8f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,0.9f,0.8f,1.0f };
 	float s_scale = 1.0f;
@@ -960,7 +959,7 @@ void Player::DeathBirthParticle() {
 	}
 }
 //回復パーティクル
-void Player::HealParticle() {
+void GamePlayer::HealParticle() {
 	XMFLOAT4 s_color = { 0.5f,1.0f,0.1f,0.5f };
 	XMFLOAT4 e_color = { 0.5f,1.0f,0.1f,0.5f };
 	float s_scale = 2.0f;
@@ -972,7 +971,7 @@ void Player::HealParticle() {
 	}
 }
 //攻撃リセット
-void Player::ResetAttack() {
+void GamePlayer::ResetAttack() {
 	//攻撃もリセットされる
 	m_SecondTimer = 0;
 	m_AttackTimer = 0;
@@ -980,7 +979,7 @@ void Player::ResetAttack() {
 	PlayerSword::GetInstance()->SwordFinish();
 }
 //アニメーションの共通変数
-void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
+void GamePlayer::PlayerAnimetion(int Number, int AnimeSpeed) {
 	m_AnimationType = Number;
 	m_AnimeLoop = false;
 	m_AnimationTimer.MoveAnimation = 0;
@@ -989,7 +988,7 @@ void Player::PlayerAnimetion(int Number, int AnimeSpeed) {
 	m_fbxObject->PlayAnimation(m_AnimationType);
 }
 //生き返った時の位置
-void Player::ResPornPlayer() {
+void GamePlayer::ResPornPlayer() {
 	//直前までの位置を保存する
 	if (m_AddPower == 0.0f && !block->GetThornHit() && block->GetHitDown()) {
 		m_SaveTimer++;
@@ -1013,7 +1012,7 @@ void Player::ResPornPlayer() {
 	}
 }
 //ロードしたときの初期化
-void Player::LoadPlayer(const XMFLOAT3& StartPos) {
+void GamePlayer::LoadPlayer(const XMFLOAT3& StartPos) {
 	m_Position = StartPos;
 	m_fbxObject->SetPosition(m_Position);
 	m_TutorialFinish = true;
@@ -1021,7 +1020,7 @@ void Player::LoadPlayer(const XMFLOAT3& StartPos) {
 	block->SetThornHit(false);
 }
 //プレイヤーが敵にあたった瞬間の判定
-void Player::PlayerHit(const XMFLOAT3& pos) {
+void GamePlayer::PlayerHit(const XMFLOAT3& pos) {
 	PlayerAnimetion(Damage, 3);
 	m_HP -= 1;
 	m_Interval = 100;
@@ -1044,7 +1043,7 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	BirthEffect("Damege", m_Position, m_PlayerDir);
 }
 //プレイヤーが敵にあたった瞬間の判定
-void Player::PlayerThornHit(const XMFLOAT3& pos) {
+void GamePlayer::PlayerThornHit(const XMFLOAT3& pos) {
 	if (m_Position.x > pos.x) {
 		m_BoundPower = 1.0f;
 		m_HitDir = HitRight;//右側に弾かれる
@@ -1055,48 +1054,15 @@ void Player::PlayerThornHit(const XMFLOAT3& pos) {
 	}
 }
 //エフェクト生成
-void Player::BirthEffect(const std::string& newname, XMFLOAT3 pos, int dir) {
+void GamePlayer::BirthEffect(const std::string& newname, XMFLOAT3 pos, int dir) {
 	PlayerEffect* newEffect;
 	newEffect = new PlayerEffect();
 	newEffect->CreateEffect(newname, pos, dir);
 	newEffect->Initialize();
 	effects.push_back(newEffect);
 }
-//導入シーンの更新
-void Player::IntroductionUpdate(int Timer) {
-	//フレーム数で動きが決まる
-	if (Timer == 1) {
-		m_Position = { 0.0f,2.2f,30.0f };
-		m_Rotation = { 0.0f,180.0f,0.0f };
-	}
-
-	//一定時間立ったら前にすすむ
-	if (Timer >= 100) {
-		m_Position.z -= 0.3f;
-	}
-
-	m_AnimationTimer.MoveAnimation++;
-	
-	if (m_AnimationTimer.MoveAnimation == 1) {
-		//アニメーションのためのやつ
-		m_AnimeLoop = true;
-		m_AnimationType = Walk;
-		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_AnimationType);
-	}
-
-	//剣の更新
-	Fbx_SetParam();
-	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
-}
-//導入シーンの描画
-void Player::IntroductionDraw(DirectXCommon* dxCommon) {
-	//FollowObj_Draw();
-	Fbx_Draw(dxCommon);
-	//FollowObj_Draw();
-}
 //ボス登場シーンの更新
-void Player::BossAppUpdate(int Timer) {
+void GamePlayer::BossAppUpdate(int Timer) {
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 1;
 	m_AnimationType = Wait;
@@ -1105,11 +1071,11 @@ void Player::BossAppUpdate(int Timer) {
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
-void Player::BossAppDraw(DirectXCommon* dxCommon) {
+void GamePlayer::BossAppDraw(DirectXCommon* dxCommon) {
 	Fbx_Draw(dxCommon);
 }
 //ボス終了シーンの更新
-void Player::BossEndUpdate(int Timer) {
+void GamePlayer::BossEndUpdate(int Timer) {
 	m_AnimeLoop = true;
 	m_AnimeSpeed = 1;
 	m_AnimationType = Wait;
@@ -1118,30 +1084,6 @@ void Player::BossEndUpdate(int Timer) {
 	m_fbxObject->SetRotation({ 0.0f,0.0f,0.0f });
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
-void Player::BossEndDraw(DirectXCommon* dxCommon) {
-	Fbx_Draw(dxCommon);
-}
-//クリアシーンの更新
-void Player::ClearUpdate(int Timer) {
-	//フレーム数で動きが決まる
-	if (Timer == 1) {
-		m_Position = { 0.0f,5.0f,-250.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
-	}
-	m_Position.z += 0.3f;
-	m_AnimationTimer.MoveAnimation++;
-
-	if (m_AnimationTimer.MoveAnimation == 1) {
-		//アニメーションのためのやつ
-		m_AnimeLoop = true;
-		m_AnimationType = Walk;
-		m_AnimeSpeed = 1;
-		m_fbxObject->PlayAnimation(m_AnimationType);
-	}
-	Fbx_SetParam();
-	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
-}
-//導入シーンの描画
-void Player::ClearDraw(DirectXCommon* dxCommon) {
+void GamePlayer::BossEndDraw(DirectXCommon* dxCommon) {
 	Fbx_Draw(dxCommon);
 }

@@ -106,7 +106,7 @@ void BackObjManager::SaveObjParam(const int StageNumber) {
 	}
 }
 //CSVÇ©ÇÁílÇì«Ç›çûÇÒÇ≈Ç¢ÇÈ(Obj)
-void BackObjManager::LoadObjParam(const int StageNumber, Player* player,LightGroup* light) {
+void BackObjManager::LoadObjParam(const int StageNumber, GamePlayer* player,LightGroup* light) {
 	lightgroup = light;
 	OpenObjParam(StageNumber);
 	//îwåiObj
@@ -446,7 +446,7 @@ void BackObjManager::BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon
 	}
 }
 //îwåiOBJÇÃê›íu
-void BackObjManager::ObjBirth(int Type, Player* player, XMFLOAT3 pos, XMFLOAT3 rot) {
+void BackObjManager::ObjBirth(int Type, GamePlayer* player, XMFLOAT3 pos, XMFLOAT3 rot) {
 	//íå
 	if (Type == Rock) {
 		m_BackObjCount++;

@@ -1,5 +1,7 @@
 #pragma once
-#include "Player.h"
+#include "GamePlayer.h"
+#include "IntroPlayer.h"
+#include "ClearPlayer.h"
 #include "InterBoss.h"
 #include "DebugCamera.h"
 #include "BossEndParticle.h"
@@ -31,7 +33,9 @@ public:
 	void ClearCamera();//普通のカメラ(プレイヤーに追従)
 	void ImGuiDraw();//ImGui
 	void EndDraw();//
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
+	void SetIntroPlayer(IntroPlayer* introplayer) { this->introplayer.reset(introplayer); }
+	void SetClearPlayer(ClearPlayer* clearplayer) { this->clearplayer.reset(clearplayer); }
 	void SetInterBoss(InterBoss* interboss) { this->interboss.reset(interboss); }
 public:
 	//getter setter
@@ -41,7 +45,9 @@ public:
 
 private:
 	//クラス
-	unique_ptr<Player> player;
+	unique_ptr<GamePlayer> player;
+	unique_ptr<IntroPlayer> introplayer;
+	unique_ptr<ClearPlayer> clearplayer;
 	unique_ptr<InterBoss> interboss;
 	unique_ptr<BossEndParticle> endparticle;
 	unique_ptr<Shake> shake = nullptr;

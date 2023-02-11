@@ -174,9 +174,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\Chest.cpp">
       <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\boss\BossName.cpp">
-      <Filter>SourceCords\gamesystem\boss\Various</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\boss\FirstBoss.cpp">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
     </ClCompile>
@@ -257,18 +254,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\save\Save.cpp">
       <Filter>SourceCords\gamesystem\save</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\Player.cpp">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerBullet.cpp">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerSkill.cpp">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerSoul.cpp">
-      <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
@@ -423,7 +408,22 @@
     <ClCompile Include="SourceCode\gamesystem\ui\JumpPause.cpp">
       <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\player\PlayerSword.cpp">
+    <ClCompile Include="SourceCode\gamesystem\playerattach\PlayerSkill.cpp">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\playerattach\PlayerSoul.cpp">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\playerattach\PlayerSword.cpp">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\ClearPlayer.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\IntroPlayer.cpp">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\player\GamePlayer.cpp">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -557,9 +557,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\Chest.h">
       <Filter>SourceCords\gamesystem\backobj\Chest</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\boss\BossName.h">
-      <Filter>SourceCords\gamesystem\boss\Various</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h">
       <Filter>SourceCords\gamesystem\boss\Various</Filter>
     </ClInclude>
@@ -637,15 +634,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\save\Save.h">
       <Filter>SourceCords\gamesystem\save</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\Player.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerBullet.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerSkill.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
@@ -779,9 +767,6 @@
     <ClInclude Include="SourceCode\gamesystem\effect\WallAttackEffect.h">
       <Filter>SourceCords\gamesystem\effect\Other</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerSoul.h">
-      <Filter>SourceCords\gamesystem\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\PlayerDamageEffect.h">
       <Filter>SourceCords\gamesystem\effect\Player</Filter>
     </ClInclude>
@@ -815,7 +800,22 @@
     <ClInclude Include="SourceCode\gamesystem\ui\JumpPause.h">
       <Filter>SourceCords\gamesystem\ui\Pause\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\player\PlayerSword.h">
+    <ClInclude Include="SourceCode\gamesystem\playerattach\PlayerSkill.h">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\playerattach\PlayerSoul.h">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\playerattach\PlayerSword.h">
+      <Filter>SourceCords\gamesystem\playerattach</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\ClearPlayer.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\IntroPlayer.h">
+      <Filter>SourceCords\gamesystem\player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\player\GamePlayer.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1031,6 +1031,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\scenechange">
       <UniqueIdentifier>{6b1cdae9-8eae-43b6-9011-3cc929ef6cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\playerattach">
+      <UniqueIdentifier>{2d362957-3a59-4009-82ae-f2ab09c29257}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

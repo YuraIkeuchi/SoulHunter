@@ -1,19 +1,18 @@
 #pragma once
 #include "Block.h"
 #include "DirectXCommon.h"
-
 #include "ObjCommon.h"
 #include "Shake.h"
 #include "PlayerEffect.h"
 #include <memory>
 using namespace std;         //  名前空間指定
 
-class Player :
+class GamePlayer :
 	public ObjCommon
 {
 public:
 	void SetBlock(Block* block) { this->block.reset(block); }
-	Player();
+	GamePlayer();
 
 public:
 
@@ -104,19 +103,12 @@ public:
 	//csvのロード
 	void LoadCsv();
 	
-	//導入シーンのための処理
-	void IntroductionUpdate(int Timer);
-	void IntroductionDraw(DirectXCommon* dxCommon);
-
 	//ボス登場シーンのための処理
 	void BossAppUpdate(int Timer);
 	void BossAppDraw(DirectXCommon* dxCommon);
 	//ボス終了シーンのための処理
 	void BossEndUpdate(int Timer);
 	void BossEndDraw(DirectXCommon* dxCommon);
-	//クリアシーンのための処理
-	void ClearUpdate(int Timer);
-	void ClearDraw(DirectXCommon* dxCommon);
 public:
 	//getter setter
 	bool GetAlive() { return  m_Alive; }
@@ -257,22 +249,7 @@ private:
 	};
 
 	AnimationTimer m_AnimationTimer;
-	//プレイヤーのアニメーション
-	enum AnimationType {
-		FirstAttack,
-		SecondAttack,
-		Rolling,
-		Walk,
-		FirstJump,
-		Wait,
-		Death,
-		SecondJump,
-		ThirdJump,
-		FinalJump,
-		Dush,
-		Damage,
-		Fall
-	};
+	
 
 	//csv用変数
 	std::ifstream m_PlayerFile;

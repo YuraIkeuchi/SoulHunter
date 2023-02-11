@@ -4,7 +4,7 @@
 #include "BackTorch.h"
 
 //íåÇÃê∂ê¨
-void ObjEdit::RockArgment(std::vector<BackObjCommon*>& objs,Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot){
+void ObjEdit::RockArgment(std::vector<BackObjCommon*>& objs,GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot){
 	BackObjCommon* newPiller;
 	newPiller = new BackRock();
 	newPiller->Initialize();
@@ -15,7 +15,7 @@ void ObjEdit::RockArgment(std::vector<BackObjCommon*>& objs,Player* player, cons
 }
 
 //ä‚ÇÃê∂ê¨
-void ObjEdit::BoxArgment(std::vector<BackObjCommon*>& objs, Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot) {
+void ObjEdit::BoxArgment(std::vector<BackObjCommon*>& objs, GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot) {
 	BackObjCommon* newBox;
 	newBox = new BackBox();
 	newBox->Initialize();
@@ -26,7 +26,7 @@ void ObjEdit::BoxArgment(std::vector<BackObjCommon*>& objs, Player* player, cons
 }
 
 //ä‚ÇÃê∂ê¨
-void ObjEdit::TorchArgment(std::vector<BackObjCommon*>& objs, Player* player, const XMFLOAT3& pos, const XMFLOAT3& rot) {
+void ObjEdit::TorchArgment(std::vector<BackObjCommon*>& objs, GamePlayer* player, const XMFLOAT3& pos, const XMFLOAT3& rot) {
 	BackObjCommon* newTorch;
 	newTorch = new BackTorch();
 	newTorch->Initialize();

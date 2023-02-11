@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Player.h"
+#include "GamePlayer.h"
 #include "ObjCommon.h"
 
 //”wŒi‚É’u‚­
@@ -15,10 +15,10 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 protected:
 	//ƒNƒ‰ƒX
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	
 	enum ObjType {
 		Piller,

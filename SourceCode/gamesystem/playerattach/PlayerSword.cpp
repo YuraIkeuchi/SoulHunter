@@ -40,14 +40,14 @@ void PlayerSword::Draw(DirectXCommon* dxCommon) {
 }
 //Imguiï`âÊ
 void PlayerSword::ImGuiDraw() {
-	ImGui::Begin("playersword");
+	/*ImGui::Begin("playersword");
 	ImGui::Text("m_Color:%f", m_Color.w);
 	ImGui::Text("m_PosX:%f", m_Position.x);
 	ImGui::Text("m_PosY:%f", m_Position.y);
 	ImGui::Text("m_RotX:%f", m_Rotation.x);
 	ImGui::Text("m_RotY:%f", m_Rotation.y);
 	ImGui::Text("m_Ease:%d", m_SwordEase);
-	ImGui::End();
+	ImGui::End();*/
 }
 
 //åïÇÃçXêV

@@ -7,7 +7,7 @@
 #include "ChestEnemy.h"
 #include "ThornObj.h"
 #include "Block.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "Chest.h"
 #include "Pause.h"
 #include "EnemyEdit.h"
@@ -46,11 +46,11 @@ public:
 	//csvかきこみ
 	void SaveEnemyParam(const int StageNumber);
 	//csvよびだし
-	void LoadEnemyParam(const int StageNumber,Player* player,Block* block, LightGroup* light);
+	void LoadEnemyParam(const int StageNumber,GamePlayer* player,Block* block, LightGroup* light);
 	//敵の生成(トゲ以外)
-	void EnemyBirth(int EnemyType, Player* player, Block* block);
+	void EnemyBirth(int EnemyType, GamePlayer* player, Block* block);
 	//棘生成
-	void ThornBirth(bool Argment,Player* player,int Dir);
+	void ThornBirth(bool Argment,GamePlayer* player,int Dir);
 	//更新
 	void Update(bool Move);
 	//描画
@@ -78,7 +78,7 @@ public:
 	//ライトのセット
 	void LightSet(const int StageNumber, LightGroup* light);
 	//魂のセット
-	void SoulSet(Player* player, Block* block);
+	void SoulSet(GamePlayer* player, Block* block);
 	//魂の更新
 	void SoulUpdate();
 	//魂の描画

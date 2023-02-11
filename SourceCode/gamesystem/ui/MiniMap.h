@@ -1,6 +1,6 @@
 #pragma once
 #include "IKESprite.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "Save.h"
 #include "MapChip.h"
 #include <array>   
@@ -9,7 +9,7 @@ using namespace std;         //  名前空間指定
 class MiniMap {
 public:
 	MiniMap();
-	void SetPlayer(Player* player) { this->player = player; }
+	void SetPlayer(GamePlayer* player) { this->player = player; }
 	void SetSave(Save* save) { this->save = save; }
 	void Initialize();//初期化
 	void Update();//更新
@@ -47,7 +47,7 @@ public:
 private:
 	const float m_LAND_SCALEX = 22.0f;
 	const float m_LAND_SCALEY = 12.0f;
-	Player* player = nullptr;
+	GamePlayer* player = nullptr;
 	Save* save = nullptr;
 	XMFLOAT2 m_PlayerPos;
 	XMFLOAT2 m_SavePos;

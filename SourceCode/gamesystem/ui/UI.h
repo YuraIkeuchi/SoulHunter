@@ -1,11 +1,11 @@
 #pragma once
 #include"IKESprite.h"
-#include"Player.h"
+#include"GamePlayer.h"
 #include "InterBoss.h"
 //UIのクラス
 class UI {
 public:
-	UI(Player* player = nullptr, InterBoss* boss = nullptr);
+	UI(GamePlayer* player = nullptr, InterBoss* boss = nullptr);
 	void Update(InterBoss* boss = nullptr);
 	void Finalize();
 	const void Draw();
@@ -21,7 +21,7 @@ private:
 	//定数
 	static const int HP_Max = 5;//HPの数
 private:
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	unique_ptr<InterBoss> interboss = nullptr;
 	array<unique_ptr<IKESprite>,HP_Max> PlayerHpSprite;//プレイヤーのHP
 	unique_ptr<IKESprite> BossHpSprite;//ボスのHP

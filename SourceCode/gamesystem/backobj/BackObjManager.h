@@ -4,7 +4,7 @@
 #include "BackBox.h"
 #include "BackTorch.h"
 #include "BackObjAlways.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "ObjEdit.h"
 #include "LightGroup.h"
 #include "BackLight.h"
@@ -34,14 +34,14 @@ public:
 	//CSV指定
 	void ObjSpecity(const char* vsShaderName);
 	//csvよびだし
-	void LoadObjParam(const int StageNumber, Player* player, LightGroup* light);
+	void LoadObjParam(const int StageNumber, GamePlayer* player, LightGroup* light);
 	//共通の背景
 	//csv開く
 	void OpenBackObjAlwaysParam(const int StageNumber);
 	//csV呼び出し
 	void LoadBackObjAlways(const int StageNumber);
 	//配置
-	void ObjBirth(int Type, Player* player,XMFLOAT3 pos,XMFLOAT3 rot);
+	void ObjBirth(int Type, GamePlayer* player,XMFLOAT3 pos,XMFLOAT3 rot);
 	//背景OBJの一要素削除
 	void DeleteObjPop(int Type);
 	//全削除

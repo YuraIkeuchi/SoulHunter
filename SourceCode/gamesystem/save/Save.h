@@ -1,7 +1,7 @@
 #pragma once
 #include "IKEObject3d.h"
 #include"IKEModel.h"
-#include "Player.h"
+#include "GamePlayer.h"
 #include "IKESprite.h"
 #include "MarkEffect.h"
 #include <array>  
@@ -10,7 +10,7 @@ using namespace std;         //  名前空間指定
 //セーブのクラス
 class Save {
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -53,7 +53,7 @@ private:
 	static const int SaveSprite_Max = 4;//アニメーションの数
 private:
 	//クラス
-	unique_ptr<Player> player = nullptr;
+	unique_ptr<GamePlayer> player = nullptr;
 	unique_ptr<MarkEffect> markEffect = nullptr;
 	//OBJやモデルなど
 	IKEModel* modelSave = nullptr;
