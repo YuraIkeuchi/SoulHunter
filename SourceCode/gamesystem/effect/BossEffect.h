@@ -40,6 +40,7 @@ private:
 	array<bool, Effect_Max> m_ScaleChange;//大きさの変更
 	array<bool, Effect_Max> m_Effect;//生存
 	bool m_DeleteEffect = false;//エフェクトが消えたか
+	XMFLOAT4 m_BirthColor = { 1.0f,0.5f,0.0f,1.0f };//生成されるエフェクトの色
 	//ヒットエフェクト変数
 	XMFLOAT3 m_HitPos = { 0.0f,0.0f,0.0f };//座標
 	XMFLOAT3 m_HitScale = { 0.0f,0.0f,0.0f };//大きさ

@@ -24,10 +24,10 @@ BossEffect::BossEffect() {
 void BossEffect::Initialize() {
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		m_Effect[i] = false;
-		m_BoundPower[i] = { 0.0f,0.0f,0.0f };
-		m_Color[i] = { 0.0f,0.0f,0.0f,0.0f };
-		m_Pos[i] = { 0.0f,0.0f,0.0f };
-		m_Scale[i] = { 0.0f,0.0f,0.0f };
+		m_BoundPower[i] = m_ResetThirdFew;
+		m_Color[i] = m_ResetFourthFew;
+		m_Pos[i] = m_ResetThirdFew;
+		m_Scale[i] = m_ResetThirdFew;
 	}
 }
 //更新
@@ -50,33 +50,34 @@ void BossEffect::Update(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 }
 //描画
 void BossEffect::Draw() {
-	IKETexture::PreDraw(1);
+	IKETexture::PreDraw(AddBlendType);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.5f)) {
 			ParticleEffect[i]->Draw();
 		}
 	}
 
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	if (m_HitEffect) {
 		HitEffectTexture->Draw();
 	}
 }
 //エフェクトの動き
 void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
+	int l_Division = 400;
 	//エフェクトの発生
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		//
 		if (!m_Effect[i] && Effect && !m_DeleteEffect) {
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 100 - 50) / 400,
-					(float)(rand() % 100 - 50) / 400,
+					(float)(rand() % 100 - 50) / l_Division,
+					(float)(rand() % 100 - 50) / l_Division,
 					0.0f,
 			};
-			m_AddScale[i] = (float)(rand() % 20 + 20) / 800;
-			m_Scale[i] = { 0.0f,0.0f,0.0f };
-			m_Color[i] = { 1.0f,0.5f,0.0f,1.0f };
+			m_AddScale[i] = (float)(rand() % 20 + 20) / l_Division * 2;
+			m_Scale[i] = m_ResetThirdFew;
+			m_Color[i] = m_BirthColor;
 			m_ScaleChange[i] = false;
 			m_Effect[i] = true;
 		}
@@ -94,8 +95,8 @@ void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 			}
 			else {
 				m_Scale[i] = { m_Scale[i].x - m_AddScale[i],m_Scale[i].y - m_AddScale[i], m_Scale[i].z - m_AddScale[i] };
-				if (m_Scale[i].x <= 0.0f) {
-					m_Scale[i] = { 0.0f,0.0f,0.0f };
+				if (m_Scale[i].x <= m_ResetFew) {
+					m_Scale[i] = m_ResetThirdFew;
 					m_ScaleChange[i] = false;
 					m_Effect[i] = false;
 					m_DeleteEffect = true;

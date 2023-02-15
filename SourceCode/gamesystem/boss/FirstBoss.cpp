@@ -120,8 +120,8 @@ void FirstBoss::App() {
 
 		if (m_AppTimer == FirstMoveLimit) {
 			m_AfterPos = { -60.0f,25.0f,7.0f };
-			m_Frame = 0.0f;
-			m_RotFrame = 0.0f;
+			m_Frame = m_ResetFew;
+			m_RotFrame = m_ResetFew;
 			m_AppNumber = FirstMove;
 		}
 	}
@@ -135,8 +135,8 @@ void FirstBoss::App() {
 			m_fbxObject->PlayAnimation(m_Number);
 			m_AfterPos = { 0.0f,25.0f,7.0f };
 			m_AfterRot = { 45.0f,180.0f,0.0f };
-			m_Frame = 0.0f;
-			m_RotFrame = 0.0f;
+			m_Frame = m_ResetFew;
+			m_RotFrame = m_ResetFew;
 			m_AppNumber = SecondMove;
 		}
 	}
@@ -146,8 +146,8 @@ void FirstBoss::App() {
 		AppBossRot(m_AfterRot, m_AddFrame);
 		if (m_AppTimer == ThirdMoveLimit) {
 			m_AfterRot = { -25.0f,180.0f,0.0f };
-			m_Frame = 0.0f;
-			m_RotFrame = 0.0f;
+			m_Frame = m_ResetFew;
+			m_RotFrame = m_ResetFew;
 			m_AppNumber = ThirdMove;
 		}
 	}
@@ -156,8 +156,8 @@ void FirstBoss::App() {
 		AppBossRot(m_AfterRot, m_AddFrame);
 		if (m_AppTimer == FourthMoveLimit) {
 			m_AfterRot = { 45.0f,180.0f,0.0f };
-			m_Frame = 0.0f;
-			m_RotFrame = 0.0f;
+			m_Frame = m_ResetFew;
+			m_RotFrame = m_ResetFew;
 			m_AppNumber = ThirdMove;
 		}
 	}
@@ -257,57 +257,60 @@ void FirstBoss::BesideAttack() {
 	m_Number = StopWing;
 	m_fbxObject->PlayAnimation(m_Number);
 	m_ParticlePos = m_Position;
+	float l_NormalAddFrame = 0.01f;
+	float l_FastAddFrame = 0.05f;
+	float l_SlowAddFrame = 0.005f;
 	//UŒ‚‚Ì“®‚«
 	if (m_Pat == 1) {
-		m_TargetCoolT = 1;
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-105.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 2) {
-		m_TargetCoolT = 1;
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 250.0f,-105.0f,0.0f };
 		m_AfterRot = { 0.0f,270.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 3) {
-		m_TargetCoolT = 100;
+		m_TargetCoolT = SuperLongCool;
 		m_AfterPos = { 250.0f,-154.0f,0.0f };
 		m_AfterRot = { 20.0f,270.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
-		m_TargetCoolT = 100;
+		m_TargetCoolT = SuperLongCool;
 		m_FootParticleCount += 3;
 		m_AfterPos = { 159.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 5) {
-		m_TargetCoolT = 1;
-		m_FootParticleCount = 0;
+		m_TargetCoolT = ShortCool;
+		m_FootParticleCount = m_ResetNumber;
 		m_AfterPos = { 159.0f,-96.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 6) {
-		m_TargetCoolT = 1;
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-96.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.05f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_FastAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 7) {
-		m_TargetCoolT = 1;
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
-		FrameMove(m_AfterPos, m_AfterRot, 0.005f, m_TargetCoolT);
+		FrameMove(m_AfterPos, m_AfterRot, l_SlowAddFrame, m_TargetCoolT);
 	}
 	else {
-		m_Angle = 280.0f;
+		m_Angle = m_ResetAngle;
 		m_Active = false;
-		m_AttackCount = 0;
+		m_AttackCount = m_ResetNumber;
 		m_Frame = m_FrameMin;
-		m_Pat = 0;
+		m_Pat = m_ResetNumber;
 	}
 }
 //“Ë‚«Žh‚µ‚Ä‚­‚éUŒ‚
@@ -373,7 +376,7 @@ void FirstBoss::StabbingAttack() {
 					}
 				}
 				else {
-					m_CoolT = 0;
+					m_CoolT = m_ResetNumber;
 					m_Frame = m_FrameMin;
 					m_Pat = 1;
 					m_MoveCount++;
@@ -408,12 +411,12 @@ void FirstBoss::StabbingAttack() {
 				break;
 			}
 			else {
-				m_Angle = 280.0f;
+				m_Angle = m_ResetAngle;
 				m_Active = false;
-				m_AttackCount = 0;
+				m_AttackCount = m_ResetNumber;
 				m_Frame = m_FrameMin;
-				m_Pat = 0;
-				m_MoveCount = 0;
+				m_Pat = m_ResetNumber;
+				m_MoveCount = m_ResetNumber;
 				break;
 			}
 		default:
@@ -506,7 +509,7 @@ void FirstBoss::FireAttack() {
 			m_Frame += 0.01f;
 		}
 		else {
-			m_Angle = 280.0f;
+			m_Angle = m_ResetAngle;
 			m_Active = false;
 			m_AttackCount = 0;
 			m_Frame = m_FrameMin;
@@ -531,14 +534,14 @@ void FirstBoss::SpecialAttack() {
 	m_Number = StopWing;
 	m_fbxObject->PlayAnimation(m_Number);
 	//UŒ‚‚Ì“®‚«
-	if (m_Pat == 1) {
-		m_TargetCoolT = 1;
+	if (m_Pat == Special0) {
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-105.0f,30.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
-	else if (m_Pat == 2) {
-		m_TargetCoolT = 50;
+	else if (m_Pat == Special1) {
+		m_TargetCoolT = LongCool;
 		m_AfterPos = { 205.0f,-145.0f,30.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		if (m_CoolT == 49) {
@@ -549,40 +552,41 @@ void FirstBoss::SpecialAttack() {
 		}
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
-	else if (m_Pat == 3) {
-		m_TargetCoolT = 20;
+	else if (m_Pat == Special2) {
+		m_TargetCoolT = NormalCool;
 		m_AfterPos = m_TargetPos;
 		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.02f, m_TargetCoolT);
 	}
-	else if (m_Pat == 4) {
-		m_TargetCoolT = 1;
+	else if (m_Pat == Special3) {
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { m_Position.x,-105.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
-	else if (m_Pat == 5) {
-		m_TargetCoolT = 1;
+	else if (m_Pat == Special4) {
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-105.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.05f, m_TargetCoolT);
 	}
-	else if (m_Pat == 6) {
-		m_TargetCoolT = 1;
+	else if (m_Pat == Special5) {
+		m_TargetCoolT = ShortCool;
 		m_AfterPos = { 205.0f,-154.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.005f, m_TargetCoolT);
 	}
 	else {
-		m_Angle = 280.0f;
+		m_Angle = m_ResetAngle;
 		m_Active = false;
-		m_AttackCount = 0;
+		m_AttackCount = m_ResetNumber;
 		m_Frame = m_FrameMin;
-		m_Pat = 0;
+		m_Pat = m_ResetNumber;
 	}
 }
 //ƒGƒtƒFƒNƒg¶¬
 void FirstBoss::FireBallArgment() {
+	float l_Speed;
 	if (m_FireBallArgment) {
 		FireBall* newFireBall;
 		newFireBall = new FireBall();
@@ -591,10 +595,12 @@ void FirstBoss::FireBallArgment() {
 		newFireBall->SetAddPowerY(m_AddPowerY);
 		newFireBall->SetPosition({m_Position.x,m_Position.y + 1.5f,m_Position.z});
 		if (m_RandFire == 0) {
-			newFireBall->SetAddSpeed(0.5f);
+			l_Speed = 0.5f;
+			newFireBall->SetAddSpeed(l_Speed);
 		}
 		else {
-			newFireBall->SetAddSpeed(-0.5f);
+			l_Speed = -0.5f;
+			newFireBall->SetAddSpeed(l_Speed);
 		}
 		fireballs.push_back(newFireBall);
 		m_FireBallArgment = false;
@@ -645,7 +651,7 @@ void FirstBoss::FrameMove(XMFLOAT3 AfterPos, XMFLOAT3 AfterRot, float addframe,i
 		if (m_CoolT >= TargetTimer) {
 			m_Frame = m_FrameMin;
 			m_Pat++;
-			m_CoolT = 0;
+			m_CoolT = m_ResetNumber;
 		}
 	}
 	m_Position = {

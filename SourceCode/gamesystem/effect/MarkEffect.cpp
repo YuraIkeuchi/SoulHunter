@@ -2,6 +2,7 @@
 #include "ImageManager.h"
 #include <Easing.h>
 #include "imgui.h"
+#include "VariableCommon.h"
 //読み込み
 MarkEffect::MarkEffect() {
 	IKETexture* markEffect_;
@@ -13,8 +14,8 @@ MarkEffect::MarkEffect() {
 }
 //初期化
 void MarkEffect::Initialize() {
-	m_Color = { 1.0f,1.0f,1.0f,0.0f };
-	m_Scale = { 0.0f,0.0f,0.0f };
+	m_Color = m_InitColor;
+	m_Scale = m_ResetThirdFew;
 }
 //更新
 void MarkEffect::Update(XMFLOAT3 StartPos) {
@@ -27,26 +28,27 @@ void MarkEffect::Update(XMFLOAT3 StartPos) {
 }
 //描画
 void MarkEffect::Draw() {
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	markEffect->Draw();
 }
 //エフェクトの動き
 void MarkEffect::EffectMove(XMFLOAT3 StartPos) {
 	m_Position = StartPos;
-
+	float l_AddFrame = 0.01f;//加算されるフレーム数
+	float l_ScaleMax = 2.5f;//最大の大きさ
 	//イージングで大きさと色を変えてる
-	if (m_Frame < 1.0f) {
-		m_Frame += 0.01f;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
 	}
 	else {
-		m_Frame = 0.0f;
-		m_Color.w = 1.0f;
-		m_Scale = { 0.0f,0.0f,0.0f };
+		m_Frame = m_FrameMin;
+		m_Color.w = m_ColorMax;
+		m_Scale = m_ResetThirdFew;
 	}
-	m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, 0.0f);
+	m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, m_ColorMin);
 
-	m_Scale = { Ease(In, Cubic, m_Frame, m_Scale.x, 2.5f),
-		Ease(In, Cubic, m_Frame, m_Scale.y, 2.5f),
-		Ease(In, Cubic, m_Frame, m_Scale.z, 2.5f),
+	m_Scale = { Ease(In, Cubic, m_Frame, m_Scale.x, l_ScaleMax),
+		Ease(In, Cubic, m_Frame, m_Scale.y, l_ScaleMax),
+		Ease(In, Cubic, m_Frame, m_Scale.z, l_ScaleMax),
 	};
 }

@@ -1,5 +1,6 @@
 #include "AttackEffect.h"
 #include"ImageManager.h"
+#include "VariableCommon.h"
 using namespace DirectX;
 //“Ç‚Ýž‚Ý
 AttackEffect::AttackEffect() {
@@ -24,7 +25,7 @@ void AttackEffect::Update() {
 }
 //•`‰æ
 void AttackEffect::Draw() {
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	if (m_AttackAlive) {
 		AttackEffecttexture->Draw();
 	}
@@ -62,9 +63,9 @@ void AttackEffect::EffectMove() {
 		m_Scale.y += 0.2f;
 		m_Scale.z += 0.2f;
 		m_Color.w -= 0.1f;
-		if (m_Color.w < 0.0f) {
-			m_Color.w = 0.0f;
-			m_Scale = { 0.0f,0.0f,0.0f };
+		if (m_Color.w < m_ColorMin) {
+			m_Color.w = m_ColorMin;
+			m_Scale = m_ResetThirdFew;
 			m_AttackAlive = false;
 		}
 	}
