@@ -17,7 +17,7 @@ void WallAttackEffect::Initialize() {
 		particleobj_[i]->SetColor({ 1.5f,1.5f,1.5f,1.5f });
 		particleobj[i].reset(particleobj_[i]);
 		m_Effect[i] = false;
-		m_Scale[i] = { 0.0f,0.0f,0.0f };
+		m_Scale[i] = m_ResetThirdFew;
 		m_AddScale[i] = 0.01f;
 		m_Gravity[i] = 0.05f;
 	}
@@ -42,32 +42,33 @@ void WallAttackEffect::Draw() {
 		}
 	}
 }
-//エフェクトの動き
+//エフェクトのセット
 void WallAttackEffect::EffectSet(const XMFLOAT3& pos,int HitDir) {
+	int l_Division = 10;
 	//エフェクトの発生
 	for (int i = 0; i < particleobj.size(); i++) {
 		//
 		if (!m_Effect[i] && !m_DeleteEffect) {
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 8 + 4) / 10,
-					(float)(rand() % 15 - 5) / 10,
+					(float)(rand() % 8 + 4) / l_Division,
+					(float)(rand() % 15 - 5) / l_Division,
 					0.0f,
 			};
 			if (HitDir == 0) {
 				m_BoundPower[i].x *= -1;
 			}
 			m_Scale[i] = {
-					(float)(rand() % 2 + 2) / 10,
-					(float)(rand() % 2 + 2) / 10,
-					(float)(rand() % 2 + 2) / 10,
+					(float)(rand() % 2 + 2) / l_Division,
+					(float)(rand() % 2 + 2) / l_Division,
+					(float)(rand() % 2 + 2) / l_Division,
 			};
 			m_Effect[i] = true;
 		}
 
 	}
 }
-
+//エフェクトの動き
 void WallAttackEffect::EffectMove() {
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {
@@ -76,8 +77,8 @@ void WallAttackEffect::EffectMove() {
 						m_Pos[i].y + m_BoundPower[i].y,
 						m_Pos[i].z + m_BoundPower[i].z };
 			m_Scale[i] = { m_Scale[i].x - m_AddScale[i],m_Scale[i].y - m_AddScale[i], m_Scale[i].z - m_AddScale[i] };
-			if (m_Scale[i].x <= 0.0f) {
-				m_Scale[i] = { 0.0f,0.0f,0.0f };
+			if (m_Scale[i].x <= m_ResetFew) {
+				m_Scale[i] = m_ResetThirdFew;
 				m_Effect[i] = false;
 				m_DeleteEffect = true;
 			}

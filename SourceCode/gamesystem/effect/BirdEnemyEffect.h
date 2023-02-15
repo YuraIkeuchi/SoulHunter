@@ -44,6 +44,7 @@ private:
 	array<bool, JumpEffect_Max> m_Birth;//始まった瞬間
 	array<int, JumpEffect_Max> m_Timer;//時間
 	array<int, JumpEffect_Max> m_EffectNumber;//エフェクトに加わる力の種類
+
 	//エフェクトに力が加わる方向
 	enum EffectNumber {
 		No,

@@ -28,6 +28,7 @@ private:
 	XMFLOAT3 m_Position = { 0.0f,0.0f,0.0f };//座標
 	XMFLOAT3 m_Scale = { 0.0f,0.0f,0.0f };//大きさ
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,1.0f };//色
+	XMFLOAT4 m_InitColor = { 1.0f,1.0f,1.0f,0.0f };//初期化の色
 
 	float m_Frame = 0.0f;//フレーム
 	bool a = true;

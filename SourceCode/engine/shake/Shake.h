@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include <xaudio2.h>
 #include <wrl.h>
 #include <d3d12.h>
 #include <DirectXMath.h>

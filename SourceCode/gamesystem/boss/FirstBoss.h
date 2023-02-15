@@ -46,8 +46,10 @@ private:
 	int m_AppNumber = 0;
 	//終了シーン
 	int m_EndTimer = 0;
+	//sin波のためのもの
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
+	float m_ResetAngle = 280.0f;
 	float m_AddFrame = 0.0f;
 	enum AppNumber {
 		NoMove,
@@ -95,8 +97,27 @@ private:
 		LastLimit = 800
 	};
 
+	//アニメーションのタイプ
 	enum AnimeTypa {
 		MoveWing,
 		StopWing,
+	};
+
+	//必殺技のクールタイム
+	enum TargetCoolT {
+		ShortCool = 1,
+		NormalCool = 20,
+		LongCool = 50,
+		SuperLongCool = 100,
+	};
+
+	//必殺技の動き
+	enum SpecialType {
+		Special0 = 1,
+		Special1,
+		Special2,
+		Special3,
+		Special4,
+		Special5,
 	};
 };
