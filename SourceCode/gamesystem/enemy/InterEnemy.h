@@ -69,7 +69,7 @@ protected:
 	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
 	//生存
 	bool m_Alive = true;
-	int DeathTimer = 0;
+	int m_DeathTimer = 0;
 	//HP
 	int m_HP = 3;
 	//ロックオン
@@ -143,12 +143,12 @@ protected:
 	//ダメージフラグ
 	bool m_Damage = false;
 	int m_DamageTimer = 0;
-
 	//敵の座標(ミニマップ)
 	XMFLOAT2 m_EnemyPosition = { 0.0f,0.0f };
-
 	//棘の敵の必要変数
 	float m_ThornSetPos = 0.0f;
+	//アニメーションのスピード
+	int m_AnimeTimer = 1;
 	
 public:
 	virtual ~InterEnemy() = default;

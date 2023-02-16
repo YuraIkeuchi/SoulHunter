@@ -587,16 +587,16 @@ void EditorScene::EditorUpdate() {
 	//”wŒiobj‚Ì¶¬
 	if (imguieditor->GetBackObjArgment()) {
 		//’Œ
-		if (imguieditor->GetBackObjType() == Rock) {
-			backmanager->ObjBirth(Rock, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+		if (imguieditor->GetBackObjType() == BackOBJRock) {
+			backmanager->ObjBirth(BackOBJRock, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//Šâ
-		else if (imguieditor->GetBackObjType() == Box) {
-			backmanager->ObjBirth(Box, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+		else if (imguieditor->GetBackObjType() == BackOBJBox) {
+			backmanager->ObjBirth(BackOBJBox, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		//¼–¾
 		else {
-			backmanager->ObjBirth(Torch, player, imguieditor->GetPosition(), imguieditor->GetRotation());
+			backmanager->ObjBirth(BackOBJTorch, player, imguieditor->GetPosition(), imguieditor->GetRotation());
 		}
 		imguieditor->SetBackObjArgment(false);
 	}
@@ -636,15 +636,15 @@ void EditorScene::EditorUpdate() {
 	//obj‚Ìíœ
 	if (imguieditor->GetBackObjDelete()) {
 		//’Œ
-		if (imguieditor->GetBackObjType() == Rock) {
+		if (imguieditor->GetBackObjType() == BackOBJRock) {
 			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//Šâ
-		if (imguieditor->GetBackObjType() == Box) {
+		if (imguieditor->GetBackObjType() == BackOBJBox) {
 			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		//¼–¾
-		if (imguieditor->GetBackObjType() == Torch) {
+		if (imguieditor->GetBackObjType() == BackOBJTorch) {
 			backmanager->DeleteObjPop(imguieditor->GetBackObjType());
 		}
 		imguieditor->SetBackObjDelete(false);

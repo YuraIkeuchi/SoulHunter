@@ -32,5 +32,10 @@ private:
 		Up,
 		No
 	};
+
+	enum TargetTimer {
+		UpTimer = 20,
+		AttackTimer = 150,
+	};
 };
 

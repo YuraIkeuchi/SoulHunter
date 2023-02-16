@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include "VariableCommon.h"
 #include "PlayerSkill.h"
 //初期化
 MiniMap::MiniMap() {
@@ -281,6 +282,7 @@ void MiniMap::SelectMapType() {
 }
 //全体マップ
 void MiniMap::WholeUpdate() {
+	float l_AddColor = 0.05f;//加わる色
 	if (m_StageNumber == TutoRial) {
 		m_PlayerPos = { 160.0f,120.0f };
 	}
@@ -307,12 +309,12 @@ void MiniMap::WholeUpdate() {
 	}
 	m_DushPos = { 484.0f,352.0f };
 	//ダッシュのスプライトは徐々に出したい
-	if (m_MapColor.w == 1.0f && m_DushDraw) {
-		if (m_DushColor.w < 1.0f) {
-			m_DushColor.w += 0.05f;
+	if (m_MapColor.w == m_ColorMax && m_DushDraw) {
+		if (m_DushColor.w < m_ColorMax) {
+			m_DushColor.w += l_AddColor;
 		}
 		else {
-			m_DushColor.w = 1.0f;
+			m_DushColor.w = m_ColorMax;
 		}
 	}
 }
@@ -328,35 +330,36 @@ void MiniMap::SelectUpdate() {
 }
 //マップの色切り替え
 void MiniMap::ColorChange() {
+	float l_AddColor = 0.05f;//加わる色
 	//色の変更
 	//段々と色が変わる処理
 	if (m_ColorChangeType == Add) {
-		m_MapColor.w += 0.05f;
-		m_PlayerColor.w += 0.05f;
-		m_SaveColor.w += 0.05f;
-		m_WholeColor.w += 0.05f;
-		if ((m_MapColor.w > 1.0f) && (m_PlayerColor.w > 1.0f) && (m_SaveColor.w > 1.0f) && (m_WholeColor.w > 1.0f)) {
-			m_MapColor.w = 1.0f;
-			m_PlayerColor.w = 1.0f;
-			m_SaveColor.w = 1.0f;
+		m_MapColor.w += l_AddColor;
+		m_PlayerColor.w += l_AddColor;
+		m_SaveColor.w += l_AddColor;
+		m_WholeColor.w += l_AddColor;
+		if ((m_MapColor.w > m_ColorMax) && (m_PlayerColor.w > m_ColorMax) && (m_SaveColor.w > m_ColorMax) && (m_WholeColor.w > m_ColorMax)) {
+			m_MapColor.w = m_ColorMax;
+			m_PlayerColor.w = m_ColorMax;
+			m_SaveColor.w = m_ColorMax;
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
 		if (m_DushDraw) {
-			m_DushColor.w -= 0.05f;
+			m_DushColor.w -= l_AddColor;
 		}
-		m_MapColor.w -= 0.05f;
-		m_PlayerColor.w -= 0.05f;
-		m_SaveColor.w -= 0.05f;
-		m_WholeColor.w -= 0.05f;
-		if ((m_MapColor.w < 0.0f) && (m_PlayerColor.w < 0.0f) && (m_SaveColor.w < 0.0f) && (m_WholeColor.w < 0.0f)) {
+		m_MapColor.w -= l_AddColor;
+		m_PlayerColor.w -= l_AddColor;
+		m_SaveColor.w -= l_AddColor;
+		m_WholeColor.w -= l_AddColor;
+		if ((m_MapColor.w < m_ColorMin) && (m_PlayerColor.w < m_ColorMin) && (m_SaveColor.w < m_ColorMin) && (m_WholeColor.w < m_ColorMin)) {
 			if (m_DushDraw) {
-				m_DushColor.w = 0.0f;
+				m_DushColor.w = m_ColorMin;
 			}
-			m_MapColor.w = 0.0f;
-			m_PlayerColor.w = 0.0f;
-			m_SaveColor.w = 0.0f;
+			m_MapColor.w = m_ColorMin;
+			m_PlayerColor.w = m_ColorMin;
+			m_SaveColor.w = m_ColorMin;
 			m_ColorChangeType = No;
 			m_ReturnMap = true;
 			m_TextTimer = 0;
@@ -376,11 +379,11 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == StartText) {
-		if (m_Frame < 1.0f) {
+		if (m_Frame < m_ColorMax) {
 			m_Frame += 0.05f;
 		}
 		else {
-			m_Frame = 1.0f;
+			m_Frame = m_ColorMax;
 		}
 		if (input->TriggerButton(input->Button_B) || input->TriggerButton(input->Start)) {
 			m_Frame = 0.0f;
@@ -389,7 +392,7 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == BackText) {
-		if (m_Frame < 1.0f) {
+		if (m_Frame < m_ColorMax) {
 			m_Frame += 0.05f;
 		}
 		else {

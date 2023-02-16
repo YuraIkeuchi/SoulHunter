@@ -29,12 +29,13 @@ bool BoundEnemy::Initialize() {
 	m_fbxObject_->PlayAnimation(0);
 	m_fbxObject.reset(m_fbxObject_);
 	m_EnemyType = Wing;
+	//マップチップとの当たり判定に使う大きさ
 	//X方向
-	m_Radius.x = 1.4f * 2.7f;
+	m_Radius.x = 3.8f;
 	//下方向
-	m_Radius.y = 0.6f * 2.7f;
+	m_Radius.y = 1.6f;
 	m_HP = 4;
-	m_fbxObject->Update(true, 1, m_AnimationStop);
+	m_fbxObject->Update(true, m_AnimeSpeed, m_AnimationStop);
 	return true;
 }
 //更新
@@ -42,7 +43,7 @@ void BoundEnemy::Action() {
 	m_OldPos = m_Position;
 
 	if (m_Alive && UpdateCollide()) {
-		m_fbxObject->Update(true, 1, m_AnimationStop);
+		m_fbxObject->Update(true, m_AnimeSpeed, m_AnimationStop);
 		PlayerCollide();
 		Fbx_SetParam();
 		//エフェクト関係
@@ -134,7 +135,7 @@ void BoundEnemy::Move() {
 void BoundEnemy::Finalize() {
 	//enemyeffects.pop_back();
 }
-
+//マップの描画
 void BoundEnemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
@@ -142,7 +143,7 @@ void BoundEnemy::MapDraw(XMFLOAT4 Color) {
 		MiniEnemySprite->Draw();
 	}
 }
-
+//ImGuiの描画
 void BoundEnemy::ImGuiDraw() {
 	if (m_Alive) {
 		ImGui::Begin("Bound");

@@ -35,11 +35,13 @@ void Option::Initialize() {
 
 //更新
 void Option::Update() {
+	float l_AddColor = 0.05f;//加わる色
+	float l_AddVolum = 0.01f;//加算される音量
 	Input* input = Input::GetInstance();
 	//元のポーズメニューに戻る
 	if (input->TriggerButton(input->Select)) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Menu.wav", VolumManager::GetInstance()->GetSEVolum());
-		m_ColorChangeType = 2;
+		m_ColorChangeType = Sub;
 		m_VolumChange = true;
 	}
 
@@ -56,33 +58,33 @@ void Option::Update() {
 	//SEとBGMの音量調整をする
 	if (VolumSelect == BGM){
 		if (input->LeftTiltStick(input->Left) && m_BGMVolum > 0.01f) {
-			m_BGMVolum -= 0.01f;
+			m_BGMVolum -= l_AddVolum;
 		}
 		else if (input->LeftTiltStick(input->Right) && m_BGMVolum < 0.5f) {
-			m_BGMVolum += 0.01f;
+			m_BGMVolum += l_AddVolum;
 		}
 	}
 	else if (VolumSelect == SE) {
 		if (input->LeftTiltStick(input->Left) && m_SEVolum > 0.01f) {
-			m_SEVolum -= 0.01f;
+			m_SEVolum -= l_AddVolum;
 		}
 		else if (input->LeftTiltStick(input->Right) && m_SEVolum < 0.5f) {
-			m_SEVolum += 0.01f;
+			m_SEVolum += l_AddVolum;
 		}
 	}
 	//色の変更
 	//段々と色が変わる処理
 	if (m_ColorChangeType == Add) {
-		m_OptionColor.w += 0.05f;
-		if (m_OptionColor.w > 1.0f) {
-			m_OptionColor.w = 1.0f;
+		m_OptionColor.w += l_AddColor;
+		if (m_OptionColor.w > m_ColorMax) {
+			m_OptionColor.w = m_ColorMax;
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
-		m_OptionColor.w -= 0.05f;
-		if (m_OptionColor.w < 0.0f) {
-			m_OptionColor.w = 0.0f;
+		m_OptionColor.w -= l_AddColor;
+		if (m_OptionColor.w < m_ColorMin) {
+			m_OptionColor.w = m_ColorMin;
 			m_ColorChangeType = No;
 			m_ReturnOption = true;
 		}
@@ -93,7 +95,7 @@ void Option::Update() {
 
 	VolumManager::GetInstance()->SetBGMVolum(m_BGMVolum);
 	VolumManager::GetInstance()->SetSEVolum(m_SEVolum);
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < VolumBarSprite.size(); i++) {
 		OptionSprite[i]->SetColor(m_OptionColor);
 		VolumBarSprite[i]->SetColor(m_OptionColor);
 	}

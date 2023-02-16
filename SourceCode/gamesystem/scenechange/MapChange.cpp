@@ -1,6 +1,6 @@
 #include "MapChange.h"
 #include "ImageManager.h"
-#include <memory>
+#include "VariableCommon.h"
 using namespace std;         //  –¼‘O‹óŠÔw’è
 // DirectX::‚ğÈ—ª
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -27,19 +27,19 @@ const void MapChange::Draw() {
 	IKESprite::PreDraw();
 	change->Draw();
 }
-
+//ŠJ•ú
 void MapChange::Finalize() {
 
 }
 //ˆÃ‚­‚È‚éˆ—
 bool MapChange::AddBlack() {
 	if (m_AddStartChange) {
-		if (s_color.w < 1.2f) {
+		if (s_color.w < m_ColorMax) {
 			s_color.w += 0.08f;
 		}
 		else {
 			m_AddStartChange = false;
-			s_color.w = 1.2f;
+			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
@@ -49,12 +49,12 @@ bool MapChange::AddBlack() {
 //‚ ‚©‚é‚­‚È‚éˆ—
 bool MapChange::SubBlack() {
 	if (m_SubStartChange) {
-		if (s_color.w > 0.0f) {
+		if (s_color.w > m_ColorMin) {
 			s_color.w -= 0.08f;
 		}
 		else {
 			m_SubStartChange = false;
-			s_color.w = 0.0f;
+			s_color.w = m_ColorMin;
 			return true;
 		}
 	}

@@ -963,7 +963,7 @@ bool Block::BirdEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, int& touch
 
 	return l_IsHit;
 }
-
+//追尾的との当たり判定
 bool Block::FollowEnemyMapCollideCommon(XMFLOAT3& pos, XMFLOAT2 radius, const XMFLOAT3& old_pos) {
 	//マップチップ
 	//X, Y

@@ -50,8 +50,8 @@ void Pause::Initialize() {
 
 //更新
 void Pause::Update() {
+	float l_AddColor = 0.05f;//加わる色
 	Input* input = Input::GetInstance();
-
 	if (input->TriggerButton(input->Select) && (m_ReturnTimer == 0) && (!player->GetReadText())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Menu.wav", VolumManager::GetInstance()->GetSEVolum());
 		if (m_IsPause) {
@@ -74,16 +74,16 @@ void Pause::Update() {
 
 	//段々と色が変わる処理
 	if (m_ColorChangeType == Add) {
-		m_PauseColor.w += 0.05f;
-		if (m_PauseColor.w > 1.0f) {
-			m_PauseColor.w = 1.0f;
+		m_PauseColor.w += l_AddColor;
+		if (m_PauseColor.w > m_ColorMax) {
+			m_PauseColor.w = m_ColorMax;
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
-		m_PauseColor.w -= 0.05f;
-		if (m_PauseColor.w < 0.0f) {
-			m_PauseColor.w = 0.0f;
+		m_PauseColor.w -= l_AddColor;
+		if (m_PauseColor.w < m_ColorMin) {
+			m_PauseColor.w = m_ColorMin;
 			m_ColorChangeType = No;
 			if (m_PauseNumber == NormalPause) {
 				m_IsPause = false;

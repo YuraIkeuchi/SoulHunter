@@ -1,6 +1,6 @@
 #include "SceneChange.h"
 #include "ImageManager.h"
-#include <memory>
+#include "VariableCommon.h"
 using namespace std;         //  名前空間指定
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -18,45 +18,43 @@ SceneChange::SceneChange() {
 	change_->SetSize({ 1280.0f,720.0f });
 	change.reset(change_);
 }
-
+//更新
 void SceneChange::Update() {
-
-
 	change->SetColor(s_color);
 }
-
+//描画
 const void SceneChange::Draw() {
 	IKESprite::PreDraw();
 	change->Draw();
 }
-
+//開放
 void SceneChange::Finalize() {
 
 }
-
+//色を加算
 bool SceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		if (s_color.w < 1.0f) {
+		if (s_color.w < m_ColorMax) {
 			s_color.w += AddPower;
 		}
 		else {
 			m_AddStartChange = false;
-			s_color.w = 1.0f;
+			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
 
 	return false;
 }
-
+//色を減算
 bool SceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
-		if (s_color.w > 0.0f) {
+		if (s_color.w > m_ColorMin) {
 			s_color.w -= SubPower;
 		}
 		else {
 			m_SubStartChange = false;
-			s_color.w = 0.0f;
+			s_color.w = m_ColorMin;
 			return true;
 		}
 	}

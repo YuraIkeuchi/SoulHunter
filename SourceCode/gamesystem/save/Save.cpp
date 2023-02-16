@@ -39,7 +39,6 @@ void Save::Initialize() {
 }
 //更新
 void Save::Update() {
-
 	//ボタンを押すとセーブできる
 	if (Collide() && m_SaveCount == 0 && player->GetHP() >= 1) {
 		player->SetHP(5);
@@ -61,7 +60,6 @@ void Save::Update() {
 }
 //描画
 const void Save::Draw() {
-
 	IKEObject3d::PreDraw();
 	if (m_Alive) {
 		objSave->Draw();
@@ -73,7 +71,6 @@ const void Save::Draw() {
 	}
 	markEffect->Draw();
 }
-
 //当たり判定
 bool Save::Collide() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
@@ -152,7 +149,7 @@ void Save::SaveAnime() {
 		}
 	}
 }
-
+//パーティクル
 void Save::BirthParticle() {
 	XMFLOAT4 s_color = { 1.0f,0.5f,0.0f,0.5f };
 	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.5f };
