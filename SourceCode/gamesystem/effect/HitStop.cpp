@@ -3,7 +3,7 @@
 void HitStop::Update() {
 	if (m_StopTimer > m_ResetNumber) {
 		m_StopTimer--;
-		if (m_StopTimer == 8) {
+		if (m_StopTimer == m_TargetTimer) {
 			m_HitStop = true;
 		}
 	}

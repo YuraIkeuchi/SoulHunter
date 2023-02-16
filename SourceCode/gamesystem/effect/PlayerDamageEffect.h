@@ -45,6 +45,12 @@ private:
 	XMFLOAT3 m_HitPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_HitScale = { 0.0f,0.0f,0.0f };
 	XMFLOAT4 m_HitColor = { 0.0f,0.0f,0.0f,0.0f };
+	//誕生した瞬間の色
+	XMFLOAT4 m_BirthColor = { 1.0f,0.9f,0.8f,1.0f };
+	XMFLOAT3 m_BirthDamageScale = { 0.3f,0.3f,0.3f };
+	XMFLOAT3 m_BirthHitScale = { 0.1f,0.1f,0.1f };
+	XMFLOAT4 m_BirthHitColor = { 1.0f,1.0f,1.0f,1.0f };
+	//エフェクトの生成、削除処理のため
 	bool m_HitEffect = false;
 	bool m_DeleteHitEffect = false;
 	bool m_DeleteEffect = false;

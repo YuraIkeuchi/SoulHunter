@@ -59,14 +59,15 @@ const void PlayerDamageEffect::Draw() {
 
 //ダメージ食らった時のエフェクト
 void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
+	int l_Division = 10;//割り算のためのもの
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		//エフェクトの発生
 		if (m_DamageAlive[i] == false && !m_DeleteEffect) {
-			m_DamageEffectscale[i] = { 0.3f,0.3f,0.3f };
-			damagetex[i]->SetColor({ 1.0f,0.9f,0.8f,1.0f });
-			m_BoundPower[i].x = (float)(rand() % 10 + 5) / 10;
-			m_BoundPower[i].y = (float)(rand() % 20 - 10) / 10;
-			m_BoundPower[i].z = 0.0f;
+			m_DamageEffectscale[i] = m_BirthDamageScale;
+			damagetex[i]->SetColor(m_BirthColor);
+			m_BoundPower[i].x = (float)(rand() % 10 + 5) / l_Division;
+			m_BoundPower[i].y = (float)(rand() % 20 - 10) / l_Division;
+			m_BoundPower[i].z = m_ResetFew;
 			if (i % 2 == 0) {
 				m_BoundPower[i].x *= -1.0f;
 			}
@@ -77,37 +78,40 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 }
 
 void PlayerDamageEffect::DamageEffectMove() {
+	float l_AddPowerX = 0.02f;
+	float l_AddPowerY = 0.025f;
+	float l_SubScale = 0.005f;
 	for (std::size_t i = 0; i < damagetex.size(); i++) {
 		if (m_DamageAlive[i]) {
 			if (i % 2 == 0) {
-				if (m_BoundPower[i].x < 0.0f) {
-					m_BoundPower[i].x += 0.02f;
+				if (m_BoundPower[i].x < m_ResetFew) {
+					m_BoundPower[i].x += l_AddPowerX;
 				}
 				else {
-					m_BoundPower[i].x = 0.0f;
+					m_BoundPower[i].x = m_ResetFew;
 				}
 			}
 			else {
-				if (m_BoundPower[i].x > 0.0f) {
-					m_BoundPower[i].x -= 0.02f;
+				if (m_BoundPower[i].x > m_ResetFew) {
+					m_BoundPower[i].x -= l_AddPowerX;
 				}
 				else {
-					m_BoundPower[i].x = 0.0f;
+					m_BoundPower[i].x = m_ResetFew;
 				}
 			}
 
 			if (m_BoundPower[i].y < 0.2f) {
-				m_BoundPower[i].y += 0.025f;
+				m_BoundPower[i].y += l_AddPowerY;
 			}
 
 			m_DamageEffectpos[i].x += m_BoundPower[i].x;
 			m_DamageEffectpos[i].y += m_BoundPower[i].y;
 			m_DamageEffectpos[i].z += m_BoundPower[i].z;
-			m_DamageEffectscale[i].x -= 0.005f;
-			m_DamageEffectscale[i].y -= 0.005f;
-			m_DamageEffectscale[i].z -= 0.005f;
-			if (m_DamageEffectscale[i].x <= 0.0f) {
-				m_DamageEffectscale[i] = { 0.0f,0.0f,0.0f };
+			m_DamageEffectscale[i].x -= l_SubScale;
+			m_DamageEffectscale[i].y -= l_SubScale;
+			m_DamageEffectscale[i].z -= l_SubScale;
+			if (m_DamageEffectscale[i].x <= m_ResetFew) {
+				m_DamageEffectscale[i] = m_ResetThirdFew;
 				m_DamageAlive[i] = false;
 				m_DeleteEffect = true;
 			}
@@ -119,9 +123,9 @@ void PlayerDamageEffect::DamageEffectMove() {
 void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 	//エフェクト出現
 	if (m_HitEffect == false  && !m_DeleteHitEffect) {
-		m_HitScale = { 0.1f,0.1f,0.1f };
+		m_HitScale = m_BirthHitScale;
 		m_HitPos = pos;
-		m_HitColor = { 1.0f,1.0f,1.0f,1.0f };
+		m_HitColor = m_BirthHitColor;
 		m_HitEffect = true;
 	}
 
@@ -129,16 +133,17 @@ void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 
 //ヒットエフェクト動く
 void PlayerDamageEffect::HitEffectMove() {
+	float l_AddColor = 0.1f;
 	//エフェクト動く
 	if (m_HitEffect) {
-		m_HitScale.x += 0.1f;
-		m_HitScale.y += 0.1f;
-		m_HitScale.z += 0.1f;
-		m_HitColor.w -= 0.1f;
+		m_HitScale.x += l_AddColor;
+		m_HitScale.y += l_AddColor;
+		m_HitScale.z += l_AddColor;
+		m_HitColor.w -= l_AddColor;
 
-		if (m_HitColor.w < 0.0f) {
-			m_HitColor = { 0.0f,0.0f,0.0f,0.0f };
-			m_HitScale = { 0.0f,0.0f,0.0f };
+		if (m_HitColor.w < m_ColorMin) {
+			m_HitColor = m_ResetFourthFew;
+			m_HitScale = m_ResetThirdFew;
 			m_HitEffect = false;
 			m_DeleteHitEffect = true;
 		}
