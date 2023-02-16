@@ -104,7 +104,7 @@ void ChestEnemy::Draw(DirectXCommon* dxCommon) {
 	}
 
 	//テキスト
-	IKETexture::PreDraw(1);
+	IKETexture::PreDraw(AddBlendType);
 	if (m_Hit && !m_Attack) {
 		chestTex->Draw();
 	}
@@ -247,13 +247,13 @@ Ease(In,Cubic,m_Frame,m_Color.y,m_AfterColor.y),
 //消える
 bool ChestEnemy::VanishChestEnemy() {
 	if (m_HP < 1 && m_AddPower <= 0.0f) {
-		if (DeathTimer < 30 && !m_Disolve) {
+		if (m_DeathTimer < 30 && !m_Disolve) {
 			m_DeathParticleCount++;
-			DeathTimer++;
+			m_DeathTimer++;
 		}
 		else {
 			m_Disolve = true;
-			DeathTimer = 0;
+			m_DeathTimer = 0;
 		}
 	}
 

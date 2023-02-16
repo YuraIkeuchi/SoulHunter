@@ -5,7 +5,6 @@
 #include "ParticleEmitter.h"
 #include "PlayerSword.h"
 bool InterEnemy::Initialize() {
-
 	return true;
 }
 //更新
@@ -15,9 +14,9 @@ void InterEnemy::Update() {
 //描画
 void InterEnemy::Draw(DirectXCommon* dxCommon) {
 }
-
 //敵がダメージ食らう
 bool InterEnemy::Collision() {
+	int l_SetDamageTimer = 20;//TargetTimerのセット値
 	OBB1.SetParam_Pos(m_Position);
 	OBB1.SetParam_Scl(m_Scale);
 	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
@@ -29,7 +28,7 @@ bool InterEnemy::Collision() {
 	if (player->GetRotation().y == 90.0f) {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x < m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 20;
+			m_DamageTimer = l_SetDamageTimer;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;
@@ -42,7 +41,7 @@ bool InterEnemy::Collision() {
 	else {
 		if (Collision::OBBCollision(OBB1, OBB2) && m_HP > 0 && (!m_Damage) && (player->CheckAttack()) && (player->GetPosition().x > m_Position.x)) {
 			m_Damage = true;
-			m_DamageTimer = 20;
+			m_DamageTimer = l_SetDamageTimer;
 			m_EffectArgment = true;
 			m_HP--;
 			m_Effect = true;
@@ -58,9 +57,10 @@ bool InterEnemy::Collision() {
 }
 //プレイヤーがダメージ食らう
 bool InterEnemy::PlayerCollide() {
+	float l_HitRadius = 1.0f;//当たり判定
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	int Interval = player->GetInterVal();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 1.0f, m_PlayerPos.x, m_PlayerPos.y, 1.0f) && (m_HP > 0) &&
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_HitRadius, m_PlayerPos.x, m_PlayerPos.y, l_HitRadius) && (m_HP > 0) &&
 		Interval == 0 && player->GetHP() >= 1) {
 		//hitstop->SetStopTimer(10);
 		player->PlayerHit(m_Position);
@@ -74,10 +74,11 @@ bool InterEnemy::PlayerCollide() {
 }
 //プレイヤーをロックオンする
 bool InterEnemy::LockOn() {
+	float l_LockRadius = 15.0f;//ロックオン判定
 	XMFLOAT3 l_PlayerPos = player->GetPosition();
 	//同じブロック上にいて距離が近かったらロックオン
 	m_DistanceY = m_Position.y - l_PlayerPos.y;
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 15.0f, l_PlayerPos.x, l_PlayerPos.y, 15.0f) && (m_HP > 0)
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_LockRadius, l_PlayerPos.x, l_PlayerPos.y, l_LockRadius) && (m_HP > 0)
 		&& (m_DistanceY <= 2.0f && m_DistanceY >= -2.0f) && (player->GetAddPower() == 0.0f)) {
 		m_Lock = true;
 		return true;
@@ -118,8 +119,9 @@ void InterEnemy::DeathBirthParticle() {
 }
 //更新を範囲内に入った時のみ
 bool InterEnemy::UpdateCollide() {
+	float l_UpdateRadius = 20.0f;//更新判定
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 20.0f, m_PlayerPos.x, m_PlayerPos.y, 20.0f)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_UpdateRadius, m_PlayerPos.x, m_PlayerPos.y, l_UpdateRadius)) {
 		return true;
 	}
 	else {
@@ -129,8 +131,9 @@ bool InterEnemy::UpdateCollide() {
 }
 //描画を範囲内に入った時のみ
 bool InterEnemy::DrawCollide() {
+	float l_DrawRadius = 18.0f;//描画判定
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.y, 18.0f, m_PlayerPos.x, m_PlayerPos.y, 18.0f)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_DrawRadius, m_PlayerPos.x, m_PlayerPos.y, l_DrawRadius)) {
 		return true;
 	}
 	else {
@@ -140,33 +143,36 @@ bool InterEnemy::DrawCollide() {
 }
 //死んだときに消える
 bool InterEnemy::VanishEnemy() {
-	if (m_HP < 1 && m_AddPower <= 0.0f) {
-		if (DeathTimer < 30 && !m_Disolve) {
+	float l_AddColor = 0.025f;//加わる色
+	float l_TargetDisolve = 2.0f;//規定のディゾルブ値
+	int l_TargetDeathTimer = 30;//DeathTimerの最大値
+	if (m_HP < 1 && m_AddPower <= m_ResetFew) {
+		if (m_DeathTimer < l_TargetDeathTimer && !m_Disolve) {
 			m_DeathParticleCount++;
-			DeathTimer++;
+			m_DeathTimer++;
 		}
 		else {
 			m_Disolve = true;
-			DeathTimer = 0;
+			m_DeathTimer = m_ResetNumber;
 		}
 	}
 
 	if (m_Disolve && m_Alive) {
-		if (m_Addcolor.x <= 1.0f) {
-			m_Addcolor.x += 0.025f;
-			m_Addcolor.y += 0.025f;
-			m_Addcolor.z += 0.025f;
+		if (m_Addcolor.x <= m_ColorMax) {
+			m_Addcolor.x += l_AddColor;
+			m_Addcolor.y += l_AddColor;
+			m_Addcolor.z += l_AddColor;
 		}
 		else {
-			m_Addcolor.x = 1.0f;
-			m_Addcolor.y = 1.0f;
-			m_Addcolor.z = 1.0f;
+			m_Addcolor.x = m_ColorMax;
+			m_Addcolor.y = m_ColorMax;
+			m_Addcolor.z = m_ColorMax;
 		}
-		if (m_AddDisolve < 2.0f) {
-			m_AddDisolve += 0.025f;
+		if (m_AddDisolve < l_TargetDisolve) {
+			m_AddDisolve += l_AddColor;
 		}
 		else {
-			m_DeathParticleCount = 0;
+			m_DeathParticleCount = m_ResetNumber;
 			m_Soul = true;
 			m_Alive = false;
 		}
@@ -178,8 +184,8 @@ void InterEnemy::DamageAct() {
 	float l_Decrease = 0.0f;
 	//プレイヤーとあたったとき突進を辞める
 	if (Collision()) {
-		m_TargetTimer = 0;
-		m_Speed = 0.0f;
+		m_TargetTimer = m_ResetNumber;
+		m_Speed = m_ResetFew;
 		m_Effect = true;
 		if (m_EnemyType == Bird) {
 			m_BirdEffectArgment = true;
@@ -243,19 +249,17 @@ void InterEnemy::DamageAct() {
 		}
 	}
 
-
 	m_Position.x += m_BoundPower.x;
 
 	//ダメージのインターバル
 	if (m_Damage) {
 		m_DamageTimer--;
-		if (m_DamageTimer < 0) {
+		if (m_DamageTimer < m_ResetNumber) {
 			m_Damage = false;
-			m_DamageTimer = 0;
+			m_DamageTimer = m_ResetNumber;
 		}
 	}
 }
-
 //エフェクトの生成
 void InterEnemy::ArgEffect() {
 	if (m_EffectArgment) {
@@ -266,16 +270,16 @@ void InterEnemy::ArgEffect() {
 		m_EffectArgment = false;
 	}
 }
-
 //魂の生成
 void InterEnemy::ArgSoul() {
 	
 }
-
+//ミニマップの座標
 void InterEnemy::MapEnemy() {
-	//プレイヤーの座標
-	m_EnemyPosition.x = m_Position.x * 4.5f;
-	m_EnemyPosition.y = m_Position.y * -2.4f;
+	XMFLOAT2 l_LimitPos = { 4.5f,-2.4f };
+	//敵の座標
+	m_EnemyPosition.x = m_Position.x * l_LimitPos.x;
+	m_EnemyPosition.y = m_Position.y * l_LimitPos.y;
 
 	MiniEnemySprite->SetPosition(m_EnemyPosition);
 }

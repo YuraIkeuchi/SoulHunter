@@ -14,17 +14,17 @@ ImGuiEditor::ImGuiEditor() {
 		backobj_[i] = IKEObject3d::Create();
 	}
 
-	backobj_[Rock]->SetModel(modelRock);
-	backobj_[Rock]->SetPosition(m_Pos);
-	backobj_[Rock]->SetScale({ 0.25f, 0.25f, 0.25f });
+	backobj_[BackOBJRock]->SetModel(modelRock);
+	backobj_[BackOBJRock]->SetPosition(m_Pos);
+	backobj_[BackOBJRock]->SetScale({ 0.25f, 0.25f, 0.25f });
 
-	backobj_[Box]->SetModel(modelBox);
-	backobj_[Box]->SetPosition(m_Pos);
-	backobj_[Box]->SetScale({ 8.0f,8.0f,8.0f });
+	backobj_[BackOBJBox]->SetModel(modelBox);
+	backobj_[BackOBJBox]->SetPosition(m_Pos);
+	backobj_[BackOBJBox]->SetScale({ 8.0f,8.0f,8.0f });
 
-	backobj_[Torch]->SetModel(modelTorch);
-	backobj_[Torch]->SetPosition(m_Pos);
-	backobj_[Torch]->SetScale({ 3.0f,6.0f,1.0f });
+	backobj_[BackOBJTorch]->SetModel(modelTorch);
+	backobj_[BackOBJTorch]->SetPosition(m_Pos);
+	backobj_[BackOBJTorch]->SetScale({ 3.0f,6.0f,1.0f });
 
 	for (int i = 0; i < backobj.size(); i++) {
 		backobj[i].reset(backobj_[i]);
@@ -56,13 +56,13 @@ const void ImGuiEditor::ObjDraw() {
 	//‘I‘ð‚µ‚½OBJ‚É‚æ‚Á‚Ä•`‰æ‚·‚é‚à‚Ì‚ªˆá‚¤
 	if (m_EditorType == ObjSet) {
 		if (m_DrawObjType == DrawRock) {
-			backobj[Rock]->Draw();
+			backobj[BackOBJRock]->Draw();
 		}
 		else if (m_DrawObjType == DrawBox) {
-			backobj[Box]->Draw();
+			backobj[BackOBJBox]->Draw();
 		}
 		else if (m_DrawObjType == DrawTorch) {
-			backobj[Torch]->Draw();
+			backobj[BackOBJTorch]->Draw();
 		}
 	}
 	else {
@@ -165,15 +165,15 @@ const void ImGuiEditor::EditorImGuiDraw() {
 			ImGui::SetWindowSize(ImVec2(280, 230));
 			if (ImGui::Button("BoxArg", ImVec2(90, 50))) {
 				m_BackObjArgment = true;
-				m_BackObjType = Box;
+				m_BackObjType = BackOBJBox;
 			}
 			if (ImGui::Button("RockArg", ImVec2(90, 50))) {
 				m_BackObjArgment = true;
-				m_BackObjType = Rock;
+				m_BackObjType = BackOBJRock;
 			}
 			if (ImGui::Button("TorchArg", ImVec2(90, 50))) {
 				m_BackObjArgment = true;
-				m_BackObjType = Torch;
+				m_BackObjType = BackOBJTorch;
 			}
 			ImGui::End();
 
@@ -182,15 +182,15 @@ const void ImGuiEditor::EditorImGuiDraw() {
 			ImGui::SetWindowSize(ImVec2(280, 230));
 			if (ImGui::Button("DeleteBox", ImVec2(90, 50))) {
 				m_BackObjDelete = true;
-				m_BackObjType = Box;
+				m_BackObjType = BackOBJBox;
 			}
 			if (ImGui::Button("DeleteRock", ImVec2(90, 50))) {
 				m_BackObjDelete = true;
-				m_BackObjType = Rock;
+				m_BackObjType = BackOBJRock;
 			}
 			if (ImGui::Button("DeleteTorch", ImVec2(90, 50))) {
 				m_BackObjDelete = true;
-				m_BackObjType = Torch;
+				m_BackObjType = BackOBJTorch;
 			}
 			ImGui::End();
 		}

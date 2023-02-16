@@ -71,7 +71,7 @@ void CameraWork::IntroductionCamera() {
 	}
 	else {
 		if (m_IntroTimer == 120) {
-			m_Frame = 0.0f;
+			m_Frame = m_FrameMin;
 			m_AfterEye = { 0.0f,2.0f,m_eyePos.z };
 			m_IntEyeStart = true;
 		}
@@ -82,7 +82,7 @@ void CameraWork::IntroductionCamera() {
 			}
 			else {
 				m_IntEyeStart = false;
-				m_Frame = 0.0f;
+				m_Frame = m_FrameMin;
 			}
 
 			m_eyePos = {
@@ -102,7 +102,7 @@ void CameraWork::IntroductionCamera() {
 		if (m_IntroTimer == 360) {
 			m_IntTargetStart = true;
 			m_AfterTarget.y = 60.0f;
-			m_Frame = 0.0f;
+			m_Frame = m_FrameMin;
 		}
 
 		if (m_IntTargetStart) {
@@ -111,7 +111,7 @@ void CameraWork::IntroductionCamera() {
 			}
 			else {
 				m_IntTargetStart = false;
-				m_Frame = 0.0f;
+				m_Frame = m_FrameMin;
 			}
 
 			m_targetPos.y = Ease(In, Cubic, m_Frame, m_targetPos.y, m_AfterTarget.y);
@@ -120,39 +120,42 @@ void CameraWork::IntroductionCamera() {
 }
 //通常時のカメラ(プレイヤーについてくる)
 void CameraWork::NormalCamera() {
+	XMFLOAT2 l_MaxPos = { 270.0f,-13.5f };//マップの最大値
+	XMFLOAT2 l_MinPos = { 27.0f,-280.0f };//マップの最小値
+	float l_Distance = 30.0f;//カメラとの距離
 	//RightStickCamera();
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	//カメラの位置調整(端まで行くとカメラが止まる)
-	if (m_PlayerPos.x >= 27.0f && m_PlayerPos.x <= 270.0f) {
+	if (m_PlayerPos.x >= l_MinPos.x && m_PlayerPos.x <= l_MaxPos.x) {
 		m_eyePos.x = m_PlayerPos.x;
 		m_targetPos.x = m_PlayerPos.x;
 	}
 	else {
-		if (m_PlayerPos.x < 27.0f) {
-			m_eyePos.x = 27.0f;
-			m_targetPos.x = 27.0f;
+		if (m_PlayerPos.x < l_MinPos.x) {
+			m_eyePos.x = l_MinPos.x;
+			m_targetPos.x = l_MinPos.x;
 		}
-		else if (m_PlayerPos.x > 270.0f) {
-			m_eyePos.x = 270.0f;
-			m_targetPos.x = 270.0f;
+		else if (m_PlayerPos.x > l_MaxPos.x) {
+			m_eyePos.x = l_MaxPos.x;
+			m_targetPos.x = l_MaxPos.x;
 		}
 	}
-	if (m_PlayerPos.y >= -280.0f && m_PlayerPos.y <= -13.5f) {
+	if (m_PlayerPos.y >= l_MinPos.y && m_PlayerPos.y <= l_MaxPos.y) {
 		m_targetPos.y = m_PlayerPos.y + m_MoveCameraY;
 		m_eyePos.y = m_PlayerPos.y + m_MoveCameraY;
 	}
 	else {
-		if (m_PlayerPos.y < -280.0f) {
-			m_targetPos.y = -280.0f + m_MoveCameraY;
-			m_eyePos.y = -280.0f + m_MoveCameraY;
+		if (m_PlayerPos.y < l_MinPos.y) {
+			m_targetPos.y = l_MinPos.y + m_MoveCameraY;
+			m_eyePos.y = l_MinPos.y + m_MoveCameraY;
 		}
-		else if (m_PlayerPos.y > -13.5f) {
-			m_targetPos.y = -13.5f + m_MoveCameraY;
-			m_eyePos.y = -13.5f + m_MoveCameraY;
+		else if (m_PlayerPos.y > l_MaxPos.y) {
+			m_targetPos.y = l_MaxPos.y + m_MoveCameraY;
+			m_eyePos.y = l_MaxPos.y + m_MoveCameraY;
 		}
 	}
 	
-	m_eyePos.z = m_PlayerPos.z - (30.0f);
+	m_eyePos.z = m_PlayerPos.z - (l_Distance);
 	m_targetPos.z = m_PlayerPos.z;
 }
 //ボス登場時のカメラ

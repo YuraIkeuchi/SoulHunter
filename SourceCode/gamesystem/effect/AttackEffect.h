@@ -31,6 +31,8 @@ private:
 	XMFLOAT3 m_Pos = { 0.0f,0.0f,0.0f };//À•W
 	XMFLOAT4 m_Color = { 0.0f,0.0f,0.0f,1.0f };//F
 	XMFLOAT3 m_Scale = { 1.0f,1.0f,1.0f };//‘å‚«‚³
+	XMFLOAT4 m_BirthColor = { 1.0f,1.0f,1.0f,1.0f };//’a¶‚µ‚½uŠÔ‚ÌF
+	XMFLOAT3 m_BirthScale = { 0.5f,0.5f,0.5f };//’a¶‚µ‚½uŠÔ‚Ì‘å‚«‚³
 	float m_AddPower = 0.0f;//‰Á‚í‚é—Í
 	bool m_AttackAlive = false;//•`‰æ‚·‚é‚©
 };

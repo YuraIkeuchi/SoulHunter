@@ -172,13 +172,13 @@ void FollowEnemy::FollowMove() {
 //è¡Ç¶ÇÈ
 bool FollowEnemy::VanishFollowEnemy() {
 	if (m_HP < 1 && m_AddPower <= 0.0f) {
-		if (DeathTimer < 30 && !m_Disolve) {
+		if (m_DeathTimer < 30 && !m_Disolve) {
 			m_DeathParticleCount++;
-			DeathTimer++;
+			m_DeathTimer++;
 		}
 		else {
 			m_Disolve = true;
-			DeathTimer = 0;
+			m_DeathTimer = 0;
 		}
 	}
 

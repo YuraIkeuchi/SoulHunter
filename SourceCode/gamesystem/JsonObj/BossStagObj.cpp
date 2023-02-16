@@ -101,7 +101,6 @@ const void BossStagObj::FrontDraw() {
 	}
 	SkipSprite->Draw();
 	IKESprite::PostDraw();
-
 }
 //”wŒi•`‰æ
 const void BossStagObj::BackDraw() {

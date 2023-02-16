@@ -1,5 +1,6 @@
 #include "BossSceneChange.h"
 #include "ImageManager.h"
+#include "VariableCommon.h"
 using namespace std;         //  –¼‘O‹óŠÔw’è
 // DirectX::‚ğÈ—ª
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -26,19 +27,19 @@ const void BossSceneChange::Draw() {
 	IKESprite::PreDraw();
 	change->Draw();
 }
-
+//ŠJ•ú
 void BossSceneChange::Finalize() {
 
 }
 //ˆÃ‚­‚È‚éˆ—
 bool BossSceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		if (s_color.w < 1.0f) {
+		if (s_color.w < m_ColorMax) {
 			s_color.w += AddPower;
 		}
 		else {
 			m_AddStartChange = false;
-			s_color.w = 1.0f;
+			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
@@ -48,12 +49,12 @@ bool BossSceneChange::AddBlack(float AddPower) {
 //–¾‚é‚­‚È‚éˆ—
 bool BossSceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
-		if (s_color.w > 0.0f) {
+		if (s_color.w > m_ColorMin) {
 			s_color.w -= SubPower;
 		}
 		else {
 			m_SubStartChange = false;
-			s_color.w = 0.0f;
+			s_color.w = m_ColorMin;
 			return true;
 		}
 	}

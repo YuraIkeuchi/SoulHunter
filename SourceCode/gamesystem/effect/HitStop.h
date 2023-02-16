@@ -12,4 +12,5 @@ public:
 private:
 	bool m_HitStop = false;//ヒットストップ
 	int m_StopTimer = 0;//ヒットストップの時間
+	int m_TargetTimer = 8;//指定の時間
 };

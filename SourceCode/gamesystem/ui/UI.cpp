@@ -1,6 +1,7 @@
 #include "UI.h"
 #include "Easing.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 #include "PlayerSkill.h"
 //“Ç‚Ýž‚Ý
 UI::UI(GamePlayer* player, InterBoss* boss) {
@@ -60,6 +61,7 @@ UI::UI(GamePlayer* player, InterBoss* boss) {
 }
 //XV
 void UI::Update(InterBoss* boss) {
+	float l_AddColor = 0.1f;//‰ÁŽZ‚³‚ê‚éF
 	m_HP = player->GetHP();
 	//°
 	m_Soul = player->GetSoulCount();
@@ -85,19 +87,19 @@ void UI::Update(InterBoss* boss) {
 	BossHpSprite->SetSize(m_BossHPSize);
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
 		if (i >= m_HP) {
-			if (m_HPColor[i].w > 0.0f) {
-				m_HPColor[i].w -= 0.1f;
+			if (m_HPColor[i].w > m_ColorMin) {
+				m_HPColor[i].w -= l_AddColor;
 			}
 			else {
-				m_HPColor[i].w = 0.0f;
+				m_HPColor[i].w = m_ColorMin;
 			}
 		}
 		else {
-			if (m_HPColor[i].w < 1.0f) {
-				m_HPColor[i].w += 0.1f;
+			if (m_HPColor[i].w < m_ColorMax) {
+				m_HPColor[i].w += l_AddColor;
 			}
 			else {
-				m_HPColor[i].w = 1.0f;
+				m_HPColor[i].w = m_ColorMax;
 			}
 		}
 		PlayerHpSprite[i]->SetColor(m_HPColor[i]);

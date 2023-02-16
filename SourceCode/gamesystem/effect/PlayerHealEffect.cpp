@@ -1,6 +1,7 @@
 #include "PlayerHealEffect.h"
 #include "ImageManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 //読み込み
 PlayerHealEffect::PlayerHealEffect() {
 
@@ -19,7 +20,6 @@ void PlayerHealEffect::Update() {
 	if (m_HealStart) {
 		healeffecttex->Update();
 	}
-	healeffecttex->SetColor({ 0.8f,1.0f,0.1f,0.5f });
 	healeffecttex->SetPosition(m_HealPos);
 	healeffecttex->SetRotation(m_HealRot);
 	healeffecttex->SetScale(m_HealScale);
@@ -27,7 +27,7 @@ void PlayerHealEffect::Update() {
 }
 //描画
 void PlayerHealEffect::Draw() {
-	IKETexture::PreDraw(0);
+	IKETexture::PreDraw(AlphaBlendType);
 	if (m_HealStart) {
 		healeffecttex->Draw();
 	}
@@ -43,23 +43,26 @@ void PlayerHealEffect::SetEffect(const XMFLOAT3& StartPos) {
 }
 
 void PlayerHealEffect::EffectMove() {
+	float l_AddScale = 0.2f;
+	float l_AddRotZ = 10.0f;
+	float l_AddColor = 0.05f;
 	//エフェクトの動き
 	if (m_HealStart) {
-		m_HealRot.z += 10.0f;
+		m_HealRot.z += l_AddRotZ;
 		if (m_HealEffectNumber == Appear) {
-			m_HealScale.x += 0.2f;
-			m_HealScale.y += 0.2f;
-			m_HealScale.z += 0.2f;
-			m_HealColor.w += 0.05f;
-			if (m_HealColor.w > 1.0f) {
+			m_HealScale.x += l_AddScale;
+			m_HealScale.y += l_AddScale;
+			m_HealScale.z += l_AddScale;
+			m_HealColor.w += l_AddColor;
+			if (m_HealColor.w > m_ColorMax) {
 				m_HealEffectNumber = Disappear;
 			}
 		}
 		else {
-			m_HealColor.w -= 0.05f;
-			if (m_HealColor.w < 0.0f) {
-				m_HealScale = { 0.0f,0.0f,0.0f };
-				m_HealColor.w = 0.0f;
+			m_HealColor.w -= l_AddColor;
+			if (m_HealColor.w < m_ColorMin) {
+				m_HealScale = m_ResetThirdFew;
+				m_HealColor.w = m_ColorMin;
 				m_HealEffectNumber = Appear;
 				m_HealStart = false;
 				m_DeleteEffect = true;

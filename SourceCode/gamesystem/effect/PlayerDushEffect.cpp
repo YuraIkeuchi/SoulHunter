@@ -1,5 +1,6 @@
 #include "PlayerDushEffect.h"
 #include"ImageManager.h"
+#include "VariableCommon.h"
 //読み込み
 PlayerDushEffect::PlayerDushEffect() {
 }
@@ -14,7 +15,6 @@ void PlayerDushEffect::Initialize() {
 //更新
 void PlayerDushEffect::Update() {
 	//エフェクトの発生
-
 	//ダッシュ
 	DushEffectMove();
 	if (m_DushAlive) {
@@ -25,7 +25,7 @@ void PlayerDushEffect::Update() {
 }
 //描画
 const void PlayerDushEffect::Draw() {
-	IKETexture::PreDraw(1);
+	IKETexture::PreDraw(AddBlendType);
 	if (m_DushAlive) {
 		DushEffecttexture->Draw();
 	}
@@ -37,15 +37,16 @@ void PlayerDushEffect::DushEffectSet(const XMFLOAT3& pos) {
 		m_DushAlive = true;
 	}
 }
-
+//エフェクトの動き
 void PlayerDushEffect::DushEffectMove() {
+	float l_AddScale = 0.05f;
 	//ダッシュ
 	if (m_DushAlive) {
-		m_DushEffectscale.x += 0.05f;
-		m_DushEffectscale.y += 0.05f;
-		m_DushEffectscale.z += 0.05f;
+		m_DushEffectscale.x += l_AddScale;
+		m_DushEffectscale.y += l_AddScale;
+		m_DushEffectscale.z += l_AddScale;
 		if (m_DushEffectscale.x >= 0.5f) {
-			m_DushEffectscale = { 0.0f,0.0f,0.0f };
+			m_DushEffectscale = m_ResetThirdFew;
 			m_DeleteEffect = true;
 			m_DushAlive = false;
 		}

@@ -86,9 +86,9 @@ enum EnemyType {
 
 //背景OBJの種類
 enum BackObjType {
-	Rock,
-	Box,
-	Torch,
+	BackOBJRock,
+	BackOBJBox,
+	BackOBJTorch,
 };
 
 //プレイヤーのアニメーション

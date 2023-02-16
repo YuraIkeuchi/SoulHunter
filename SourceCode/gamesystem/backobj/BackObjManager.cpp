@@ -448,12 +448,12 @@ void BackObjManager::BackObjDraw(std::vector<BackObjCommon*> objs, DirectXCommon
 //”wŒiOBJ‚ÌÝ’u
 void BackObjManager::ObjBirth(int Type, GamePlayer* player, XMFLOAT3 pos, XMFLOAT3 rot) {
 	//’Œ
-	if (Type == Rock) {
+	if (Type == BackOBJRock) {
 		m_BackObjCount++;
 		objedit->RockArgment(m_BackRocks, player, pos, rot);
 	}
 	//Šâ
-	else if (Type == Box) {
+	else if (Type == BackOBJBox) {
 		m_BackObjCount++;
 		objedit->BoxArgment(m_BackBoxs, player, pos, rot);
 	}
@@ -466,17 +466,17 @@ void BackObjManager::ObjBirth(int Type, GamePlayer* player, XMFLOAT3 pos, XMFLOA
 //íœ
 void BackObjManager::DeleteObjPop(int Type) {
 	//’Œ
-	if (Type == Rock && m_BackRocks.size() > 0) {
+	if (Type == BackOBJRock && m_BackRocks.size() > 0) {
 		m_BackRocks.pop_back();
 		m_BackObjCount--;
 	}
 	//Šâ
-	if (Type == Box && m_BackBoxs.size() > 0) {
+	if (Type == BackOBJBox && m_BackBoxs.size() > 0) {
 		m_BackBoxs.pop_back();
 		m_BackObjCount--;
 	}
 	//¼–¾
-	if (Type == Torch && m_BackTorchs.size() > 0) {
+	if (Type == BackOBJTorch && m_BackTorchs.size() > 0) {
 		m_BackTorchs.pop_back();
 		m_BackObjCount--;
 	}

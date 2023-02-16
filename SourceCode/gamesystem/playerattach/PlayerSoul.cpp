@@ -3,6 +3,7 @@
 #include"ImageManager.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
+#include "VariableCommon.h"
 using namespace DirectX;
 //“Ç‚Ýž‚Ý
 PlayerSoul::PlayerSoul() {
@@ -58,7 +59,7 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 }
 //•`‰æ
 void PlayerSoul::Draw() {
-	IKETexture::PreDraw(1);
+	IKETexture::PreDraw(AddBlendType);
 	if (DrawCollide()) {
 		if (m_Effect) {
 			soultex->Draw();
