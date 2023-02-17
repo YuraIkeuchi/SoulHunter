@@ -4,7 +4,7 @@
 ClearPlayer::ClearPlayer() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::PlayerFBX);
 }
-
+//初期化
 bool ClearPlayer::Initialize() {
 	IKEFBXObject3d* fbxobject_ = new IKEFBXObject3d();
 	fbxobject_->Initialize();
@@ -15,16 +15,16 @@ bool ClearPlayer::Initialize() {
 	m_Scale = { 3.0f,3.0f,3.0f };
 	return true;
 }
-
+//更新
 void ClearPlayer::Update() {
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, m_AnimeSpeed, m_AnimationStop);
 }
-
+//描画
 void ClearPlayer::Draw(DirectXCommon* dxCommon) {
 	Fbx_Draw(dxCommon);
 }
-
+//動き
 void ClearPlayer::ClearMove(int Timer) {
 	//フレーム数で動きが決まる
 	if (Timer == 1) {

@@ -14,9 +14,9 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//スプライト生成
-	IKESprite* TitlePartsSprite_[3];
+	IKESprite* TitlePartsSprite_[TITLE_MAX];
 	//gaussian = new PostEffect();
-	const int TitleCount = 3;
+	const int TitleCount = TITLE_MAX;
 	for (int i = 0; i < TitlePartsSprite.size(); i++) {
 		TitlePartsSprite_[i] = IKESprite::Create(ImageManager::TitleParts, { 0.0f,0.0f });
 		int number_index_y = i / TitleCount;
@@ -29,7 +29,8 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		m_PartsSize[i] = { PartsWidth_Cut,PartsHeight_Cut };
 	}
 
-	m_PartsPos[NewGame] = { 640.0f,480.0f };
+	m_PartsPos[EasyGame] = { 640.0f,400.0f };
+	m_PartsPos[NormalGame] = { 640.0f,520.0f };
 	m_PartsPos[LoadGame] = { 640.0f,640.0f };
 	m_PartsPos[SelectGame] = { 640.0f,480.0f };
 
@@ -58,7 +59,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 
 	//セーブ
 	save = new Save();
-	m_TitleSelect = NewGame;
+	m_TitleSelect = EasyGame;
 	dxCommon->SetFullScreen(true);
 
 	pointLightAtten[0] = 20.0f;
@@ -78,25 +79,31 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 	//ニューゲームかロードゲームかを選択する
 	if (!scenechange->GetAddStartChange()) {
-		if (m_TitleSelect == NewGame && input->LeftTriggerStick(input->Down)) {
+		if (m_TitleSelect < LoadGame && input->LeftTriggerStick(input->Down)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_TitleSelect = LoadGame;
+			m_TitleSelect++;
 		}
 
-		else if (m_TitleSelect == LoadGame && input->LeftTriggerStick(input->Up)) {
+		else if (m_TitleSelect > EasyGame && input->LeftTriggerStick(input->Up)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_TitleSelect = NewGame;
+			m_TitleSelect--;
 		}
 	}
 
 	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
 		scenechange->SetAddStartChange(true);
-		if (m_TitleSelect == NewGame) {
-			m_GameLoad = false;
+		if (m_TitleSelect == LoadGame) {
+			m_GameLoad = true;
 		}
 		else {
-			m_GameLoad = true;
+			m_GameLoad = false;
+			if (m_TitleSelect == EasyGame) {
+				m_NormalMode = false;
+			}
+			else {
+				m_NormalMode = true;
+			}
 		}
 	}
 
@@ -174,8 +181,8 @@ void TitleScene::FrontDraw() {
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
-	TitlePartsSprite[2]->Draw();
-	for (int i = 0; i < 2; i++) {
+	TitlePartsSprite[3]->Draw();
+	for (int i = 0; i < 3; i++) {
 		TitlePartsSprite[i]->Draw();
 	}
 	scenechange->Draw();
@@ -208,20 +215,38 @@ void TitleScene::PostImGuiDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトの種類
 void TitleScene::ChangePostEffect(int PostType) {
 }
-
+//パーツの動き
 void TitleScene::PartsMove() {
-	if (m_TitleSelect == NewGame) {
-		m_Angle[NewGame] += 2.0f;
-		m_Angle2[NewGame] = m_Angle[NewGame] * (3.14f / 180.0f);
+	if (m_TitleSelect == EasyGame) {
+		m_Angle[EasyGame] += 2.0f;
+		m_Angle2[EasyGame] = m_Angle[EasyGame] * (3.14f / 180.0f);
 		//選択時座標が上下に動く
-		m_PartsPos[SelectGame] = m_PartsPos[NewGame];
-
+		m_PartsPos[SelectGame] = m_PartsPos[EasyGame];
+		m_Angle[NormalGame] = 0.0f;
 		m_Angle[LoadGame] = 0.0f;
+		m_PartsPos[NormalGame].y = 520.0f;
 		m_PartsPos[LoadGame].y = 640.0f;
 		//選択時サイズも少し変わる
-		m_PartsSize[NewGame] = { (sin(m_Angle2[NewGame]) * 32.0f) + (640.0f),
-			(sin(m_Angle2[NewGame]) * 16.0f) + (128.0f) };
-		m_PartsSize[SelectGame] = m_PartsSize[NewGame];
+		m_PartsSize[EasyGame] = { (sin(m_Angle2[EasyGame]) * 32.0f) + (640.0f),
+			(sin(m_Angle2[EasyGame]) * 16.0f) + (128.0f) };
+		m_PartsSize[SelectGame] = m_PartsSize[EasyGame];
+		m_PartsSize[NormalGame] = { 640.0f,128.0f };
+		m_PartsSize[LoadGame] = { 640.0f,128.0f };
+	}
+	else if (m_TitleSelect == NormalGame) {
+		m_Angle[NormalGame] += 2.0f;
+		m_Angle2[NormalGame] = m_Angle[NormalGame] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_PartsPos[SelectGame] = m_PartsPos[NormalGame];
+		m_Angle[EasyGame] = 0.0f;
+		m_Angle[LoadGame] = 0.0f;
+		m_PartsPos[EasyGame].y = 400.0f;
+		m_PartsPos[LoadGame].y = 640.0f;
+		//選択時サイズも少し変わる
+		m_PartsSize[NormalGame] = { (sin(m_Angle2[NormalGame]) * 32.0f) + (640.0f),
+			(sin(m_Angle2[NormalGame]) * 16.0f) + (128.0f) };
+		m_PartsSize[SelectGame] = m_PartsSize[NormalGame];
+		m_PartsSize[EasyGame] = { 640.0f,128.0f };
 		m_PartsSize[LoadGame] = { 640.0f,128.0f };
 	}
 	else {
@@ -230,17 +255,19 @@ void TitleScene::PartsMove() {
 		//選択時座標が上下に動く
 		m_PartsPos[SelectGame] = m_PartsPos[LoadGame];
 
-		m_Angle[NewGame] = 0.0f;
-		m_PartsPos[NewGame].y = 480.0f;
-
+		m_Angle[EasyGame] = 0.0f;
+		m_PartsPos[EasyGame].y = 400.0f;
+		m_Angle[NormalGame] = 0.0f;
+		m_PartsPos[NormalGame].y = 520.0f;
 		//選択時サイズも少し変わる
 		m_PartsSize[LoadGame] = { (sin(m_Angle2[LoadGame]) * 32.0f) + (640.0f),
 			(sin(m_Angle2[LoadGame]) * 16.0f - 16.0f) + (128.0f) };
 		m_PartsSize[SelectGame] = m_PartsSize[LoadGame];
-		m_PartsSize[NewGame] = { 640.0f,128.0f };
+		m_PartsSize[EasyGame] = { 640.0f,128.0f };
+		m_PartsSize[NormalGame] = { 640.0f,128.0f };
 	}
 }
-
+//文字の浮かび上がり
 void TitleScene::PartsBirth() {
 	m_TitleTimer++;
 

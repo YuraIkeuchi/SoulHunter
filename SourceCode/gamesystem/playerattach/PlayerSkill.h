@@ -6,6 +6,8 @@ public:
 	static PlayerSkill* GetInstance();
 	//スキルをゲットしたかどうか
 	void ResetSkill();
+	//スキル全取得
+	void AllGetSkill();
 	//getter
 	bool GetDushSkill() { return s_DushSkill; }
 	bool GetLibraSkill() { return s_LibraSkill; }
