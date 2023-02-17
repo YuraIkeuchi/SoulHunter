@@ -176,6 +176,7 @@ public:
 	bool m_ObjSave = false;
 	bool m_ObjLoad = false;
 	static bool m_GameLoad;
+	static bool m_NormalMode;
 
 	//ゲームのムービー
 	int m_AppTimer = 0;

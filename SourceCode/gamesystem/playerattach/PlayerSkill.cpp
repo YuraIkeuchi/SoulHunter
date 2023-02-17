@@ -22,5 +22,13 @@ void PlayerSkill::ResetSkill() {
 	s_HealSkill = false;
 }
 
+//ƒXƒLƒ‹‘SŽæ“¾
+void PlayerSkill::AllGetSkill() {
+	s_DushSkill = true;
+	s_LibraSkill = true;
+	s_CompassSkill = true;
+	s_HealSkill = true;
+}
+
 void PlayerSkill::ImGuiDraw() {
 }

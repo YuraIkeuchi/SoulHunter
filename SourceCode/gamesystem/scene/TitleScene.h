@@ -21,22 +21,25 @@ public:
 	void ChangePostEffect(int PostType);
 	void PartsMove();//タイトルの文字の動き
 	void PartsBirth();//タイトルの文字が浮かびだす
+private:
+	static const int TITLE_MAX = 4;
 private://メンバ変数
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
-	array<unique_ptr<IKESprite>,3> TitlePartsSprite;
+	array<unique_ptr<IKESprite>, TITLE_MAX> TitlePartsSprite;
 	unique_ptr<IKETexture> backtex;
 	//Json読み込みのクラス
 	static TitleObj* titleobj;
 	//シーン遷移のためのもの
 	int m_TitleSelect = 0;
 	//タイトルのパーツに必要なもの
-	array<float, 2> m_Angle;
-	array<float, 2> m_Angle2;
-	array<XMFLOAT2, 3> m_PartsPos;
-	array<XMFLOAT2, 3> m_PartsSize;
+	array<float, 3> m_Angle;
+	array<float, 3> m_Angle2;
+	array<XMFLOAT2, TITLE_MAX> m_PartsPos;
+	array<XMFLOAT2, TITLE_MAX> m_PartsSize;
 	enum TitleSelect {
-		NewGame,
+		EasyGame,
+		NormalGame,
 		LoadGame,
 		SelectGame
 	};

@@ -7,6 +7,7 @@ Block* BaseScene::block = nullptr;
 MiniMap* BaseScene::minimap = nullptr;
 //Pause* BaseScene::pause = nullptr;
 bool BaseScene::m_GameLoad = false;
+bool BaseScene::m_NormalMode = false;
 bool BaseScene::m_GameLoop = false;
 bool BaseScene::s_New = false;
 //Newするを一回にしたい
@@ -111,10 +112,16 @@ void BaseScene::StartGame() {
 		StageNumber = TutoRial;
 		block->Initialize(tutorialmap, 0, StageNumber);
 		minimap->InitMap(tutorialmap, StageNumber);
-		PlayerSkill::GetInstance()->ResetSkill();
 		skillpause->ResetSkillPause();
 		enemymanager->LoadEnemyParam(TutoRial,player,block, lightGroup);
 		backmanager->LoadObjParam(TutoRial,player, lightGroup);
+		//ゲームモードによってスキル獲得状況が変わる
+		if (m_NormalMode) {
+			PlayerSkill::GetInstance()->ResetSkill();
+		}
+		else {
+			PlayerSkill::GetInstance()->AllGetSkill();
+		}
 	}
 	//ロードした場合
 	else {
