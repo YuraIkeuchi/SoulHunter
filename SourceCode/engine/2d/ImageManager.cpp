@@ -11,6 +11,8 @@ ImageManager* ImageManager::GetIns() {
 void ImageManager::Load2D() {
 	IKESprite::LoadTexture(Title, L"Resources/2d/sceneback/Title1.png");
 	IKESprite::LoadTexture(TitleParts, L"Resources/2d/sceneback/TitleParts.png");
+	IKESprite::LoadTexture(ModeParts, L"Resources/2d/sceneback/ModeParts.png");
+	IKESprite::LoadTexture(ModeBack, L"Resources/2d/sceneback/ModeSelectBack.png");
 	IKESprite::LoadTexture(BlackFilter, L"Resources/2d/effect/Blackfilter.png");
 	IKESprite::LoadTexture(PauseBack, L"Resources/2d/sceneback/PauseBack.png");
 	IKESprite::LoadTexture(Pause1, L"Resources/2d/sceneback/PauseMenu.png");
