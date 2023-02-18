@@ -19,6 +19,7 @@ public:
 		TitleParts,
 		ModeParts,
 		ModeBack,
+		ModeExplain,
 		BlackFilter,
 		PauseBack,
 		Pause1,

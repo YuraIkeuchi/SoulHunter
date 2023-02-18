@@ -31,20 +31,14 @@ void GameoverScene::Update(DirectXCommon* dxCommon) {
 
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
-	//shrinkchange->Update();
-	//expandchange->Update();*/
 }
 //•`‰æ
 void GameoverScene::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("GameOver");
-	ImGui::End();*/
 	dxCommon->PreDraw();
 	IKESprite::PreDraw();
 	//”wŒi—p
 	sprite->Draw();
 	scenechange->Draw();
-	//expandchange->Draw();
-	//shrinkchange->Draw();
 	dxCommon->PostDraw();
 	//
 }

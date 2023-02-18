@@ -15,7 +15,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	BaseInitialize(dxCommon);
 	//スプライト生成
 	IKESprite* TitlePartsSprite_[TITLE_MAX];
-	//gaussian = new PostEffect();
 	const int TitleCount = TITLE_MAX;
 	for (int i = 0; i < TitlePartsSprite.size(); i++) {
 		TitlePartsSprite_[i] = IKESprite::Create(ImageManager::TitleParts, { 0.0f,0.0f });
@@ -33,9 +32,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	m_PartsPos[LoadGame] = { 640.0f,640.0f };
 	m_PartsPos[SelectGame] = { 640.0f,480.0f };
 
-	//スプライト生成
 	IKESprite* ModePartsSprite_[MODE_MAX];
-	//gaussian = new PostEffect();
 	const int ModeCount = MODE_MAX;
 	for (int i = 0; i < ModePartsSprite.size(); i++) {
 		ModePartsSprite_[i] = IKESprite::Create(ImageManager::ModeParts, { 0.0f,0.0f });
@@ -60,6 +57,22 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	IKESprite* ModeSprite_;
 	ModeSprite_ = IKESprite::Create(ImageManager::ModeBack, { 0.0f,0.0f });
 	ModeSprite.reset(ModeSprite_);
+
+	const int ExplainHeight_Cut = 400;
+	IKESprite* ModeEplainSprite_[EXPLAIN_MAX];
+	const int EXPLAINCount = EXPLAIN_MAX;
+	for (int i = 0; i < ModePartsSprite.size(); i++) {
+		ModeEplainSprite_[i] = IKESprite::Create(ImageManager::ModeExplain, { 0.0f,0.0f });
+		int number_index_y = i / EXPLAINCount;
+		int number_index_x = i % EXPLAINCount;
+		ModeEplainSprite_[i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * FullWidth_Cut, static_cast<float>(number_index_y) * ExplainHeight_Cut },
+			{ static_cast<float>(FullWidth_Cut), static_cast<float>(ExplainHeight_Cut) });
+		ModeEplainSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		ModeEplainSprite_[i]->SetPosition({ 640.0f,250.0f });
+		ModeEplainSprite[i].reset(ModeEplainSprite_[i]);
+		m_ExplainSize[i] = { FullWidth_Cut,ExplainHeight_Cut };
+	}
 
 	//カメラワーク
 	camerawork = new CameraWork();
@@ -127,6 +140,11 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		ModePartsSprite[i]->SetSize(m_ModePartsSize[i]);
 		ModePartsSprite[i]->SetColor(m_ModeColor);
 	}
+
+	for (int i = 0; i < ModeEplainSprite.size(); i++) {
+		ModeEplainSprite[i]->SetSize(m_ExplainSize[i]);
+		ModeEplainSprite[i]->SetColor(m_ModeColor);
+	}
 	TitleSprite->SetColor(m_TitleColor);
 	ModeSprite->SetColor(m_ModeColor);
 	ParticleEmitter::GetInstance()->FireEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
@@ -176,7 +194,6 @@ void TitleScene::ModelDraw(DirectXCommon* dxCommon) {
 //前面描画
 void TitleScene::FrontDraw() {
 	IKEObject3d::PreDraw();
-	//titleobj->FrontDraw();
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	IKEObject3d::PostDraw();
@@ -191,6 +208,7 @@ void TitleScene::FrontDraw() {
 	for (int i = 0; i < 2; i++) {
 		ModePartsSprite[i]->Draw();
 	}
+	ModeEplainSprite[m_ModeSelect]->Draw();
 	scenechange->Draw();
 	IKESprite::PostDraw();
 }

@@ -26,12 +26,14 @@ public:
 private:
 	static const int TITLE_MAX = 3;//タイトルパーツの最大数
 	static const int MODE_MAX = 3;//モードパーツの最大数
+	static const int EXPLAIN_MAX = 3;//説明文の最大数
 private://メンバ変数
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> ModeSprite;
 	array<unique_ptr<IKESprite>, TITLE_MAX> TitlePartsSprite;
 	array<unique_ptr<IKESprite>, MODE_MAX> ModePartsSprite;
+	array<unique_ptr<IKESprite>, EXPLAIN_MAX> ModeEplainSprite;
 	unique_ptr<IKETexture> backtex;
 	//Json読み込みのクラス
 	static TitleObj* titleobj;
@@ -53,6 +55,7 @@ private://メンバ変数
 	array<XMFLOAT2, TITLE_MAX> m_ModePartsPos;
 	array<XMFLOAT2, TITLE_MAX> m_ModePartsSize;
 
+	array<XMFLOAT2, EXPLAIN_MAX> m_ExplainSize;
 	enum ModeSelect {
 		EasyMode,
 		NormalMode,
