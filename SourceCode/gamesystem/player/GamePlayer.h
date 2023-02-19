@@ -129,18 +129,11 @@ public:
 	void SetMovie(bool m_Movie) { this->m_Movie = m_Movie; }
 	void SetReadText(bool m_ReadText) { this->m_ReadText = m_ReadText; }
 	void SetTutorialFinish(bool m_TutorialFinish) { this->m_TutorialFinish = m_TutorialFinish; }
-
 private:
-	
-private:
-	vector<PlayerEffect*> effects;
-
 	//クラス
+	vector<PlayerEffect*> effects;
 	unique_ptr<Block> block = nullptr;
-	
 	unique_ptr<Shake> shake = nullptr;
-	//プレイモードか
-	bool m_PlayMode = false;
 	//生きているかどうか
 	bool m_Alive = true;
 	//リスポーン
@@ -190,13 +183,13 @@ private:
 	//ダッシュ関係
 	bool m_Dush = false;
 	bool m_Rolling = false;
+	int m_DushInterValTimer = 0;
 	float m_SideFrame = 0.0f;
 	float m_SideVelocity = 0.0f;
 	//足元のパーティクル
 	int m_FootParticleCount = 0;
 	//普通のパーティクル
 	int m_DeathParticleCount = 0;
-
 	//ゴールしたときの変数
 	bool m_ChangeInterVal = false;
 	int m_GoalIntervalTimer = 0;
@@ -210,7 +203,6 @@ private:
 	};
 	//宝箱を見ているか
 	bool m_ReadText = false;
-	bool m_CollideObj = false;
 	bool m_CollideChest = false;
 	//プレイヤーが使える魂の数
 	float m_SoulCount = 20.0f;
@@ -234,23 +226,18 @@ private:
 	XMFLOAT3 m_AttackPos = { 0.0f,0.0f,0.0f };
 	//手行列
 	XMMATRIX m_HandMat;
-
 	//死んだ動き
 	bool m_Death = false;
 	int m_DeathTimer = 0;
 	//シェイク用変数
 	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
-
 	//アニメーションタイマー用
 	struct AnimationTimer {
 		int MoveAnimation = 0;
 		int NotAnimation = 0;
 		int FallAnimation = 0;
 	};
-
 	AnimationTimer m_AnimationTimer;
-	
-
 	//csv用変数
 	std::ifstream m_PlayerFile;
 	std::stringstream m_PlayerPopcom;

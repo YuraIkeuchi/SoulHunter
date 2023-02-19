@@ -119,7 +119,7 @@ void InterEnemy::DeathBirthParticle() {
 }
 //XV‚ð”ÍˆÍ“à‚É“ü‚Á‚½Žž‚Ì‚Ý
 bool InterEnemy::UpdateCollide() {
-	float l_UpdateRadius = 20.0f;//XV”»’è
+	float l_UpdateRadius = 23.0f;//XV”»’è
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_UpdateRadius, m_PlayerPos.x, m_PlayerPos.y, l_UpdateRadius)) {
 		return true;
@@ -131,7 +131,7 @@ bool InterEnemy::UpdateCollide() {
 }
 //•`‰æ‚ð”ÍˆÍ“à‚É“ü‚Á‚½Žž‚Ì‚Ý
 bool InterEnemy::DrawCollide() {
-	float l_DrawRadius = 18.0f;//•`‰æ”»’è
+	float l_DrawRadius = 21.0f;//•`‰æ”»’è
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.y, l_DrawRadius, m_PlayerPos.x, m_PlayerPos.y, l_DrawRadius)) {
 		return true;

@@ -27,10 +27,6 @@ public:
 	void MapInitialize();
 	//マップの切り替えの関数
 	void StageMapChange(int StageNumber);
-	//プレイヤーとステージの読み書き
-	void SaveGame();
-	void LoadGame();
-
 
 	//更新処理関数わけ
 	//各クラスの更新

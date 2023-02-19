@@ -15,6 +15,7 @@ public:
 	//OBJ‚Ì–¼‘O
 	enum ModelName {
 		ThornEnemy,
+		FollowEnemy,
 		ThornObj,
 		NormalBlock,
 		InBlock,

@@ -41,7 +41,7 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-	StartGame();
+	//StartGame();
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
 	enemymanager->LoadEnemyParam(StageNumber,player,block,lightGroup);
@@ -182,8 +182,6 @@ void EditorScene::BackDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	//たからばこ
 	chest->Draw();
-	//プレイヤーの描画
-	player->Draw(dxCommon);
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//ImGuiのOBJの描画
@@ -359,95 +357,6 @@ void EditorScene::StageMapChange(int StageNumber) {
 	enemymanager->LoadEnemyParam(StageNumber, player, block, lightGroup);
 	backmanager->LoadObjParam(StageNumber, player, lightGroup);
 	backmanager->LoadBackObjAlways(StageNumber);
-}
-//ゲームデータのセーブ(位置とマップ番号)
-void EditorScene::SaveGame() {
-	std::ofstream playerofs("Resources/game_param/gamedata.csv");  // ファイルパスを指定する
-	//normalofs << "Enemy_Quantity" << "," << m_Enemys.size() << std::endl;
-
-	playerofs << "Wait" << "," << 120 << std::endl;
-	playerofs << "StageNumber" << "," << StartStage << std::endl;
-	playerofs << "POP" << "," << player->GetPosition().x
-		<< "," << player->GetPosition().y
-		<< "," << player->GetPosition().z << std::endl;
-	playerofs << "DushSkill" << "," << PlayerSkill::GetInstance()->GetDushSkill() << std::endl;
-	playerofs << "LibraSkill" << "," << PlayerSkill::GetInstance()->GetLibraSkill() << std::endl;
-	playerofs << "CompassSkill" << "," << PlayerSkill::GetInstance()->GetCompassSkill() << std::endl;
-	playerofs << "HP" << "," << player->GetHP() << std::endl;
-	playerofs << "Soul" << "," << player->GetSoulCount() << std::endl;
-}
-//ゲームデータのロード
-void EditorScene::LoadGame() {
-	m_GameFile.open("Resources/game_param/gamedata.csv");
-	m_GamePopcom << m_GameFile.rdbuf();
-	m_GameFile.close();
-
-	while (std::getline(m_GamePopcom, m_GameLine)) {
-		std::istringstream line_stream(m_GameLine);
-		std::string word;
-		std::getline(line_stream, word, ',');
-
-		if (word.find("//") == 0) {
-			continue;
-		}
-		if (word.find("StageNumber") == 0) {
-
-			std::getline(line_stream, word, ',');
-			int number = (int)std::atof(word.c_str());
-
-			StartStage = number;
-		}
-		else if (word.find("POP") == 0) {
-			std::getline(line_stream, word, ',');
-			float x = (float)std::atof(word.c_str());
-
-			std::getline(line_stream, word, ',');
-			float y = (float)std::atof(word.c_str());
-
-			std::getline(line_stream, word, ',');
-			float z = (float)std::atof(word.c_str());
-
-			m_PlayerStartPos = { x,y,z };
-
-		}
-		else if (word.find("DushSkill") == 0) {
-
-			std::getline(line_stream, word, ',');
-			bool l_startdushskill = (int)std::atof(word.c_str());
-
-			PlayerSkill::GetInstance()->SetDushSkill(l_startdushskill);
-		}
-		else if (word.find("LibraSkill") == 0) {
-
-			std::getline(line_stream, word, ',');
-			bool l_startlibraskill = (int)std::atof(word.c_str());
-
-			PlayerSkill::GetInstance()->SetLibraSkill(l_startlibraskill);
-		}
-		else if (word.find("CompassSkill") == 0) {
-
-			std::getline(line_stream, word, ',');
-			bool l_startcompassskill = (int)std::atof(word.c_str());
-
-			PlayerSkill::GetInstance()->SetCompassSkill(l_startcompassskill);
-		}
-		else if (word.find("HP") == 0) {
-
-			std::getline(line_stream, word, ',');
-			int l_startHP = (int)std::atof(word.c_str());
-
-			player->SetHP(l_startHP);
-		}
-		else if (word.find("Soul") == 0) {
-
-			std::getline(line_stream, word, ',');
-			float l_startSoulCount = (float)std::atof(word.c_str());
-
-			player->SetSoulCount(l_startSoulCount);
-			break;
-		}
-	}
-
 }
 //各クラスの更新
 void EditorScene::AllUpdate() {
