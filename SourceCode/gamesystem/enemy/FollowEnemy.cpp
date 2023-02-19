@@ -12,11 +12,11 @@ FollowEnemy::FollowEnemy() {
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::ThornEnemy);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::FollowEnemy);
 }
 //‰Šú‰»
 bool FollowEnemy::Initialize() {
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	IKEObject3d* m_Object_ = new IKEObject3d();
 	m_Object_ = IKEObject3d::Create();
 	m_Object_->SetModel(m_Model);
@@ -247,6 +247,6 @@ void FollowEnemy::MapDraw(XMFLOAT4 Color) {
 //ImGui
 void FollowEnemy::ImGuiDraw() {
 	ImGui::Begin("Follow");
-	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("ROTY:%f", m_Rotation.y);
 	ImGui::End();
 }

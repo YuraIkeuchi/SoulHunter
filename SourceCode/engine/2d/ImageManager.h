@@ -17,6 +17,9 @@ public:
 	enum texName {
 		Title = 29,
 		TitleParts,
+		ModeParts,
+		ModeBack,
+		ModeExplain,
 		BlackFilter,
 		PauseBack,
 		Pause1,

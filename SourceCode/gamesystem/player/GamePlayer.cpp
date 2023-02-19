@@ -174,9 +174,7 @@ void GamePlayer::Update()
 			//ローリング
 			PlayerRolling();
 			//攻撃(剣)
-			if (!m_CollideObj) {
-				PlayerAttack();
-			}
+			PlayerAttack();
 			//HP回復
 			PlayerHeal();
 		}
@@ -194,8 +192,6 @@ void GamePlayer::Update()
 	//自動落下
 	PlayerFall();
 
-	//プレイモード
-	m_PlayMode = true;
 	//ゴールしたときの処理(またゴールしないように)
 	if (m_ChangeInterVal) {
 		m_GoalIntervalTimer++;
@@ -232,7 +228,7 @@ void GamePlayer::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	//点滅してるかどうかで描画が変わる
-	if (m_FlashCount % 2 == 0 && m_PlayMode) {
+	if (m_FlashCount % 2 == 0) {
 		if (m_HP != 0) {
 			PlayerSword::GetInstance()->Draw(dxCommon);
 		}
@@ -247,16 +243,6 @@ void GamePlayer::Draw(DirectXCommon* dxCommon) {
 }
 //Imgui
 void GamePlayer::ImGuiDraw() {
-	ImGui::Begin("player");
-	ImGui::Text("m_LimitPosX:%f", m_LimitPos.x);
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::Text("LeftL:%d", m_LeftLimit);
-	ImGui::Text("RightL:%d", m_RightLimit);
-	ImGui::End();
-
-	PlayerSword::GetInstance()->ImGuiDraw();
 }
 //エフェクトの更新
 void GamePlayer::EffectUpdate() {
@@ -569,7 +555,7 @@ bool GamePlayer::CheckAttack() {
 void GamePlayer::PlayerDush() {
 	Input* input = Input::GetInstance();
 	//ダッシュ処理
-	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill())) {
+	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill()) && (m_DushInterValTimer == 0)) {
 		if (input->TriggerButton(input->Button_RB)) {
 			m_Dush = true;
 			m_AddPower = 0.0f;
@@ -595,10 +581,19 @@ void GamePlayer::PlayerDush() {
 		else {
 			m_SideFrame = 0.0f;
 			m_Dush = false;
+			m_DushInterValTimer = 10;
 		}
 
 		m_SideVelocity = Ease(In, Cubic, m_SideFrame, m_SideVelocity, 0.0f);
 		m_Position.x += m_SideVelocity;
+	}
+
+	//ダッシュを連続でさせないため
+	if (m_DushInterValTimer > 0) {
+		m_DushInterValTimer--;
+	}
+	else {
+		m_DushInterValTimer = 0;
 	}
 }
 //プレイヤーの回転
@@ -645,13 +640,11 @@ void GamePlayer::PlayerHeal() {
 
 	//回復チャージ
 	if (m_HealType == UseHeal) {
-		m_HealCount++;
 		m_HealTimer++;
 		if (m_HealTimer > 150) {
 			BirthEffect("Heal", m_Position, m_PlayerDir);
 			m_SoulCount -= 6.0f;
 			m_HealTimer = 0;
-			m_HealCount = 0;
 			m_HP += 1;
 			m_HealType = NoHeal;
 			m_Frame = 0.0f;
@@ -661,7 +654,6 @@ void GamePlayer::PlayerHeal() {
 			if (!input->PushButton(input->Button_Y) || m_Interval != 0) {
 				m_HealTimer = 0;
 				m_HealType = NoHeal;
-				m_HealCount = 0;
 			}
 		}
 	}
@@ -762,7 +754,7 @@ void GamePlayer::GoalMove() {
 		m_Position.x -= 0.3f;
 	}
 }
-//ゴールの動き
+//死んだ時の動き
 bool GamePlayer::DeathMove() {
 	if (m_Death) {
 		block->SetThornDir(NoHit);
@@ -925,8 +917,6 @@ void GamePlayer::Editor() {
 	if (input->LeftTiltStick(input->Down)) {
 		m_Position.y -= 0.3f;
 	}
-	//プレイモードではない
-	m_PlayMode = false;
 	PlayerSword::GetInstance()->Update();
 	Fbx_SetParam();
 	m_fbxObject->FollowUpdate(m_AnimeLoop, 1, m_AnimationStop);
@@ -965,9 +955,8 @@ void GamePlayer::HealParticle() {
 	float s_scale = 2.0f;
 	float e_scale = 0.0f;
 
-	if (m_HealCount > 1) {
+	if (m_HealType == UseHeal) {
 		ParticleEmitter::GetInstance()->HealEffect(50, { m_Position.x,m_Position.y - 2.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
-		m_HealCount = 0;
 	}
 }
 //攻撃リセット

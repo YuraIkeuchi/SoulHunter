@@ -186,6 +186,7 @@ void ChestEnemy::ChestMove() {
 				m_Position.x += m_ShakePos.x;
 				m_Position.y += m_ShakePos.y;
 			}
+			m_FootParticleCount++;
 		}
 		else if (m_MoveNumber == SetChest) {			//è„Ç…çsÇ≠
 			if (m_Frame < m_FrameMax) {

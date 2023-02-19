@@ -807,18 +807,18 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
-	/*ImGui::Begin("Manager");
-	ImGui::Text("NormalNum:%d", m_Enemy_Num);
-	ImGui::Text("ThornNum:%d", m_ThornEnemy_Num);
-	ImGui::Text("BoundNum:%d", m_BoundEnemy_Num);
-	ImGui::Text("ChestNum:%d", m_ChestEnemy_Num);
-	ImGui::End();
-	EnemyImguiDraw(m_Enemys);
+	//ImGui::Begin("Manager");
+	//ImGui::Text("NormalNum:%d", m_Enemy_Num);
+	//ImGui::Text("ThornNum:%d", m_ThornEnemy_Num);
+	//ImGui::Text("BoundNum:%d", m_BoundEnemy_Num);
+	//ImGui::Text("ChestNum:%d", m_ChestEnemy_Num);
+	//ImGui::End();
+	/*EnemyImguiDraw(m_Enemys);
 	EnemyImguiDraw(m_ThornEnemys);
 	EnemyImguiDraw(m_BoundEnemys);
-	EnemyImguiDraw(m_BirdEnemys);
+	EnemyImguiDraw(m_BirdEnemys);*/
 	EnemyImguiDraw(m_FollowEnemys);
-	EnemyImguiDraw(m_ChestEnemys);*/
+	//EnemyImguiDraw(m_ChestEnemys);
 }
 //ƒ}ƒbƒv‚Ì•`‰æ
 void EnemyManager::MapDraw(int MapType, XMFLOAT4 MapColor) {

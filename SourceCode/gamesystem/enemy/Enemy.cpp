@@ -104,7 +104,6 @@ void Enemy::Action() {
 	DeathMove();
 	//パーティクル
 	DeathBirthParticle();
-	
 	//エフェクト関係
 	ArgEffect();
 	//魂関係

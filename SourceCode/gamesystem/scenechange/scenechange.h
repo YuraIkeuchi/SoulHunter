@@ -15,10 +15,7 @@ public:
 	bool AddBlack(float AddPower);//ˆÃ‚­‚È‚é
 
 	bool SubBlack(float SubPower);//–¾‚é‚­‚È‚é
-	
-	const float& GetScale() { return m_scale; }
 
-	const int& GetTimer() { return m_Timer; }
 	const bool& GetAddStartChange() { return m_AddStartChange; }
 	const bool& GetSubStartChange() { return m_SubStartChange; }
 
@@ -37,16 +34,10 @@ private:
 	//ƒV[ƒ“Ø‚è‘Ö‚¦(k¬‚Ì•û)
 	unique_ptr<IKESprite> change = nullptr;
 	XMFLOAT2 m_pos = { 640.0f,360.0f, };
-
-	float m_scale = 1.0f;
+	float m_Frame = 0.0f;
 	bool m_AddStartChange = false;
 	bool m_SubStartChange = false;
-	int m_Timer = 0;
 
-	int m_BlackNumber = 0;
-	enum BlackColor {
-		Add,
-		Sub,
-	};
+
 };
 

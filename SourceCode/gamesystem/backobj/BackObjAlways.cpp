@@ -8,13 +8,13 @@ BackObjAlways::BackObjAlways() {
 //初期化
 bool BackObjAlways::Initialize() {
 	m_Color = { 0.5f,0.5f,0.5f,1.0f };
-	m_Scale = { 0.2f,0.2f,0.1f };
+	m_Scale = { 0.4f,0.4f,0.1f };
 	//ステージ地面
 	IKEObject3d* Object_;
 	Object_ = new IKEObject3d();
 	Object_ = IKEObject3d::Create();
 	Object_->SetModel(m_Model);
-	Object_->SetTiling(15.0f);
+	Object_->SetTiling(25.0f);
 	m_Object.reset(Object_);
 
 	return true;

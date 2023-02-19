@@ -539,7 +539,6 @@ void FirstStage::ChangeUpdate() {
 			StartStage = StageNumber;
 			block->ResetBlock();
 			minimap->ResetBlock();
-			SaveGame();
 			//ƒV[ƒ“æ‚ðŒˆ‚ß‚é
 			if (m_SceneMigration == Editor) {
 				SceneManager::GetInstance()->ChangeScene("EDITORSCENE");

@@ -15,7 +15,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	BaseInitialize(dxCommon);
 	//スプライト生成
 	IKESprite* TitlePartsSprite_[TITLE_MAX];
-	//gaussian = new PostEffect();
 	const int TitleCount = TITLE_MAX;
 	for (int i = 0; i < TitlePartsSprite.size(); i++) {
 		TitlePartsSprite_[i] = IKESprite::Create(ImageManager::TitleParts, { 0.0f,0.0f });
@@ -29,14 +28,51 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 		m_PartsSize[i] = { PartsWidth_Cut,PartsHeight_Cut };
 	}
 
-	m_PartsPos[EasyGame] = { 640.0f,400.0f };
-	m_PartsPos[NormalGame] = { 640.0f,520.0f };
+	m_PartsPos[NewGame] = { 640.0f,480.0f };
 	m_PartsPos[LoadGame] = { 640.0f,640.0f };
 	m_PartsPos[SelectGame] = { 640.0f,480.0f };
 
+	IKESprite* ModePartsSprite_[MODE_MAX];
+	const int ModeCount = MODE_MAX;
+	for (int i = 0; i < ModePartsSprite.size(); i++) {
+		ModePartsSprite_[i] = IKESprite::Create(ImageManager::ModeParts, { 0.0f,0.0f });
+		int number_index_y = i / ModeCount;
+		int number_index_x = i % ModeCount;
+		ModePartsSprite_[i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * PartsWidth_Cut, static_cast<float>(number_index_y) * PartsHeight_Cut },
+			{ static_cast<float>(PartsWidth_Cut), static_cast<float>(PartsHeight_Cut) });
+		ModePartsSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		ModePartsSprite[i].reset(ModePartsSprite_[i]);
+		m_ModePartsSize[i] = { PartsWidth_Cut,PartsHeight_Cut };
+	}
+
+	m_ModePartsPos[NewGame] = { 300.0f,640.0f };
+	m_ModePartsPos[LoadGame] = { 800.0f,640.0f };
+	m_ModePartsPos[SelectGame] = { 300.0f,640.0f };
+	//タイトル
 	IKESprite* TitleSprite_;
 	TitleSprite_ = IKESprite::Create(ImageManager::Title, { 0.0f,0.0f });
 	TitleSprite.reset(TitleSprite_);
+	//モード
+	IKESprite* ModeSprite_;
+	ModeSprite_ = IKESprite::Create(ImageManager::ModeBack, { 0.0f,0.0f });
+	ModeSprite.reset(ModeSprite_);
+
+	const int ExplainHeight_Cut = 400;
+	IKESprite* ModeEplainSprite_[EXPLAIN_MAX];
+	const int EXPLAINCount = EXPLAIN_MAX;
+	for (int i = 0; i < ModePartsSprite.size(); i++) {
+		ModeEplainSprite_[i] = IKESprite::Create(ImageManager::ModeExplain, { 0.0f,0.0f });
+		int number_index_y = i / EXPLAINCount;
+		int number_index_x = i % EXPLAINCount;
+		ModeEplainSprite_[i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * FullWidth_Cut, static_cast<float>(number_index_y) * ExplainHeight_Cut },
+			{ static_cast<float>(FullWidth_Cut), static_cast<float>(ExplainHeight_Cut) });
+		ModeEplainSprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		ModeEplainSprite_[i]->SetPosition({ 640.0f,250.0f });
+		ModeEplainSprite[i].reset(ModeEplainSprite_[i]);
+		m_ExplainSize[i] = { FullWidth_Cut,ExplainHeight_Cut };
+	}
 
 	//カメラワーク
 	camerawork = new CameraWork();
@@ -59,7 +95,8 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 
 	//セーブ
 	save = new Save();
-	m_TitleSelect = EasyGame;
+	m_TitleSelect = NewGame;
+	m_ModeSelect = EasyMode;
 	dxCommon->SetFullScreen(true);
 
 	pointLightAtten[0] = 20.0f;
@@ -68,7 +105,6 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
-	Input* input = Input::GetInstance();
 	lightGroup->Update();
 	titleobj->Update();
 	//カメラの位置調整
@@ -77,35 +113,6 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	lightGroup->SetPointLightPos(0, m_LightPos);
 	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
-	//ニューゲームかロードゲームかを選択する
-	if (!scenechange->GetAddStartChange()) {
-		if (m_TitleSelect < LoadGame && input->LeftTriggerStick(input->Down)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_TitleSelect++;
-		}
-
-		else if (m_TitleSelect > EasyGame && input->LeftTriggerStick(input->Up)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_TitleSelect--;
-		}
-	}
-
-	if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
-		scenechange->SetAddStartChange(true);
-		if (m_TitleSelect == LoadGame) {
-			m_GameLoad = true;
-		}
-		else {
-			m_GameLoad = false;
-			if (m_TitleSelect == EasyGame) {
-				m_NormalMode = false;
-			}
-			else {
-				m_NormalMode = true;
-			}
-		}
-	}
 
 	//ライトを徐々に小さくする
 	if (scenechange->GetAddStartChange()) {
@@ -127,14 +134,26 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 		TitlePartsSprite[i]->SetSize(m_PartsSize[i]);
 		TitlePartsSprite[i]->SetColor(m_TitleColor);
 	}
+
+	for (int i = 0; i < ModePartsSprite.size(); i++) {
+		ModePartsSprite[i]->SetPosition(m_ModePartsPos[i]);
+		ModePartsSprite[i]->SetSize(m_ModePartsSize[i]);
+		ModePartsSprite[i]->SetColor(m_ModeColor);
+	}
+
+	for (int i = 0; i < ModeEplainSprite.size(); i++) {
+		ModeEplainSprite[i]->SetSize(m_ExplainSize[i]);
+		ModeEplainSprite[i]->SetColor(m_ModeColor);
+	}
 	TitleSprite->SetColor(m_TitleColor);
+	ModeSprite->SetColor(m_ModeColor);
 	ParticleEmitter::GetInstance()->FireEffect( 100,{0.0f,23.0f,0.0f}, 5.0f, 0.0f,{ 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
-	//タイトルの文字浮かぶ
-	PartsBirth();
-	//タイトルの文字が動く
-	PartsMove();
+	//ゲーム選択
+	SelectGameMode();
+	//色の変更
+	ColorChange();
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
 }
@@ -175,16 +194,21 @@ void TitleScene::ModelDraw(DirectXCommon* dxCommon) {
 //前面描画
 void TitleScene::FrontDraw() {
 	IKEObject3d::PreDraw();
-	//titleobj->FrontDraw();
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
-	TitlePartsSprite[3]->Draw();
-	for (int i = 0; i < 3; i++) {
+	TitlePartsSprite[2]->Draw();
+	for (int i = 0; i < 2; i++) {
 		TitlePartsSprite[i]->Draw();
 	}
+	ModeSprite->Draw();
+	ModePartsSprite[2]->Draw();
+	for (int i = 0; i < 2; i++) {
+		ModePartsSprite[i]->Draw();
+	}
+	ModeEplainSprite[m_ModeSelect]->Draw();
 	scenechange->Draw();
 	IKESprite::PostDraw();
 }
@@ -215,38 +239,85 @@ void TitleScene::PostImGuiDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトの種類
 void TitleScene::ChangePostEffect(int PostType) {
 }
-//パーツの動き
-void TitleScene::PartsMove() {
-	if (m_TitleSelect == EasyGame) {
-		m_Angle[EasyGame] += 2.0f;
-		m_Angle2[EasyGame] = m_Angle[EasyGame] * (3.14f / 180.0f);
-		//選択時座標が上下に動く
-		m_PartsPos[SelectGame] = m_PartsPos[EasyGame];
-		m_Angle[NormalGame] = 0.0f;
-		m_Angle[LoadGame] = 0.0f;
-		m_PartsPos[NormalGame].y = 520.0f;
-		m_PartsPos[LoadGame].y = 640.0f;
-		//選択時サイズも少し変わる
-		m_PartsSize[EasyGame] = { (sin(m_Angle2[EasyGame]) * 32.0f) + (640.0f),
-			(sin(m_Angle2[EasyGame]) * 16.0f) + (128.0f) };
-		m_PartsSize[SelectGame] = m_PartsSize[EasyGame];
-		m_PartsSize[NormalGame] = { 640.0f,128.0f };
-		m_PartsSize[LoadGame] = { 640.0f,128.0f };
+void TitleScene::SelectGameMode() {
+	Input* input = Input::GetInstance();
+	//ゲームを始めるかモードを選択するか
+	//ゲームの場合
+	if (m_SelectType == Game) {
+		if (m_TitleSelect == NewGame && input->LeftTriggerStick(input->Down)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_TitleSelect = LoadGame;
+		}
+
+		else if (m_TitleSelect == LoadGame && input->LeftTriggerStick(input->Up)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_TitleSelect = NewGame;
+		}
+		//NewGameかLoadGameか
+		if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
+			if (m_TitleSelect == LoadGame) {
+				scenechange->SetAddStartChange(true);
+				m_GameLoad = true;
+			}
+			else {
+				m_SelectType = Mode;
+				m_ModeChange = true;
+				m_Frame = m_FrameMin;
+				m_AfterTitleAlpha = m_ColorMin;
+				m_AfterModeAlpha = m_ColorMax;
+			}
+		}
+		//タイトルの文字が動く
+		TitleMove();
 	}
-	else if (m_TitleSelect == NormalGame) {
-		m_Angle[NormalGame] += 2.0f;
-		m_Angle2[NormalGame] = m_Angle[NormalGame] * (3.14f / 180.0f);
+	else {
+		//モード選択
+		if (m_ModeSelect == EasyMode && input->LeftTriggerStick(input->Right)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_ModeSelect = NormalMode;
+		}
+
+		else if (m_ModeSelect == NormalMode && input->LeftTriggerStick(input->Left)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_ModeSelect = EasyMode;
+		}
+		//EasyGameかNormalGameか
+		if (input->PushKey(DIK_RETURN) || input->TriggerButton(input->Button_B) && !scenechange->GetSubStartChange() && !scenechange->GetAddStartChange()) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Buttun.wav", VolumManager::GetInstance()->GetSEVolum());
+			scenechange->SetAddStartChange(true);
+			m_GameLoad = false;
+			if (m_ModeSelect == EasyMode) {
+					m_NormalMode = false;
+				}
+			else {
+				m_NormalMode = true;
+			}
+		}
+		//前の画面に戻る
+		if (input->TriggerButton(input->Select)) {
+			m_SelectType = Game;
+			m_ModeChange = true;
+			m_Frame = m_FrameMin;
+			m_AfterTitleAlpha = m_ColorMax;
+			m_AfterModeAlpha = m_ColorMin;
+		}
+		//モードの文字が動く
+		ModeMove();
+	}
+}
+//パーツの動き(タイトル)
+void TitleScene::TitleMove() {
+	if (m_TitleSelect == NewGame) {
+		m_Angle[NewGame] += 2.0f;
+		m_Angle2[NewGame] = m_Angle[NewGame] * (3.14f / 180.0f);
 		//選択時座標が上下に動く
-		m_PartsPos[SelectGame] = m_PartsPos[NormalGame];
-		m_Angle[EasyGame] = 0.0f;
+		m_PartsPos[SelectGame] = m_PartsPos[NewGame];
 		m_Angle[LoadGame] = 0.0f;
-		m_PartsPos[EasyGame].y = 400.0f;
-		m_PartsPos[LoadGame].y = 640.0f;
 		//選択時サイズも少し変わる
-		m_PartsSize[NormalGame] = { (sin(m_Angle2[NormalGame]) * 32.0f) + (640.0f),
-			(sin(m_Angle2[NormalGame]) * 16.0f) + (128.0f) };
-		m_PartsSize[SelectGame] = m_PartsSize[NormalGame];
-		m_PartsSize[EasyGame] = { 640.0f,128.0f };
+		m_PartsSize[NewGame] = { (sin(m_Angle2[NewGame]) * 32.0f) + (640.0f),
+			(sin(m_Angle2[NewGame]) * 16.0f) + (128.0f) };
+		m_PartsSize[SelectGame] = m_PartsSize[NewGame];
 		m_PartsSize[LoadGame] = { 640.0f,128.0f };
 	}
 	else {
@@ -254,32 +325,53 @@ void TitleScene::PartsMove() {
 		m_Angle2[LoadGame] = m_Angle[LoadGame] * (3.14f / 180.0f);
 		//選択時座標が上下に動く
 		m_PartsPos[SelectGame] = m_PartsPos[LoadGame];
-
-		m_Angle[EasyGame] = 0.0f;
-		m_PartsPos[EasyGame].y = 400.0f;
-		m_Angle[NormalGame] = 0.0f;
-		m_PartsPos[NormalGame].y = 520.0f;
+		m_Angle[NewGame] = 0.0f;
 		//選択時サイズも少し変わる
 		m_PartsSize[LoadGame] = { (sin(m_Angle2[LoadGame]) * 32.0f) + (640.0f),
 			(sin(m_Angle2[LoadGame]) * 16.0f - 16.0f) + (128.0f) };
 		m_PartsSize[SelectGame] = m_PartsSize[LoadGame];
-		m_PartsSize[EasyGame] = { 640.0f,128.0f };
-		m_PartsSize[NormalGame] = { 640.0f,128.0f };
+		m_PartsSize[NewGame] = { 640.0f,128.0f };
 	}
 }
-//文字の浮かび上がり
-void TitleScene::PartsBirth() {
-	m_TitleTimer++;
-
-	//一定時間立ったらタイトルの文字が出てくる
-	if (m_TitleTimer >= 50) {
+//パーツの動き(モード)
+void TitleScene::ModeMove() {
+	if (m_ModeSelect == EasyMode) {
+		m_Angle[EasyMode] += 2.0f;
+		m_Angle2[EasyMode] = m_Angle[EasyMode] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_ModePartsPos[SelectMode] = m_ModePartsPos[EasyMode];
+		//選択時サイズも少し変わる
+		m_ModePartsSize[EasyMode] = { (sin(m_Angle2[EasyMode]) * 32.0f) + (640.0f),
+			(sin(m_Angle2[EasyMode]) * 16.0f) + (128.0f) };
+		m_ModePartsSize[SelectMode] = m_ModePartsSize[EasyMode];
+		m_ModePartsSize[NormalMode] = { 640.0f,128.0f };
+		m_Angle[NormalMode] = 0.0f;
+	}
+	else {
+		m_Angle[NormalMode] += 2.0f;
+		m_Angle2[NormalMode] = m_Angle[NormalMode] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_ModePartsPos[SelectMode] = m_ModePartsPos[NormalMode];
+		//選択時サイズも少し変わる
+		m_ModePartsSize[NormalMode] = { (sin(m_Angle2[NormalMode]) * 32.0f) + (640.0f),
+			(sin(m_Angle2[NormalMode]) * 16.0f - 16.0f) + (128.0f) };
+		m_ModePartsSize[SelectMode] = m_ModePartsSize[NormalMode];
+		m_ModePartsSize[EasyMode] = { 640.0f,128.0f };
+		m_Angle[EasyMode] = 0.0f;
+	}
+}
+//色の変更
+void TitleScene::ColorChange() {
+	if (m_ModeChange) {
 		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.005f;
+			m_Frame += 0.1f;
 		}
 		else {
 			m_Frame = m_FrameMax;
+			m_ModeChange = false;
 		}
-	}
 
-	m_TitleColor.w = Ease(In, Cubic, m_Frame, m_TitleColor.w, 1.0f);
+		m_TitleColor.w = Ease(In, Cubic, m_Frame, m_TitleColor.w, m_AfterTitleAlpha);
+		m_ModeColor.w = Ease(In, Cubic, m_Frame, m_ModeColor.w, m_AfterModeAlpha);
+	}
 }
