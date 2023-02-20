@@ -5,6 +5,7 @@
 #include "LibraPause.h"
 #include "DushPause.h"
 #include "HealPause.h"
+#include "JumpPause.h"
 #include <array>   
 #include <memory> 
 using namespace std;         //  名前空間指定
@@ -28,7 +29,7 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
-	static const int Skill_Max = 4;//スキルの数
+	static const int Skill_Max = 5;//スキルの数
 
 public:
 	//getter
@@ -43,6 +44,7 @@ private:
 	unique_ptr<DushPause> dushpause = nullptr;
 	unique_ptr<LibraPause> librapause = nullptr;
 	unique_ptr<HealPause> healpause = nullptr;
+	unique_ptr<JumpPause> jumppause = nullptr;
 	//スプライト
 	unique_ptr<IKESprite> PauseSprite = nullptr;
 	unique_ptr<IKESprite> select = nullptr;

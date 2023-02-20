@@ -16,6 +16,7 @@ Chest::Chest() {
 	IKESprite::LoadTexture(21, L"Resources/2d/SkillExplain/LibraExplain.png");
 	IKESprite::LoadTexture(22, L"Resources/2d/SkillExplain/DushExplain.png");
 	IKESprite::LoadTexture(23, L"Resources/2d/SkillExplain/HealExplain.png");
+	IKESprite::LoadTexture(24, L"Resources/2d/SkillExplain/JumpExplain.png");
 	//モデル
 	modelCloseChest = ModelManager::GetInstance()->GetModel(ModelManager::CloseChest);
 	modelOpenChest = ModelManager::GetInstance()->GetModel(ModelManager::OpenChest);
@@ -118,6 +119,25 @@ Chest::Chest() {
 		m_HealColor[i] = { 1.0f,1.0f,1.0f,0.0f };
 		m_HealDraw[i] = false;
 	}
+
+
+	//ジャンプ
+	IKESprite* JumpExplain_[JumpExplain_Max];
+	for (int i = 0; i < JumpExplain_Max; i++) {
+		JumpExplain_[i] = IKESprite::Create(24, { 0.0f,0.0f });
+		int number_index_y = i / JumpExplain_Max;
+		int number_index_x = i % JumpExplain_Max;
+		JumpExplain_[i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * ExplainWidth_Cut, static_cast<float>(number_index_y) * ExplainHeight_Cut },
+			{ static_cast<float>(ExplainWidth_Cut), static_cast<float>(ExplainHeight_Cut) });
+		JumpExplain_[i]->SetSize({ ExplainWidth_Cut,ExplainHeight_Cut });
+		JumpExplain_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		m_JumpTexPos[i] = { 640.0f,(150.0f * i) + 150.0f };
+		//LibraExplain_[i]->SetPosition({ 640.0f,(200.0f * i) + 200.0f });
+		JumpExplain[i].reset(JumpExplain_[i]);
+		m_JumpColor[i] = { 1.0f,1.0f,1.0f,0.0f };
+		m_JumpDraw[i] = false;
+	}
 	//宝箱に近づいたときのテクスチャ
 	IKETexture* chestTex_ = IKETexture::Create(ImageManager::ChestTex, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 	chestTex_->TextureCreate();
@@ -169,6 +189,10 @@ void Chest::Update() {
 		HealExplain[i]->SetPosition(m_HealTexPos[i]);
 		HealExplain[i]->SetColor(m_HealColor[i]);
 	}
+	for (int i = 0; i < JumpExplain_Max; i++) {
+		JumpExplain[i]->SetPosition(m_JumpTexPos[i]);
+		JumpExplain[i]->SetColor(m_JumpColor[i]);
+	}
 }
 //描画
 const void Chest::Draw() {
@@ -209,6 +233,9 @@ const void Chest::ExplainDraw() {
 	for (int i = 0; i < DushExplain_Max; i++) {
 		HealExplain[i]->Draw();
 	}
+	for (int i = 0; i < JumpExplain_Max; i++) {
+		JumpExplain[i]->Draw();
+	}
 }
 //ステージごとの初期化
 void Chest::InitChest(int StageNumber) {
@@ -222,6 +249,22 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Dush] = false;
 	}
+	//ヒール
+	if (StageNumber == Map1) {
+		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
+		m_Alive[Heal] = true;
+	}
+	else {
+		m_Alive[Heal] = false;
+	}
+	//コンパス
+	if (StageNumber == Map2) {
+		m_ChestPos[Compass] = { 190.0f,-150.0f,5.0f };
+		m_Alive[Compass] = true;
+	}
+	else {
+		m_Alive[Compass] = false;
+	}
 	//ライブラ
 	if (StageNumber == Map3) {
 		m_ChestPos[Libra] = { 277.0f,-265.5f,5.0f };
@@ -230,21 +273,13 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Libra] = false;
 	}
-	//コンパス
+	//ジャンプ
 	if (StageNumber == Map6) {
-		m_ChestPos[Compass] = { 18.0f,-240.0f,5.0f };
-		m_Alive[Compass] = true;
+		m_ChestPos[Jump] = { 18.0f,-240.0f,5.0f };
+		m_Alive[Jump] = true;
 	}
 	else {
-		m_Alive[Compass] = false;
-	}
-	//ヒール
-	if (StageNumber == Map1) {
-		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
-		m_Alive[Heal] = true;
-	}
-	else {
-		m_Alive[Heal] = false;
+		m_Alive[Jump] = false;
 	}
 	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest[i]->SetPosition(m_ChestPos[i]);
@@ -316,6 +351,12 @@ void Chest::OpenChest() {
 			PlayerSkill::GetInstance()->SetHealSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
+		else if (m_Hit[Jump] && m_ChestState[Jump] == Close) {
+			m_ReadText[Jump] = true;
+			m_ChestState[Jump] = Open;
+			PlayerSkill::GetInstance()->SetJumpSkill(true);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
+		}
 	}
 
 	//説明が入るようになる
@@ -348,6 +389,10 @@ void Chest::OpenChest() {
 		m_ChestState[Heal] = Open;
 	}
 
+	if (PlayerSkill::GetInstance()->GetJumpSkill()) {
+		m_ChestState[Jump] = Open;
+	}
+
 	//宝箱の形態が変わる
 	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ChestState[i] == Open) {
@@ -373,7 +418,7 @@ void Chest::Explain() {
 			m_BackColor.w = m_ColorMax;
 		}
 		//テキストが出終わったら終わり
-		if (CompassText() || LibraText() || DushText() || HealText()) {
+		if (CompassText() || LibraText() || DushText() || HealText() || JumpText()) {
 			m_Explain = false;
 		}
 	}
@@ -411,6 +456,15 @@ void Chest::Explain() {
 			}
 			else {
 				m_HealColor[i].w = m_ColorMin;
+			}
+		}
+
+		for (int i = 0; i < JumpExplain_Max; i++) {
+			if (m_JumpColor[i].w > m_ColorMin) {
+				m_JumpColor[i].w -= m_ChangeAlpha;
+			}
+			else {
+				m_JumpColor[i].w = m_ColorMin;
 			}
 		}
 		//色が薄くなってテキスト表示終了
@@ -624,6 +678,60 @@ bool Chest::HealText() {
 				m_HealTexPos[i] = {
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].x, m_AfterHealTexPos[i].x),
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].y,m_AfterHealTexPos[i].y),
+				};
+			}
+		}
+	}
+	return false;
+}
+//ジャンプスキルの説明文が出る
+bool Chest::JumpText() {
+	Input* input = Input::GetInstance();
+	if (m_ReadText[Jump]) {
+		m_JumpTimer++;
+		if (input->TriggerButton(input->Button_A) && m_JumpTimer >= 10) {
+			for (int i = 0; i < JumpExplain_Max; i++) {
+				m_JumpDraw[i] = false;
+			}
+			m_JumpTimer = 0;
+			m_ReadText[Jump] = false;
+			return true;
+		}
+	}
+	//徐々に説明文が出る
+	if (m_JumpTimer <= m_LibraTimerMax) {
+		for (int i = 0; i < JumpExplain_Max; i++) {
+			if (m_JumpTimer % 30 == 0 && m_JumpTimer != 0) {
+				if (!m_JumpDraw[i]) {
+					m_JumpDraw[i] = true;
+					m_AfterJumpTexPos[i] = {
+					m_JumpTexPos[i].x,
+					m_JumpTexPos[i].y - 20.0f
+					};
+					break;
+				}
+				else {
+
+				}
+			}
+
+			if (m_JumpDraw[i]) {
+				if (m_JumpColor[i].w < m_ColorMax) {
+					m_JumpColor[i].w += m_ChangeAlpha;
+				}
+				else {
+					m_JumpColor[i].w = m_ColorMax;
+				}
+
+				if (m_JumpTexframe[i] < m_ColorMax) {
+					m_JumpTexframe[i] += m_ChangeTexFrame;
+				}
+				else {
+					m_JumpTexframe[i] = m_ColorMax;
+				}
+				m_JumpTexPos[i] = {
+			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].x, m_AfterJumpTexPos[i].x),
+			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].y,m_AfterJumpTexPos[i].y),
 				};
 			}
 		}

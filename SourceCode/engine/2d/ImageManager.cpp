@@ -27,6 +27,7 @@ void ImageManager::Load2D() {
 	IKESprite::LoadTexture(DushExplain, L"Resources/2d/ui/Dushexplain.png");
 	IKESprite::LoadTexture(CompassExplain, L"Resources/2d/ui/Compassexplain.png");
 	IKESprite::LoadTexture(HealExplain, L"Resources/2d/ui/Healexplain.png");
+	IKESprite::LoadTexture(JumpExplain, L"Resources/2d/ui/Jumpexplain.png");
 	IKESprite::LoadTexture(Save1, L"Resources/2d/sceneback/SaveText.png");
 	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
 	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");

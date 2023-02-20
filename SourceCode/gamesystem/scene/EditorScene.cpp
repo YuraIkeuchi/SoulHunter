@@ -41,7 +41,6 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	ImGuiEditor* imguieditor_;
 	imguieditor_ = new ImGuiEditor();
 	imguieditor.reset(imguieditor_);
-	//StartGame();
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
 	enemymanager->LoadEnemyParam(StageNumber,player,block,lightGroup);

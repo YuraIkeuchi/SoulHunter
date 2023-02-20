@@ -12,9 +12,9 @@ using XMMATRIX = DirectX::XMMATRIX;
 XMFLOAT2 HealPause::s_HealPos = { 150.0f,400.0f };
 //‰Šú‰»
 void HealPause::Initialize() {
-	IKESprite::LoadTexture(26, L"Resources/2d/Skill/Heal.png");
+	IKESprite::LoadTexture(28, L"Resources/2d/Skill/Heal.png");
 	IKESprite* HealSprite_;
-	HealSprite_ = IKESprite::Create(26, { 0.0f,0.0f });
+	HealSprite_ = IKESprite::Create(28, { 0.0f,0.0f });
 	HealSprite_->SetPosition({ 500.0f,500.0f });
 	HealSprite_->SetSize(m_HealSize);
 	HealSprite_->SetAnchorPoint({ 0.5f,0.5f });

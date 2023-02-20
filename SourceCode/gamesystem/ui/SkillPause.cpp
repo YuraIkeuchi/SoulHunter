@@ -14,27 +14,36 @@ using XMVECTOR = DirectX::XMVECTOR;
 using XMMATRIX = DirectX::XMMATRIX;
 //読み込み
 SkillPause::SkillPause() {
+	//コンパス
 	CompassPause* compasspause_;
 	compasspause_ = new CompassPause();
 	compasspause_->Initialize();
 	compasspause_->Update();
 	compasspause.reset(compasspause_);
+	//ダッシュ
 	DushPause* dushpause_;
 	dushpause_ = new DushPause();
 	dushpause_->Initialize();
 	dushpause_->Update();
 	dushpause.reset(dushpause_);
+	//ライブラ
 	LibraPause* librapause_;
 	librapause_ = new LibraPause();
 	librapause_->Initialize();
 	librapause_->Update();
 	librapause.reset(librapause_);
-
+	//ヒール
 	HealPause* healpause_;
 	healpause_ = new HealPause();
 	healpause_->Initialize();
 	healpause_->Update();
 	healpause.reset(healpause_);
+	//ジャンプ
+	JumpPause* jumppause_;
+	jumppause_ = new JumpPause();
+	jumppause_->Initialize();
+	jumppause_->Update();
+	jumppause.reset(jumppause_);
 
 	IKESprite* PauseSprite_;
 	PauseSprite_ = IKESprite::Create(ImageManager::PauseSkill, { 0.0f,0.0f });
@@ -64,6 +73,7 @@ SkillPause::SkillPause() {
 	ExplainSprite_[1] = IKESprite::Create(ImageManager::DushExplain, { 0.0f,0.0f });
 	ExplainSprite_[2] = IKESprite::Create(ImageManager::CompassExplain, { 0.0f,0.0f });
 	ExplainSprite_[3] = IKESprite::Create(ImageManager::HealExplain, { 0.0f,0.0f });
+	ExplainSprite_[4] = IKESprite::Create(ImageManager::JumpExplain, { 0.0f,0.0f });
 	for (int i = 0; i < Skill_Max; i++) {
 		ExplainSprite_[i]->SetPosition({ 770.0f,200.0f });
 		ExplainSprite[i].reset(ExplainSprite_[i]);
@@ -75,6 +85,7 @@ void SkillPause::InitPos() {
 	dushpause->InitPos();
 	librapause->InitPos();
 	healpause->InitPos();
+	jumppause->InitPos();
 }
 //初期化
 void SkillPause::Initialize() {
@@ -83,6 +94,7 @@ void SkillPause::Initialize() {
 	NoItemSprite[1]->SetPosition({ 300.0f,200.0f });
 	NoItemSprite[2]->SetPosition({ 450.0f,200.0f });
 	NoItemSprite[3]->SetPosition({ 150.0f,400.0f });
+	NoItemSprite[4]->SetPosition({ 300.0f,400.0f });
 }
 //更新
 void SkillPause::Update() {
@@ -90,6 +102,7 @@ void SkillPause::Update() {
 	dushpause->Update();
 	librapause->Update();
 	healpause->Update();
+	jumppause->Update();
 	Input* input = Input::GetInstance();
 	//元のポーズメニューに戻る
 	if (input->TriggerButton(input->Select)) {
@@ -124,6 +137,7 @@ void SkillPause::Update() {
 	dushpause->SetColor(m_SkillColor);
 	librapause->SetColor(m_SkillColor);
 	healpause->SetColor(m_SkillColor);
+	jumppause->SetColor(m_SkillColor);
 	//スキル選択
 	SelectSkill();
 	//選択肢が合うとサイズが動く
@@ -131,15 +145,14 @@ void SkillPause::Update() {
 	dushpause->ChangeSize(select->GetPosition());
 	librapause->ChangeSize(select->GetPosition());
 	healpause->ChangeSize(select->GetPosition());
+	jumppause->ChangeSize(select->GetPosition());
 }
 //描画
 const void SkillPause::Draw() {
-	/*ImGui::Begin("Pause");
+	ImGui::Begin("Pause");
 	ImGui::Text("SelectWidth:%d", m_SelectWeight);
 	ImGui::Text("SelectHeight:%d", m_SelectHeight);
-	ImGui::Text("PosX:%f", select->GetPosition().x);
-	ImGui::Text("PosY:%f", select->GetPosition().y);
-	ImGui::End();*/
+	ImGui::End();
 	IKESprite::PreDraw();
 	PauseSprite->Draw();
 	
@@ -150,17 +163,17 @@ const void SkillPause::Draw() {
 	if (PlayerSkill::GetInstance()->GetLibraSkill() && librapause->GetLibraPos().x != 0.0f) {
 		librapause->Draw();
 	}
-
 	if (PlayerSkill::GetInstance()->GetDushSkill() && dushpause->GetDushPos().x != 0.0f) {
 		dushpause->Draw();
 	}
-
 	if (PlayerSkill::GetInstance()->GetCompassSkill() && compasspause->GetCompassPos().x != 0.0f) {
 		compasspause->Draw();
 	}
-	//後々直す(ヒールスキル)
 	if (PlayerSkill::GetInstance()->GetHealSkill() && healpause->GetHealPos().x != 0.0f) {
 		healpause->Draw();
+	}
+	if (PlayerSkill::GetInstance()->GetJumpSkill() && jumppause->GetJumpPos().x != 0.0f) {
+		jumppause->Draw();
 	}
 
 	if ((select->GetPosition().x == librapause->GetLibraPos().x && select->GetPosition().y == librapause->GetLibraPos().y)
@@ -178,6 +191,10 @@ const void SkillPause::Draw() {
 	else if ((select->GetPosition().x == healpause->GetHealPos().x && select->GetPosition().y == healpause->GetHealPos().y)
 		&& PlayerSkill::GetInstance()->GetHealSkill()) {
 		ExplainSprite[3]->Draw();
+	}
+	else if ((select->GetPosition().x == jumppause->GetJumpPos().x && select->GetPosition().y == jumppause->GetJumpPos().y)
+		&& PlayerSkill::GetInstance()->GetJumpSkill()) {
+		ExplainSprite[4]->Draw();
 	}
 	select->Draw();
 }
@@ -215,11 +232,17 @@ void SkillPause::SelectSkill() {
 		}
 	}
 	else {
-		////選択の場所を変える
-		//if (m_SelectWeight > LeftSide && input->LeftTriggerStick(input->Right)) {
-		//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
-		//	m_SelectWeight--;
-		//	select->SetPosition({ select->GetPosition().x - 150.0f,400.0f });
-		//}
+		//選択の場所を変える
+		if (m_SelectWeight > LeftSide && input->LeftTriggerStick(input->Left)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_SelectWeight--;
+			select->SetPosition({ select->GetPosition().x - 150.0f,400.0f });
+		}
+		//選択の場所を変える
+		if (m_SelectWeight < RightSide - 1 && input->LeftTriggerStick(input->Right)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
+			m_SelectWeight++;
+			select->SetPosition({ select->GetPosition().x + 150.0f,400.0f });
+		}
 	}
 }
