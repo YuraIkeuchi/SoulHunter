@@ -161,6 +161,7 @@ void BaseScene::SaveGame() {
 	playerofs << "LibraSkill" << "," << PlayerSkill::GetInstance()->GetLibraSkill() << std::endl;
 	playerofs << "CompassSkill" << "," << PlayerSkill::GetInstance()->GetCompassSkill() << std::endl;
 	playerofs << "HealSkill" << "," << PlayerSkill::GetInstance()->GetHealSkill() << std::endl;
+	playerofs << "JumpSkill" << "," << PlayerSkill::GetInstance()->GetJumpSkill() << std::endl;
 	playerofs << "HP" << "," << player->GetHP() << std::endl;
 	playerofs << "Soul" << "," << player->GetSoulCount() << std::endl;
 }
@@ -225,6 +226,13 @@ void BaseScene::LoadGame() {
 			bool l_starthealskill = (int)std::atof(word.c_str());
 
 			PlayerSkill::GetInstance()->SetHealSkill(l_starthealskill);
+		}
+		else if (word.find("JumpSkill") == 0) {
+
+			std::getline(line_stream, word, ',');
+			bool l_startjumpskill = (int)std::atof(word.c_str());
+
+			PlayerSkill::GetInstance()->SetJumpSkill(l_startjumpskill);
 		}
 		else if (word.find("HP") == 0) {
 

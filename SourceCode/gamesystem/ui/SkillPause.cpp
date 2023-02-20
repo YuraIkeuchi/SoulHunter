@@ -242,7 +242,7 @@ void SkillPause::SelectSkill() {
 		if (m_SelectWeight < RightSide - 1 && input->LeftTriggerStick(input->Right)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_SelectWeight++;
-			select->SetPosition({ select->GetPosition().x + 150.0f,200.0f });
+			select->SetPosition({ select->GetPosition().x + 150.0f,400.0f });
 		}
 	}
 }

@@ -168,8 +168,9 @@ private:
 	float m_AddPower = 0.0f;
 	//重力加速度
 	float m_Gravity = 0.0f;
+	int m_JumpMax = 3;
 	//ジャンプ回数
-	int m_JumpCount = 4;
+	int m_JumpCount = 3;
 	//ジャンプ時の動きの変数
 	bool m_JumpRot = false;
 	float m_RotFrame = 0.0f;

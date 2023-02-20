@@ -249,6 +249,22 @@ void Chest::InitChest(int StageNumber) {
 	else {
 		m_Alive[Dush] = false;
 	}
+	//ヒール
+	if (StageNumber == Map1) {
+		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
+		m_Alive[Heal] = true;
+	}
+	else {
+		m_Alive[Heal] = false;
+	}
+	//コンパス
+	if (StageNumber == Map2) {
+		m_ChestPos[Compass] = { 190.0f,-150.0f,5.0f };
+		m_Alive[Compass] = true;
+	}
+	else {
+		m_Alive[Compass] = false;
+	}
 	//ライブラ
 	if (StageNumber == Map3) {
 		m_ChestPos[Libra] = { 277.0f,-265.5f,5.0f };
@@ -264,14 +280,6 @@ void Chest::InitChest(int StageNumber) {
 	}
 	else {
 		m_Alive[Jump] = false;
-	}
-	//ヒール
-	if (StageNumber == Map1) {
-		m_ChestPos[Heal] = { 170.0f,-110.0f,5.0f };
-		m_Alive[Heal] = true;
-	}
-	else {
-		m_Alive[Heal] = false;
 	}
 	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest[i]->SetPosition(m_ChestPos[i]);
@@ -341,6 +349,12 @@ void Chest::OpenChest() {
 			m_ReadText[Heal] = true;
 			m_ChestState[Heal] = Open;
 			PlayerSkill::GetInstance()->SetHealSkill(true);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
+		}
+		else if (m_Hit[Jump] && m_ChestState[Jump] == Close) {
+			m_ReadText[Jump] = true;
+			m_ChestState[Jump] = Open;
+			PlayerSkill::GetInstance()->SetJumpSkill(true);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/takarabako.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
