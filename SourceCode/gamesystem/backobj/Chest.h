@@ -22,6 +22,7 @@ public:
 	bool LibraText();
 	bool DushText();
 	bool HealText();
+	bool JumpText();
 public:
 	bool GetExplain() { return m_Explain; }
 private:
@@ -33,11 +34,12 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 private:
 	//定数
-	static const int Skill_Max = 4;//スキルの数
+	static const int Skill_Max = 5;//スキルの数
 	static const int CompassExplain_Max = 4;//説明文の数(コンパス)
 	static const int LibraExplain_Max = 3;//説明文の数(天秤座)
 	static const int DushExplain_Max = 4;//説明文の数(ダッシュ)
 	static const int HealExplain_Max = 4;//説明文の数(ヒール)
+	static const int JumpExplain_Max = 3;//説明文の数(天秤座)
 public:
 	//getter
 	
@@ -56,6 +58,7 @@ private:
 	array<unique_ptr<IKESprite>, LibraExplain_Max> LibraExplain;
 	array<unique_ptr<IKESprite>, DushExplain_Max> DushExplain;
 	array<unique_ptr<IKESprite>, HealExplain_Max> HealExplain;
+	array<unique_ptr<IKESprite>, JumpExplain_Max> JumpExplain;
 	unique_ptr<IKESprite> ExplainBack;
 	//テクスチャ
 	unique_ptr<IKETexture> chestTex = nullptr;
@@ -102,6 +105,13 @@ private:
 	array<XMFLOAT2, HealExplain_Max> m_HealTexPos;
 	array<XMFLOAT2, HealExplain_Max> m_AfterHealTexPos;
 	array<float, HealExplain_Max> m_HealTexframe;
+	//ジャンプ
+	int m_JumpTimer = 0;
+	array<bool, JumpExplain_Max> m_JumpDraw;
+	array<XMFLOAT4, JumpExplain_Max> m_JumpColor;
+	array<XMFLOAT2, JumpExplain_Max> m_JumpTexPos;
+	array<XMFLOAT2, JumpExplain_Max> m_AfterJumpTexPos;
+	array<float, JumpExplain_Max> m_JumpTexframe;
 	//どのテキストがテキストが出るか
 	array<bool, Skill_Max> m_ReadText;
 	//宝箱を開けるテキストの変数関係
@@ -120,6 +130,7 @@ private:
 		Libra,
 		Dush,
 		Heal,
+		Jump,
 	};
 
 	//マジックナンバー解消のための変数

@@ -11,9 +11,9 @@ using XMMATRIX = DirectX::XMMATRIX;
 XMFLOAT2 DushPause::s_DushPos = { 300.0f,200.0f };
 //‰Šú‰»
 void DushPause::Initialize() {
-	IKESprite::LoadTexture(25, L"Resources/2d/Skill/Dush.png");
+	IKESprite::LoadTexture(26, L"Resources/2d/Skill/Dush.png");
 	IKESprite* DushSprite_;
-	DushSprite_ = IKESprite::Create(25, { 0.0f,0.0f });
+	DushSprite_ = IKESprite::Create(26, { 0.0f,0.0f });
 	DushSprite_->SetPosition({ 300.0f,500.0f });
 	DushSprite_->SetSize(m_DushSize);
 	DushSprite_->SetAnchorPoint({ 0.5f,0.5f });

@@ -11,9 +11,9 @@ using XMMATRIX = DirectX::XMMATRIX;
 XMFLOAT2 LibraPause::s_LibraPos = { 150.0f,200.0f };
 //‰Šú‰»
 void LibraPause::Initialize() {
-	IKESprite::LoadTexture(27, L"Resources/2d/Skill/Libra.png");
+	IKESprite::LoadTexture(29, L"Resources/2d/Skill/Libra.png");
 	IKESprite* LibraSprite_;
-	LibraSprite_ = IKESprite::Create(27, { 0.0f,0.0f });
+	LibraSprite_ = IKESprite::Create(29, { 0.0f,0.0f });
 	LibraSprite_->SetSize(m_LibraSize);
 	LibraSprite_->SetPosition({ 100.0f,500.0f });
 	LibraSprite_->SetAnchorPoint({ 0.5f,0.5f });

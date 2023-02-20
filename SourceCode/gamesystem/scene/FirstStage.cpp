@@ -530,7 +530,6 @@ void FirstStage::ChangeUpdate() {
 	if (player->DeathMove()) {
 		scenechange->SetAddStartChange(true);
 	}
-
 	//シーン変更
 	if (scenechange->AddBlack(0.05f)) {
 		//ImGuiでシーンを切り替えたかどうか

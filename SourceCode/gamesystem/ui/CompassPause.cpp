@@ -12,9 +12,9 @@ using XMMATRIX = DirectX::XMMATRIX;
 XMFLOAT2 CompassPause::s_CompassPos = { 450.0f,200.0f };
 //‰Šú‰»
 void CompassPause::Initialize() {
-	IKESprite::LoadTexture(24, L"Resources/2d/Skill/Compass.png");
+	IKESprite::LoadTexture(25, L"Resources/2d/Skill/Compass.png");
 	IKESprite* CompassSprite_;
-	CompassSprite_ = IKESprite::Create(24, { 0.0f,0.0f });
+	CompassSprite_ = IKESprite::Create(25, { 0.0f,0.0f });
 	CompassSprite_->SetPosition({ 500.0f,500.0f });
 	CompassSprite_->SetSize(m_CompassSize);
 	CompassSprite_->SetAnchorPoint({ 0.5f,0.5f });

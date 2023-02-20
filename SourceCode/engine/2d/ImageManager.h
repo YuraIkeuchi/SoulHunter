@@ -15,7 +15,7 @@ private:
 public:
 	//スプライトの名前
 	enum texName {
-		Title = 29,
+		Title = 31,
 		TitleParts,
 		ModeParts,
 		ModeBack,
@@ -33,6 +33,7 @@ public:
 		CompassExplain,
 		LibraExplain,
 		HealExplain,
+		JumpExplain,
 		Save1,
 		LoadText1,
 		NowLoad1,

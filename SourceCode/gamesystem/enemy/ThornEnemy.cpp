@@ -6,9 +6,9 @@
 using namespace DirectX;
 
 ThornEnemy::ThornEnemy() {
-	IKESprite::LoadTexture(28, L"Resources/2d/sceneback/MiniMapEnemy.png");
+	IKESprite::LoadTexture(30, L"Resources/2d/sceneback/MiniMapEnemy.png");
 	IKESprite* MiniEnemySprite_;
-	MiniEnemySprite_ = IKESprite::Create(28, { 0.0f,0.0f });
+	MiniEnemySprite_ = IKESprite::Create(30, { 0.0f,0.0f });
 	MiniEnemySprite_->SetAnchorPoint({ 0.5f,0.5f });
 	MiniEnemySprite.reset(MiniEnemySprite_);
 
@@ -164,7 +164,7 @@ void ThornEnemy::RotMove() {
 void ThornEnemy::Finalize() {
 	//enemyeffects.pop_back();
 }
-
+//ƒ}ƒbƒv‚Ìã
 void ThornEnemy::MapDraw(XMFLOAT4 Color) {
 	MiniEnemySprite->SetColor(Color);
 	IKESprite::PreDraw();
@@ -172,7 +172,7 @@ void ThornEnemy::MapDraw(XMFLOAT4 Color) {
 		MiniEnemySprite->Draw();
 	}
 }
-
+//ImGui
 void ThornEnemy::ImGuiDraw() {
 	if (m_Alive) {
 		ImGui::Begin("Thorn");
