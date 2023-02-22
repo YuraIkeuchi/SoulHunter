@@ -32,8 +32,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BaseInitialize(dxCommon);
 	//プレイヤー初期化
 	PlayerInitialize();
-	// テクスチャ1番に読み込み
-	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
+	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
 	//カメラの初期化
 	CameraInitialize();

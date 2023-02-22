@@ -62,6 +62,10 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
+
+	//オーディオ
+	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/8bo8k-1eq6w.wav");
+	Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum());
 }
 //更新
 void IntroductionScene::Update(DirectXCommon* dxCommon) {
@@ -91,6 +95,7 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
+		Audio::GetInstance()->StopWave(2);
 		SceneManager::GetInstance()->ChangeScene("LOAD");
 	}
 
