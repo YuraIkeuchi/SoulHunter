@@ -115,12 +115,7 @@ void IntroductionScene::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -130,15 +125,9 @@ void IntroductionScene::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -167,27 +156,14 @@ void IntroductionScene::FrontDraw() {
 //ã‚Ì•`‰æ‚ÉƒXƒvƒ‰ƒCƒg‚È‚Ç‚à¬‚º‚½
 void IntroductionScene::GameDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ
-	// ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
-
-#pragma endregion
 	//ƒXƒvƒ‰ƒCƒg‚Ì•`‰æ
 	ModelDraw(dxCommon);
-	//FBX‚Ì•`‰æ
-	//object1->Draw(dxCommon->GetCmdList());
 }
 //ImGui•`‰æ
 void IntroductionScene::ImGuiDraw(DirectXCommon* dxCommon) {
-	////FPSManager::GetInstance()->ImGuiDraw();
-	//ImGui::Begin("Introduce");
-	//ImGui::Text("Timer:%d",m_Timer);
-	//ImGui::End();
 }
 //‰ð•ú
 void IntroductionScene::Finalize() {
-	//‚R‚„‚Ìƒ‚ƒfƒ‹‚ÌƒfƒŠ[ƒg
-	//delete sprite;
 	delete postEffect;
 	delete save;
 }
@@ -231,6 +207,7 @@ void IntroductionScene::Movie() {
 		m_ChangeTimer++;
 
 		if (m_ChangeTimer == 200) {
+
 			scenechange->SetAddStartChange(true);
 		}
 	}

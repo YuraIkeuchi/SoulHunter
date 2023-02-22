@@ -2,8 +2,8 @@
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
-#include "imgui.h"
 #include "VariableCommon.h"
+#include "Audio.h"
 ClearObj* ClearScene::clearobj = nullptr;
 bool ClearScene::m_ClearNew = false;
 //初期化
@@ -56,6 +56,9 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 
 	//プレイヤーが必要
 	camerawork->SetClearPlayer(clearplayer);
+	//オーディオ
+	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
+	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {
@@ -83,6 +86,7 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 	clearplayer->Update();
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
+		Audio::GetInstance()->StopWave(3);
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
@@ -93,7 +97,6 @@ void ClearScene::Update(DirectXCommon* dxCommon) {
 }
 //描画
 void ClearScene::Draw(DirectXCommon* dxCommon) {
-
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -102,30 +105,19 @@ void ClearScene::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-
 		ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -153,28 +145,14 @@ void ClearScene::FrontDraw() {
 //上の描画にスプライトなども混ぜた
 void ClearScene::GameDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-	// 背景スプライト描画前処理
-
-#pragma endregion
 	//スプライトの描画
 	ModelDraw(dxCommon);
-	//FBXの描画
-	//object1->Draw(dxCommon->GetCmdList());
 }
 //ImGui描画
 void ClearScene::ImGuiDraw(DirectXCommon* dxCommon) {
-	//////FPSManager::GetInstance()->ImGuiDraw();
-	/*ImGui::Begin("Clear");
-	ImGui::Text("Timer:%d",m_Timer);
-	ImGui::Text("PosY:%f", m_ClearPos.y);
-	ImGui::End();*/
 }
 //解放
 void ClearScene::Finalize() {
-	//３ｄのモデルのデリート
-	//delete sprite;
 	delete postEffect;
 	delete save;
 }
@@ -188,7 +166,6 @@ void ClearScene::ChangePostEffect(int PostType) {
 }
 //演出
 void ClearScene::Movie() {
-	
 	//一定時間立つと画面が暗くなる
 	if (m_Timer == 100) {
 		PlayPostEffect = true;

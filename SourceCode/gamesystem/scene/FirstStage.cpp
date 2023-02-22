@@ -188,10 +188,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//FPSManager::GetInstance()->ImGuiDraw();
 		ImGuiDraw(dxCommon);
-		//enemymanager->ImGuiDraw();
-		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -200,7 +197,6 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		//FPSManager::GetInstance()->ImGuiDraw();
 		if (StageNumber != BossMap) {
 			ImGuiDraw(dxCommon);
 		}
