@@ -22,7 +22,7 @@ public:
 	
 private:
 	//‰ñ“]‚Ì‚½‚ß‚Ì•Ï”
-	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_AfterRot = {};
 	float m_Frame = 0.0f;
 
 	int m_RotNumber = 0;

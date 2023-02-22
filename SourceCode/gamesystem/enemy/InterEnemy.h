@@ -62,11 +62,10 @@ protected:
 	OBB OBB1 = {};
 	OBB OBB2 = {};
 	//座標やスケールなど
-	//XMFLOAT3 scale = { 2.7f,2.7f,2.7f };
 	XMFLOAT3 fbxscale = { 0.03f,0.03f,0.03f };
-	XMFLOAT3 m_BoundPower = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 m_OldPos = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 m_StartPos = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_BoundPower = {};
+	XMFLOAT3 m_OldPos = {};
+	XMFLOAT3 m_StartPos = {};
 	//生存
 	bool m_Alive = true;
 	int m_DeathTimer = 0;
@@ -144,7 +143,7 @@ protected:
 	bool m_Damage = false;
 	int m_DamageTimer = 0;
 	//敵の座標(ミニマップ)
-	XMFLOAT2 m_EnemyPosition = { 0.0f,0.0f };
+	XMFLOAT2 m_EnemyPosition = {};
 	//棘の敵の必要変数
 	float m_ThornSetPos = 0.0f;
 	//アニメーションのスピード

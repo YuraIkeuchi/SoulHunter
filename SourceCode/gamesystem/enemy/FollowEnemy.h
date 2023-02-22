@@ -16,6 +16,7 @@ public:
 	bool FollowCollision();
 	bool VanishFollowEnemy();
 	void FollowDamageAct();
+	void FollowParticle();
 public:
 	//gettersetter
 
@@ -23,7 +24,7 @@ private:
 	bool m_Follow = false;
 	int m_FollowTimer = 0;
 	//‰ñ“]‚Ì‚½‚ß‚Ì•Ï”
-	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_AfterRot = {};
 	float m_Frame = 0.0f;
 
 	//’Ç]ŠÖŒW

@@ -6,6 +6,8 @@
 #include <Easing.h>
 #include "VariableCommon.h"
 #include "PlayerSword.h"
+#include "Audio.h"
+#include "VolumManager.h"
 using namespace DirectX;
 
 ChestEnemy::ChestEnemy() {
@@ -165,6 +167,7 @@ void ChestEnemy::Pause() {
 void ChestEnemy::ChestMove() {
 	Input* input = Input::GetInstance();
 	if ((input->TriggerButton(input->Button_A)) && (m_Hit) && (!m_Attack)) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/ntkz5-xxka3.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_Attack = true;
 		m_Frame = 0.0f;
 		shake->SetShakeStart(true);
@@ -174,8 +177,8 @@ void ChestEnemy::ChestMove() {
 
 	if (m_Attack && m_HP != 0) {
 		if (m_MoveNumber == ShakeChest) {			//シェイクする
-			shake->ShakePos(m_ShakePos.x, 11, 5, 50, 70);
-			shake->ShakePos(m_ShakePos.y, 11, 5, 50, 70);
+			shake->ShakePos(m_ShakePos.x, 11, 5, 100, 70);
+			shake->ShakePos(m_ShakePos.y, 11, 5, 100, 70);
 			if (!shake->GetShakeStart()) {
 				m_ShakePos = { 0.0f,0.0f,0.0f };
 				m_MoveNumber = SetChest;
