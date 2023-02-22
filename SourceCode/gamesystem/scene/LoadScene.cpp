@@ -92,7 +92,7 @@ void LoadScene::Update(DirectXCommon* dxCommon) {
 
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
-		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
 	}
 
 	loadsprite[m_LoadNumber]->SetColor(m_color);
@@ -141,23 +141,14 @@ void LoadScene::SpriteDraw() {
 //上の描画にスプライトなども混ぜた
 void LoadScene::GameDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-	// 背景スプライト描画前処理
-
-#pragma endregion
 	//スプライトの描画
 	ModelDraw(dxCommon);
-	//FBXの描画
-	//object1->Draw(dxCommon->GetCmdList());
 }
 //ImGuiの描画
 void LoadScene::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void LoadScene::Finalize() {
-	//３ｄのモデルのデリート
-	//delete sprite;
 	delete save;
 }
 //ポストエフェクトのImGui

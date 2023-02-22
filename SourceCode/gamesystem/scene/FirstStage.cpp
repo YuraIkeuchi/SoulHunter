@@ -32,8 +32,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BaseInitialize(dxCommon);
 	//プレイヤー初期化
 	PlayerInitialize();
-	// テクスチャ1番に読み込み
-	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
+	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
 	//カメラの初期化
 	CameraInitialize();
@@ -189,10 +188,7 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//FPSManager::GetInstance()->ImGuiDraw();
 		ImGuiDraw(dxCommon);
-		//enemymanager->ImGuiDraw();
-		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -201,7 +197,6 @@ void FirstStage::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		//FPSManager::GetInstance()->ImGuiDraw();
 		if (StageNumber != BossMap) {
 			ImGuiDraw(dxCommon);
 		}
@@ -274,7 +269,7 @@ void FirstStage::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	player->ImGuiDraw();
+	//player->ImGuiDraw();
 	//tutorialtext->ImGuiDraw();
 }
 //普通の描画

@@ -62,6 +62,10 @@ void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
+
+	//オーディオ
+	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/8bo8k-1eq6w.wav");
+	Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum());
 }
 //更新
 void IntroductionScene::Update(DirectXCommon* dxCommon) {
@@ -91,6 +95,7 @@ void IntroductionScene::Update(DirectXCommon* dxCommon) {
 
 	//そのままシーンチェンジ
 	if (scenechange->AddBlack(0.05f)) {
+		Audio::GetInstance()->StopWave(2);
 		SceneManager::GetInstance()->ChangeScene("LOAD");
 	}
 
@@ -110,12 +115,7 @@ void IntroductionScene::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
-		//player->ImGuiDraw();
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -125,15 +125,9 @@ void IntroductionScene::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
-		/*player->ImGuiDraw();
-		for (int i = 0; i < 2; i++) {
-			enemy[i]->ImGuiDraw();
-		}*/
-		//particleobj->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -162,27 +156,14 @@ void IntroductionScene::FrontDraw() {
 //上の描画にスプライトなども混ぜた
 void IntroductionScene::GameDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-	// 背景スプライト描画前処理
-
-#pragma endregion
 	//スプライトの描画
 	ModelDraw(dxCommon);
-	//FBXの描画
-	//object1->Draw(dxCommon->GetCmdList());
 }
 //ImGui描画
 void IntroductionScene::ImGuiDraw(DirectXCommon* dxCommon) {
-	////FPSManager::GetInstance()->ImGuiDraw();
-	//ImGui::Begin("Introduce");
-	//ImGui::Text("Timer:%d",m_Timer);
-	//ImGui::End();
 }
 //解放
 void IntroductionScene::Finalize() {
-	//３ｄのモデルのデリート
-	//delete sprite;
 	delete postEffect;
 	delete save;
 }
@@ -226,6 +207,7 @@ void IntroductionScene::Movie() {
 		m_ChangeTimer++;
 
 		if (m_ChangeTimer == 200) {
+
 			scenechange->SetAddStartChange(true);
 		}
 	}

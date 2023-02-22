@@ -102,6 +102,10 @@ void TitleScene::Initialize(DirectXCommon* dxCommon) {
 	pointLightAtten[0] = 20.0f;
 	pointLightAtten[1] = 20.0f;
 	pointLightAtten[2] = 20.0f;
+
+	//オーディオ
+	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
+	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 }
 //更新
 void TitleScene::Update(DirectXCommon* dxCommon) {
@@ -122,6 +126,7 @@ void TitleScene::Update(DirectXCommon* dxCommon) {
 	}
 
 	if (scenechange->AddBlack(0.01f)) {
+		Audio::GetInstance()->StopWave(0);
 		if (!m_GameLoad) {
 			SceneManager::GetInstance()->ChangeScene("INTRODUCTION");
 		}
