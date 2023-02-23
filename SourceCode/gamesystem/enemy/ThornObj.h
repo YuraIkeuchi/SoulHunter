@@ -1,7 +1,6 @@
 #pragma once
 #include "GamePlayer.h"
 #include "ObjCommon.h"
-#include "DirectXCommon.h"
 #include "ThornParticle.h"
 #include <memory>
 using namespace std;         //  名前空間指定
@@ -42,9 +41,9 @@ private:
 	//クラス
 	unique_ptr<ThornParticle> thornparticle;
 	unique_ptr<GamePlayer> player = nullptr;
-	XMFLOAT3 m_Afterpos = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_Afterpos = {};
 	XMFLOAT3 m_HitArea = { 5.0f,20.0f,5.0f };
-	XMFLOAT3 StartPos = {0.0f,0.0f,0.0f};
+	XMFLOAT3 StartPos = {};
 	float m_Frame = 0.0f;
 	bool m_Active = false;//行動開始
 	int m_Pat = 0;//パターン
@@ -55,9 +54,9 @@ private:
 	int m_TargetTimer = 0;
 	int m_MoveTImer = 0;
 	//csvで読み込む座標
-	XMFLOAT3 m_ThornSetPos = {0.0f,0.0f,0.0f};
+	XMFLOAT3 m_ThornSetPos = {};
 	//パーティクル関係
-	XMFLOAT3 m_SmokeParticlePos = {0.0f,0.0f,0.0f};
+	XMFLOAT3 m_SmokeParticlePos = {};
 	int m_SmokeParticleCount = 0;
 	XMFLOAT3 m_RockParticlePos;
 	float m_AfterRotetion = 0.0f;

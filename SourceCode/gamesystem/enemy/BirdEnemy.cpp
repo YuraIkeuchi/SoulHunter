@@ -2,6 +2,8 @@
 #include "ModelManager.h"
 #include "VariableCommon.h"
 #include "Collision.h"
+#include "Audio.h"
+#include "VolumManager.h"
 using namespace DirectX;
 
 BirdEnemy::BirdEnemy() {
@@ -173,6 +175,7 @@ void BirdEnemy::Move() {
 				}
 				m_Attack = true;
 				m_LockTimer = m_ResetNumber;
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/3rbks-riagk.wav", VolumManager::GetInstance()->GetSEVolum());
 			}
 		}
 	}

@@ -12,7 +12,7 @@ public:
 	void ParticleCheck(int StageNumber)override;
 private:
 	//パーティクル関係
-	XMFLOAT3 m_ParticlePos = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_ParticlePos = {};
 	int m_ParticleCount = 0;
 	bool m_Particle = false;
 };

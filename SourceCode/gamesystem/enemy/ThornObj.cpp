@@ -2,6 +2,8 @@
 #include "ModelManager.h"
 #include <Easing.h>
 #include "Collision.h"
+#include "Audio.h"
+#include "VolumManager.h"
 bool ThornObj::Initialize() {
 	
 	m_Scale = { 2.5f,4.8f,2.5f };
@@ -22,7 +24,6 @@ bool ThornObj::Initialize() {
 	thornparticle.reset(thornparticle_);
 	return true;
 }
-
 //XV
 void ThornObj::Update() {
 	Collide();
@@ -85,25 +86,18 @@ void ThornObj::Update() {
 		m_RockParticleCount = 0;
 	}
 }
-
 //•`‰æ
  void ThornObj::Draw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Thorn");
-	ImGui::SliderFloat("m_Rotation.y", &m_Rotation.y, 600, 0);
-	ImGui::SliderFloat("m_pos.y", &m_SmokeParticlePos.y, 300, -300);
-	ImGui::Text("m_SmokeParticleCount:%d", m_SmokeParticleCount);
-	ImGui::Text("m_RockParticleCount:%d", m_RockParticleCount);
-	ImGui::End();*/
 	 if (DrawCollide()) {
 		 thornparticle->Draw();
 		 Obj_Draw();
 	 }
 }
-
+ //ƒ|[ƒY
 void ThornObj::Pause() {
 	m_Object->Update();
 }
-
+//“–‚½‚è”»’è
 bool ThornObj::Collide() {
 	int Interval = player->GetInterVal();
 	//ŠOÏ“–‚½‚è”»’è
@@ -171,6 +165,9 @@ void ThornObj::UpMove() {
 			break;
 		}
 		else {
+			if (m_CoolT == 1) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/ioe7p-jin8c.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 			m_Frame = 1.0f;
 			if (m_CoolT < 50) {
 				m_CoolT++;
@@ -254,6 +251,9 @@ void ThornObj::DownMove() {
 			break;
 		}
 		else {
+			if (m_CoolT == 1) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/ioe7p-jin8c.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 			m_Frame = 1.0f;
 			if (m_CoolT < 50) {
 				m_CoolT++;
@@ -295,7 +295,6 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_Afterpos.y),
 void ThornObj::RightMove() {
 	switch (m_Pat) {
 	case Stop:
-		//m_RotaPower = 0.0f;
 		//“®‚¢‚Ä‚È‚¢ŽžŠÔ
 		if (m_AttackTimer <= 100) {
 			m_AttackTimer++;
@@ -314,7 +313,6 @@ void ThornObj::RightMove() {
 		}
 		//L‚Ñ‚é‘OŽžŠÔ
 	case Set:
-		//m_RotaPower = 2.0f;
 		m_SmokeParticleCount++;
 		m_RockParticleCount++;
 		if (m_Frame < 1.0f) {
@@ -340,6 +338,9 @@ void ThornObj::RightMove() {
 			break;
 		}
 		else {
+			if (m_CoolT == 1) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/ioe7p-jin8c.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 			m_Frame = 1.0f;
 			if (m_CoolT < 50) {
 				m_CoolT++;
@@ -383,7 +384,6 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_Afterpos.y),
 void ThornObj::LeftMove() {
 	switch (m_Pat) {
 	case Stop:
-		//m_RotaPower = 0.0f;
 		//“®‚¢‚Ä‚È‚¢ŽžŠÔ
 		if (m_AttackTimer <= 100) {
 			m_AttackTimer++;
@@ -402,7 +402,6 @@ void ThornObj::LeftMove() {
 		}
 		//L‚Ñ‚é‘OŽžŠÔ
 	case Set:
-		//m_RotaPower = 2.0f;
 		m_SmokeParticleCount++;
 		m_RockParticleCount++;
 		if (m_Frame < 1.0f) {
@@ -423,12 +422,13 @@ void ThornObj::LeftMove() {
 		//L‚Ñ‚é
 	case Attack:
 		if (m_Frame < 1.0f) {
-			//m_RotaPower = 20.0f;
 			m_Frame += 0.1f;
 			break;
 		}
 		else {
-			//m_RotaPower = 0.0f;
+			if (m_CoolT == 1) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/ioe7p-jin8c.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 			m_Frame = 1.0f;
 			if (m_CoolT < 50) {
 				m_CoolT++;
@@ -449,7 +449,6 @@ void ThornObj::LeftMove() {
 		}
 	case Return:
 		m_Rotation.x = 0.0f;
-		//m_RotaPower = -2.0f;
 		if (m_Frame < 1.0f) {
 			m_Frame += 0.01f;
 			break;
@@ -461,7 +460,6 @@ void ThornObj::LeftMove() {
 		}
 	}
 	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotetion);
-	//m_Rotation.x += m_RotaPower;
 	m_Position = {
 Ease(In,Cubic,m_Frame,m_Position.x,m_Afterpos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_Afterpos.y),

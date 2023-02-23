@@ -19,7 +19,7 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	bool m_AttackExtra = false;//攻撃前の予備動作
-	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };//イージング後の回転
+	XMFLOAT3 m_AfterRot = {};//イージング後の回転
 	float m_Frame = 0.0f;//フレーム
 };
 
