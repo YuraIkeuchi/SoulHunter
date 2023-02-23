@@ -97,7 +97,6 @@ void MiniMap::Update()
 	ColorChange();
 	//テキストの動き
 	MoveStateTex();
-	UseCompass();
 	for (int y = 0; y < map_max_y; y++)
 	{
 		for (int x = 0; x < map_max_x; x++)
@@ -106,8 +105,6 @@ void MiniMap::Update()
 			MiniBlockTogeSprite[y][x]->SetColor(m_MapColor);
 		}
 	}
-	MiniDushSprite->SetColor(m_DushColor);
-	MiniDushSprite->SetPosition(m_DushPos);
 	MiniMapSprite->SetColor(m_MapColor);
 	MiniPlayerSprite->SetColor(m_PlayerColor);
 	MiniPlayerSprite->SetPosition(m_PlayerPos);
@@ -119,17 +116,9 @@ void MiniMap::Update()
 }
 //描画
 const void MiniMap::Draw() {
-	//ImGui::Begin("Map");
-	//ImGui::Text(" m_TextTimer::%d", m_TextTimer);
-	//ImGui::Text("m_PlayerPos.x::%f", m_PlayerPos.x);
-	////ImGui::Text("m_MenuNumber::%d", m_MenuNumber);
-	//ImGui::End();
 	IKESprite::PreDraw();
 	if (m_MapType == Whole) {
 		WholeMapSprite->Draw();
-		if (m_DushDraw) {
-			MiniDushSprite->Draw();
-		}
 	}
 	else {
 		for (int y = 0; y < map_max_y; y++)
@@ -144,30 +133,18 @@ const void MiniMap::Draw() {
 				}
 			}
 		}
-		if (LookPlayer) {
+		if (PlayerSkill::GetInstance()->GetCompassSkill()) {
 			if (save->GetAlive()) {
 				MiniSaveSprite->Draw();
 			}
 		}
 	}
-
-	if (LookPlayer) {
-		MiniPlayerSprite->Draw();
-	}
+	MiniPlayerSprite->Draw();
 	MapStateSprite->Draw();
 }
-
+//開放
 void MiniMap::Finalize() {
 
-}
-//プレイヤーの位置を描画するかどうか
-void MiniMap::UseCompass() {
-	if (PlayerSkill::GetInstance()->GetCompassSkill()) {
-		LookPlayer = true;
-	}
-	else {
-		LookPlayer = false;
-	}
 }
 //CSV読み込み
 void MiniMap::InitMap(std::vector<std::vector<int>>& map, int StageNumber) {
@@ -307,16 +284,6 @@ void MiniMap::WholeUpdate() {
 	else if (m_StageNumber == BossMap) {
 		m_PlayerPos = { 800.0f,580.0f };
 	}
-	m_DushPos = { 484.0f,352.0f };
-	//ダッシュのスプライトは徐々に出したい
-	if (m_MapColor.w == m_ColorMax && m_DushDraw) {
-		if (m_DushColor.w < m_ColorMax) {
-			m_DushColor.w += l_AddColor;
-		}
-		else {
-			m_DushColor.w = m_ColorMax;
-		}
-	}
 }
 //プレイヤーの位置
 void MiniMap::SelectUpdate() {
@@ -346,17 +313,11 @@ void MiniMap::ColorChange() {
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
-		if (m_DushDraw) {
-			m_DushColor.w -= l_AddColor;
-		}
 		m_MapColor.w -= l_AddColor;
 		m_PlayerColor.w -= l_AddColor;
 		m_SaveColor.w -= l_AddColor;
 		m_WholeColor.w -= l_AddColor;
 		if ((m_MapColor.w < m_ColorMin) && (m_PlayerColor.w < m_ColorMin) && (m_SaveColor.w < m_ColorMin) && (m_WholeColor.w < m_ColorMin)) {
-			if (m_DushDraw) {
-				m_DushColor.w = m_ColorMin;
-			}
 			m_MapColor.w = m_ColorMin;
 			m_PlayerColor.w = m_ColorMin;
 			m_SaveColor.w = m_ColorMin;

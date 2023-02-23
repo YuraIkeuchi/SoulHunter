@@ -42,6 +42,7 @@ public:
 		SkipText,
 		IntroText,
 		ClearText,
+		MiniSkill,
 	};
 	//テクスチャの名前
 	enum tex2dName {

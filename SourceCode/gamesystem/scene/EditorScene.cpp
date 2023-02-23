@@ -195,8 +195,9 @@ void EditorScene::FrontDraw(DirectXCommon* dxCommon) {
 	ui->Draw();
 	mapchange->Draw();
 	pause->Draw();
-	chest->ExplainDraw();
+	chest->SpriteDraw();
 	scenechange->Draw();
+	chest->MapDraw(minimap->GetMapType(), minimap->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
 	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
 	IKESprite::PostDraw();
 #pragma endregion
