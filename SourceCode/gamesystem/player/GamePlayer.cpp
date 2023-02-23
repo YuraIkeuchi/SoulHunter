@@ -1,7 +1,6 @@
 #include "GamePlayer.h"
 #include "Input.h"
 #include "ModelManager.h"
-#include "ParticleManager.h"
 #include "PlayerSkill.h"
 #include "VariableCommon.h"
 #include "VolumManager.h"
@@ -576,6 +575,7 @@ void GamePlayer::PlayerDush() {
 	//ダッシュ処理
 	if ((!m_Dush) && (m_AddPower != 0.0f) && (PlayerSkill::GetInstance()->GetDushSkill()) && (m_DushInterValTimer == 0)) {
 		if (input->TriggerButton(input->Button_RB)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/scmz8-hlntk.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Dush = true;
 			m_AddPower = 0.0f;
 			m_SideFrame = 0.0f;
@@ -621,6 +621,7 @@ void GamePlayer::PlayerRolling() {
 	//ローリング
 	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (block->GetHitDown())) {
 		if (input->TriggerButton(input->Button_RB)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/scmz8-hlntk.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Rolling = true;
 			m_SideFrame = 0.0f;
 			ResetAttack();

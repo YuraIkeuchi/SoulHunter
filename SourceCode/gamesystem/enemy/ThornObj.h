@@ -1,7 +1,6 @@
 #pragma once
 #include "GamePlayer.h"
 #include "ObjCommon.h"
-#include "DirectXCommon.h"
 #include "ThornParticle.h"
 #include <memory>
 using namespace std;         //  –¼‘O‹óŠÔŽw’è
