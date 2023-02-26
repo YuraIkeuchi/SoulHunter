@@ -1,10 +1,4 @@
 #include "EditorScene.h"
-#include "Audio.h"
-#include "SceneManager.h"
-#include "imgui.h"
-#include "VariableCommon.h"
-#include "PlayerSkill.h"
-#include "ParticleEmitter.h"
 //‰Šú‰»
 void EditorScene::Initialize(DirectXCommon* dxCommon)
 {

@@ -20,7 +20,6 @@ void LoadScene::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	actor->Draw(dxCommon);
 }
-
 //解放
 void LoadScene::Finalize() {
 	actor->Finalize();

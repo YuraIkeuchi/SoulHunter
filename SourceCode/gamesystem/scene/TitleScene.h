@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseScene.h"
-#include "TitleObj.h"
 #include "TitleSceneActor.h"
 /// タイトルシーン
 class TitleScene : public BaseScene {
@@ -14,4 +13,3 @@ public:
 	/// 描画
 	void Draw(DirectXCommon* dxCommon) override;
 };
-

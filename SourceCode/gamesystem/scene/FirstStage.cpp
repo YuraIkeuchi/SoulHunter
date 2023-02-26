@@ -1,5 +1,4 @@
 #include "FirstStage.h"
-
 //‰Šú‰»
 void FirstStage::Initialize(DirectXCommon* dxCommon)
 {

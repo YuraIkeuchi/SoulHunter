@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseScene.h"
 #include "LoadSceneActor.h"
-#include "IKESprite.h"
 /// タイトルシーン
 class LoadScene : public BaseScene {
 public:
@@ -14,4 +13,3 @@ public:
 	/// 描画
 	void Draw(DirectXCommon* dxCommon) override;
 };
-

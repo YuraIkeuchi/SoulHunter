@@ -1,5 +1,4 @@
 #include "IntroductionScene.h"
-
 //‰Šú‰»
 void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	//‹¤’Ê‚Ì‰Šú‰»

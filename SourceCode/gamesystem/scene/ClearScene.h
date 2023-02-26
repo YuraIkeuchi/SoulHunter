@@ -13,4 +13,3 @@ public:
 	/// •`‰æ
 	void Draw(DirectXCommon* dxCommon) override;
 };
-
