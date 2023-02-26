@@ -73,9 +73,6 @@ public:
 	void SaveGame();
 	void LoadGame();
 
-protected:
-	//定数
-	static const int Tutorial_Max = 5;//チュートリアルの数
 public:
 	///ゲームシーン用
 	DebugCamera* camera = nullptr;
