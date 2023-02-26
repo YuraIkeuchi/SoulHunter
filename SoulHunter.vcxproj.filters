@@ -426,6 +426,27 @@
     <ClCompile Include="SourceCode\gamesystem\player\GamePlayer.cpp">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -818,6 +839,27 @@
     <ClInclude Include="SourceCode\gamesystem\player\GamePlayer.h">
       <Filter>SourceCords\gamesystem\player</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h">
+      <Filter>SourceCords\gamesystem\actor\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -1037,6 +1079,27 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\actor">
       <UniqueIdentifier>{31e5c186-15bf-4eb4-ae8b-54d2e90300b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Base">
+      <UniqueIdentifier>{a1091c8f-cadb-4e05-b4cc-8eaaf47d5351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Title">
+      <UniqueIdentifier>{78124619-0372-415f-98fa-4e48750292a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Load">
+      <UniqueIdentifier>{47c8f684-66a7-47f1-8ca3-1bd26e7d9449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Clear">
+      <UniqueIdentifier>{10a32d4f-4ca2-408e-9bdc-eddcdd82b1fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Play">
+      <UniqueIdentifier>{b1d5f743-377a-47eb-93fd-a88008ef9c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Editor">
+      <UniqueIdentifier>{6c34eb97-957c-4abd-9c70-56d05189d4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Introduction">
+      <UniqueIdentifier>{e775e403-d3b3-43a1-bb81-70a9d5a7d6b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -257,6 +257,13 @@
     <ClCompile Include="SourceCode\engine\math\Quaternion.cpp" />
     <ClCompile Include="SourceCode\engine\math\Vector3.cpp" />
     <ClCompile Include="SourceCode\engine\shake\Shake.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackLight.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjAlways.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObjCommon.cpp" />
@@ -388,6 +395,13 @@
     <ClInclude Include="SourceCode\engine\math\Quaternion.h" />
     <ClInclude Include="SourceCode\engine\math\Vector3.h" />
     <ClInclude Include="SourceCode\engine\shake\Shake.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackLight.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjAlways.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObjCommon.h" />
