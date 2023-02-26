@@ -4,8 +4,11 @@
 void LoadScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	actor = new LoadSceneActor();
-	actor->Initialize(dxCommon,camera,lightGroup);
+	//ロードのアクター
+	BaseActor* actor_;
+	actor_ = new LoadSceneActor();
+	actor_->Initialize(dxCommon,camera,lightGroup);
+	actor.reset(actor_);
 }
 //更新
 void LoadScene::Update(DirectXCommon* dxCommon) {

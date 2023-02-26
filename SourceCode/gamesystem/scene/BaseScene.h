@@ -38,7 +38,7 @@ public:
 
 public:
 	//アクタークラス
-	BaseActor* actor = nullptr;
+	unique_ptr<BaseActor> actor;
 	///ゲームシーン用
 	DebugCamera* camera = nullptr;
 	//ポストエフェクトをかけるか

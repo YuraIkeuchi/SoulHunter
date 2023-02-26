@@ -11,8 +11,11 @@ void EditorScene::Initialize(DirectXCommon* dxCommon)
 	dxCommon->SetFullScreen(false);
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	actor = new EditorSceneActor();
-	actor->Initialize(dxCommon,camera,lightGroup);
+	//エディターシーンのアクター
+	BaseActor* actor_;
+	actor_ = new EditorSceneActor();
+	actor_->Initialize(dxCommon,camera,lightGroup);
+	actor.reset(actor_);
 }
 //更新
 void EditorScene::Update(DirectXCommon* dxCommon)

@@ -4,8 +4,11 @@
 void IntroductionScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	actor = new IntroductionSceneActor();
-	actor->Initialize(dxCommon, camera, lightGroup);
+	//導入のアクター
+	BaseActor* actor_;
+	actor_ = new IntroductionSceneActor();
+	actor_->Initialize(dxCommon, camera, lightGroup);
+	actor.reset(actor_);
 }
 //更新
 void IntroductionScene::Update(DirectXCommon* dxCommon) {

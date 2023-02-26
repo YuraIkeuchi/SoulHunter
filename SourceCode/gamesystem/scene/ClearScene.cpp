@@ -4,8 +4,11 @@
 void ClearScene::Initialize(DirectXCommon* dxCommon) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	actor = new ClearSceneActor();
-	actor->Initialize(dxCommon, camera, lightGroup);
+	//クリアのアクター
+	BaseActor* actor_;
+	actor_ = new ClearSceneActor();
+	actor_->Initialize(dxCommon, camera, lightGroup);
+	actor.reset(actor_);
 }
 //更新
 void ClearScene::Update(DirectXCommon* dxCommon) {

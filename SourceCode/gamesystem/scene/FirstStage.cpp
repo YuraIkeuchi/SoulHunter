@@ -5,8 +5,11 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	actor = new PlaySceneActor();
-	actor->Initialize(dxCommon,camera,lightGroup);
+	//プレイシーンのアクター
+	BaseActor* actor_;
+	actor_ = new PlaySceneActor();
+	actor_->Initialize(dxCommon,camera,lightGroup);
+	actor.reset(actor_);
 }
 //更新
 void FirstStage::Update(DirectXCommon* dxCommon)

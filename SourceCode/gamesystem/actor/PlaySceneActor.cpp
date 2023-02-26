@@ -190,7 +190,7 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
