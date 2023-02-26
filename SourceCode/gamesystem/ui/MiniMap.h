@@ -15,7 +15,6 @@ public:
 	void Update();//更新
 	void Finalize();//解放
 	const void Draw();//描画
-	void UseCompass();//スキル(コンパス)を使っているか
 	void SetMiniPlayerPos(int StageNumber);//ステージごとの初期化
 	void InitMap(std::vector<std::vector<int>>& map, int StageNumber);//マップの初期化
 	void ResetBlock();//マップのリセット
@@ -41,7 +40,6 @@ public:
 	XMFLOAT4 GetMapColor() { return m_MapColor; }
 	//setter
 	void SetReturnMap(bool m_ReturnMap) { this->m_ReturnMap = m_ReturnMap; }
-	void SetDushDraw(bool m_DushDraw) { this->m_DushDraw = m_DushDraw; }
 	void SetChangeColorType(int m_ColorChangeType) { this->m_ColorChangeType = m_ColorChangeType; }
 	void SetMapType(int m_MapType) { this->m_MapType = m_MapType; }
 private:
@@ -49,9 +47,8 @@ private:
 	const float m_LAND_SCALEY = 12.0f;
 	GamePlayer* player = nullptr;
 	Save* save = nullptr;
-	XMFLOAT2 m_PlayerPos;
-	XMFLOAT2 m_SavePos;
-	XMFLOAT2 m_DushPos;
+	XMFLOAT2 m_PlayerPos = {};
+	XMFLOAT2 m_SavePos = {};
 	//スプライト
 	unique_ptr<IKESprite> MiniMapSprite;
 	unique_ptr<IKESprite> MiniPlayerSprite;
@@ -67,21 +64,8 @@ private:
 	//各マップの読み込み
 	std::vector<std::vector<int>> stagemap; //1マップ
 	bool m_ReturnMap = false;
-	bool LookPlayer = false;
 	//ステージナンバー
 	int m_StageNumber = 0;
-	//ダッシュのスプライトの描画判定
-	bool m_DushDraw = false;
-	enum StageNumber {
-		Map1,
-		Map2,
-		Map3,
-		Map4,
-		Map5,
-		Map6,
-		BossMap,
-		TutoRial,
-	};
 	//色
 	XMFLOAT4 m_PlayerColor = { 1.0f,1.0f,1.0f,0.0f };
 	XMFLOAT4 m_SaveColor = { 1.0f,1.0f,1.0f,0.0f };
@@ -96,7 +80,7 @@ private:
 		Sub,
 	};
 	//下に流れるテキスト関係の関数
-	XMFLOAT2 m_SelectPos;
+	XMFLOAT2 m_SelectPos = {};
 	XMFLOAT2 m_SelectSize = { 96.0f,96.0f };
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;

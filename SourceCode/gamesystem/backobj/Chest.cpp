@@ -50,6 +50,15 @@ Chest::Chest() {
 	ExplainBack_ = IKESprite::Create(ImageManager::ChestBack, { 0.0f,0.0f });
 	ExplainBack_->SetPosition({ 0.0f,0.0f });
 	ExplainBack.reset(ExplainBack_);
+	//ミニマップスキル
+	IKESprite* miniSkill_[Skill_Max];
+	for (int i = 0; i < miniSkill.size(); i++) {
+		miniSkill_[i] = IKESprite::Create(ImageManager::MiniSkill, { 0.0f,0.0f });
+		miniSkill_[i]->SetAnchorPoint({ 0.5f,0.5f });
+		miniSkill_[i]->SetScale(0.7f);
+		miniSkill[i].reset(miniSkill_[i]);
+	}
+
 	//コンパススキル
 	IKESprite* CompassExplain_[CompassExplain_Max];
 	for (int i = 0; i < CompassExplain_Max; i++) {
@@ -120,7 +129,6 @@ Chest::Chest() {
 		m_HealDraw[i] = false;
 	}
 
-
 	//ジャンプ
 	IKESprite* JumpExplain_[JumpExplain_Max];
 	for (int i = 0; i < JumpExplain_Max; i++) {
@@ -155,6 +163,8 @@ void Chest::Update() {
 	Explain();
 	//宝箱を開けるテキストの動き
 	TexMove();
+	//ミニマップ時の位置
+	MapSet();
 	//Obj関係
 	for (int i = 0; i < Skill_Max; i++) {
 		objCloseChest[i]->SetPosition(m_ChestPos[i]);
@@ -218,7 +228,7 @@ const void Chest::Draw() {
 	}
 }
 //前に書くため(主にスプライト)
-const void Chest::ExplainDraw() {
+const void Chest::SpriteDraw() {
 	IKESprite::PreDraw();
 	ExplainBack->Draw();
 	for (int i = 0; i < CompassExplain_Max; i++) {
@@ -237,17 +247,28 @@ const void Chest::ExplainDraw() {
 		JumpExplain[i]->Draw();
 	}
 }
+//ミニマップの描画
+const void Chest::MapDraw(int MapType, XMFLOAT4 MapColor,bool Pause, int PauseNumber) {
+	for (int i = 0; i < miniSkill.size(); i++) {
+		miniSkill[i]->SetColor(MapColor);
+		if (PauseNumber == 1 && Pause && MapType == 1 && PlayerSkill::GetInstance()->GetCompassSkill()) {
+			if (m_Alive[i] && m_ChestState[i] == Close) {
+				miniSkill[i]->Draw();
+			}
+		}
+	}
+}
 //ステージごとの初期化
 void Chest::InitChest(int StageNumber) {
 	m_Angle = 0.0f;
 	//ステージにスキルが有るかどうか
 	//ダッシュ
 	if (StageNumber == TutoRial) {
-		m_ChestPos[Dush] = { 254.0f,-220.0f,5.0f };
-		m_Alive[Dush] = true;
+		m_ChestPos[Compass] = { 254.0f,-220.0f,5.0f };
+		m_Alive[Compass] = true;
 	}
 	else {
-		m_Alive[Dush] = false;
+		m_Alive[Compass] = false;
 	}
 	//ヒール
 	if (StageNumber == Map1) {
@@ -259,11 +280,11 @@ void Chest::InitChest(int StageNumber) {
 	}
 	//コンパス
 	if (StageNumber == Map2) {
-		m_ChestPos[Compass] = { 190.0f,-150.0f,5.0f };
-		m_Alive[Compass] = true;
+		m_ChestPos[Dush] = { 190.0f,-150.0f,5.0f };
+		m_Alive[Dush] = true;
 	}
 	else {
-		m_Alive[Compass] = false;
+		m_Alive[Dush] = false;
 	}
 	//ライブラ
 	if (StageNumber == Map3) {
@@ -405,6 +426,17 @@ void Chest::OpenChest() {
 				}
 			}
 		}
+	}
+}
+//マップの位置調整
+void Chest::MapSet() {
+	XMFLOAT2 l_LimitPos = { 4.5f,-2.4f };
+	for (int i = 0; i < miniSkill.size(); i++) {	
+		//敵の座標
+		m_MapPos[i].x = m_ChestPos[i].x * l_LimitPos.x;
+		m_MapPos[i].y = m_ChestPos[i].y * l_LimitPos.y;
+
+		miniSkill[i]->SetPosition(m_MapPos[i]);
 	}
 }
 //說明文の流れ

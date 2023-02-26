@@ -6,16 +6,25 @@
 using namespace std;         //  名前空間指定
 //宝箱用のクラス
 class Chest {
+private:
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	Chest();
 	void Update();//更新
 	const void Draw();//描画
-	const void ExplainDraw();//説明分描画
+	const void SpriteDraw();//説明分描画
+	const void MapDraw(int MapType, XMFLOAT4 MapColor,bool Pause,int PauseNumber);//ミニマップの描画
 	bool Collide();//当たり判定
 	void OpenChest();//宝箱を開ける
 	void InitChest(int StageNumber);//ステージごとの初期化
 	void TexMove();//テクスチャの動き
+	void MapSet();//ミニマップの位置調整
 	void Explain();//說明の基礎関数
 	//各スキルの説明分
 	bool CompassText();
@@ -25,13 +34,6 @@ public:
 	bool JumpText();
 public:
 	bool GetExplain() { return m_Explain; }
-private:
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
 private:
 	//定数
 	static const int Skill_Max = 5;//スキルの数
@@ -46,6 +48,7 @@ public:
 private:
 	//クラス
 	unique_ptr<GamePlayer> player = nullptr;
+	array<unique_ptr<IKESprite>, Skill_Max> miniSkill;
 	//絶対に必要なOBJ
 	//開いてる宝箱
 	IKEModel* modelOpenChest = nullptr;
@@ -73,6 +76,7 @@ private:
 	array<bool, Skill_Max> m_Alive;//生存フラグ
 	array<bool, Skill_Max> m_Hit;//当たり判定
 	array<int,Skill_Max> m_ChestState;//宝箱の上歌い
+	array<XMFLOAT2, Skill_Max> m_MapPos;//宝箱の座標(ミニマップ)
 	//開けた後のスキルの説明関係の変数
 	bool m_Explain = false;
 	int m_ExplainTimer = 0;

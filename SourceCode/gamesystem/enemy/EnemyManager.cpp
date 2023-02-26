@@ -817,7 +817,7 @@ void EnemyManager::ImGuiDraw() {
 	EnemyImguiDraw(m_ThornEnemys);
 	EnemyImguiDraw(m_BoundEnemys);
 	EnemyImguiDraw(m_BirdEnemys);*/
-	EnemyImguiDraw(m_FollowEnemys);
+	//EnemyImguiDraw(m_FollowEnemys);
 	//EnemyImguiDraw(m_ChestEnemys);
 }
 //ƒ}ƒbƒv‚Ì•`‰æ

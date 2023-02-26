@@ -288,13 +288,9 @@ void ChestEnemy::TexMove() {
 	//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
 	m_Angle += 1.0f;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
-
-		if (m_Hit) {
-			m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_Position.y + 7.0f);
-			m_TexPosition.x = m_Position.x;
-			m_TexPosition.z = m_Position.z;
-		}
-
+	m_TexPosition.y = (sin(m_Angle2) * 1.0f + 1.0f) + (m_Position.y + 7.0f);
+	m_TexPosition.x = m_Position.x;
+	m_TexPosition.z = m_Position.z;
 	chestTex->SetPosition(m_TexPosition);
 	chestTex->Update();
 }
