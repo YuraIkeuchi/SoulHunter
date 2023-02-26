@@ -31,44 +31,44 @@ void ThornObj::Update() {
 	if (m_MoveTImer < m_TargetTimer) {
 		m_MoveTImer++;
 	}
-	if (m_Dir == Up) {
-		m_SmokeParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y + 15.0f,m_ThornSetPos.z };
-		m_RockParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y + 15.0f,m_ThornSetPos.z };
-		m_Rotation.z = 0.0f;
-		m_HitArea = { 5.0f,22.0f,5.0f };
-		if (m_MoveTImer >= m_TargetTimer) {
-			UpMove();
-		}
-	}
-	else if (m_Dir == Down) {
-		m_SmokeParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y - 15.0f,m_ThornSetPos.z };
-		m_RockParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y - 15.0f,m_ThornSetPos.z };
-		m_Rotation.z = 180.0f;
-		m_HitArea = { 5.0f,22.0f,5.0f };
-		if (m_MoveTImer >= m_TargetTimer) {
-			DownMove();
-		}
-	}
-	else if (m_Dir == Right) {
-		m_SmokeParticlePos = { m_ThornSetPos.x + 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
-		m_RockParticlePos = { m_ThornSetPos.x + 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
-		m_Rotation.z = 270.0f;
-		m_HitArea = { 22.0f,5.0f,5.0f };
-		if (m_MoveTImer >= m_TargetTimer) {
-			RightMove();
-		}
-	}
-	else if (m_Dir == Left) {
-		m_SmokeParticlePos = { m_ThornSetPos.x - 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
-		m_RockParticlePos = { m_ThornSetPos.x - 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
-		m_Rotation.z = 90.0f;
-		m_HitArea = { 22.0f,5.0f,5.0f };
-		if (m_MoveTImer >= m_TargetTimer) {
-			LeftMove();
-		}
-	}
 	//更新範囲のときのみ
 	if (UpdateCollide()) {
+		if (m_Dir == Up) {
+			m_SmokeParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y + 15.0f,m_ThornSetPos.z };
+			m_RockParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y + 15.0f,m_ThornSetPos.z };
+			m_Rotation.z = 0.0f;
+			m_HitArea = { 5.0f,22.0f,5.0f };
+			if (m_MoveTImer >= m_TargetTimer) {
+				UpMove();
+			}
+		}
+		else if (m_Dir == Down) {
+			m_SmokeParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y - 15.0f,m_ThornSetPos.z };
+			m_RockParticlePos = { m_ThornSetPos.x,m_ThornSetPos.y - 15.0f,m_ThornSetPos.z };
+			m_Rotation.z = 180.0f;
+			m_HitArea = { 5.0f,22.0f,5.0f };
+			if (m_MoveTImer >= m_TargetTimer) {
+				DownMove();
+			}
+		}
+		else if (m_Dir == Right) {
+			m_SmokeParticlePos = { m_ThornSetPos.x + 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
+			m_RockParticlePos = { m_ThornSetPos.x + 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
+			m_Rotation.z = 270.0f;
+			m_HitArea = { 22.0f,5.0f,5.0f };
+			if (m_MoveTImer >= m_TargetTimer) {
+				RightMove();
+			}
+		}
+		else if (m_Dir == Left) {
+			m_SmokeParticlePos = { m_ThornSetPos.x - 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
+			m_RockParticlePos = { m_ThornSetPos.x - 15.0f,m_ThornSetPos.y,m_ThornSetPos.z };
+			m_Rotation.z = 90.0f;
+			m_HitArea = { 22.0f,5.0f,5.0f };
+			if (m_MoveTImer >= m_TargetTimer) {
+				LeftMove();
+			}
+		}
 		Obj_SetParam();
 		//パーティクル関係
 		if (m_SmokeParticleCount >= 2) {

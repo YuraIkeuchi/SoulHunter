@@ -1035,5 +1035,8 @@
     <Filter Include="SourceCords\gamesystem\playerattach">
       <UniqueIdentifier>{2d362957-3a59-4009-82ae-f2ab09c29257}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\gamesystem\actor">
+      <UniqueIdentifier>{31e5c186-15bf-4eb4-ae8b-54d2e90300b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
-StageNumber,0
-POP,217.2,-135.2,0
+StageNumber,7
+POP,104.606,-280.2,0
 DushSkill,0
 LibraSkill,0
-CompassSkill,1
-HealSkill,1
+CompassSkill,0
+HealSkill,0
 JumpSkill,0
 HP,5
-Soul,14
+Soul,20
