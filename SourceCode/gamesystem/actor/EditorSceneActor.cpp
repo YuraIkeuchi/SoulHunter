@@ -142,8 +142,8 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		player->ImGuiDraw();
-		enemymanager->ImGuiDraw();
+		//player->ImGuiDraw();
+		//enemymanager->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -233,24 +233,14 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	if (ImGui::RadioButton("Move", &m_MoveEnemy)) {
 		m_MoveEnemy = true;
 	}
-	if (ImGui::RadioButton("NoMove", &m_MoveEnemy)) {
-		m_MoveEnemy = false;
-	}
-	if (ImGui::Button("OPENWEB")) {
-		openbrowser->OpenWebPage();
-	}
-	ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 	ImGui::End();
-	//ポストエフェクト
+	//WEBページオープン
 	{
-		ImGui::Begin("postEffect");
+		ImGui::Begin("Open");
 		ImGui::SetWindowPos(ImVec2(1000, 450));
 		ImGui::SetWindowSize(ImVec2(280, 300));
-		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-			PlayPostEffect = true;
-		}
-		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-			PlayPostEffect = false;
+		if (ImGui::Button("OPENWEB")) {
+			openbrowser->OpenWebPage();
 		}
 		ImGui::End();
 	}
