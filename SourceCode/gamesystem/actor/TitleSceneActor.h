@@ -16,9 +16,7 @@ public:
 	void ModelDraw(DirectXCommon* dxCommon);
 	void GameDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
-	void ChangePostEffect(int PostType);
 	void SelectGameMode();//ゲームやモードを選択
 	void TitleMove();//タイトルの文字の動き
 	void ModeMove();//モードの文字の動き

@@ -152,8 +152,6 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		//FPSManager::GetInstance()->ImGuiDraw();
-		PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
@@ -208,9 +206,6 @@ void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
 	IKESprite::PostDraw();
 #pragma endregion
-}
-//ポストエフェクトのImGui
-void EditorSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {

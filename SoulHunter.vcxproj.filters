@@ -447,6 +447,9 @@
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\OpenBrowser.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -859,6 +862,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

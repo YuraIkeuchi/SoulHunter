@@ -15,9 +15,7 @@ public:
 	void ModelDraw(DirectXCommon* dxCommon);
 	void GameDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
 	void SpriteDraw();
-	void ChangePostEffect(int PostType);
 private://ƒƒ“ƒo•Ï”
 	unique_ptr<IKESprite> nowsprite[4];
 	unique_ptr<IKESprite> loadsprite[2];

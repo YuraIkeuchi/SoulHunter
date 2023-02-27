@@ -17,9 +17,7 @@ public:
 	void ModelDraw(DirectXCommon* dxCommon);
 	void GameDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
-	void ChangePostEffect(int PostType);
 	//‰‰o
 	void Movie();
 private://ƒƒ“ƒo•Ï”

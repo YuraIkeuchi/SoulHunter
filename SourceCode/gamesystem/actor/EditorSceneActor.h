@@ -16,7 +16,6 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
 	//マップの切り替えの関数
 	void StageMapChange(int StageNumber,LightGroup* lightgroup);
 	//マップの初期化

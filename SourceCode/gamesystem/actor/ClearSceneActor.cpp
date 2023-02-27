@@ -156,14 +156,6 @@ void ClearSceneActor::Finalize() {
 	delete postEffect;
 	delete save;
 }
-//ポストエフェクトのImgui
-void ClearSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
-
-}
-//ポストエフェクトの種類
-void ClearSceneActor::ChangePostEffect(int PostType) {
-
-}
 //演出
 void ClearSceneActor::Movie() {
 	//一定時間立つと画面が暗くなる

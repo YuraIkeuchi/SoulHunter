@@ -167,13 +167,6 @@ void IntroductionSceneActor::Finalize() {
 	delete postEffect;
 	delete save;
 }
-//ポストエフェクトのImgui
-void IntroductionSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
-
-}
-//ポストエフェクトの種類
-void IntroductionSceneActor::ChangePostEffect(int PostType) {
-}
 //演出
 void IntroductionSceneActor::Movie() {
 	//一定時間立つと画面が暗くなる

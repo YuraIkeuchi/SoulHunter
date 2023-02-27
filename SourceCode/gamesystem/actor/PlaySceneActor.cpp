@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
+#include "OpenBrowser.h"
 //プレイシーンの初期化(現在は魂だけ)
 void PlaySceneActor::PlaySceneInitialize() {
 	enemymanager->SoulSet(player, block);
@@ -26,6 +27,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
+	openbrowser = new OpenBrowser();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -270,10 +272,14 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 			m_SceneChange = true;
 			m_SceneMigration = Title;
 		}
+		if (ImGui::Button("OPENCSV")) {
+			openbrowser->OpenCsvFile(_T("backalways_param\\BossMapBackRock.csv"));
+		}
+		if (ImGui::Button("OPENWEB")) {
+			openbrowser->OpenWebPage();
+		}
 		ImGui::End();
 	}
-	//player->ImGuiDraw();
-	//tutorialtext->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {

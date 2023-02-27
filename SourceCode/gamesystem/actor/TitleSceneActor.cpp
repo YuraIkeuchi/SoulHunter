@@ -168,8 +168,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -178,8 +176,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		//ImGuiDraw(dxCommon);
-		//PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
@@ -216,12 +212,7 @@ void TitleSceneActor::FrontDraw() {
 //上の描画にスプライトなども混ぜた
 void TitleSceneActor::GameDraw(DirectXCommon* dxCommon)
 {
-	//ImGuiDraw();
-#pragma region 背景スプライト描画
-	// 背景スプライト描画前処理
-
-#pragma endregion
-	//スプライトの描画
+	//背景の描画
 	ModelDraw(dxCommon);
 }
 //ImGui描画
@@ -229,16 +220,8 @@ void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void TitleSceneActor::Finalize() {
-	//３ｄのモデルのデリート
-	//delete sprite;
 	delete postEffect;
 	delete save;
-}
-//ポストエフェクトのImgui
-void TitleSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
-}
-//ポストエフェクトの種類
-void TitleSceneActor::ChangePostEffect(int PostType) {
 }
 void TitleSceneActor::SelectGameMode() {
 	Input* input = Input::GetInstance();
