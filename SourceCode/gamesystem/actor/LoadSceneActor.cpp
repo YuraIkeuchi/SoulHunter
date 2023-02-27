@@ -151,9 +151,3 @@ void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 void LoadSceneActor::Finalize() {
 	delete save;
 }
-//ポストエフェクトのImGui
-void LoadSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
-}
-//ポストエフェクト変更
-void LoadSceneActor::ChangePostEffect(int PostType) {
-}

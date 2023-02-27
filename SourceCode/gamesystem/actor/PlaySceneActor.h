@@ -3,6 +3,7 @@
 #include "IKESprite.h"
 #include "BossSceneChange.h"
 #include "BossStagObj.h"
+
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
 public:
@@ -47,4 +48,5 @@ private:
 	unique_ptr<BossStagObj> bossstagobj = nullptr;
 	//ボス登場シーンの画面暗転
 	unique_ptr<BossSceneChange> bossscenechange = nullptr;
+
 };

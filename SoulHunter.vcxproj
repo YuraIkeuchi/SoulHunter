@@ -245,6 +245,7 @@
     <ClCompile Include="SourceCode\engine\enginebase\DirectXCommon.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\main.cpp" />
+    <ClCompile Include="SourceCode\engine\enginebase\OpenBrowser.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\SceneFactory.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\WinApp.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\XorShift.cpp" />
@@ -381,6 +382,7 @@
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h" />
     <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h" />
     <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h" />
+    <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h" />
     <ClInclude Include="SourceCode\engine\enginebase\SceneFactory.h" />
     <ClInclude Include="SourceCode\engine\enginebase\WinApp.h" />
     <ClInclude Include="SourceCode\engine\enginebase\XorShift.h" />

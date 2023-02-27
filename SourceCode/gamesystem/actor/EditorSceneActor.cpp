@@ -15,12 +15,14 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	pause = new Pause();
 	mapchange = new MapChange();
 	save = new Save();
-
 	chest = new Chest();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
 	camerawork->SetCameraType(2);
+	OpenBrowser* openbrowser_;
+	openbrowser_ = new OpenBrowser();
+	openbrowser.reset(openbrowser_);
 	dxCommon->SetFullScreen(false);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -140,8 +142,8 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		player->ImGuiDraw();
-		enemymanager->ImGuiDraw();
+		//player->ImGuiDraw();
+		//enemymanager->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -152,8 +154,6 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		//FPSManager::GetInstance()->ImGuiDraw();
-		PostImGuiDraw(dxCommon);
 		camerawork->ImGuiDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
@@ -209,9 +209,6 @@ void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 #pragma endregion
 }
-//ポストエフェクトのImGui
-void EditorSceneActor::PostImGuiDraw(DirectXCommon* dxCommon) {
-}
 //IMGuiの描画
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Editor");
@@ -236,21 +233,14 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	if (ImGui::RadioButton("Move", &m_MoveEnemy)) {
 		m_MoveEnemy = true;
 	}
-	if (ImGui::RadioButton("NoMove", &m_MoveEnemy)) {
-		m_MoveEnemy = false;
-	}
-	ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 	ImGui::End();
-	//ポストエフェクト
+	//WEBページオープン
 	{
-		ImGui::Begin("postEffect");
+		ImGui::Begin("Open");
 		ImGui::SetWindowPos(ImVec2(1000, 450));
 		ImGui::SetWindowSize(ImVec2(280, 300));
-		if (ImGui::RadioButton("PostEffect", &PlayPostEffect)) {
-			PlayPostEffect = true;
-		}
-		if (ImGui::RadioButton("Default", &PlayPostEffect)) {
-			PlayPostEffect = false;
+		if (ImGui::Button("OPENWEB")) {
+			openbrowser->OpenWebPage();
 		}
 		ImGui::End();
 	}

@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
+#include "OpenBrowser.h"
 //プレイシーンの初期化(現在は魂だけ)
 void PlaySceneActor::PlaySceneInitialize() {
 	enemymanager->SoulSet(player, block);
@@ -272,8 +273,6 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	//player->ImGuiDraw();
-	//tutorialtext->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {

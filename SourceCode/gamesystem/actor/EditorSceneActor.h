@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 #include "ImGuiEditor.h"
+#include "OpenBrowser.h"
 /// タイトルシーン
 class EditorSceneActor : public BaseActor {
 public:
@@ -16,7 +17,6 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void PostImGuiDraw(DirectXCommon* dxCommon);
 	//マップの切り替えの関数
 	void StageMapChange(int StageNumber,LightGroup* lightgroup);
 	//マップの初期化
@@ -37,4 +37,7 @@ private:
 	bool m_ObjDelete = false;
 
 	bool m_MapChange = false;
+
+
+	unique_ptr<OpenBrowser> openbrowser;
 };
