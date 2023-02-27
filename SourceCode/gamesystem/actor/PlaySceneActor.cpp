@@ -272,9 +272,6 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 			m_SceneChange = true;
 			m_SceneMigration = Title;
 		}
-		if (ImGui::Button("OPENCSV")) {
-			openbrowser->OpenCsvFile(_T("backalways_param\\BossMapBackRock.csv"));
-		}
 		if (ImGui::Button("OPENWEB")) {
 			openbrowser->OpenWebPage();
 		}
