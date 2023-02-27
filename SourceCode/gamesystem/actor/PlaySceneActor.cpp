@@ -27,7 +27,6 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
-	openbrowser = new OpenBrowser();
 	camerawork->SetCameraType(2);
 	dxCommon->SetFullScreen(true);
 	//‹¤’Ê‚Ì‰Šú‰»
@@ -271,9 +270,6 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 			scenechange->SetAddStartChange(true);
 			m_SceneChange = true;
 			m_SceneMigration = Title;
-		}
-		if (ImGui::Button("OPENWEB")) {
-			openbrowser->OpenWebPage();
 		}
 		ImGui::End();
 	}

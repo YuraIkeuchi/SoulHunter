@@ -15,12 +15,14 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	pause = new Pause();
 	mapchange = new MapChange();
 	save = new Save();
-
 	chest = new Chest();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
 	camerawork->SetCameraType(2);
+	OpenBrowser* openbrowser_;
+	openbrowser_ = new OpenBrowser();
+	openbrowser.reset(openbrowser_);
 	dxCommon->SetFullScreen(false);
 	//‹¤’Ê‚Ì‰Šú‰»
 	BaseInitialize(dxCommon);
@@ -233,6 +235,9 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	}
 	if (ImGui::RadioButton("NoMove", &m_MoveEnemy)) {
 		m_MoveEnemy = false;
+	}
+	if (ImGui::Button("OPENWEB")) {
+		openbrowser->OpenWebPage();
 	}
 	ImGui::Text("m_MoveEnemy:%d", m_MoveEnemy);
 	ImGui::End();

@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 #include "ImGuiEditor.h"
+#include "OpenBrowser.h"
 /// タイトルシーン
 class EditorSceneActor : public BaseActor {
 public:
@@ -36,4 +37,7 @@ private:
 	bool m_ObjDelete = false;
 
 	bool m_MapChange = false;
+
+
+	unique_ptr<OpenBrowser> openbrowser;
 };

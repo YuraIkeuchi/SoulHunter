@@ -3,7 +3,7 @@
 #include "IKESprite.h"
 #include "BossSceneChange.h"
 #include "BossStagObj.h"
-#include "OpenBrowser.h"
+
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
 public:
@@ -49,5 +49,4 @@ private:
 	//ボス登場シーンの画面暗転
 	unique_ptr<BossSceneChange> bossscenechange = nullptr;
 
-	OpenBrowser* openbrowser = nullptr;
 };
