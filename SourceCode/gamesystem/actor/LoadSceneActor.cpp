@@ -155,7 +155,7 @@ void LoadSceneActor::Finalize() {
 }
 //
 void LoadSceneActor::MoveLoad() {
-	m_Angle += 2.0f;
+	m_Angle += 1.0f;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
 
 	m_Size = { (sin(m_Angle2) * 32.0f) + (1028.0f),
