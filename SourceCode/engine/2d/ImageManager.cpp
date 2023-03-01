@@ -3,18 +3,24 @@
 bool ImageManager::load = false;
 
 
-ImageManager* ImageManager::GetIns() {
+ImageManager* ImageManager::GetInstance() {
 	static ImageManager instans;
 	return &instans;
 }
 //スプライトの読み込み
-void ImageManager::Load2D() {
+void ImageManager::StartLoad2D() {
 	IKESprite::LoadTexture(Title, L"Resources/2d/sceneback/Title1.png");
 	IKESprite::LoadTexture(TitleParts, L"Resources/2d/sceneback/TitleParts.png");
 	IKESprite::LoadTexture(ModeParts, L"Resources/2d/sceneback/ModeParts.png");
 	IKESprite::LoadTexture(ModeBack, L"Resources/2d/sceneback/ModeSelectBack.png");
 	IKESprite::LoadTexture(ModeExplain, L"Resources/2d/sceneback/ModeExPlain.png");
 	IKESprite::LoadTexture(BlackFilter, L"Resources/2d/effect/Blackfilter.png");
+	IKESprite::LoadTexture(IntroText, L"Resources/2d/sceneback/IntroText.png");
+	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
+	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");
+}
+
+void ImageManager::SecondLoad2D() {
 	IKESprite::LoadTexture(PauseBack, L"Resources/2d/sceneback/PauseBack.png");
 	IKESprite::LoadTexture(Pause1, L"Resources/2d/sceneback/PauseMenu.png");
 	IKESprite::LoadTexture(PauseParts, L"Resources/2d/sceneback/MenuParts.png");
@@ -29,12 +35,9 @@ void ImageManager::Load2D() {
 	IKESprite::LoadTexture(HealExplain, L"Resources/2d/ui/Healexplain.png");
 	IKESprite::LoadTexture(JumpExplain, L"Resources/2d/ui/Jumpexplain.png");
 	IKESprite::LoadTexture(Save1, L"Resources/2d/sceneback/SaveText.png");
-	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
-	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");
 	IKESprite::LoadTexture(ChestBack, L"Resources/2d/SkillExplain/ExplainBack.png");
 	IKESprite::LoadTexture(Curtain, L"Resources/2d/sceneback/Curtain.png");
 	IKESprite::LoadTexture(SkipText, L"Resources/2d/sceneback/SkipText.png");
-	IKESprite::LoadTexture(IntroText, L"Resources/2d/sceneback/IntroText.png");
 	IKESprite::LoadTexture(ClearText, L"Resources/2d/sceneback/ClearText.png");
 	IKESprite::LoadTexture(MiniSkill, L"Resources/2d/sceneback/MiniMapSkill.png");
 }

@@ -5,6 +5,7 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
+#include "MiniMap.h"
 //初期化
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
@@ -45,7 +46,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	imguieditor.reset(imguieditor_);
 	enemymanager->SetPause(pause);
 	enemymanager->SetChest(chest);
-	enemymanager->LoadEnemyParam(StageNumber, player, block, lightgroup);
+	enemymanager->LoadEnemyParam(StageNumber, player, lightgroup);
 	backmanager->LoadObjParam(StageNumber, player, lightgroup);
 	BGMStart = true;
 
@@ -83,7 +84,7 @@ void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	//敵の位置ロード
 	if (m_EditorLoad) {
-		enemymanager->LoadEnemyParam(StageNumber, player, block, lightgroup);
+		enemymanager->LoadEnemyParam(StageNumber, player, lightgroup);
 		m_EditorLoad = false;
 	}
 
@@ -176,7 +177,7 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
 	backmanager->AlwaysDraw(dxCommon);
-	block->Draw(m_PlayerPos);
+	Block::GetInstance()->Draw(m_PlayerPos);
 	if (StageNumber != BossMap) {
 		backmanager->Draw(dxCommon);
 	}
@@ -204,8 +205,8 @@ void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	pause->Draw();
 	chest->SpriteDraw();
 	scenechange->Draw();
-	chest->MapDraw(minimap->GetMapType(), minimap->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
-	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
+	chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
+	enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
 	IKESprite::PostDraw();
 #pragma endregion
 }
@@ -312,29 +313,29 @@ void EditorSceneActor::MapInitialize() {
 		switch (StageNumber)
 		{
 		case Map1:
-			block->Initialize(map1, 0, StageNumber);
-			minimap->InitMap(map1, StageNumber);
+			Block::GetInstance()->Initialize(map1, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map1, StageNumber);
 		case Map2:
-			block->Initialize(map2, 0, StageNumber);
-			minimap->InitMap(map2, StageNumber);
+			Block::GetInstance()->Initialize(map2, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map2, StageNumber);
 		case Map3:
-			block->Initialize(map3, 0, StageNumber);
-			minimap->InitMap(map3, StageNumber);
+			Block::GetInstance()->Initialize(map3, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map3, StageNumber);
 		case Map4:
-			block->Initialize(map4, 0, StageNumber);
-			minimap->InitMap(map4, StageNumber);
+			Block::GetInstance()->Initialize(map4, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map4, StageNumber);
 		case Map5:
-			block->Initialize(map5, 0, StageNumber);
-			minimap->InitMap(map5, StageNumber);
+			Block::GetInstance()->Initialize(map5, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map5, StageNumber);
 		case Map6:
-			block->Initialize(map6, 0, StageNumber);
-			minimap->InitMap(map6, StageNumber);
+			Block::GetInstance()->Initialize(map6, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(map6, StageNumber);
 		case BossMap:
-			block->Initialize(bossmap, 0, StageNumber);
-			minimap->InitMap(bossmap, StageNumber);
+			Block::GetInstance()->Initialize(bossmap, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(bossmap, StageNumber);
 		case TutoRial:
-			block->Initialize(tutorialmap, 0, StageNumber);
-			minimap->InitMap(tutorialmap, StageNumber);
+			Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
+			MiniMap::GetInstance()->InitMap(tutorialmap, StageNumber);
 		default:
 			break;
 		}
@@ -351,7 +352,7 @@ void EditorSceneActor::StageMapChange(int StageNumber,LightGroup* lightgroup) {
 	save->InitSave(StageNumber);
 	tutorialtext->InitBoard(StageNumber);
 	chest->InitChest(StageNumber);
-	enemymanager->LoadEnemyParam(StageNumber, player, block, lightgroup);
+	enemymanager->LoadEnemyParam(StageNumber, player,lightgroup);
 	backmanager->LoadObjParam(StageNumber, player, lightgroup);
 	backmanager->LoadBackObjAlways(StageNumber);
 }
@@ -362,7 +363,7 @@ void EditorSceneActor::AllUpdate(DebugCamera* camera) {
 	scenechange->SubBlack(0.05f);
 	mapchange->Update();
 	mapchange->SubBlack();
-	block->Update(m_PlayerPos);
+	Block::GetInstance()->Update(m_PlayerPos);
 
 	//ぷれいやーの更新
 	if (!pause->GetIsPause() && !chest->GetExplain()) {
@@ -380,7 +381,7 @@ void EditorSceneActor::AllUpdate(DebugCamera* camera) {
 
 	//その他の更新
 	ParticleEmitter::GetInstance()->Update();
-	minimap->SetMiniPlayerPos(StageNumber);
+	MiniMap::GetInstance()->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
 	VolumManager::GetInstance()->Update();
@@ -423,8 +424,8 @@ void EditorSceneActor::ChangeUpdate() {
 		if (m_SceneChange) {
 			m_GameLoad = true;
 			StartStage = StageNumber;
-			block->ResetBlock();
-			minimap->ResetBlock();
+			Block::GetInstance()->ResetBlock();
+			MiniMap::GetInstance()->ResetBlock();
 			SaveGame();
 			//シーン先を決める
 			if (m_SceneMigration == GamePlay) {
@@ -440,8 +441,8 @@ void EditorSceneActor::ChangeUpdate() {
 	}
 	//マップ切り替え
 	if (mapchange->AddBlack()) {
-		block->ResetBlock();
-		minimap->ResetBlock();
+		Block::GetInstance()->ResetBlock();
+		MiniMap::GetInstance()->ResetBlock();
 		mapchange->SetSubStartChange(true);
 		StageChange = true;
 	}
@@ -462,25 +463,25 @@ void EditorSceneActor::EditorUpdate() {
 	if (imguieditor->GetEnemyArgment()) {
 		//普通
 		if (imguieditor->GetEnemyType() == Normal) {
-			enemymanager->EnemyBirth(Normal, player, block);
+			enemymanager->EnemyBirth(Normal, player);
 		}
 		//棘のやつ
 		else if (imguieditor->GetEnemyType() == Thorn) {
-			enemymanager->EnemyBirth(Thorn, player, block);
+			enemymanager->EnemyBirth(Thorn, player);
 		}
 		//羽の敵
 		else if (imguieditor->GetEnemyType() == Bound) {
-			enemymanager->EnemyBirth(Bound, player, block);
+			enemymanager->EnemyBirth(Bound, player);
 		}
 		//鳥の敵
 		else if (imguieditor->GetEnemyType() == Bird) {
-			enemymanager->EnemyBirth(Bird, player, block);
+			enemymanager->EnemyBirth(Bird, player);
 		}
 		else if (imguieditor->GetEnemyType() == Follow) {
-			enemymanager->EnemyBirth(Follow, player, block);
+			enemymanager->EnemyBirth(Follow, player);
 		}
 		else {
-			enemymanager->EnemyBirth(FakeChest, player, block);
+			enemymanager->EnemyBirth(FakeChest, player);
 		}
 		imguieditor->SetEnemyArgment(false);
 	}

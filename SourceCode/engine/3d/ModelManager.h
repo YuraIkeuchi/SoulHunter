@@ -45,8 +45,8 @@ public:
 
 public:
 	static ModelManager* GetInstance();		//æ“¾—p
-
-	void Initialize();//‰Šú‰»
+	void StartInitialize();
+	void SecondInitialize();//‰Šú‰»
 	void Finalize();//‰ğ•ú
 	//“Ç‚İ‚İ
 	void LoadModel(const ModelName modelName, std::string fileName);

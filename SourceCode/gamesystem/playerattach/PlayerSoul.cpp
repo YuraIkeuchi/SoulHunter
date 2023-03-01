@@ -4,6 +4,7 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
+#include "Block.h"
 using namespace DirectX;
 //読み込み
 PlayerSoul::PlayerSoul() {
@@ -31,7 +32,7 @@ void PlayerSoul::Update(InterEnemy* enemy) {
 	//エフェクトの発生
 	m_OldPos= m_Position;
 	SetEffect(enemy);
-	if (block->PlayerSoulMapCollideCommon(m_Position, m_Radius,m_OldPos, m_Jump,
+	if (Block::GetInstance()->PlayerSoulMapCollideCommon(m_Position, m_Radius,m_OldPos, m_Jump,
 		m_AddPower) && m_Effect) {
 		m_AddPower = 0.0f;
 		m_BoundPower = 0.0f;

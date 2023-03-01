@@ -7,6 +7,7 @@
 #include "ParticleEmitter.h"
 #include "Audio.h"
 #include "PlayerSword.h"
+#include "Block.h"
 #include <Easing.h>
 using namespace DirectX;
 //読み込み
@@ -280,14 +281,14 @@ void GamePlayer::PlayerMove() {
 			}
 
 			//当たり判定
-			if (block->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 90.0f) {
+			if (Block::GetInstance()->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 90.0f) {
 				m_RightLimit = true;
 			}
 			else {
 				m_RightLimit = false;
 			}
 
-			if (block->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 270.0f) {
+			if (Block::GetInstance()->LimitMapCollideCommon(m_LimitPos, { 3.0f,1.0f }, m_LimitPos) && m_Rotation.y == 270.0f) {
 				m_LeftLimit = true;
 			}
 			else {
@@ -453,7 +454,7 @@ void GamePlayer::PlayerFall() {
 		}
 
 		//壁との当たり判定
-		if (block->PlayerMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump,
+		if (Block::GetInstance()->PlayerMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump,
 			m_AddPower) && m_Alive)
 		{
 			//初期化
@@ -471,7 +472,7 @@ void GamePlayer::PlayerFall() {
 	}
 	
 	//ジャンプ回数のリセット
-	if (m_AddPower == 0.0f && block->GetHitDown()) {
+	if (m_AddPower == 0.0f && Block::GetInstance()->GetHitDown()) {
 		m_JumpCount = 0;
 	}
 }
@@ -526,7 +527,7 @@ void GamePlayer::PlayerAttack() {
 			}
 
 			//攻撃時壁にあたった場合壁からパーティクルを出す
-			if (block->AttackMapCollideCommon(m_AttackPos, { 5.5f,0.8f }, m_AttackPos)) {
+			if (Block::GetInstance()->AttackMapCollideCommon(m_AttackPos, { 5.5f,0.8f }, m_AttackPos)) {
 				BirthEffect("Wall", m_AttackPos, m_PlayerDir);
 				m_fbxObject->SetReverse(true);
 			}
@@ -619,7 +620,7 @@ void GamePlayer::PlayerDush() {
 void GamePlayer::PlayerRolling() {
 	Input* input = Input::GetInstance();
 	//ローリング
-	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (block->GetHitDown())) {
+	if ((!m_Rolling) && (m_AddPower == 0.0f) && (m_JumpCount == 0) && (Block::GetInstance()->GetHitDown())) {
 		if (input->TriggerButton(input->Button_RB)) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/scmz8-hlntk.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_Rolling = true;
@@ -654,7 +655,7 @@ void GamePlayer::PlayerHeal() {
 	Input* input = Input::GetInstance();
 	//押している間貯める
 	if (input->PushButton(input->Button_Y)  
-		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (block->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetHealSkill())) {
+		&& (m_HealType == NoHeal) && (m_SoulCount >= 6.0f) && (Block::GetInstance()->GetHitDown())  && (m_HP < 5) && (PlayerSkill::GetInstance()->GetHealSkill())) {
 		m_HealType = UseHeal;
 	}
 
@@ -701,23 +702,23 @@ void GamePlayer::PlayerDamage() {
 	}
 	m_Position.x += m_BoundPower;
 	//死んだときの判定
-	if (block->GetThornHit()) {
+	if (Block::GetInstance()->GetThornHit()) {
 		if (m_HP > 1) {
-			if (block->GetThornDir() == HitRight) {
+			if (Block::GetInstance()->GetThornDir() == HitRight) {
 				m_AddPower = 0.0f;
 				m_BoundPower = 1.0f;
 				m_HitDir = HitRight;
 			}
-			else if (block->GetThornDir() == HitLeft) {
+			else if (Block::GetInstance()->GetThornDir() == HitLeft) {
 				m_AddPower = 0.0f;
 				m_BoundPower = -1.0f;
 				m_HitDir = HitLeft;
 			}
-			else if (block->GetThornDir() == HitUp) {
+			else if (Block::GetInstance()->GetThornDir() == HitUp) {
 				m_AddPower = 0.0f;
 				m_BoundPower = 0.0f;
 			}
-			else if (block->GetThornDir() == HitDown) {
+			else if (Block::GetInstance()->GetThornDir() == HitDown) {
 				m_AddPower = 0.7f;
 				m_BoundPower = 0.0f;
 			}
@@ -734,8 +735,8 @@ void GamePlayer::PlayerDamage() {
 			}
 		}
 		
-		block->SetThornDir(NoHit);
-		block->SetThornHit(false);
+		Block::GetInstance()->SetThornDir(NoHit);
+		Block::GetInstance()->SetThornHit(false);
 	}
 
 	//復活処理
@@ -777,8 +778,8 @@ void GamePlayer::GoalMove() {
 //死んだ時の動き
 bool GamePlayer::DeathMove() {
 	if (m_Death) {
-		block->SetThornDir(NoHit);
-		block->SetThornHit(false);
+		Block::GetInstance()->SetThornDir(NoHit);
+		Block::GetInstance()->SetThornHit(false);
 		m_FlashCount = 0;
 		m_Interval = 0;
 		m_DeathTimer++;
@@ -999,7 +1000,7 @@ void GamePlayer::PlayerAnimetion(int Number, int AnimeSpeed) {
 //生き返った時の位置
 void GamePlayer::ResPornPlayer() {
 	//直前までの位置を保存する
-	if (m_AddPower == 0.0f && !block->GetThornHit() && block->GetHitDown()) {
+	if (m_AddPower == 0.0f && !Block::GetInstance()->GetThornHit() && Block::GetInstance()->GetHitDown()) {
 		m_SaveTimer++;
 	}
 	//ここで保存
@@ -1014,7 +1015,7 @@ void GamePlayer::ResPornPlayer() {
 			m_Alive = true;
 			m_RespornTimer = 0;
 			m_Jump = false;
-			block->SetThornHit(false);
+			Block::GetInstance()->SetThornHit(false);
 			m_Rotation.x = 0.0f;
 			m_Position = m_RespornPos;
 		}
@@ -1025,8 +1026,8 @@ void GamePlayer::LoadPlayer(const XMFLOAT3& StartPos) {
 	m_Position = StartPos;
 	m_fbxObject->SetPosition(m_Position);
 	m_TutorialFinish = true;
-	block->SetThornDir(0);
-	block->SetThornHit(false);
+	Block::GetInstance()->SetThornDir(0);
+	Block::GetInstance()->SetThornHit(false);
 }
 //プレイヤーが敵にあたった瞬間の判定
 void GamePlayer::PlayerHit(const XMFLOAT3& pos) {

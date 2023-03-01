@@ -3,6 +3,7 @@
 #include "ModelManager.h"
 #include <Easing.h>
 #include "PlayerSword.h"
+#include "Block.h"
 #include "ParticleEmitter.h"
 using namespace DirectX;
 
@@ -74,7 +75,7 @@ void FollowEnemy::Action() {
 		}
 	}
 	//当たり判定
-	block->FollowEnemyMapCollideCommon(m_Position, m_Radius, m_OldPos);
+	Block::GetInstance()->FollowEnemyMapCollideCommon(m_Position, m_Radius, m_OldPos);
 	//敵が消える
 	VanishFollowEnemy();
 	//パーティクル生成

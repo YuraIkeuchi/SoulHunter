@@ -1,4 +1,8 @@
 #include "SceneManager.h"
+#include "Block.h"
+#include "MiniMap.h"
+#include "ImageManager.h"
+#include "ModelManager.h"
 #include<cassert>
 void SceneManager::Finalize() {
 	//最後のシーンの終了と開放
@@ -23,6 +27,25 @@ void SceneManager::Update(DirectXCommon* dxCommon) {
 		nextScene_ = nullptr;
 		scene_->Initialize(dxCommon);
 	}
+	//ローディング
+	if (m_Load == true) {
+		switch (m_loadType)
+		{
+		case SceneManager::NoLoad://ロードしていないとき
+			m_th = std::thread([&] {AsyncLoad(); });
+			m_loadType = LoadStart;
+			break;
+		case SceneManager::LoadStart://ロードしているとき
+			break;
+		case SceneManager::LoadEnd://ロード終わったら
+			m_th.join();
+			m_loadType = NoLoad;
+			m_Load = false;
+			break;
+		default:
+			break;
+		}
+	}
 	scene_->Update(dxCommon);
 }
 
@@ -35,4 +58,19 @@ void SceneManager::ChangeScene(const std::string& sceneName) {
 	assert(nextScene_ == nullptr);
 	//次のシーン生成
 	nextScene_ = sceneFactory_->CreateScene(sceneName);
+}
+
+
+void SceneManager::AsyncLoad()
+{
+	std::thread t = std::thread([&] { 	Block::GetInstance()->ModelInit(), MiniMap::GetInstance()->SpriteInit(),
+		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->LoadTex2D(), ModelManager::GetInstance()->SecondInitialize(); });
+
+	//ダミーで1秒待つ
+	auto sleepTime = std::chrono::seconds(1);
+	std::this_thread::sleep_for(sleepTime);
+
+	t.join();
+	// ロード状態=ロード終了
+	m_loadType = LoadEnd;
 }

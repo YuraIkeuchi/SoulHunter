@@ -4,6 +4,7 @@
 #include "Collision.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include "Block.h"
 using namespace DirectX;
 
 BirdEnemy::BirdEnemy() {
@@ -67,7 +68,7 @@ void BirdEnemy::Action() {
 		}
 	}
 	//ƒ}ƒbƒv‚É‚ ‚½‚Á‚½‚Æ‚«‰ñ“]‚ª–ß‚é
-	if (block->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
+	if (Block::GetInstance()->BirdEnemyMapCollideCommon(m_Position, m_Radius, m_BirdTouchWall, m_OldPos, m_Attack)) {
 		m_Rotation = l_ResetRot;
 	}
 

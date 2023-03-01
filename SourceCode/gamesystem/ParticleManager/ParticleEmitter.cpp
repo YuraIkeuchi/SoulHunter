@@ -114,5 +114,5 @@ void ParticleEmitter::AllDelete()
 }
 
 void ParticleEmitter::LoadTexture() {
-	ImageManager::GetIns()->LoadParticle();
+	ImageManager::GetInstance()->LoadParticle();
 }

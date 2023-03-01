@@ -52,6 +52,9 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	//ポストエフェクトをリセットする
 	PlayPostEffect = false;
+	if (!s_New) {
+		SceneManager::GetInstance()->SetLoad(true);
+	}
 }
 //更新
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -73,11 +76,9 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	if (!s_New) {
 		if (m_LoadAnimeTimer == 15 && m_LoadAnimeCount == 2) {
 			m_LoadChackCount++;
-			block = new Block();
 		}
 		else if (m_LoadAnimeTimer == 15 && m_LoadAnimeCount == 3) {
 			m_LoadChackCount++;
-			minimap = new MiniMap();
 		}
 
 		if (m_LoadChackCount == 2) {
@@ -86,7 +87,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 
 	//一定時間でシーンが変わる
-	if (m_LoadTimer == 200) {
+	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		scenechange->SetAddStartChange(true);
 	}
 

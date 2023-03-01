@@ -1,7 +1,6 @@
 #pragma once
 #include "IKESprite.h"
 #include "SkillPause.h"
-#include "MiniMap.h"
 #include "Option.h"
 #include "GamePlayer.h"
 #include <array>   
@@ -13,7 +12,6 @@ public:
 	Pause();
 	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	void SetSkillPause(SkillPause* skillpause) { this->skillpause.reset(skillpause); }
-	void SetMiniMap(MiniMap* minimap) { this->minimap.reset(minimap); }
 	void SetOption(Option* option) { this->option.reset(option); }
 	void Initialize();//初期化
 	void Update();//更新
@@ -43,7 +41,6 @@ private:
 	//継承元のクラス
 	unique_ptr<SkillPause> skillpause = nullptr;
 	unique_ptr<Option> option = nullptr;
-	unique_ptr<MiniMap> minimap = nullptr;
 	unique_ptr<GamePlayer> player = nullptr;
 	//スプライト
 	unique_ptr<IKESprite> PauseBack;

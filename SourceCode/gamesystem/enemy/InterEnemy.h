@@ -1,5 +1,4 @@
 #pragma once
-#include "Block.h"
 #include "GamePlayer.h"
 #include "EnemyEffect.h"
 #include "DirectXCommon.h"
@@ -20,8 +19,6 @@ protected:
 
 public:
 	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
-	void SetBlock(Block* block) { this->block.reset(block); }
-
 	/// getter
 	bool GetLock() { return  m_Lock; }
 
@@ -54,7 +51,6 @@ public:
 protected:
 	//クラス
 	unique_ptr<GamePlayer> player = nullptr;
-	unique_ptr<Block> block = nullptr;
 	std::vector<EnemyEffect*> enemyeffects;
 	
 	//スプライト

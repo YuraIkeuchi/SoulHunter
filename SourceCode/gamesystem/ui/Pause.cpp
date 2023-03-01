@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include "MiniMap.h"
 using namespace std;         //  –¼‘O‹óŠÔw’è
 // DirectX::‚ğÈ—ª
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -43,7 +44,7 @@ void Pause::Initialize() {
 	m_PartsPos[OptionPause] = { 350.0f,380.0f };
 	m_PartsPos[SelectPause] = { 350.0f,180.0f };
 
-	minimap->Update();
+	MiniMap::GetInstance()->Update();
 	skillpause->Update();
 	option->Update();
 }
@@ -66,7 +67,7 @@ void Pause::Update() {
 
 	if (input->TriggerButton(input->Start) && (m_ReturnTimer == 0) && (!player->GetReadText()) && (!m_IsPause)) {
 		m_PauseNumber = MiniMap;
-		minimap->SetChangeColorType(1);
+		MiniMap::GetInstance()->SetChangeColorType(1);
 		m_ColorChangeType = 2;
 		m_ReturnTimer = 2;
 		m_IsPause = true;
@@ -106,13 +107,13 @@ void Pause::Update() {
 			
 		}
 	}
-	if (minimap->GetReturnMap()) {
+	if (MiniMap::GetInstance()->GetReturnMap()) {
 		if (m_ReturnTimer > 0) {
 			m_ReturnTimer--;
 		}
 		else {
 			m_IsPause = false;
-			minimap->SetReturnMap(false);
+			MiniMap::GetInstance()->SetReturnMap(false);
 		}
 	}
 	for (int i = 0; i < PausePartsSprite.size(); i++) {
@@ -130,7 +131,7 @@ const void Pause::Draw() {
 	if (m_IsPause) {
 		PauseBack->Draw();
 		if (m_PauseNumber == MiniMap) {
-			minimap->Draw();
+			MiniMap::GetInstance()->Draw();
 		}
 		else if (m_PauseNumber == SkillSet) {
 			skillpause->Draw();
@@ -186,7 +187,7 @@ void Pause::PartsMove() {
 			}
 		}
 		if (m_PauseNumber == MiniMap) {
-			minimap->Update();
+			MiniMap::GetInstance()->Update();
 		}
 		else if (m_PauseNumber == SkillSet) {
 			skillpause->Update();
