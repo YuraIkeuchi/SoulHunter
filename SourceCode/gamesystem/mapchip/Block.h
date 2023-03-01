@@ -78,11 +78,11 @@ private:
 	//マップチップ1つの大きさ
 	const float LAND_SCALE = 5.0f;
 	//マップチップ関係
-	unique_ptr<IKEModel> modelNormalBlock = nullptr;
-	unique_ptr<IKEModel> modelInBlock = nullptr;
-	unique_ptr<IKEModel> modelAirBlock = nullptr;
-	unique_ptr<IKEModel> modelToge = nullptr;
-	unique_ptr<IKEModel> modelGoalBlock = nullptr;
+	IKEModel* modelNormalBlock = nullptr;
+	IKEModel* modelInBlock = nullptr;
+	IKEModel* modelAirBlock = nullptr;
+	IKEModel* modelToge = nullptr;
+	IKEModel* modelGoalBlock = nullptr;
 	//各マップの読み込み
 	std::vector<std::vector<int>> stagemap; //1マップ
 	std::vector<std::vector<int>> bossmap; //ボスマップ

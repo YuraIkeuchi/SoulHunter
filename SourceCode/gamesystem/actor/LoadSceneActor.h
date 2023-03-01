@@ -16,9 +16,16 @@ public:
 	void GameDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void SpriteDraw();
+	void MoveLoad();
+private:
+	//定数
+	static const int Now_Max = 4;
+	static const int Load_Max = 5;
 private://メンバ変数
-	unique_ptr<IKESprite> nowsprite[4];
-	unique_ptr<IKESprite> loadsprite[2];
+	array<unique_ptr<IKESprite>, Now_Max> nowsprite;
+	array<unique_ptr<IKESprite>, Load_Max> loadsprite;
+	XMFLOAT2 m_Position = { 640.0f,320.0f };
+	XMFLOAT2 m_Size = { 1028.0f,128.0f };
 	XMFLOAT4 m_color = { 1.0f,1.0f,1.0f,1.0f };
 	//どのテキストを出すか
 	int m_LoadNumber = 0;
@@ -33,4 +40,7 @@ private://メンバ変数
 	//ローディング画面のタイマー
 	int m_LoadTimer = 0;
 	int m_LoadChackCount = 0;
+
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
 };

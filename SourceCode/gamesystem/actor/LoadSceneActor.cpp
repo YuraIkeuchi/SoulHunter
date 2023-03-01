@@ -10,13 +10,12 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	BaseInitialize(dxCommon);
 	//スプライト生成
-	const int ExplainLoadCount = 2;
-	IKESprite* loadsprite_[2];
-	//gaussian = new PostEffect();
-	for (int i = 0; i < 2; i++) {
+	const int ExplainLoadCount = Load_Max;
+	IKESprite* loadsprite_[Load_Max];
+	for (int i = 0; i < Load_Max; i++) {
 		loadsprite_[i] = IKESprite::Create(ImageManager::LoadText1, { 0.0f,0.0f });
 		loadsprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
-		loadsprite_[i]->SetPosition({ 640.0f,320.0f });
+		loadsprite_[i]->SetPosition(m_Position);
 		int number_index_y = i / ExplainLoadCount;
 		int number_index_x = i % ExplainLoadCount;
 		loadsprite_[i]->SetTextureRect(
@@ -26,9 +25,9 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		loadsprite[i].reset(loadsprite_[i]);
 	}
 
-	const int NowLoadCount = 4;
-	IKESprite* nowsprite_[4];
-	for (int i = 0; i < 4; i++) {
+	const int NowLoadCount = Now_Max;
+	IKESprite* nowsprite_[Now_Max];
+	for (int i = 0; i < Now_Max; i++) {
 		nowsprite_[i] = IKESprite::Create(ImageManager::NowLoad1, { 0.0f,0.0f });
 		nowsprite_[i]->SetAnchorPoint({ 0.5f,0.5f });
 		nowsprite_[i]->SetPosition({ 1000.0f,680.0f });
@@ -48,8 +47,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//スプライト生成
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
-	m_LoadNumber = rand() % 2;
-
+	m_LoadNumber = rand() % 5;
 	//ポストエフェクトをリセットする
 	PlayPostEffect = false;
 	if (!s_New) {
@@ -97,9 +95,12 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 
 	loadsprite[m_LoadNumber]->SetColor(m_color);
+	loadsprite[m_LoadNumber]->SetPosition(m_Position);
+	loadsprite[m_LoadNumber]->SetSize(m_Size);
 	nowsprite[m_LoadAnimeCount]->SetColor(m_color);
 
 	lightgroup->Update();
+	MoveLoad();
 	scenechange->Update();
 	scenechange->SubBlack(0.05f);
 }
@@ -150,5 +151,13 @@ void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void LoadSceneActor::Finalize() {
-	delete save;
+	//delete save;
+}
+//
+void LoadSceneActor::MoveLoad() {
+	m_Angle += 1.0f;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+
+	m_Size = { (sin(m_Angle2) * 32.0f) + (1028.0f),
+	(sin(m_Angle2) * 16.0f) + (128.0f), };
 }
