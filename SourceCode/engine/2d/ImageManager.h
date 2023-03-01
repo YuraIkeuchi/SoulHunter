@@ -68,10 +68,11 @@ public:
 
 	};
 public:
-	static ImageManager* GetIns();		//Žæ“¾—p
+	static ImageManager* GetInstance();		//Žæ“¾—p
 	static bool load;
-	void Load2D();
+	void StartLoad2D();
 	void LoadTex2D();
+	void SecondLoad2D();
 	void LoadParticle();
 };
 

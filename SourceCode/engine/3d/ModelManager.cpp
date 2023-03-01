@@ -8,16 +8,19 @@ ModelManager* ModelManager::GetInstance() {
 	static ModelManager instans;
 	return &instans;
 }
-//ÉÇÉfÉãì«Ç›çûÇ›
-void ModelManager::Initialize() {
-	LoadModel(ThornEnemy, "thornenemy");
-	LoadModel(FollowEnemy, "FollowEnemy");
-	LoadModel(ThornObj, "thornobj");
+void ModelManager::StartInitialize() {
+	LoadModel(Skydome, "skydome");
+	LoadFBXModel(PlayerFBX, "PlayerFBXNew");
 	LoadModel(NormalBlock, "RockBlock");
 	LoadModel(InBlock, "RockBlock2");
 	LoadModel(Toge, "Toge");
+}
+//ÉÇÉfÉãì«Ç›çûÇ›
+void ModelManager::SecondInitialize() {
+	LoadModel(ThornEnemy, "thornenemy");
+	LoadModel(FollowEnemy, "FollowEnemy");
+	LoadModel(ThornObj, "thornobj");
 	LoadModel(Ground, "ground");
-	LoadModel(Skydome, "skydome");
 	LoadModel(BackRock, "CaveRock");
 	LoadModel(BackBox, "BackBox");
 	LoadModel(BackTorch, "Torch");
@@ -31,7 +34,6 @@ void ModelManager::Initialize() {
 	LoadFBXModel(NormalEnemy, "MooshEnemy");
 	LoadFBXModel(BirdEnemy, "bat_move");
 	LoadFBXModel(BoundEnemy, "RabbitFBX");
-	LoadFBXModel(PlayerFBX, "PlayerFBXNew");
 	LoadFBXModel(BossFBX, "DragonFBX");
 	LoadFBXModel(PlayerWing, "WingFBX");
 }
