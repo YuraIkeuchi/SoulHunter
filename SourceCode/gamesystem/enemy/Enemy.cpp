@@ -3,6 +3,7 @@
 #include "VariableCommon.h"
 #include "ParticleManager.h"
 #include "Easing.h"
+#include "Block.h"
 using namespace DirectX;
 
 Enemy::Enemy() {
@@ -68,7 +69,7 @@ void Enemy::Action() {
 		m_Position.y += m_AddPower;
 	}
 	//マップチップとの当たり判定
-	if (block->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
+	if (Block::GetInstance()->EnemyMapCollideCommon(m_Position, m_Radius, m_OldPos, m_Jump, m_AddPower, m_TouchWall, m_HP)) {
 		m_OnGround = true;
 		m_Gravity = 0.02f;
 		//初期化

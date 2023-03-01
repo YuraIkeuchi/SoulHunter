@@ -1,19 +1,20 @@
 #pragma once
-#include "Block.h"
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
 #include "Shake.h"
 #include "PlayerEffect.h"
 #include <memory>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 using namespace std;         //  名前空間指定
 
 class GamePlayer :
 	public ObjCommon
 {
 public:
-	void SetBlock(Block* block) { this->block.reset(block); }
 	GamePlayer();
-
 public:
 
 	/// <summary>
@@ -132,7 +133,6 @@ public:
 private:
 	//クラス
 	vector<PlayerEffect*> effects;
-	unique_ptr<Block> block = nullptr;
 	unique_ptr<Shake> shake = nullptr;
 	//生きているかどうか
 	bool m_Alive = true;

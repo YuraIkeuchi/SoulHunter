@@ -2,8 +2,15 @@
 #include "imgui.h"
 #include "ModelManager.h"
 #include "VariableCommon.h"
-//読み込み
-Block::Block() {
+Block* Block::GetInstance()
+{
+	static Block instance;
+
+	return &instance;
+}
+
+//モデル読み込み
+void Block::ModelInit() {
 	IKEModel* modelNormalBlock_;
 	modelNormalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
 	//マップチップ用のオブジェクトの初期化
@@ -58,11 +65,11 @@ Block::Block() {
 		}
 	}
 	modelToge.reset(modelToge_);
-	
+
 	IKEModel* modelGoalBlock_;
 	//modelWhiteBlock = ModelManager::GetInstance()->GetModel(ModelManager::WhiteBlock);
 	modelGoalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
-	
+
 	modelGoalBlock.reset(modelGoalBlock_);
 }
 //初期化

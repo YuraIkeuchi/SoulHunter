@@ -1,7 +1,7 @@
 #include "BaseActor.h"
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
-Block* BaseActor::block = nullptr;
+#include "Block.h"
 MiniMap* BaseActor::minimap = nullptr;
 //Pause* BaseActor::pause = nullptr;
 bool BaseActor::m_GameLoad = false;
@@ -26,7 +26,7 @@ void BaseActor::PlayerInitialize() {
 	//プレイヤー
 	player->Initialize();
 	player->StateInitialize();
-	player->SetBlock(block);
+	//player->SetBlock(block);
 }
 //カメラの初期化
 void BaseActor::CameraInitialize() {
@@ -84,10 +84,10 @@ void BaseActor::StartGame(LightGroup* lightgroup) {
 	if (!m_GameLoad) {
 		skillpause->InitPos();
 		StageNumber = TutoRial;
-		block->Initialize(tutorialmap, 0, StageNumber);
+		Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
 		minimap->InitMap(tutorialmap, StageNumber);
 		skillpause->ResetSkillPause();
-		enemymanager->LoadEnemyParam(TutoRial, player, block, lightgroup);
+		enemymanager->LoadEnemyParam(TutoRial, player, lightgroup);
 		backmanager->LoadObjParam(TutoRial, player, lightgroup);
 		//ゲームモードによってスキル獲得状況が変わる
 		if (m_NormalMode) {
@@ -106,19 +106,19 @@ void BaseActor::StartGame(LightGroup* lightgroup) {
 		save->InitSave(StageNumber);
 		chest->InitChest(StageNumber);
 		if (StageNumber == TutoRial) {
-			block->Initialize(tutorialmap, 0, StageNumber);
+			Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
 			minimap->InitMap(tutorialmap, StageNumber);
 		}
 		else if (StageNumber == Map1) {
-			block->Initialize(map1, 0, StageNumber);
+			Block::GetInstance()->Initialize(map1, 0, StageNumber);
 			minimap->InitMap(map1, StageNumber);
 		}
 		else if (StageNumber == Map3) {
-			block->Initialize(map3, 0, StageNumber);
+			Block::GetInstance()->Initialize(map3, 0, StageNumber);
 			minimap->InitMap(map3, StageNumber);
 		}
 		else if (StageNumber == Map5) {
-			block->Initialize(map5, 0, StageNumber);
+			Block::GetInstance()->Initialize(map5, 0, StageNumber);
 			minimap->InitMap(map5, StageNumber);
 		}
 	}

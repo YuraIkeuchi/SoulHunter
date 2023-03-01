@@ -7,7 +7,6 @@
 #include "Save.h"
 #include "UI.h"
 #include "FirstBoss.h"
-#include "Block.h"
 #include "Pause.h"
 #include "SkillPause.h"
 #include "MiniMap.h"
@@ -135,7 +134,6 @@ protected:
 	//ボス
 	InterBoss* firstboss = nullptr;
 	ResPornEnemy* respornenemy = nullptr;
-	static Block* block;
 	//ポストエフェクト指定
 	PostEffect* postEffect = nullptr;
 	//シーン遷移のためのもの

@@ -3,33 +3,28 @@
 EnemyManager::EnemyManager() {
 	enemyedit = new EnemyEdit();
 }
-void EnemyManager::SoulSet(GamePlayer* player, Block* block) {
+void EnemyManager::SoulSet(GamePlayer* player) {
 	//ç∞
 	for (int i = 0; i < Soul_Max; i++) {
 		for (int j = 0; j < Enemy_Max; j++) {
 			normalplayersoul[i][j] = new PlayerSoul();
 			normalplayersoul[i][j]->Initialize();
-			normalplayersoul[i][j]->SetBlock(block);
 			normalplayersoul[i][j]->SetPlayer(player);
 
 			boundplayersoul[i][j] = new PlayerSoul();
 			boundplayersoul[i][j]->Initialize();
-			boundplayersoul[i][j]->SetBlock(block);
 			boundplayersoul[i][j]->SetPlayer(player);
 
 			birdplayersoul[i][j] = new PlayerSoul();
 			birdplayersoul[i][j]->Initialize();
-			birdplayersoul[i][j]->SetBlock(block);
 			birdplayersoul[i][j]->SetPlayer(player);
 
 			followplayersoul[i][j] = new PlayerSoul();
 			followplayersoul[i][j]->Initialize();
-			followplayersoul[i][j]->SetBlock(block);
 			followplayersoul[i][j]->SetPlayer(player);
 
 			chestplayersoul[i][j] = new PlayerSoul();
 			chestplayersoul[i][j]->Initialize();
-			chestplayersoul[i][j]->SetBlock(block);
 			chestplayersoul[i][j]->SetPlayer(player);
 		}
 	}
@@ -345,7 +340,7 @@ void EnemyManager::SaveEnemyParam(const int StageNumber) {
 	}
 }
 //CSVÇ©ÇÁílÇì«Ç›çûÇÒÇ≈Ç¢ÇÈ(ìG)
-void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Block* block, LightGroup* light) {
+void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, LightGroup* light) {
 	lightgroup = light;
 	OpenEnemyParam(StageNumber);
 	//ïÅí ÇÃìG
@@ -400,7 +395,6 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Blo
 		m_Enemys[i] = new Enemy();
 		m_Enemys[i]->Initialize();
 		m_Enemys[i]->SetPlayer(player);
-		m_Enemys[i]->SetBlock(block);
 		m_Enemys[i]->SetPosition(m_EnemyStartPos[i]);
 		m_Enemys[i]->SetStartPos(m_EnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + 2, true);
@@ -523,7 +517,6 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Blo
 		m_BoundEnemys[i] = new BoundEnemy();
 		m_BoundEnemys[i]->Initialize();
 		m_BoundEnemys[i]->SetPlayer(player);
-		m_BoundEnemys[i]->SetBlock(block);
 		m_BoundEnemys[i]->SetPosition(m_BoundEnemyStartPos[i]);
 		m_BoundEnemys[i]->SetStartPos(m_BoundEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num), true);
@@ -581,7 +574,6 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Blo
 		m_BirdEnemys[i] = new BirdEnemy();
 		m_BirdEnemys[i]->Initialize();
 		m_BirdEnemys[i]->SetPlayer(player);
-		m_BirdEnemys[i]->SetBlock(block);
 		m_BirdEnemys[i]->SetPosition(m_BirdEnemyStartPos[i]);
 		m_BirdEnemys[i]->SetStartPos(m_BirdEnemyStartPos[i]);
 		lightgroup->SetCircleShadowActive(i + (m_Enemy_Num + m_ThornEnemy_Num + m_BoundEnemy_Num), true);
@@ -639,7 +631,6 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Blo
 		m_FollowEnemys[i] = new FollowEnemy();
 		m_FollowEnemys[i]->Initialize();
 		m_FollowEnemys[i]->SetPlayer(player);
-		m_FollowEnemys[i]->SetBlock(block);
 		m_FollowEnemys[i]->SetPosition(m_FollowEnemyStartPos[i]);
 		m_FollowEnemys[i]->SetStartPos(m_FollowEnemyStartPos[i]);
 	}
@@ -697,7 +688,6 @@ void EnemyManager::LoadEnemyParam(const int StageNumber, GamePlayer* player, Blo
 		m_ChestEnemys[i] = new ChestEnemy();
 		m_ChestEnemys[i]->Initialize();
 		m_ChestEnemys[i]->SetPlayer(player);
-		m_ChestEnemys[i]->SetBlock(block);
 		m_ChestEnemys[i]->SetPosition(m_ChestEnemyStartPos[i]);
 		m_ChestEnemys[i]->SetStartPos(m_ChestEnemyStartPos[i]);
 	}
@@ -900,10 +890,10 @@ void EnemyManager::DeleteEnemy() {
 	m_EnemyCount = 0;
 }
 //ê∂ê¨
-void EnemyManager::EnemyBirth(int EnemyType, GamePlayer* player, Block* block) {
+void EnemyManager::EnemyBirth(int EnemyType, GamePlayer* player) {
 	//ïÅí 
 	if (EnemyType == Normal) {
-		enemyedit->NormalEnemyArgment(m_Enemys, player, block);
+		enemyedit->NormalEnemyArgment(m_Enemys, player);
 		m_NormalEnemyCount++;
 	}
 	//ûôÇÃÇ‚Ç¬
@@ -912,21 +902,21 @@ void EnemyManager::EnemyBirth(int EnemyType, GamePlayer* player, Block* block) {
 	}
 	//âHÇÃìG
 	else if (EnemyType == Bound) {
-		enemyedit->BoundEnemyArgment(m_BoundEnemys, player, block);
+		enemyedit->BoundEnemyArgment(m_BoundEnemys, player);
 		m_BoundEnemyCount++;
 	}
 	//íπÇÃìG
 	else if(EnemyType == Bird) {
-		enemyedit->BirdEnemyArgment(m_BirdEnemys, player, block);
+		enemyedit->BirdEnemyArgment(m_BirdEnemys, player);
 		m_BirdEnemyCount++;
 	}
 	//í«è]ÇÃìG
 	else if(EnemyType == Follow) {
-		enemyedit->FollowEnemyArgment(m_FollowEnemys, player,block);
+		enemyedit->FollowEnemyArgment(m_FollowEnemys, player);
 		m_FollowEnemyCount++;
 	}
 	else if(EnemyType == FakeChest) {
-		enemyedit->ChestEnemyArgment(m_ChestEnemys, player, block);
+		enemyedit->ChestEnemyArgment(m_ChestEnemys, player);
 		m_ChestEnemyCount++;
 	}
 }

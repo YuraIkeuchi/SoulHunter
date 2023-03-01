@@ -9,7 +9,7 @@
 #include "OpenBrowser.h"
 //プレイシーンの初期化(現在は魂だけ)
 void PlaySceneActor::PlaySceneInitialize() {
-	enemymanager->SoulSet(player, block);
+	enemymanager->SoulSet(player);
 }
 //初期化
 void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -128,7 +128,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
-	block->Update(m_PlayerPos);
+	Block::GetInstance()->Update(m_PlayerPos);
 
 	//プレイヤーの更新
 	if (!pause->GetIsPause() && !chest->GetExplain()) {
@@ -280,7 +280,7 @@ void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
 	if (BlackColor.w <= 1.0f) {
 		//ステージの描画
 		backmanager->AlwaysDraw(dxCommon);
-		block->Draw(m_PlayerPos);
+		Block::GetInstance()->Draw(m_PlayerPos);
 		if (StageNumber != BossMap) {
 			backmanager->Draw(dxCommon);
 		}
@@ -335,28 +335,28 @@ void PlaySceneActor::MapInitialize(LightGroup* lightgroup) {
 		switch (StageNumber)
 		{
 		case Map1:
-			block->Initialize(map1, 0, StageNumber);
+			Block::GetInstance()->Initialize(map1, 0, StageNumber);
 			minimap->InitMap(map1, StageNumber);
 		case Map2:
-			block->Initialize(map2, 0, StageNumber);
+			Block::GetInstance()->Initialize(map2, 0, StageNumber);
 			minimap->InitMap(map2, StageNumber);
 		case Map3:
-			block->Initialize(map3, 0, StageNumber);
+			Block::GetInstance()->Initialize(map3, 0, StageNumber);
 			minimap->InitMap(map3, StageNumber);
 		case Map4:
-			block->Initialize(map4, 0, StageNumber);
+			Block::GetInstance()->Initialize(map4, 0, StageNumber);
 			minimap->InitMap(map4, StageNumber);
 		case Map5:
-			block->Initialize(map5, 0, StageNumber);
+			Block::GetInstance()->Initialize(map5, 0, StageNumber);
 			minimap->InitMap(map5, StageNumber);
 		case Map6:
-			block->Initialize(map6, 0, StageNumber);
+			Block::GetInstance()->Initialize(map6, 0, StageNumber);
 			minimap->InitMap(map6, StageNumber);
 		case BossMap:
-			block->Initialize(bossmap, 0, StageNumber);
+			Block::GetInstance()->Initialize(bossmap, 0, StageNumber);
 			minimap->InitMap(bossmap, StageNumber);
 		case TutoRial:
-			block->Initialize(tutorialmap, 0, StageNumber);
+			Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
 			minimap->InitMap(tutorialmap, StageNumber);
 		default:
 			break;
@@ -366,7 +366,7 @@ void PlaySceneActor::MapInitialize(LightGroup* lightgroup) {
 		save->InitSave(StageNumber);
 		tutorialtext->InitBoard(StageNumber);
 		chest->InitChest(StageNumber);
-		enemymanager->LoadEnemyParam(StageNumber, player, block, lightgroup);
+		enemymanager->LoadEnemyParam(StageNumber, player, lightgroup);
 		backmanager->LoadObjParam(StageNumber, player, lightgroup);
 		backmanager->LoadBackObjAlways(StageNumber);
 		StageChange = false;
@@ -469,7 +469,7 @@ void PlaySceneActor::BossRoomUpdate() {
 			//	newEnemy = new Enemy();
 			//	newEnemy->Initialize();
 			//	newEnemy->SetPlayer(player);
-			//	newEnemy->SetBlock(block);
+			//	newEnemy->SetBlock::GetInstance()(Block::GetInstance());
 			//	newEnemy->SetPosition(respornenemy->GetResPornPosition());
 			//	m_Enemys.push_back(newEnemy);
 			//	m_NormalEnemyCount++;
@@ -525,7 +525,7 @@ void PlaySceneActor::ChangeUpdate() {
 		if (m_SceneChange) {
 			m_GameLoad = true;
 			StartStage = StageNumber;
-			block->ResetBlock();
+			Block::GetInstance()->ResetBlock();
 			minimap->ResetBlock();
 			//シーン先を決める
 			if (m_SceneMigration == Editor) {
@@ -539,7 +539,7 @@ void PlaySceneActor::ChangeUpdate() {
 			m_SceneChange = false;
 		}
 		else {
-			block->ResetBlock();
+			Block::GetInstance()->ResetBlock();
 			minimap->ResetBlock();
 			Audio::GetInstance()->StopWave(0);
 			Audio::GetInstance()->StopWave(1);
@@ -566,7 +566,7 @@ void PlaySceneActor::ChangeUpdate() {
 void PlaySceneActor::GoalHit() {
 	//ゴール判定
 	if (!player->GetChangeInterVal()) {
-		if (block->GetLeftGoal()) {
+		if (Block::GetInstance()->GetLeftGoal()) {
 			player->SetChangeInterVal(true);
 			player->SetGoalDir(1);
 			if (StageNumber == Map1) {
@@ -585,10 +585,10 @@ void PlaySceneActor::GoalHit() {
 				StageNumber = Map6;
 			}
 			mapchange->SetAddStartChange(true);
-			block->SetLeftGoal(false);
+			Block::GetInstance()->SetLeftGoal(false);
 		}
 
-		if (block->GetRightGoal()) {
+		if (Block::GetInstance()->GetRightGoal()) {
 			player->SetChangeInterVal(true);
 			player->SetGoalDir(2);
 			if (StageNumber == TutoRial) {
@@ -607,10 +607,10 @@ void PlaySceneActor::GoalHit() {
 				StageNumber = Map5;
 			}
 			mapchange->SetAddStartChange(true);
-			block->SetRightGoal(false);
+			Block::GetInstance()->SetRightGoal(false);
 		}
 
-		if (block->GetDownGoal()) {
+		if (Block::GetInstance()->GetDownGoal()) {
 			player->SetChangeInterVal(true);
 			player->SetGoalDir(4);
 			if (StageNumber == Map1) {
@@ -624,10 +624,10 @@ void PlaySceneActor::GoalHit() {
 				firstboss->SetMovie(true);
 			}
 			mapchange->SetAddStartChange(true);
-			block->SetDownGoal(false);
+			Block::GetInstance()->SetDownGoal(false);
 		}
 
-		if (block->GetUpGoal()) {
+		if (Block::GetInstance()->GetUpGoal()) {
 			player->SetGoalDir(3);
 			player->SetChangeInterVal(true);
 			if (StageNumber == Map4) {
@@ -637,14 +637,14 @@ void PlaySceneActor::GoalHit() {
 				StageNumber = Map1;
 			}
 			mapchange->SetAddStartChange(true);
-			block->SetUpGoal(false);
+			Block::GetInstance()->SetUpGoal(false);
 		}
 	}
 
 	//マップ変更
 	if (mapchange->AddBlack()) {
 		StageChange = true;
-		block->ResetBlock();
+		Block::GetInstance()->ResetBlock();
 		minimap->ResetBlock();
 		mapchange->SetSubStartChange(true);
 		if (StageNumber == BossMap) {

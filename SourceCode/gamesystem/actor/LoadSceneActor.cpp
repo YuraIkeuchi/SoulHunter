@@ -73,7 +73,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	if (!s_New) {
 		if (m_LoadAnimeTimer == 15 && m_LoadAnimeCount == 2) {
 			m_LoadChackCount++;
-			block = new Block();
+			Block::GetInstance()->ModelInit();
 		}
 		else if (m_LoadAnimeTimer == 15 && m_LoadAnimeCount == 3) {
 			m_LoadChackCount++;

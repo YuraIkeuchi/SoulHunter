@@ -14,8 +14,8 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	Block();
-
+	static Block* GetInstance();
+	void ModelInit();
 	void Initialize(std::vector<std::vector<int>>& map, int mapNumber,int StageNumber);
 	void Update(XMFLOAT3& pos);
 	void Draw(XMFLOAT3& pos);

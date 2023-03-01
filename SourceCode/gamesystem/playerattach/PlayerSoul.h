@@ -2,13 +2,11 @@
 #include "InterEnemy.h"
 #include "IKETexture.h"
 #include "GamePlayer.h"
-#include "Block.h"
 #include <memory> 
 using namespace std;         //  名前空間指定
 //プレイヤーの魂のクラス
 class PlayerSoul {
 public:
-	void SetBlock(Block* block_) { this->block.reset(block_); }
 	void SetPlayer(GamePlayer* player) { this->player.reset(player); }
 	PlayerSoul();
 
@@ -40,7 +38,6 @@ private:
 	unique_ptr<IKETexture> soultex;
 	//クラス
 	unique_ptr<GamePlayer> player = nullptr;//
-	unique_ptr<Block> block = nullptr;
 	//変数
 	XMFLOAT3 m_Position;//座標
 	XMFLOAT3 m_OldPos;//位置フレームずれた座標

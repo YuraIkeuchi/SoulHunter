@@ -13,17 +13,12 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public://äeìGÇÃê∂ê¨(à¯êîÇ™ëΩÇ¢ÇÃÇ≈å„ÅXèCê≥Ç∑ÇÈ)
-	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,GamePlayer* player,
-	Block* block);
+	void NormalEnemyArgment(std::vector<InterEnemy*>& enemy,GamePlayer* player);
 	void ThornEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
-	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
-		Block* block);
-	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
-		Block* block);
-	void FollowEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
-		Block* block);
-	void ChestEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player,
-		Block* block);
+	void BoundEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
+	void BirdEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
+	void FollowEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
+	void ChestEnemyArgment(std::vector<InterEnemy*>& enemy, GamePlayer* player);
 private:
 	
 };
