@@ -5,6 +5,7 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
+#include "MiniMap.h"
 //初期化
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
@@ -204,8 +205,8 @@ void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	pause->Draw();
 	chest->SpriteDraw();
 	scenechange->Draw();
-	chest->MapDraw(minimap->GetMapType(), minimap->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
-	enemymanager->MapDraw(minimap->GetMapType(), minimap->GetMapColor());
+	chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
+	enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
 	IKESprite::PostDraw();
 #pragma endregion
 }
@@ -313,28 +314,28 @@ void EditorSceneActor::MapInitialize() {
 		{
 		case Map1:
 			Block::GetInstance()->Initialize(map1, 0, StageNumber);
-			minimap->InitMap(map1, StageNumber);
+			MiniMap::GetInstance()->InitMap(map1, StageNumber);
 		case Map2:
 			Block::GetInstance()->Initialize(map2, 0, StageNumber);
-			minimap->InitMap(map2, StageNumber);
+			MiniMap::GetInstance()->InitMap(map2, StageNumber);
 		case Map3:
 			Block::GetInstance()->Initialize(map3, 0, StageNumber);
-			minimap->InitMap(map3, StageNumber);
+			MiniMap::GetInstance()->InitMap(map3, StageNumber);
 		case Map4:
 			Block::GetInstance()->Initialize(map4, 0, StageNumber);
-			minimap->InitMap(map4, StageNumber);
+			MiniMap::GetInstance()->InitMap(map4, StageNumber);
 		case Map5:
 			Block::GetInstance()->Initialize(map5, 0, StageNumber);
-			minimap->InitMap(map5, StageNumber);
+			MiniMap::GetInstance()->InitMap(map5, StageNumber);
 		case Map6:
 			Block::GetInstance()->Initialize(map6, 0, StageNumber);
-			minimap->InitMap(map6, StageNumber);
+			MiniMap::GetInstance()->InitMap(map6, StageNumber);
 		case BossMap:
 			Block::GetInstance()->Initialize(bossmap, 0, StageNumber);
-			minimap->InitMap(bossmap, StageNumber);
+			MiniMap::GetInstance()->InitMap(bossmap, StageNumber);
 		case TutoRial:
 			Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
-			minimap->InitMap(tutorialmap, StageNumber);
+			MiniMap::GetInstance()->InitMap(tutorialmap, StageNumber);
 		default:
 			break;
 		}
@@ -380,7 +381,7 @@ void EditorSceneActor::AllUpdate(DebugCamera* camera) {
 
 	//その他の更新
 	ParticleEmitter::GetInstance()->Update();
-	minimap->SetMiniPlayerPos(StageNumber);
+	MiniMap::GetInstance()->SetMiniPlayerPos(StageNumber);
 	pause->Update();
 	chest->Update();
 	VolumManager::GetInstance()->Update();
@@ -424,7 +425,7 @@ void EditorSceneActor::ChangeUpdate() {
 			m_GameLoad = true;
 			StartStage = StageNumber;
 			Block::GetInstance()->ResetBlock();
-			minimap->ResetBlock();
+			MiniMap::GetInstance()->ResetBlock();
 			SaveGame();
 			//シーン先を決める
 			if (m_SceneMigration == GamePlay) {
@@ -441,7 +442,7 @@ void EditorSceneActor::ChangeUpdate() {
 	//マップ切り替え
 	if (mapchange->AddBlack()) {
 		Block::GetInstance()->ResetBlock();
-		minimap->ResetBlock();
+		MiniMap::GetInstance()->ResetBlock();
 		mapchange->SetSubStartChange(true);
 		StageChange = true;
 	}

@@ -2,8 +2,7 @@
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
 #include "Block.h"
-MiniMap* BaseActor::minimap = nullptr;
-//Pause* BaseActor::pause = nullptr;
+#include "MiniMap.h"
 bool BaseActor::m_GameLoad = false;
 bool BaseActor::m_NormalMode = false;
 bool BaseActor::m_GameLoop = false;
@@ -51,13 +50,12 @@ void BaseActor::PauseInitialize() {
 	skillpause->SetPlayer(player);
 	skillpause->Initialize();
 	//ミニマップ
-	minimap->Initialize();
-	minimap->SetPlayer(player);
-	minimap->SetSave(save);
+	MiniMap::GetInstance()->Initialize();
+	MiniMap::GetInstance()->SetPlayer(player);
+	MiniMap::GetInstance()->SetSave(save);
 	//オプション
 	option->Initialize();
 	pause->SetSkillPause(skillpause);
-	pause->SetMiniMap(minimap);
 	pause->SetOption(option);
 	pause->SetPlayer(player);
 	pause->Initialize();
@@ -85,7 +83,7 @@ void BaseActor::StartGame(LightGroup* lightgroup) {
 		skillpause->InitPos();
 		StageNumber = TutoRial;
 		Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
-		minimap->InitMap(tutorialmap, StageNumber);
+		MiniMap::GetInstance()->InitMap(tutorialmap, StageNumber);
 		skillpause->ResetSkillPause();
 		enemymanager->LoadEnemyParam(TutoRial, player, lightgroup);
 		backmanager->LoadObjParam(TutoRial, player, lightgroup);
@@ -107,19 +105,19 @@ void BaseActor::StartGame(LightGroup* lightgroup) {
 		chest->InitChest(StageNumber);
 		if (StageNumber == TutoRial) {
 			Block::GetInstance()->Initialize(tutorialmap, 0, StageNumber);
-			minimap->InitMap(tutorialmap, StageNumber);
+			MiniMap::GetInstance()->InitMap(tutorialmap, StageNumber);
 		}
 		else if (StageNumber == Map1) {
 			Block::GetInstance()->Initialize(map1, 0, StageNumber);
-			minimap->InitMap(map1, StageNumber);
+			MiniMap::GetInstance()->InitMap(map1, StageNumber);
 		}
 		else if (StageNumber == Map3) {
 			Block::GetInstance()->Initialize(map3, 0, StageNumber);
-			minimap->InitMap(map3, StageNumber);
+			MiniMap::GetInstance()->InitMap(map3, StageNumber);
 		}
 		else if (StageNumber == Map5) {
 			Block::GetInstance()->Initialize(map5, 0, StageNumber);
-			minimap->InitMap(map5, StageNumber);
+			MiniMap::GetInstance()->InitMap(map5, StageNumber);
 		}
 	}
 }

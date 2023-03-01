@@ -25,7 +25,7 @@ public:
 	// ”ñ“¯Šúƒ[ƒh
 	void AsyncLoad();
 
-private:
+public:
 	//getter setter
 	void SetLoad(bool Load) { this->m_Load = Load; }
 	bool GetLoad() { return  m_Load; }

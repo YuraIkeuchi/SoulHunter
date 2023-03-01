@@ -6,8 +6,15 @@
 #include "VolumManager.h"
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
+MiniMap* MiniMap::GetInstance()
+{
+	static MiniMap instance;
+
+	return &instance;
+}
+
 //‰Šú‰»
-MiniMap::MiniMap() {
+void MiniMap::SpriteInit() {
 	IKESprite::LoadTexture(12, L"Resources/2d/sceneback/PauseBack.png");
 	IKESprite::LoadTexture(13, L"Resources/2d/sceneback/MiniMapPlayer.png");
 	IKESprite::LoadTexture(14, L"Resources/2d/sceneback/MiniMapSave.png");

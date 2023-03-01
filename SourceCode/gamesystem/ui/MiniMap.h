@@ -8,7 +8,8 @@ using namespace std;         //  名前空間指定
 //ミニマップ
 class MiniMap {
 public:
-	MiniMap();
+	static MiniMap* GetInstance();
+	void SpriteInit();
 	void SetPlayer(GamePlayer* player) { this->player = player; }
 	void SetSave(Save* save) { this->save = save; }
 	void Initialize();//初期化

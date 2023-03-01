@@ -9,7 +9,6 @@
 #include "FirstBoss.h"
 #include "Pause.h"
 #include "SkillPause.h"
-#include "MiniMap.h"
 #include "Option.h"
 #include "MapChange.h"
 #include "TutorialText.h"
@@ -144,7 +143,6 @@ protected:
 	//ポーズメニュー関連
 	Pause* pause = nullptr;
 	SkillPause* skillpause = nullptr;
-	static MiniMap* minimap;
 	Option* option = nullptr;
 	//宝箱
 	Chest* chest = nullptr;
