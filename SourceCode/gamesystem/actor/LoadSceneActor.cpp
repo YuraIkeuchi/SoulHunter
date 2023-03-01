@@ -150,5 +150,5 @@ void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //‰ð•ú
 void LoadSceneActor::Finalize() {
-	delete save;
+	//delete save;
 }

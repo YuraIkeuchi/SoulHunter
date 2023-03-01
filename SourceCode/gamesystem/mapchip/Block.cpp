@@ -11,8 +11,7 @@ Block* Block::GetInstance()
 
 //モデル読み込み
 void Block::ModelInit() {
-	IKEModel* modelNormalBlock_;
-	modelNormalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
+	modelNormalBlock = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
 	//マップチップ用のオブジェクトの初期化
 	for (int y = 0; y < map_max_y; y++)
 	{
@@ -21,17 +20,15 @@ void Block::ModelInit() {
 			IKEObject3d* objNormalBlock_[map_max_y][map_max_x];
 			objNormalBlock_[y][x] = new IKEObject3d();
 			objNormalBlock_[y][x] = IKEObject3d::Create();
-			objNormalBlock_[y][x]->SetModel(modelNormalBlock_);
+			objNormalBlock_[y][x]->SetModel(modelNormalBlock);
 			objNormalBlock_[y][x]->SetScale({ 0.7f,1.2f,3.0f });
 			objNormalBlock_[y][x]->SetTiling({ 5.0f });
 			objNormalBlock_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
 			objNormalBlock[y][x].reset(objNormalBlock_[y][x]);
 		}
 	}
-	modelNormalBlock.reset(modelNormalBlock_);
 
-	IKEModel* modelInBlock_;
-	modelInBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::InBlock);
+	modelInBlock = ModelManager::GetInstance()->GetModel(ModelManager::InBlock);
 	//マップチップ用のオブジェクトの初期化
 	for (int y = 0; y < map_max_y; y++)
 	{
@@ -40,16 +37,14 @@ void Block::ModelInit() {
 			IKEObject3d* objInBlock_[map_max_y][map_max_x];
 			objInBlock_[y][x] = new IKEObject3d();
 			objInBlock_[y][x] = IKEObject3d::Create();
-			objInBlock_[y][x]->SetModel(modelInBlock_);
+			objInBlock_[y][x]->SetModel(modelInBlock);
 			objInBlock_[y][x]->SetScale({ 0.8f,2.0f,3.0f });
 			objInBlock_[y][x]->SetTiling({ 5.0f });
 			objInBlock_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
 			objInBlock[y][x].reset(objInBlock_[y][x]);
 		}
 	}
-	modelInBlock.reset(modelInBlock_);
-	IKEModel* modelToge_;
-	modelToge_ = ModelManager::GetInstance()->GetModel(ModelManager::Toge);
+	modelToge = ModelManager::GetInstance()->GetModel(ModelManager::Toge);
 
 	for (int y = 0; y < map_max_y; y++)
 	{
@@ -58,19 +53,14 @@ void Block::ModelInit() {
 			IKEObject3d* objToge_[map_max_y][map_max_x];
 			objToge_[y][x] = new IKEObject3d();
 			objToge_[y][x] = IKEObject3d::Create();
-			objToge_[y][x]->SetModel(modelToge_);
+			objToge_[y][x]->SetModel(modelToge);
 			objToge_[y][x]->SetScale({ 0.6f,1.0f,0.6f });
 			objToge_[y][x]->SetPosition({ 1000.0f,1000.0f,1000.0f });
 			objToge[y][x].reset(objToge_[y][x]);
 		}
 	}
-	modelToge.reset(modelToge_);
 
-	IKEModel* modelGoalBlock_;
-	//modelWhiteBlock = ModelManager::GetInstance()->GetModel(ModelManager::WhiteBlock);
-	modelGoalBlock_ = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
-
-	modelGoalBlock.reset(modelGoalBlock_);
+	modelGoalBlock = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
 }
 //初期化
 void Block::Initialize(std::vector<std::vector<int>>& map, int mapNumber,int StageNumber) {

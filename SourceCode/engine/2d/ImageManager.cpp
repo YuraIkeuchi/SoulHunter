@@ -18,6 +18,8 @@ void ImageManager::StartLoad2D() {
 	IKESprite::LoadTexture(IntroText, L"Resources/2d/sceneback/IntroText.png");
 	IKESprite::LoadTexture(LoadText1, L"Resources/2d/sceneback/LoadText1.png");
 	IKESprite::LoadTexture(NowLoad1, L"Resources/2d/sceneback/NowLoading1.png");
+	IKESprite::LoadTexture(Curtain, L"Resources/2d/sceneback/Curtain.png");
+	IKESprite::LoadTexture(SkipText, L"Resources/2d/sceneback/SkipText.png");
 }
 
 void ImageManager::SecondLoad2D() {
@@ -36,8 +38,6 @@ void ImageManager::SecondLoad2D() {
 	IKESprite::LoadTexture(JumpExplain, L"Resources/2d/ui/Jumpexplain.png");
 	IKESprite::LoadTexture(Save1, L"Resources/2d/sceneback/SaveText.png");
 	IKESprite::LoadTexture(ChestBack, L"Resources/2d/SkillExplain/ExplainBack.png");
-	IKESprite::LoadTexture(Curtain, L"Resources/2d/sceneback/Curtain.png");
-	IKESprite::LoadTexture(SkipText, L"Resources/2d/sceneback/SkipText.png");
 	IKESprite::LoadTexture(ClearText, L"Resources/2d/sceneback/ClearText.png");
 	IKESprite::LoadTexture(MiniSkill, L"Resources/2d/sceneback/MiniMapSkill.png");
 }
