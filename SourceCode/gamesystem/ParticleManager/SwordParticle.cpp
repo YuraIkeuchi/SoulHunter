@@ -1,6 +1,7 @@
 #include "SwordParticle.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include <random>
 SwordParticle::SwordParticle() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::Particle);
 }
@@ -86,20 +87,24 @@ void SwordParticle::SetParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < object.size(); i++) {
 			if (!m_Alive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_angledist(0, 360);
+				uniform_int_distribution<int> l_partdistX(20, 40);
+				uniform_int_distribution<int> l_partdistY(30, 40);
 				object[i]->AddMatrix(matrix);
 				//パーティクルを出す
 				m_RandPos[i] = { 0,
-			 (static_cast<float>(rand() % 20) + 20) * -1.2f,
-				 (static_cast<float>(rand() % 30) + 10)
+			 (float)(l_partdistX(mt)) * -1.2f,
+				 (float)(l_partdistY(mt))
 				};
 				m_RandPos[i] = { m_RandPos[i].x,
 					m_RandPos[i].y / 10,
 					 m_RandPos[i].z / 10
 				};
 				m_pos[i] = m_RandPos[i];
-				m_angle[i] = (float)(rand() % 360);
+				m_angle[i] = float(l_angledist(mt));
 				m_speed[i] = { 0.02f,0.02f };
-				m_Number[i] = rand() % 2;
 				m_addPower[i].y = 0.0f;
 				m_scale[i] = { 0.1f,0.1f,0.1f };
 				m_Alive[i] = true;

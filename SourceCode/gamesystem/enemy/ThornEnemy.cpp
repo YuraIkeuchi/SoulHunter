@@ -3,6 +3,7 @@
 #include "ModelManager.h"
 #include <Easing.h>
 #include "PlayerSword.h"
+#include <random>
 using namespace DirectX;
 
 ThornEnemy::ThornEnemy() {
@@ -30,7 +31,10 @@ bool ThornEnemy::Initialize() {
 	m_Object.reset(m_Object_);
 	//“G‚Ìí—Ş
 	m_EnemyType = Thorn;
-	m_AddAngle = (float)(rand() % 10 + 10) / 15;
+	//—”w’è
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_dist(10, 20);
+	m_AddAngle = float(l_dist(mt)) / 15;
 	return true;
 }
 //XV

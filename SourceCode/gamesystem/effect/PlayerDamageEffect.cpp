@@ -1,6 +1,7 @@
 #include "PlayerDamageEffect.h"
 #include"ImageManager.h"
 #include "VariableCommon.h"
+#include <random>
 using namespace DirectX;
 //ì«Ç›çûÇ›
 PlayerDamageEffect::PlayerDamageEffect() {
@@ -65,8 +66,12 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 		if (m_DamageAlive[i] == false && !m_DeleteEffect) {
 			m_DamageEffectscale[i] = m_BirthDamageScale;
 			damagetex[i]->SetColor(m_BirthColor);
-			m_BoundPower[i].x = (float)(rand() % 10 + 5) / l_Division;
-			m_BoundPower[i].y = (float)(rand() % 20 - 10) / l_Division;
+			//óêêîê∂ê¨
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_distX(10, 15);
+			uniform_int_distribution<int> l_distY(-10, 10);
+			m_BoundPower[i].x = float(l_distX(mt)) / l_Division;
+			m_BoundPower[i].y = float(l_distY(mt)) / l_Division;
 			m_BoundPower[i].z = m_ResetFew;
 			if (i % 2 == 0) {
 				m_BoundPower[i].x *= -1.0f;

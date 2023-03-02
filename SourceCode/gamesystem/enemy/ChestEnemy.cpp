@@ -177,8 +177,8 @@ void ChestEnemy::ChestMove() {
 
 	if (m_Attack && m_HP != 0) {
 		if (m_MoveNumber == ShakeChest) {			//シェイクする
-			shake->ShakePos(m_ShakePos.x, 11, 5, 100, 70);
-			shake->ShakePos(m_ShakePos.y, 11, 5, 100, 70);
+			shake->ShakePos(m_ShakePos.x, 5, -5, 100, 70);
+			shake->ShakePos(m_ShakePos.y, 5, -5, 100, 70);
 			if (!shake->GetShakeStart()) {
 				m_ShakePos = { 0.0f,0.0f,0.0f };
 				m_MoveNumber = SetChest;

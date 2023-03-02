@@ -1,6 +1,7 @@
 #include "BirdEnemyEffect.h"
 #include"ImageManager.h"
 #include "VariableCommon.h"
+#include <random>
 using namespace DirectX;
 //ì«Ç›çûÇ›
 BirdEnemyEffect::BirdEnemyEffect() {
@@ -60,12 +61,17 @@ void BirdEnemyEffect::SetEffect(const XMFLOAT3& pos) {
 	for (int i = 0; i < JumpDamageEffect.size(); i++) {
 		//Ç±Ç±Ç≈îÚÇŒÇ∑ï˚å¸ÇåàÇﬂÇÈ
 		if (m_EffectNumber[i] == No && !m_Birth[i]) {
-			m_AddPower[i].x = (float)(rand() % 20 - 10) / l_Division;
-			m_AddPower[i].y = (float)(rand() % 5 + 1) / l_Division;
+			//óêêîéwíË
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_dist(-10, 10);
+			uniform_int_distribution<int> l_dist2(5, 6);
+			uniform_int_distribution<int> l_dist3(3, 4);
+			m_AddPower[i].x = (float)(l_dist(mt)) / l_Division;
+			m_AddPower[i].y = (float)(l_dist2(mt)) / l_Division;
 			m_AddPower[i].z = 0.0f;
-			m_AddRot[i] = (float)(rand() % 20 - 10);
+			m_AddRot[i] = (float)(l_dist(mt));
 			m_JumpDamageScale[i] = { 0.2f,0.2f,0.2f };
-			m_Gravity[i] = (float)(rand() % 3 + 1) / l_Division;
+			m_Gravity[i] = (float)(l_dist3(mt)) / l_Division;
 			m_EffectNumber[i] = Birth;
 			m_Birth[i] = true;
 		}

@@ -27,6 +27,7 @@ bool BirdEnemy::Initialize() {
 	m_Position = { 110.0f,-90.0,0.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.01f,0.01f,0.01f };
+	m_HitScale = m_Scale;
 	m_fbxObject_->SetScale(m_Scale);
 	m_fbxObject_->SetPosition(m_Position);
 	m_fbxObject_->SetRotation(m_Rotation);

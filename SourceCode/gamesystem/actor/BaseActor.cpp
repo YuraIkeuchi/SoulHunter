@@ -25,7 +25,6 @@ void BaseActor::PlayerInitialize() {
 	//プレイヤー
 	player->Initialize();
 	player->StateInitialize();
-	//player->SetBlock(block);
 }
 //カメラの初期化
 void BaseActor::CameraInitialize() {

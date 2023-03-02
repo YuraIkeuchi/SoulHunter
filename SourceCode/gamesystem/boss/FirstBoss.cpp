@@ -2,6 +2,7 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include <Easing.h>
+#include <random>
 FirstBoss::FirstBoss() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::BossFBX);
 	//パーティクル
@@ -229,10 +230,12 @@ void FirstBoss::DrawOutArea() {
 //攻撃していない
 void FirstBoss::NotAttack() {
 	if (m_AttackCount > 500) {
-		m_RandFire = rand() % 3;
+		//乱数指定
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_actdist(0, 3);
 		m_Frame = m_FrameMin;
 		m_Pat = 1;
-		m_Action = (rand() % 4);
+		m_Action = l_actdist(mt);
 		//m_Action = 3;
 		m_Active = true;
 	}
@@ -450,9 +453,12 @@ void FirstBoss::FireAttack() {
 			m_Frame = m_FrameMax;
 			m_CoolT++;
 			if (m_CoolT > 90) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_firedist(0, 1);
 				m_CoolT = 0;
 				m_Frame = m_FrameMin;
-				m_RandFire = rand() % 2;
+				m_RandFire = l_firedist(mt);
 				m_FireState = Set1;
 			}
 		}

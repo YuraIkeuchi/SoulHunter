@@ -1,6 +1,7 @@
 #include "WallAttackEffect.h"
 #include"ModelManager.h"
 #include "VariableCommon.h"
+#include <random>
 using namespace DirectX;
 //ì«Ç›çûÇ›
 WallAttackEffect::WallAttackEffect() {
@@ -49,19 +50,24 @@ void WallAttackEffect::EffectSet(const XMFLOAT3& pos,int HitDir) {
 	for (int i = 0; i < particleobj.size(); i++) {
 		//
 		if (!m_Effect[i] && !m_DeleteEffect) {
+			//óêêîê∂ê¨
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_powerdistX(8, 12);
+			uniform_int_distribution<int> l_powerdistY(-5, 10);
+			uniform_int_distribution<int> l_scaledist(2, 4);
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 8 + 4) / l_Division,
-					(float)(rand() % 15 - 5) / l_Division,
+					float(l_powerdistX(mt)) / l_Division,
+					float(l_powerdistY(mt)) / l_Division,
 					0.0f,
 			};
 			if (HitDir == 0) {
 				m_BoundPower[i].x *= -1;
 			}
 			m_Scale[i] = {
-					(float)(rand() % 2 + 2) / l_Division,
-					(float)(rand() % 2 + 2) / l_Division,
-					(float)(rand() % 2 + 2) / l_Division,
+					float(l_scaledist(mt)) / l_Division,
+					float(l_scaledist(mt)) / l_Division,
+					float(l_scaledist(mt)) / l_Division,
 			};
 			m_Effect[i] = true;
 		}

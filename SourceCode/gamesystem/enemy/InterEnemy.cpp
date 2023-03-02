@@ -18,7 +18,7 @@ void InterEnemy::Draw(DirectXCommon* dxCommon) {
 bool InterEnemy::Collision() {
 	int l_SetDamageTimer = 20;//TargetTimerのセット値
 	OBB1.SetParam_Pos(m_Position);
-	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Scl(m_HitScale);
 	OBB1.SetParam_Rot(m_fbxObject->GetMatrot());
 	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
 	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());

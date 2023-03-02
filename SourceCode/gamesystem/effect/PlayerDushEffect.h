@@ -39,7 +39,6 @@ private:
 	//エフェクト関係
 	//ダッシュのエフェクト
 	unique_ptr<IKETexture> DushEffecttexture = nullptr;
-	//IKETexture* ArmPlayerEffecttexture = nullptr;
 	XMFLOAT3 m_DushEffectpos = { 0.0f,0.0f,0.0f };//座標
 	XMFLOAT4 m_DushEffectcolor = { 0.0f,0.0f,0.0f,1.0f };//色
 	XMFLOAT3 m_DushEffectscale = { 0.0f,0.0f,0.0f };//大きさ

@@ -59,6 +59,7 @@ protected:
 	OBB OBB2 = {};
 	//座標やスケールなど
 	XMFLOAT3 fbxscale = { 0.03f,0.03f,0.03f };
+	XMFLOAT3 m_HitScale = {};
 	XMFLOAT3 m_BoundPower = {};
 	XMFLOAT3 m_OldPos = {};
 	XMFLOAT3 m_StartPos = {};

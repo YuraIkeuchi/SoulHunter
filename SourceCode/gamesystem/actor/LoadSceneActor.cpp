@@ -5,6 +5,7 @@
 #include "ImageManager.h"
 #include "imgui.h"
 #include "VariableCommon.h"
+#include <random>
 //初期化
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
@@ -47,7 +48,10 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//スプライト生成
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
-	m_LoadNumber = rand() % 5;
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_loaddist(0, 4);
+	m_LoadNumber = l_loaddist(mt);
 	//ポストエフェクトをリセットする
 	PlayPostEffect = false;
 	if (!s_New) {

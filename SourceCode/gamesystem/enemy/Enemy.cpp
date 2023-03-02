@@ -20,6 +20,7 @@ bool Enemy::Initialize() {
 	m_ChangeColor = true;
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.025f, 0.025f, 0.025f };
+	m_HitScale = m_Scale;
 	//FBX
 	IKEFBXObject3d* m_fbxObject_ = new IKEFBXObject3d();
 	m_fbxObject_->Initialize();

@@ -1,6 +1,7 @@
 #include "EnemyEffect.h"
 #include"ImageManager.h"
 #include "VariableCommon.h"
+#include <random>
 //ì«Ç›çûÇ›
 EnemyEffect::EnemyEffect() {
 	IKETexture* ParticleEffect_[Effect_Max];
@@ -67,13 +68,18 @@ void EnemyEffect::SetEffect(const XMFLOAT3& pos, bool& Effect) {
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		//
 		if (!m_Effect[i] && Effect && !m_DeleteEffect) {
+			//óêêîéwíË(-50Ç©ÇÁ50)
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_bounddist(-50, 50);
+			//ëÂÇ´Ç≥ÇÃóêêî
+			uniform_int_distribution<int> l_scaledist(20, 40);
 			m_Pos[i] = pos;
 			m_BoundPower[i] = {
-					(float)(rand() % 100 - 50) / l_Division,
-					(float)(rand() % 100 - 50) / l_Division,
+					(float)(l_bounddist(mt)) / l_Division,
+					(float)(l_bounddist(mt)) / l_Division,
 					0.0f,
 					};
-			m_AddScale[i] = (float)(rand() % 20 + 20) / l_Division;
+			m_AddScale[i] = (float)(l_scaledist(mt)) / l_Division;
 			m_Scale[i] = m_ResetThirdFew;
 			m_Color[i] = m_BirthColor;
 			m_ScaleChange[i] = false;

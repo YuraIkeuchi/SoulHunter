@@ -25,6 +25,7 @@ bool FollowEnemy::Initialize() {
 	m_Position = { 97.0f,-100.0,0.0f };
 	m_Object_->SetPosition(m_Position);
 	m_Scale = { 1.7f,1.7f,1.7f };
+	m_HitScale = { 1.0f,1.0f,1.0f };
 	m_Object_->SetScale(m_Scale);
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Object_->SetRotation(m_Rotation);
@@ -104,10 +105,10 @@ void FollowEnemy::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 }
-//ダメージを受ける(この敵は受けない　弾かれる)
+//ダメージを受ける
 bool FollowEnemy::FollowCollision() {
 	OBB1.SetParam_Pos(m_Position);
-	OBB1.SetParam_Scl(m_Scale);
+	OBB1.SetParam_Scl(m_HitScale);
 	OBB1.SetParam_Rot(m_Object->GetMatrot());
 	OBB2.SetParam_Pos(PlayerSword::GetInstance()->GetPosition());
 	OBB2.SetParam_Scl(PlayerSword::GetInstance()->GetScale());
