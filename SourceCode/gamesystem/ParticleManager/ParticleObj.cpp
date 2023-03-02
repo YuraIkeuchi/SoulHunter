@@ -1,6 +1,7 @@
 #include "ParticleObj.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include <random>
 //ì«Ç›çûÇ›
 ParticleObj::ParticleObj() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::Particle);
@@ -61,9 +62,13 @@ void ParticleObj::NormalParticle(const XMFLOAT3& StartPos, int Timer, int Target
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			//îÚÇŒÇ∑ï˚å¸ÇÉâÉìÉ_ÉÄÇ≈åàÇﬂÇÈ
 			if (!m_Alive[i]) {
-				m_Angle[i] = (float)(rand() % 360);
+				//óêêîê∂ê¨
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_angledist(0, 360);
+				uniform_int_distribution<int> l_Numberdist(0, 1);
+				m_Angle[i] = float(l_angledist(mt));
 				m_speed[i] = { 0.02f,0.02f };
-				m_Number[i] = rand() % 2;
+				m_Number[i] = l_Numberdist(mt);
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -112,9 +117,13 @@ void ParticleObj::WideParticle(const XMFLOAT3& StartPos, int Timer, int TargetTi
 		for (int i = 0; i < m_WideParticleCount; i++) {
 			//îÚÇŒÇ∑ï˚å¸ÇÉâÉìÉ_ÉÄÇ≈åàÇﬂÇÈ
 			if (!m_Alive[i] && !m_End[i]) {
-				m_Angle[i] = (float)(rand() % 360);
+				//óêêîê∂ê¨
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_angledist(0, 360);
+				uniform_int_distribution<int> l_Numberdist(0, 1);
+				m_Angle[i] = float(l_angledist(mt));
 				m_speed[i] = { 0.02f,0.02f };
-				m_Number[i] = rand() % 2;
+				m_Number[i] = l_Numberdist(mt);
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -192,8 +201,11 @@ void ParticleObj::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			//îÚÇŒÇ∑ï˚å¸ÇÉâÉìÉ_ÉÄÇ≈åàÇﬂÇÈ
 			if (!m_Alive[i]) {
+				//óêêîê∂ê¨
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_Numberdist(0, 1);
 				m_speed[i] = { 0.1f,0.02f };
-				m_Number[i] = rand() % 2;
+				m_Number[i] = l_Numberdist(mt);
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;
@@ -212,11 +224,15 @@ void ParticleObj::UpParticle(const XMFLOAT3& StartPos, int Timer, int TargetTime
 		//é¿ç€Ç…ìÆÇ≠
 		if (m_Alive[i]) {
 			m_Timer[i]++;
+			//óêêîê∂ê¨
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_Powerdist(1, 2);
 			if (m_Timer[i] % 30 == 0) {
-				m_Angle[i] = (float)(rand() % 360);
+				uniform_int_distribution<int> l_angledist(0, 360);
+				m_Angle[i] = float(l_angledist(mt));
 			}
 			m_pos[i].x += (cos(m_Angle[i]) * m_speed[i].x);
-			m_AddPower[i].y = (float)(rand() % 1 + 1);
+			m_AddPower[i].y = float(l_Powerdist(mt));
 			m_AddPower[i].y = m_AddPower[i].y / 10;
 			m_pos[i].y += m_AddPower[i].y;
 			m_AddScale = 0.005f;
@@ -248,9 +264,13 @@ void ParticleObj::EndParticle(const XMFLOAT3& StartPos, int Timer, int TargetTim
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < m_NormalParticleCount; i++) {
 			if (!m_Alive[i]) {
-				m_Angle[i] = (float)(rand() % 360);
+				//óêêîê∂ê¨
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_angledist(0, 360);
+				uniform_int_distribution<int> l_Numberdist(0, 1);
+				m_Angle[i] = float(l_angledist(mt));
 				m_speed[i] = { 0.3f,0.3f };
-				m_Number[i] = rand() % 2;
+				m_Number[i] = l_Numberdist(mt);
 				m_pos[i].x = m_StartPos.x;
 				m_pos[i].y = m_StartPos.y;
 				m_pos[i].z = m_StartPos.z;

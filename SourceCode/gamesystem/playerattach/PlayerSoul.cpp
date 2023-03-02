@@ -5,6 +5,7 @@
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include "Block.h"
+#include <random>
 using namespace DirectX;
 //読み込み
 PlayerSoul::PlayerSoul() {
@@ -72,8 +73,12 @@ void PlayerSoul::SetEffect(InterEnemy* enemy) {
 	//エフェクトの発生
 	if (enemy->GetSoul() && !m_Effect && !m_EndSoul) {
 		m_Scale = { 0.2f,0.2f,0.2f };
-		m_BoundPower = (float)(rand() % 8 - 4);
-		m_AddPower = (float)(rand() % 3 + 3);
+		//乱数指定
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_bounddist(-4, 4);
+		uniform_int_distribution<int> l_powerdist(3, 6);
+		m_BoundPower = (float)(l_bounddist(mt));
+		m_AddPower = (float)(l_powerdist(mt));
 		if (m_BoundPower == 0.0f) {
 			m_BoundPower = 1.0f;
 		}

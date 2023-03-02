@@ -4,6 +4,7 @@
 #include "Collision.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include <random>
 bool ThornObj::Initialize() {
 	
 	m_Scale = { 2.5f,4.8f,2.5f };
@@ -16,7 +17,10 @@ bool ThornObj::Initialize() {
 	m_Object_->SetScale(m_Scale);
 	m_Object_->SetLightEffect(false);
 	m_Object.reset(m_Object_);
-	m_TargetTimer = rand() % 90 + 10;
+	//—”w’è
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_timerdist(90, 100);
+	m_TargetTimer = l_timerdist(mt);
 
 	ThornParticle* thornparticle_;
 	thornparticle_ = new ThornParticle();

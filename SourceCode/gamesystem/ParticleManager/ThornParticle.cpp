@@ -1,6 +1,7 @@
 #include "ThornParticle.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
+#include <random>
 //読み込み
 ThornParticle::ThornParticle() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
@@ -100,9 +101,12 @@ void ThornParticle::UpSmokeParticle(const XMFLOAT3& StartPos, int Timer, int Tar
 		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_SmokeAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
 				m_color[i] = m_StartColor;
 				m_color[i].w = 0.2f;
-				m_SmokeRandPos[i].x = (float)(rand() % 6 - 3);
+				m_SmokeRandPos[i].x = float(l_smokedist(mt));
 				m_speed[i] = { 0.1f,0.6f };
 				m_SmokePos[i].x = StartPos.x + m_SmokeRandPos[i].x;
 				m_SmokePos[i].y = StartPos.y;
@@ -134,9 +138,12 @@ void ThornParticle::DownSmokeParticle(const XMFLOAT3& StartPos, int Timer, int T
 		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_SmokeAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
 				m_color[i] = m_StartColor;
 				m_color[i].w = 0.2f;
-				m_SmokeRandPos[i].x = (float)(rand() % 6 - 3);
+				m_SmokeRandPos[i].x = float(l_smokedist(mt));
 				m_speed[i] = { 0.1f,0.6f };
 				m_SmokePos[i].x = StartPos.x + m_SmokeRandPos[i].x;
 				m_SmokePos[i].y = StartPos.y;
@@ -168,9 +175,12 @@ void ThornParticle::RightSmokeParticle(const XMFLOAT3& StartPos, int Timer, int 
 		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_SmokeAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
 				m_color[i] = m_StartColor;
 				m_color[i].w = 0.2f;
-				m_SmokeRandPos[i].y = (float)(rand() % 6 - 3);
+				m_SmokeRandPos[i].y = float(l_smokedist(mt));
 				m_speed[i] = { 0.6f,0.1f };
 				m_SmokePos[i].x = StartPos.x;
 				m_SmokePos[i].y = StartPos.y + m_SmokeRandPos[i].y;
@@ -202,9 +212,12 @@ void ThornParticle::LeftSmokeParticle(const XMFLOAT3& StartPos, int Timer, int T
 		for (int i = 0; i < particletex.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_SmokeAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
 				m_color[i] = m_StartColor;
 				m_color[i].w = 0.2f;
-				m_SmokeRandPos[i].y = (float)(rand() % 6 - 3);
+				m_SmokeRandPos[i].y = float(l_smokedist(mt));
 				m_speed[i] = { 0.6f,0.1f };
 				m_SmokePos[i].x = StartPos.x;
 				m_SmokePos[i].y = StartPos.y + m_SmokeRandPos[i].y;
@@ -235,13 +248,17 @@ void ThornParticle::UpRockParticle(const XMFLOAT3& StartPos, int Timer, int Targ
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_RockAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
+				uniform_int_distribution<int> l_powerdist(5, 10);
 				m_Rockscale[i] = { 0.3f,0.3f,0.3f };
-				m_RockRandPos[i].x = (float)(rand() % 6 - 3);
+				m_RockRandPos[i].x = float(l_smokedist(mt));
 				m_RockPos[i].x = StartPos.x + m_RockRandPos[i].x;
 				m_RockPos[i].y = StartPos.y;
 				m_RockPos[i].z = StartPos.z;
-				m_RockAddPower[i].y = (float)(rand() % 5 + 5) / 10;
-				m_RockAddPower[i].x = (float)(rand() % 6 - 3) / 10;
+				m_RockAddPower[i].y = float(l_powerdist(mt)) / 10;
+				m_RockAddPower[i].x = float(l_smokedist(mt)) / 10;
 				m_RockAlive[i] = true;
 				break;
 			}
@@ -267,13 +284,16 @@ void ThornParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int Ta
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_RockAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
 				m_Rockscale[i] = { 0.3f,0.3f,0.3f };
-				m_RockRandPos[i].x = (float)(rand() % 6 - 3);
+				m_RockRandPos[i].x = float(l_smokedist(mt));
 				m_RockPos[i].x = StartPos.x + m_RockRandPos[i].x;
 				m_RockPos[i].y = StartPos.y;
 				m_RockPos[i].z = StartPos.z;
 				m_RockAddPower[i].y = 0.0f;
-				m_RockAddPower[i].x = (float)(rand() % 6 - 3) / 10;
+				m_RockAddPower[i].x = float(l_smokedist(mt)) / 10;
 				m_RockAlive[i] = true;
 				break;
 			}
@@ -299,13 +319,17 @@ void ThornParticle::RightRockParticle(const XMFLOAT3& StartPos, int Timer, int T
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
 			if (!m_RockAlive[i]) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
+				uniform_int_distribution<int> l_powerdist(3, 6);
 				m_Rockscale[i] = { 0.3f,0.3f,0.3f };
-				m_RockRandPos[i].y = (float)(rand() % 6 - 3);
+				m_RockRandPos[i].y = float(l_smokedist(mt));
 				m_RockPos[i].x = StartPos.x;
 				m_RockPos[i].y = StartPos.y + m_RockRandPos[i].y;
 				m_RockPos[i].z = StartPos.z;
 				m_RockAddPower[i].y = 0.0f;
-				m_RockAddPower[i].x = (float)(rand() % 3 + 3) / 10;
+				m_RockAddPower[i].x = float(l_smokedist(mt)) / 10;
 				m_RockAlive[i] = true;
 				break;
 			}
@@ -332,12 +356,16 @@ void ThornParticle::LeftRockParticle(const XMFLOAT3& StartPos, int Timer, int Ta
 			//飛ばす方向をランダムで決める
 			if (!m_RockAlive[i]) {
 				m_Rockscale[i] = { 0.3f,0.3f,0.3f };
-				m_RockRandPos[i].y = (float)(rand() % 6 - 3);
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_smokedist(-3, 3);
+				uniform_int_distribution<int> l_powerdist(3, 6);
+				m_RockRandPos[i].y = float(l_smokedist(mt));
 				m_RockPos[i].x = StartPos.x;
 				m_RockPos[i].y = StartPos.y + m_RockRandPos[i].y;
 				m_RockPos[i].z = StartPos.z;
 				m_RockAddPower[i].y = 0.0f;
-				m_RockAddPower[i].x = (float)(rand() % 3 + 3) / 10;
+				m_RockAddPower[i].x = float(l_powerdist(mt)) / 10;
 				m_RockAlive[i] = true;
 				break;
 			}

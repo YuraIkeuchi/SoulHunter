@@ -1,5 +1,6 @@
 #include "ResPornEnemy.h"
 #include "imgui.h"
+#include <random>
 //‰Šú‰»
 void ResPornEnemy::Initialize() {
 }
@@ -14,7 +15,10 @@ void  ResPornEnemy::Update(InterBoss* boss) {
 	//‚±‚±‚ÅoŒ»
 	if (boss->GetHP() > 0) {
 		if (m_ResPornTimer == EnemySet) {
-			m_ResPornType = rand() % 3;
+			//—”w’è
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_resdist(0, 2);
+			m_ResPornType = l_resdist(mt);
 			m_ResPornParticle = true;
 			m_ResPornPos.x = l_BirthPos.x;
 			m_ResPornPos.y = l_BirthPos.y;

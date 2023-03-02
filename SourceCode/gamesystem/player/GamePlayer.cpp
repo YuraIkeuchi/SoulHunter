@@ -805,8 +805,8 @@ bool GamePlayer::DeathMove() {
 			m_ChangeColor = true;
 		}
 	
-		shake->ShakePos(m_ShakePos.x, 10, 5, 300,10);
-		shake->ShakePos(m_ShakePos.y, 10, 5, 300,10);
+		shake->ShakePos(m_ShakePos.x, 5, -5, 300,10);
+		shake->ShakePos(m_ShakePos.y, 5, -5, 300,10);
 		if (!shake->GetShakeStart()) {
 			m_ShakePos = { 0.0f,0.0f,0.0f };
 		}

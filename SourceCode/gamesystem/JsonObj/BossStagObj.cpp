@@ -4,6 +4,7 @@
 #include "JsonLoader.h"
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
+#include <random>
 using namespace DirectX;
 //‰Šú‰»
 void BossStagObj::Initialize() {
@@ -122,8 +123,11 @@ void BossStagObj::DeathParticle() {
 	float e_scale = 4.0f;
 	float l_velocity = 0.1f;
 	float l_randZ = 0.0f;
-	l_randZ = (float)(rand() % 8 - 4);
 	if (m_ParticleCount > 1) {
+		//—”w’è
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_dist(-4, 4);
+		l_randZ = float(l_dist(mt));
 		for (int i = 0; i < 3; ++i) {
 			ParticleEmitter::GetInstance()->DeathEffect(50, { 0.0f,8.0f,20.0f + l_randZ }, s_scale, e_scale, s_color, e_color, l_velocity);
 		}

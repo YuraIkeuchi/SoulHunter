@@ -19,6 +19,7 @@ bool BoundEnemy::Initialize() {
 	m_ChangeColor = true;
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.03f, 0.03f, 0.03f };
+	m_HitScale = { 0.01f,0.01f,0.01f };
 	//FBX
 	IKEFBXObject3d* m_fbxObject_ = new IKEFBXObject3d();
 	m_fbxObject_->Initialize();

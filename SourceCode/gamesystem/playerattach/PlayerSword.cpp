@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include "VariableCommon.h"
 #include "Easing.h"
+#include <random>
 PlayerSword* PlayerSword::GetInstance()
 {
 	static PlayerSword instance;
@@ -83,10 +84,12 @@ void PlayerSword::SwordUpdate() {
 }
 //パーティクル更新
 void PlayerSword::ParticleUpdate() {
-
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_sworddist(0, 1);
 	//剣のパーティクルの場所を決める
-	m_SwordParticlePos = { static_cast<float>(rand() % 1) * -1,
-			 static_cast<float>(rand() % 1) + 1,
+	m_SwordParticlePos = { float(l_sworddist(mt)) * -1,
+			 static_cast<float>(l_sworddist(mt)) + 1,
 			0 };
 	m_SwordParticleCount = 1;
 	swordparticle->SetStartColor({ 1.0f,0.5f,0.0f,1.0f });

@@ -16,14 +16,13 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	IKETexture::SetCamera(camera);
 	// 3Dオブジェクトにカメラをセット
 	IKEObject3d::SetCamera(camera);
-	//particleMan->SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
-	
+	ParticleManager::SetCamera(camera);
 	// ライト生成
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット
 	IKEObject3d::SetLightGroup(lightGroup);
-	ParticleManager::SetCamera(camera);
+
 	ParticleEmitter::GetInstance()->AllDelete();
 	//丸影のためのやつ
 	lightGroup->SetDirLightActive(0, false);

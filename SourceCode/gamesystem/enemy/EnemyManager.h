@@ -93,11 +93,11 @@ private:
 	EnemyEdit* enemyedit = nullptr;
 	LightGroup* lightgroup = nullptr;
 	//ç∞ÉNÉâÉX
-	PlayerSoul* normalplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* boundplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* birdplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* followplayersoul[Soul_Max][Enemy_Max];
-	PlayerSoul* chestplayersoul[Soul_Max][Enemy_Max];
+	array<array<PlayerSoul*,Enemy_Max>,Soul_Max> normalplayersoul;
+	array<array<PlayerSoul*, Enemy_Max>,Soul_Max> boundplayersoul;
+	array<array<PlayerSoul*, Enemy_Max>,Soul_Max> birdplayersoul;
+	array<array<PlayerSoul*, Enemy_Max>,Soul_Max> followplayersoul;
+	array<array<PlayerSoul*, Enemy_Max>,Soul_Max> chestplayersoul;
 	//ä€âe
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowPos[3] = { 1,2,0 };
