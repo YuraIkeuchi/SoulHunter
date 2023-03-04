@@ -40,7 +40,6 @@ void BaseActor::EnemyInitialize() {
 
 	//リスポーン関係(敵)
 	respornenemy->Initialize();
-
 }
 //ポーズの初期化
 void BaseActor::PauseInitialize() {

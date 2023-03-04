@@ -273,6 +273,7 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
+	//player->ImGuiDraw();
 }
 //•’Ê‚Ì•`‰æ
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
