@@ -153,8 +153,6 @@ void ClearSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //‰ğ•ú
 void ClearSceneActor::Finalize() {
-	delete postEffect;
-	delete save;
 }
 //‰‰o
 void ClearSceneActor::Movie() {

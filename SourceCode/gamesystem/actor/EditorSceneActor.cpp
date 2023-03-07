@@ -15,7 +15,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	save = new Save();
+	save = make_unique<Save >();
 	chest = new Chest();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
@@ -164,7 +164,6 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 //‰ð•ú
 void EditorSceneActor::Finalize()
 {
-	delete postEffect;
 }
 //ƒ‚ƒfƒ‹‚Ì•`‰æ
 void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {

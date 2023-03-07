@@ -20,7 +20,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	save = new Save();
+	save = make_unique<Save >();
 	chest = new Chest();
 	respornenemy = new ResPornEnemy();
 	firstboss = new FirstBoss();
@@ -212,7 +212,6 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 //‰ð•ú
 void PlaySceneActor::Finalize()
 {
-	delete postEffect;
 }
 //ƒ‚ƒfƒ‹‚Ì•`‰æ
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
