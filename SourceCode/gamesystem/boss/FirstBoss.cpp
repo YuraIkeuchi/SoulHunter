@@ -21,6 +21,9 @@ FirstBoss::FirstBoss() {
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 	m_ChangeColor = true;
+
+	helper = make_unique<Helper>();
+	m_HitRadius = { 3.5f,5.0f,0.0f };
 }
 //初期化
 bool FirstBoss::Initialize() {
@@ -32,7 +35,7 @@ bool FirstBoss::Initialize() {
 //バトル開始時の初期化
 bool FirstBoss::BattleInitialize() {
 	assert(player);
-	m_Position = { 205.0f, -154.0f,0.0f };
+	m_Position = { 205.0f, -152.0f,0.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.02f,0.02f,0.02f };
 	m_OBBScale = { 3.0f,0.25f,0.5f };
@@ -205,23 +208,16 @@ void FirstBoss::DrawOutArea() {
 	//加算される色
 	float l_AddColor = 0.1f;
 	if (m_DrawArea) {
-		if (m_OutColor.w < m_ColorMax) {
-			m_OutColor.w += l_AddColor;
-		}
-		else {
-			m_OutColor.w = m_ColorMax;
-		}
+		m_OutColor.w += l_AddColor;
 	}
 	else {
-		if (m_OutColor.w > m_ColorMin) {
-			m_OutColor.w -= l_AddColor;
-		}
-		else {
+		m_OutColor.w -= l_AddColor;
+		if(m_OutColor.w <= m_ColorMin){
 			m_DrawArea = false;
-			m_OutColor.w = m_ColorMin;
 		}
 	}
 
+	helper->FloatClamp(m_OutColor.w, m_ColorMin, m_ColorMax);
 	OutAreatexture->Update();
 	OutAreatexture->SetPosition(m_OutPos);
 	OutAreatexture->SetScale(m_OutScale);
@@ -243,7 +239,7 @@ void FirstBoss::NotAttack() {
 		//sin波によって上下に動く
 		m_Angle += 1.0f;
 		m_Angle2 = m_Angle * (XM_PI / 180.0f);
-		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-154.0f);
+		m_Position.y = (sin(m_Angle2) * 4.0f + 4.0f) + (-152.0f);
 		StateManager();
 		if (m_AttackCount == 5) {
 			//アニメーションのためのやつ
@@ -278,14 +274,14 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 3) {
 		m_TargetCoolT = SuperLongCool;
-		m_AfterPos = { 250.0f,-154.0f,0.0f };
+		m_AfterPos = { 250.0f,-152.0f,0.0f };
 		m_AfterRot = { 20.0f,270.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
 	else if (m_Pat == 4) {
 		m_TargetCoolT = SuperLongCool;
 		m_FootParticleCount += 3;
-		m_AfterPos = { 159.0f,-154.0f,0.0f };
+		m_AfterPos = { 159.0f,-152.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,720.0f };
 		FrameMove(m_AfterPos, m_AfterRot, l_NormalAddFrame, m_TargetCoolT);
 	}
@@ -304,7 +300,7 @@ void FirstBoss::BesideAttack() {
 	}
 	else if (m_Pat == 7) {
 		m_TargetCoolT = ShortCool;
-		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterPos = { 205.0f,-152.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, l_SlowAddFrame, m_TargetCoolT);
 	}
@@ -363,7 +359,7 @@ void FirstBoss::StabbingAttack() {
 		case 3:
 			m_AfterPos = {
 			m_Position.x,
-			-154.0f,
+			-152.0f,
 			m_Position.z
 			};
 			if (m_Frame < m_FrameMax) {
@@ -394,7 +390,7 @@ void FirstBoss::StabbingAttack() {
 		case 1:
 			m_AfterPos = {
 			205.0f,
-			-154.0f,
+			-152.0f,
 			m_Position.z
 			};
 			m_AfterRot = { 0.0f,270.0f,0.0f };
@@ -509,7 +505,7 @@ void FirstBoss::FireAttack() {
 		}
 	}
 	else {
-		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterPos = { 205.0f,-152.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
@@ -553,8 +549,8 @@ void FirstBoss::SpecialAttack() {
 		if (m_CoolT == 49) {
 			m_TargetPos = player->GetPosition();
 		}
-		if (m_TargetPos.y < -154.0f) {
-			m_TargetPos.y = -154.0f;
+		if (m_TargetPos.y < -152.0f) {
+			m_TargetPos.y = -152.0f;
 		}
 		FrameMove(m_AfterPos, m_AfterRot, 0.01f, m_TargetCoolT);
 	}
@@ -578,7 +574,7 @@ void FirstBoss::SpecialAttack() {
 	}
 	else if (m_Pat == Special5) {
 		m_TargetCoolT = ShortCool;
-		m_AfterPos = { 205.0f,-154.0f,0.0f };
+		m_AfterPos = { 205.0f,-152.0f,0.0f };
 		m_AfterRot = { 0.0f,180.0f,0.0f };
 		FrameMove(m_AfterPos, m_AfterRot, 0.005f, m_TargetCoolT);
 	}

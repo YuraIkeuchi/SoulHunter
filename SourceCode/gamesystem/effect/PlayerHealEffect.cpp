@@ -60,9 +60,9 @@ void PlayerHealEffect::EffectMove() {
 		}
 		else {
 			m_HealColor.w -= l_AddColor;
+			m_HealColor.w = max(m_HealColor.w, m_ColorMin);
 			if (m_HealColor.w < m_ColorMin) {
 				m_HealScale = m_ResetThirdFew;
-				m_HealColor.w = m_ColorMin;
 				m_HealEffectNumber = Appear;
 				m_HealStart = false;
 				m_DeleteEffect = true;

@@ -183,7 +183,9 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 	save->Draw();
 	//“G‚Ì•`‰æ
 	enemymanager->Draw(dxCommon);
-	tutorialtext->Draw();
+	if (StageNumber == TutoRial) {
+		tutorialtext->Draw();
+	}
 	ParticleEmitter::GetInstance()->SmokeDrawAll();
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	//‚½‚©‚ç‚Î‚±
@@ -375,8 +377,9 @@ void EditorSceneActor::AllUpdate(DebugCamera* camera) {
 	//Ý’u‚µ‚½“G‚ÌXV
 	enemymanager->Update(m_MoveEnemy);
 	backmanager->Update();
-
-	tutorialtext->Update();
+	if (StageNumber == TutoRial) {
+		tutorialtext->Update();
+	}
 
 	//‚»‚Ì‘¼‚ÌXV
 	ParticleEmitter::GetInstance()->Update();

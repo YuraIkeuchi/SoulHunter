@@ -76,15 +76,15 @@ void Option::Update() {
 	//’iX‚ÆF‚ª•Ï‚í‚éˆ—
 	if (m_ColorChangeType == Add) {
 		m_OptionColor.w += l_AddColor;
-		if (m_OptionColor.w > m_ColorMax) {
-			m_OptionColor.w = m_ColorMax;
+		m_OptionColor.w = min(m_OptionColor.w, m_ColorMax);
+		if (m_OptionColor.w >= m_ColorMax) {
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
 		m_OptionColor.w -= l_AddColor;
-		if (m_OptionColor.w < m_ColorMin) {
-			m_OptionColor.w = m_ColorMin;
+		m_OptionColor.w = max(m_OptionColor.w, m_ColorMin);
+		if (m_OptionColor.w <= m_ColorMin) {
 			m_ColorChangeType = No;
 			m_ReturnOption = true;
 		}

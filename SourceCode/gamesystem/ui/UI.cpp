@@ -87,20 +87,12 @@ void UI::Update(InterBoss* boss) {
 	BossHpSprite->SetSize(m_BossHPSize);
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
 		if (i >= m_HP) {
-			if (m_HPColor[i].w > m_ColorMin) {
-				m_HPColor[i].w -= l_AddColor;
-			}
-			else {
-				m_HPColor[i].w = m_ColorMin;
-			}
+			m_HPColor[i].w -= l_AddColor;
+			m_HPColor[i].w = max(m_HPColor[i].w, m_ColorMin);
 		}
 		else {
-			if (m_HPColor[i].w < m_ColorMax) {
-				m_HPColor[i].w += l_AddColor;
-			}
-			else {
-				m_HPColor[i].w = m_ColorMax;
-			}
+			m_HPColor[i].w += l_AddColor;
+			m_HPColor[i].w = min(m_HPColor[i].w, m_ColorMax);
 		}
 		PlayerHpSprite[i]->SetColor(m_HPColor[i]);
 	}

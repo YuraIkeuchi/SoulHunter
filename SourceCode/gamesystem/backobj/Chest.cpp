@@ -418,7 +418,10 @@ void Chest::OpenChest() {
 	//宝箱の形態が変わる
 	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ChestState[i] == Open) {
-			helper->FloatClamp(m_CloseColor[i].w, m_ColorMin, m_ColorMax);
+			m_CloseColor[i].w -= 0.1f;
+			m_OpenColor[i].w += 0.1f;
+			m_CloseColor[i].w = max(m_CloseColor[i].w, m_ColorMin);
+			m_OpenColor[i].w = min(m_OpenColor[i].w, m_ColorMax);
 		}
 	}
 }
@@ -503,19 +506,12 @@ bool Chest::CompassText() {
 			}
 
 			if (m_CompassDraw[i]) {
-				if (m_CompassColor[i].w < m_ColorMax) {
-					m_CompassColor[i].w += m_ChangeAlpha;
-				}
-				else {
-					m_CompassColor[i].w = m_ColorMax;
-				}
-
-				if (m_CompassTexframe[i] < m_ColorMax) {
-					m_CompassTexframe[i] += m_ChangeTexFrame;
-				}
-				else {
-					m_CompassTexframe[i] = m_ColorMax;
-				}
+				//a値とフレームを一定数まで
+				m_CompassColor[i].w += m_ChangeAlpha;
+				m_CompassColor[i].w = min(m_CompassColor[i].w, m_ColorMax);
+				m_CompassTexframe[i] += m_ChangeTexFrame;
+				m_CompassTexframe[i] = min(m_CompassTexframe[i], m_FrameMax);
+			
 				m_CompassTexPos[i] = {
 			Ease(In,Cubic, m_CompassTexframe[i],m_CompassTexPos[i].x, m_AfterCompassTexPos[i].x),
 			Ease(In,Cubic, m_CompassTexframe[i],m_CompassTexPos[i].y,m_AfterCompassTexPos[i].y),
@@ -557,19 +553,11 @@ bool Chest::LibraText() {
 			}
 
 			if (m_LibraDraw[i]) {
-				if (m_LibraColor[i].w < m_ColorMax) {
-					m_LibraColor[i].w += m_ChangeAlpha;
-				}
-				else {
-					m_LibraColor[i].w = m_ColorMax;
-				}
-
-				if (m_LibraTexframe[i] < m_ColorMax) {
-					m_LibraTexframe[i] += m_ChangeTexFrame;
-				}
-				else {
-					m_LibraTexframe[i] = m_ColorMax;
-				}
+				//a値とフレームを一定数まで
+				m_LibraColor[i].w += m_ChangeAlpha;
+				m_LibraColor[i].w = min(m_LibraColor[i].w, m_ColorMax);
+				m_LibraTexframe[i] += m_ChangeTexFrame;
+				m_LibraTexframe[i] = min(m_LibraTexframe[i], m_FrameMax);
 				m_LibraTexPos[i] = {
 			Ease(In,Cubic, m_LibraTexframe[i],m_LibraTexPos[i].x, m_AfterLibraTexPos[i].x),
 			Ease(In,Cubic, m_LibraTexframe[i],m_LibraTexPos[i].y,m_AfterLibraTexPos[i].y),
@@ -608,19 +596,11 @@ bool Chest::DushText() {
 			}
 
 			if (m_DushDraw[i]) {
-				if (m_DushColor[i].w < m_ColorMax) {
-					m_DushColor[i].w += m_ChangeAlpha;
-				}
-				else {
-					m_DushColor[i].w = m_ColorMax;
-				}
-
-				if (m_DushTexframe[i] < m_ColorMax) {
-					m_DushTexframe[i] += m_ChangeTexFrame;
-				}
-				else {
-					m_DushTexframe[i] = m_ColorMax;
-				}
+				//a値とフレームを一定数まで
+				m_DushColor[i].w += m_ChangeAlpha;
+				m_DushColor[i].w = min(m_DushColor[i].w, m_ColorMax);
+				m_DushTexframe[i] += m_ChangeTexFrame;
+				m_DushTexframe[i] = min(m_DushTexframe[i], m_FrameMax);
 				m_DushTexPos[i] = {
 			Ease(In,Cubic, m_DushTexframe[i],m_DushTexPos[i].x, m_AfterDushTexPos[i].x),
 			Ease(In,Cubic, m_DushTexframe[i],m_DushTexPos[i].y,m_AfterDushTexPos[i].y),
@@ -659,19 +639,11 @@ bool Chest::HealText() {
 			}
 
 			if (m_HealDraw[i]) {
-				if (m_HealColor[i].w < m_ColorMax) {
-					m_HealColor[i].w += m_ChangeAlpha;
-				}
-				else {
-					m_HealColor[i].w = m_ColorMax;
-				}
-
-				if (m_HealTexframe[i] < m_ColorMax) {
-					m_HealTexframe[i] += m_ChangeTexFrame;
-				}
-				else {
-					m_HealTexframe[i] = m_ColorMax;
-				}
+				//a値とフレームを一定数まで
+				m_HealColor[i].w += m_ChangeAlpha;
+				m_HealColor[i].w = min(m_HealColor[i].w, m_ColorMax);
+				m_HealTexframe[i] += m_ChangeTexFrame;
+				m_HealTexframe[i] = min(m_HealTexframe[i], m_FrameMax);
 				m_HealTexPos[i] = {
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].x, m_AfterHealTexPos[i].x),
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].y,m_AfterHealTexPos[i].y),
@@ -713,19 +685,11 @@ bool Chest::JumpText() {
 			}
 
 			if (m_JumpDraw[i]) {
-				if (m_JumpColor[i].w < m_ColorMax) {
-					m_JumpColor[i].w += m_ChangeAlpha;
-				}
-				else {
-					m_JumpColor[i].w = m_ColorMax;
-				}
-
-				if (m_JumpTexframe[i] < m_ColorMax) {
-					m_JumpTexframe[i] += m_ChangeTexFrame;
-				}
-				else {
-					m_JumpTexframe[i] = m_ColorMax;
-				}
+				//a値とフレームを一定数まで
+				m_JumpColor[i].w += m_ChangeAlpha;
+				m_JumpColor[i].w = min(m_JumpColor[i].w, m_ColorMax);
+				m_JumpTexframe[i] += m_ChangeTexFrame;
+				m_JumpTexframe[i] = min(m_JumpTexframe[i], m_FrameMax);
 				m_JumpTexPos[i] = {
 			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].x, m_AfterJumpTexPos[i].x),
 			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].y,m_AfterJumpTexPos[i].y),

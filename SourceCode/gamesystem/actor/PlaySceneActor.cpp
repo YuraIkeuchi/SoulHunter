@@ -142,9 +142,9 @@ void PlaySceneActor::NormalUpdate() {
 	enemymanager->Update(m_MoveEnemy);
 	enemymanager->SoulUpdate();
 	backmanager->Update();
-
-	tutorialtext->Update();
-
+	if (StageNumber == TutoRial) {
+		tutorialtext->Update();
+	}
 	//その他の更新
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
@@ -248,7 +248,9 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		pause->Draw();
 		BlackFilter->Draw();
 		chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
-		enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
+		if (StageNumber != BossMap) {
+			enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
+		}
 	}
 	mapchange->Draw();
 	scenechange->Draw();
@@ -287,7 +289,9 @@ void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		save->Draw();
 		//チュートリアル
-		tutorialtext->Draw();
+		if (StageNumber == TutoRial) {
+			tutorialtext->Draw();
+		}
 		//たからばこ
 		chest->Draw();
 		//敵の描画

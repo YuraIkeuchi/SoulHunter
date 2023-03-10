@@ -64,7 +64,7 @@ void BossEffect::Draw() {
 }
 //エフェクトの動き
 void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
-	int l_Division = 400;
+	int l_Division = 800;
 	//エフェクトの発生
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		//
@@ -80,7 +80,7 @@ void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 					(float)(l_bounddist(mt)) / l_Division,
 					0.0f,
 			};
-			m_AddScale[i] = (float)(l_scaledist(mt)) / l_Division * 2;
+			m_AddScale[i] = (float)(l_scaledist(mt)) / l_Division;
 			m_Scale[i] = m_ResetThirdFew;
 			m_Color[i] = m_BirthColor;
 			m_ScaleChange[i] = false;

@@ -244,8 +244,7 @@ void GamePlayer::Draw(DirectXCommon* dxCommon) {
 //Imgui
 void GamePlayer::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("AttackCount:%d", m_AttackCount);
-	ImGui::Text("ThirdTimer:%d", m_ThirdTimer);
+	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::End();
 }
 //エフェクトの更新
