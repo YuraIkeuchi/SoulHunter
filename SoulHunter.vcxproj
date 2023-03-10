@@ -277,6 +277,7 @@
     <ClCompile Include="SourceCode\gamesystem\boss\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\boss\InterBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\boss\ResPornEnemy.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\Common\Helper.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\EnemyEdit.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\ImGuiEditor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\ObjEdit.cpp" />
@@ -416,6 +417,7 @@
     <ClInclude Include="SourceCode\gamesystem\boss\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\InterBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\boss\ResPornEnemy.h" />
+    <ClInclude Include="SourceCode\gamesystem\Common\Helper.h" />
     <ClInclude Include="SourceCode\gamesystem\Common\VariableCommon.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\EnemyEdit.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\ImGuiEditor.h" />

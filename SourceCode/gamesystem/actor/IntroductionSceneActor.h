@@ -21,7 +21,7 @@ public:
 	//演出
 	void Movie();
 private://メンバ変数
-	IntroPlayer* introplayer = nullptr;
+	unique_ptr<IntroPlayer> introplayer = nullptr;
 	//Json読み込みのクラス
 	static IntroductionObj* Introductionobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;

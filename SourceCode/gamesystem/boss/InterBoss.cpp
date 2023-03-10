@@ -68,13 +68,23 @@ bool InterBoss::collidePlayer() {
 	XMFLOAT3 l_PlayerPos = player->GetPosition();
 	int playerhp = player->GetHP();
 	int l_Interval = player->GetInterVal();
-	if (Collision::SphereCollision(m_Position.x, m_Position.y,m_Position.z,m_HitRadius, l_PlayerPos.x, l_PlayerPos.y,l_PlayerPos.z, m_HitRadius) && l_Interval == 0 && m_HP > 0) {
+	//外積当たり判定
+	Sphere sphere;
+	sphere.center = { player->GetPosition().x,player->GetPosition().y,player->GetPosition().z };
+	sphere.radius = 1;
+
+	Box box;
+	box.center = { m_Position.x,m_Position.y,m_Position.z };
+	box.scale = { m_HitRadius.x,m_HitRadius.y,m_HitRadius.z };
+
+	if (Collision::CheckSphere2Box(sphere, box) && l_Interval == 0 && m_HP > 0) {
 		player->PlayerHit(m_Position);
 		return true;
 	}
 	else {
 		return false;
 	}
+
 	return true;
 }
 //ボスがダメージ食らう(通常攻撃)

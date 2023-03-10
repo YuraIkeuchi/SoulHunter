@@ -15,7 +15,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	save = new Save();
+	save = make_unique<Save >();
 	chest = new Chest();
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
@@ -164,7 +164,6 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 //‰ð•ú
 void EditorSceneActor::Finalize()
 {
-	delete postEffect;
 }
 //ƒ‚ƒfƒ‹‚Ì•`‰æ
 void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
@@ -184,7 +183,9 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 	save->Draw();
 	//“G‚Ì•`‰æ
 	enemymanager->Draw(dxCommon);
-	tutorialtext->Draw();
+	if (StageNumber == TutoRial) {
+		tutorialtext->Draw();
+	}
 	ParticleEmitter::GetInstance()->SmokeDrawAll();
 	ParticleEmitter::GetInstance()->FireDrawAll();
 	//‚½‚©‚ç‚Î‚±
@@ -376,8 +377,9 @@ void EditorSceneActor::AllUpdate(DebugCamera* camera) {
 	//Ý’u‚µ‚½“G‚ÌXV
 	enemymanager->Update(m_MoveEnemy);
 	backmanager->Update();
-
-	tutorialtext->Update();
+	if (StageNumber == TutoRial) {
+		tutorialtext->Update();
+	}
 
 	//‚»‚Ì‘¼‚ÌXV
 	ParticleEmitter::GetInstance()->Update();

@@ -1,6 +1,7 @@
 #pragma once
 #include "InterBoss.h"
 #include "FireBall.h"
+#include "Helper.h"
 class FirstBoss :public InterBoss {
 public:
 	FirstBoss();
@@ -29,6 +30,7 @@ private:
 	//攻撃時のエフェクト発生条件
 	bool m_FireBallArgment = false;
 	std::vector<FireBall*> fireballs;
+	unique_ptr<Helper> helper;
 	//アウトエリアの描画
 	unique_ptr<IKETexture> OutAreatexture;
 	XMFLOAT3 m_OutPos = { 0.0f,0.0f,0.0f };

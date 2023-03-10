@@ -43,8 +43,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	//カメラ関係
 	camerawork = new CameraWork();
-	// カメラ注視点をセット
-	camerawork->SetPlayer(player);
+	
 	//スプライト生成
 	scenechange = new SceneChange();
 	scenechange->SetSubStartChange(true);
@@ -155,7 +154,6 @@ void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void LoadSceneActor::Finalize() {
-	//delete save;
 }
 //
 void LoadSceneActor::MoveLoad() {

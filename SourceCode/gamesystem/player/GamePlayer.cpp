@@ -245,7 +245,6 @@ void GamePlayer::Draw(DirectXCommon* dxCommon) {
 void GamePlayer::ImGuiDraw() {
 	ImGui::Begin("Player");
 	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
 }
 //エフェクトの更新
@@ -492,9 +491,15 @@ void GamePlayer::PlayerAttack() {
 				PlayerAnimetion(FirstAttack, 3);
 			}
 			else if(m_AttackCount == 2) {
-				m_AttackCount = 0;
+				m_SecondTimer = 0;
 				PlayerSword::GetInstance()->SetRotation({ 0.0f, 90.0f, 60.0f });
 				PlayerAnimetion(SecondAttack, 3);
+			}
+			else if (m_AttackCount == 3) {
+				m_AttackCount = 0;
+				m_ThirdTimer = 0;
+				PlayerSword::GetInstance()->SetRotation({ 0.0f, 90.0f, 60.0f });
+				PlayerAnimetion(ThirdAttack, 2);
 			}
 		}
 		else {
@@ -547,6 +552,13 @@ void GamePlayer::PlayerAttack() {
 				m_SecondTimer = 0;
 			}
 		}
+		else if (m_AttackCount == 2) {
+			m_ThirdTimer++;
+			if (m_ThirdTimer >= 40) {
+				m_AttackCount = 0;
+				m_ThirdTimer = 0;
+			}
+		}
 	}
 }
 //攻撃判定を取るか
@@ -560,8 +572,16 @@ bool GamePlayer::CheckAttack() {
 			return false;
 		}
 	}
-	else{
+	else if(m_AttackCount == 2) {
 		if ((m_Attack) && (m_AttackTimer >= 22 && m_AttackTimer <= 30)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		if ((m_Attack) && (m_AttackTimer >= 25 && m_AttackTimer <= 32)) {
 			return true;
 		}
 		else {

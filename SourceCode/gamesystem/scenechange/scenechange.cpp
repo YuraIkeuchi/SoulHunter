@@ -34,30 +34,26 @@ void SceneChange::Finalize() {
 //êFÇâ¡éZ
 bool SceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		if (s_color.w < m_ColorMax) {
-			s_color.w += AddPower;
-		}
-		else {
+		s_color.w += AddPower;
+		s_color.w = min(s_color.w, m_ColorMax);
+		if (s_color.w == m_ColorMax) {
 			m_AddStartChange = false;
-			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 //êFÇå∏éZ
 bool SceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
-		if (s_color.w > m_ColorMin) {
-			s_color.w -= SubPower;
-		}
-		else {
+		s_color.w -= SubPower;
+		s_color.w = max(s_color.w, m_ColorMin);
+		if (s_color.w == m_ColorMin) {
 			m_SubStartChange = false;
-			s_color.w = m_ColorMin;
 			return true;
 		}
 	}
-
+	
 	return false;
 }

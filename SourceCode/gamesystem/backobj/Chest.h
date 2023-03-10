@@ -3,6 +3,7 @@
 #include "IKESprite.h"
 #include "IKETexture.h"
 #include <array>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //宝箱用のクラス
 class Chest {
@@ -47,6 +48,7 @@ public:
 	
 private:
 	//クラス
+	unique_ptr<Helper> helper = nullptr;
 	unique_ptr<GamePlayer> player = nullptr;
 	array<unique_ptr<IKESprite>, Skill_Max> miniSkill;
 	//絶対に必要なOBJ

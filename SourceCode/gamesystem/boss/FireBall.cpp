@@ -27,9 +27,8 @@ void FireBall::Update() {
 	//更新とセット
 	if (m_Alive) {
 		firetex->Update();
-		//Obj_SetParam();
 	}
-	if ((m_Position.x <= l_MinPos.x || m_Position.x >= l_MaxPos.x) || (l_MinPos.y <= -155.0f || m_Position.y >= l_MaxPos.y)) {
+	if ((m_Position.x <= l_MinPos.x) || (m_Position.x >= l_MaxPos.x) || (m_Position.y <= l_MinPos.y) || (m_Position.y >= l_MaxPos.y)) {
 		m_Alive = false;
 	}
 	firetex->SetColor(m_Color);
@@ -84,6 +83,6 @@ void FireBall::BirthParticle() {
 	float e_scale = 0.0f;
 
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(30, { m_Position.x,m_Position.y + 8.0f,m_Position.z }, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->FireEffect(30, { m_Position.x,m_Position.y,m_Position.z }, s_scale, e_scale, s_color, e_color);
 	}
 }

@@ -134,12 +134,12 @@ protected:
 	InterBoss* firstboss = nullptr;
 	ResPornEnemy* respornenemy = nullptr;
 	//ポストエフェクト指定
-	PostEffect* postEffect = nullptr;
+	unique_ptr<PostEffect> postEffect = nullptr;
 	//シーン遷移のためのもの
 	SceneChange* scenechange = nullptr;
 	MapChange* mapchange = nullptr;
 	//共通変数(クリアしたかどうか)
-	Save* save = nullptr;
+	unique_ptr<Save> save = nullptr;
 	//ポーズメニュー関連
 	Pause* pause = nullptr;
 	SkillPause* skillpause = nullptr;

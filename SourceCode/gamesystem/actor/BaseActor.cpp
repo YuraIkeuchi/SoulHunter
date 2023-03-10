@@ -12,7 +12,7 @@ bool BaseActor::s_New = false;
 void BaseActor::BaseInitialize(DirectXCommon* dxCommon) {
 	//ポストエフェクトの初期化
 	//(普通)
-	postEffect = new PostEffect();
+	postEffect = make_unique<PostEffect>();
 	postEffect->Initialize();
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
 }
@@ -40,7 +40,6 @@ void BaseActor::EnemyInitialize() {
 
 	//リスポーン関係(敵)
 	respornenemy->Initialize();
-
 }
 //ポーズの初期化
 void BaseActor::PauseInitialize() {
@@ -51,7 +50,7 @@ void BaseActor::PauseInitialize() {
 	//ミニマップ
 	MiniMap::GetInstance()->Initialize();
 	MiniMap::GetInstance()->SetPlayer(player);
-	MiniMap::GetInstance()->SetSave(save);
+	MiniMap::GetInstance()->SetSave(save.get());
 	//オプション
 	option->Initialize();
 	pause->SetSkillPause(skillpause);

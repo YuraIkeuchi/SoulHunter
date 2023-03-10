@@ -7,6 +7,7 @@
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
 #include "MiniMap.h"
+#include "FPSManager.h"
 //プレイシーンの初期化(現在は魂だけ)
 void PlaySceneActor::PlaySceneInitialize() {
 	enemymanager->SoulSet(player);
@@ -20,7 +21,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	option = new Option();
 	pause = new Pause();
 	mapchange = new MapChange();
-	save = new Save();
+	save = make_unique<Save >();
 	chest = new Chest();
 	respornenemy = new ResPornEnemy();
 	firstboss = new FirstBoss();
@@ -141,9 +142,9 @@ void PlaySceneActor::NormalUpdate() {
 	enemymanager->Update(m_MoveEnemy);
 	enemymanager->SoulUpdate();
 	backmanager->Update();
-
-	tutorialtext->Update();
-
+	if (StageNumber == TutoRial) {
+		tutorialtext->Update();
+	}
 	//その他の更新
 	if (!pause->GetIsPause() && m_BossNumber == BossBattle) {
 		respornenemy->Update(firstboss);
@@ -212,7 +213,6 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 //解放
 void PlaySceneActor::Finalize()
 {
-	delete postEffect;
 }
 //モデルの描画
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
@@ -248,7 +248,9 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		pause->Draw();
 		BlackFilter->Draw();
 		chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
-		enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
+		if (StageNumber != BossMap) {
+			enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
+		}
 	}
 	mapchange->Draw();
 	scenechange->Draw();
@@ -273,6 +275,7 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
+	player->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
@@ -286,7 +289,9 @@ void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
 		}
 		save->Draw();
 		//チュートリアル
-		tutorialtext->Draw();
+		if (StageNumber == TutoRial) {
+			tutorialtext->Draw();
+		}
 		//たからばこ
 		chest->Draw();
 		//敵の描画

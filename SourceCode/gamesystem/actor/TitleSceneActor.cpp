@@ -94,7 +94,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	}
 
 	//ÉZÅ[Éu
-	save = new Save();
+	save = make_unique<Save >();
 	m_TitleSelect = NewGame;
 	m_ModeSelect = EasyMode;
 	dxCommon->SetFullScreen(true);
@@ -220,8 +220,6 @@ void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //âï˙
 void TitleSceneActor::Finalize() {
-	delete postEffect;
-	delete save;
 }
 void TitleSceneActor::SelectGameMode() {
 	Input* input = Input::GetInstance();

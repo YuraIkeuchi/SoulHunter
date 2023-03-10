@@ -47,11 +47,11 @@ void IntroductionSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* ca
 	scenechange->SetSubStartChange(true);
 
 	//プレイヤー
-	introplayer = new IntroPlayer();
+	introplayer = make_unique<IntroPlayer >();
 	introplayer->Initialize();
 
 	//プレイヤーが必要
-	camerawork->SetIntroPlayer(introplayer);
+	camerawork->SetIntroPlayer(introplayer.get());
 
 	//ライト
 	lightgroup->SetDirLightActive(0, true);
@@ -164,8 +164,6 @@ void IntroductionSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void IntroductionSceneActor::Finalize() {
-	delete postEffect;
-	delete save;
 }
 //演出
 void IntroductionSceneActor::Movie() {

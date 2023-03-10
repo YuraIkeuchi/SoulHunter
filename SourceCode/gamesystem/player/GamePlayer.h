@@ -141,11 +141,13 @@ private:
 	//UŒ‚‚Å‚«‚é‚©
 	bool m_Attack = false;
 	int m_AttackTimer = 0;
-	//2‰ñ–Ú‚ÌUŒ‚”»’è
+	//1‰ñ–ÚˆÚs‚ÌUŒ‚”»’è
 	int m_AttackCount = 0;
 	int m_SecondTimer = 0;
+	int m_ThirdTimer = 0;
 	//HP
 	int m_HP = 0;
+	int a = 0;
 	//–³“GŠÔ
 	int m_Interval = 0;
 	int m_FlashCount = 0;

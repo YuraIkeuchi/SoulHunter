@@ -82,7 +82,7 @@ protected:
 	XMFLOAT3 m_TargetPos = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_OBBScale = { 0.0f,0.0f,0.0f };
 	//あたり範囲
-	float m_HitRadius = 0.0f;
+	XMFLOAT3 m_HitRadius = { 0.0f,0.0f,0.0f };
 	//HP
 	float m_HP = 30.0f;
 	//エフェクト
