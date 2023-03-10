@@ -17,7 +17,6 @@ public:
 	void Update();//更新
 	void Finalize();//解放
 	const void Draw();//描画
-	void ImguiDraw();
 	void SetMiniPlayerPos(int StageNumber);//ステージごとの初期化
 	void InitMap(std::vector<std::vector<int>>& map, int StageNumber);//マップの初期化
 	void ResetBlock();//マップのリセット

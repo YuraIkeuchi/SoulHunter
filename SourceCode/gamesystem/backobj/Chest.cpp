@@ -11,6 +11,7 @@
 #include "ParticleEmitter.h"
 //モデル読み込みと初期化
 Chest::Chest() {
+	helper = make_unique<Helper>();
 	//スプライト読み込み
 	IKESprite::LoadTexture(20, L"Resources/2d/SkillExplain/CompassExplain.png");
 	IKESprite::LoadTexture(21, L"Resources/2d/SkillExplain/LibraExplain.png");
@@ -417,14 +418,7 @@ void Chest::OpenChest() {
 	//宝箱の形態が変わる
 	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ChestState[i] == Open) {
-			if (m_CloseColor[i].w > m_ColorMin) {
-				m_CloseColor[i].w -= 0.1f;
-			}
-			else {
-				if (m_OpenColor[i].w < m_ColorMax) {
-					m_OpenColor[i].w += 0.1f;
-				}
-			}
+			helper->FloatClamp(m_CloseColor[i].w, m_ColorMin, m_ColorMax);
 		}
 	}
 }
@@ -443,12 +437,8 @@ void Chest::MapSet() {
 void Chest::Explain() {
 	//段々說明の文字が出るようになる
 	if (m_Explain) {
-		if (m_BackColor.w < m_ColorMax) {
-			m_BackColor.w += m_ChangeAlpha;
-		}
-		else {
-			m_BackColor.w = m_ColorMax;
-		}
+		m_BackColor.w += m_ChangeAlpha;
+		m_BackColor.w = min(m_BackColor.w, m_ColorMax);
 		//テキストが出終わったら終わり
 		if (CompassText() || LibraText() || DushText() || HealText() || JumpText()) {
 			m_Explain = false;
@@ -456,56 +446,31 @@ void Chest::Explain() {
 	}
 	else {
 		for (int i = 0; i < CompassExplain_Max; i++) {
-			if (m_CompassColor[i].w > m_ColorMin) {
-				m_CompassColor[i].w -= m_ChangeAlpha;
-			}
-			else {
-				m_CompassColor[i].w = m_ColorMin;
-			}
+			m_CompassColor[i].w -= m_ChangeAlpha;
+			m_CompassColor[i].w = max(m_CompassColor[i].w, m_ColorMin);
 		}
 
 		for (int i = 0; i < LibraExplain_Max; i++) {
-			if (m_LibraColor[i].w > m_ColorMin) {
-				m_LibraColor[i].w -= m_ChangeAlpha;
-			}
-			else {
-				m_LibraColor[i].w = m_ColorMin;
-			}
+			m_LibraColor[i].w -= m_ChangeAlpha;
+			m_LibraColor[i].w = max(m_LibraColor[i].w, m_ColorMin);
 		}
 
 		for (int i = 0; i < DushExplain_Max; i++) {
-			if (m_DushColor[i].w > m_ColorMin) {
-				m_DushColor[i].w -= m_ChangeAlpha;
-			}
-			else {
-				m_DushColor[i].w = m_ColorMin;
-			}
+			m_DushColor[i].w -= m_ChangeAlpha;
+			m_DushColor[i].w = max(m_DushColor[i].w, m_ColorMin);
 		}
 
 		for (int i = 0; i < HealExplain_Max; i++) {
-			if (m_HealColor[i].w > m_ColorMin) {
-				m_HealColor[i].w -= m_ChangeAlpha;
-			}
-			else {
-				m_HealColor[i].w = m_ColorMin;
-			}
+			m_HealColor[i].w -= m_ChangeAlpha;
+			m_HealColor[i].w = max(m_HealColor[i].w, m_ColorMin);
 		}
 
 		for (int i = 0; i < JumpExplain_Max; i++) {
-			if (m_JumpColor[i].w > m_ColorMin) {
-				m_JumpColor[i].w -= m_ChangeAlpha;
-			}
-			else {
-				m_JumpColor[i].w = m_ColorMin;
-			}
+			m_JumpColor[i].w -= m_ChangeAlpha;
+			m_JumpColor[i].w = max(m_JumpColor[i].w, m_ColorMin);
 		}
-		//色が薄くなってテキスト表示終了
-		if (m_BackColor.w > m_ColorMin) {
-			m_BackColor.w -= m_ChangeAlpha;
-		}
-		else {
-			m_BackColor.w = m_ColorMin;
-		}
+		m_BackColor.w -= m_ChangeAlpha;
+		m_BackColor.w = max(m_BackColor.w, m_ColorMin);
 	}
 }
 //コンパススキルの説明文が出る

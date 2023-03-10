@@ -274,7 +274,6 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		ImGui::End();
 	}
 	player->ImGuiDraw();
-	MiniMap::GetInstance()->ImguiDraw();
 }
 //•’Ê‚Ì•`‰æ
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {

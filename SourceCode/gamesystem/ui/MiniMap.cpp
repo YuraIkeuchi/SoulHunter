@@ -149,13 +149,6 @@ const void MiniMap::Draw() {
 	MiniPlayerSprite->Draw();
 	MapStateSprite->Draw();
 }
-//Imgui
-void MiniMap::ImguiDraw() {
-	ImGui::Begin("Map");
-	ImGui::Text("color.w:%f", m_MapColor.w);
-	ImGui::Text("m_ColorChangeType:%d", m_ColorChangeType);
-	ImGui::End();
-}
 //ŠJ•ú
 void MiniMap::Finalize() {
 
