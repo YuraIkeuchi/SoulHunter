@@ -3,7 +3,8 @@
 #include "GamePlayer.h"
 #include "Save.h"
 #include "MapChip.h"
-#include <array>   
+#include <array>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //ミニマップ
 class MiniMap {
@@ -16,6 +17,7 @@ public:
 	void Update();//更新
 	void Finalize();//解放
 	const void Draw();//描画
+	void ImguiDraw();
 	void SetMiniPlayerPos(int StageNumber);//ステージごとの初期化
 	void InitMap(std::vector<std::vector<int>>& map, int StageNumber);//マップの初期化
 	void ResetBlock();//マップのリセット
@@ -27,6 +29,7 @@ public:
 	void WholeUpdate();
 	void SelectUpdate();
 	void ColorChange();
+	
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -48,6 +51,7 @@ private:
 	const float m_LAND_SCALEY = 12.0f;
 	GamePlayer* player = nullptr;
 	Save* save = nullptr;
+	unique_ptr<Helper> helper = nullptr;
 	XMFLOAT2 m_PlayerPos = {};
 	XMFLOAT2 m_SavePos = {};
 	//スプライト

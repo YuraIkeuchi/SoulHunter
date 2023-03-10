@@ -33,13 +33,12 @@ void MapChange::Finalize() {
 }
 //à√Ç≠Ç»ÇÈèàóù
 bool MapChange::AddBlack() {
+	float l_AddPower = 0.08f;
 	if (m_AddStartChange) {
-		if (s_color.w < m_ColorMax) {
-			s_color.w += 0.08f;
-		}
-		else {
+		s_color.w += l_AddPower;
+		s_color.w = min(s_color.w, m_ColorMax);
+		if (s_color.w == m_ColorMax) {
 			m_AddStartChange = false;
-			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
@@ -48,13 +47,12 @@ bool MapChange::AddBlack() {
 }
 //Ç†Ç©ÇÈÇ≠Ç»ÇÈèàóù
 bool MapChange::SubBlack() {
+	float l_SubPower = 0.08f;
 	if (m_SubStartChange) {
-		if (s_color.w > m_ColorMin) {
-			s_color.w -= 0.08f;
-		}
-		else {
+		s_color.w -= l_SubPower;
+		s_color.w = max(s_color.w, m_ColorMin);
+		if (s_color.w == m_ColorMin) {
 			m_SubStartChange = false;
-			s_color.w = m_ColorMin;
 			return true;
 		}
 	}

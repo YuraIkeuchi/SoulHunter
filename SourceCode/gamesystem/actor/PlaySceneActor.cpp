@@ -7,6 +7,7 @@
 #include "PlayerSkill.h"
 #include "ParticleEmitter.h"
 #include "MiniMap.h"
+#include "FPSManager.h"
 //プレイシーンの初期化(現在は魂だけ)
 void PlaySceneActor::PlaySceneInitialize() {
 	enemymanager->SoulSet(player);
@@ -272,7 +273,8 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	//player->ImGuiDraw();
+	player->ImGuiDraw();
+	MiniMap::GetInstance()->ImguiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {

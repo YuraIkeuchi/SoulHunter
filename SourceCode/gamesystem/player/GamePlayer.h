@@ -147,6 +147,7 @@ private:
 	int m_ThirdTimer = 0;
 	//HP
 	int m_HP = 0;
+	int a = 0;
 	//–³“GŽžŠÔ
 	int m_Interval = 0;
 	int m_FlashCount = 0;

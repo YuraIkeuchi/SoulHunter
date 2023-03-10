@@ -108,4 +108,3 @@ enum AnimationType {
 	Damage,
 	Fall
 };
-

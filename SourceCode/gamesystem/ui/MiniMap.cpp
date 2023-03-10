@@ -6,13 +6,13 @@
 #include "VolumManager.h"
 #include "VariableCommon.h"
 #include "PlayerSkill.h"
+
 MiniMap* MiniMap::GetInstance()
 {
 	static MiniMap instance;
 
 	return &instance;
 }
-
 //初期化
 void MiniMap::SpriteInit() {
 	IKESprite::LoadTexture(12, L"Resources/2d/sceneback/PauseBack.png");
@@ -80,7 +80,7 @@ void MiniMap::SpriteInit() {
 	}
 }
 void MiniMap::Initialize() {
-
+	helper = make_unique<Helper> ();
 }
 //更新
 void MiniMap::Update()
@@ -148,6 +148,13 @@ const void MiniMap::Draw() {
 	}
 	MiniPlayerSprite->Draw();
 	MapStateSprite->Draw();
+}
+//Imgui
+void MiniMap::ImguiDraw() {
+	ImGui::Begin("Map");
+	ImGui::Text("color.w:%f", m_MapColor.w);
+	ImGui::Text("m_ColorChangeType:%d", m_ColorChangeType);
+	ImGui::End();
 }
 //開放
 void MiniMap::Finalize() {
@@ -306,16 +313,12 @@ void MiniMap::SelectUpdate() {
 void MiniMap::ColorChange() {
 	float l_AddColor = 0.05f;//加わる色
 	//色の変更
-	//段々と色が変わる処理
 	if (m_ColorChangeType == Add) {
 		m_MapColor.w += l_AddColor;
 		m_PlayerColor.w += l_AddColor;
 		m_SaveColor.w += l_AddColor;
 		m_WholeColor.w += l_AddColor;
-		if ((m_MapColor.w > m_ColorMax) && (m_PlayerColor.w > m_ColorMax) && (m_SaveColor.w > m_ColorMax) && (m_WholeColor.w > m_ColorMax)) {
-			m_MapColor.w = m_ColorMax;
-			m_PlayerColor.w = m_ColorMax;
-			m_SaveColor.w = m_ColorMax;
+		if ((m_MapColor.w >= m_ColorMax)) {
 			m_ColorChangeType = No;
 		}
 	}
@@ -324,15 +327,17 @@ void MiniMap::ColorChange() {
 		m_PlayerColor.w -= l_AddColor;
 		m_SaveColor.w -= l_AddColor;
 		m_WholeColor.w -= l_AddColor;
-		if ((m_MapColor.w < m_ColorMin) && (m_PlayerColor.w < m_ColorMin) && (m_SaveColor.w < m_ColorMin) && (m_WholeColor.w < m_ColorMin)) {
-			m_MapColor.w = m_ColorMin;
-			m_PlayerColor.w = m_ColorMin;
-			m_SaveColor.w = m_ColorMin;
+		if ((m_MapColor.w <= m_ColorMin)) {
 			m_ColorChangeType = No;
 			m_ReturnMap = true;
 			m_TextTimer = 0;
 		}
 	}
+	//段々と色が変わる処理
+	helper->FloatClamp(m_MapColor.w, m_ColorMin, m_ColorMax);
+	helper->FloatClamp(m_PlayerColor.w, m_ColorMin, m_ColorMax);
+	helper->FloatClamp(m_SaveColor.w, m_ColorMin, m_ColorMax);
+	helper->FloatClamp(m_WholeColor.w, m_ColorMin, m_ColorMax);
 }
 //マップを切り替えるテキストが出てくる
 void MiniMap::MoveStateTex() {

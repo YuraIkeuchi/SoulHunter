@@ -450,6 +450,9 @@
     <ClCompile Include="SourceCode\engine\enginebase\OpenBrowser.cpp">
       <Filter>SourceCords\engine\enginebase</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\Common\Helper.cpp">
+      <Filter>SourceCords\gamesystem\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -865,6 +868,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h">
       <Filter>SourceCords\engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\Common\Helper.h">
+      <Filter>SourceCords\gamesystem\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
