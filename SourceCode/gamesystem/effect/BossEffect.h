@@ -3,6 +3,7 @@
 #include "IKETexture.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 class BossEffect {
 private:
@@ -27,6 +28,8 @@ private:
 public:
 	//getter setter
 private:
+	//クラス
+	unique_ptr<Helper> helper;
 	//テクスチャ
 	array<unique_ptr<IKETexture>, Effect_Max> ParticleEffect;
 	unique_ptr<IKETexture> HitEffectTexture;

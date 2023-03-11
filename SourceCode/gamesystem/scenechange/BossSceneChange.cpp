@@ -17,6 +17,8 @@ BossSceneChange::BossSceneChange() {
 	change_->SetColor(s_color);
 	change_->SetSize({ 1280.0f,720.0f });
 	change.reset(change_);
+
+	helper = make_unique< Helper>();
 }
 //XV
 void BossSceneChange::Update() {
@@ -34,12 +36,8 @@ void BossSceneChange::Finalize() {
 //ˆÃ‚­‚È‚éˆ—
 bool BossSceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		if (s_color.w < m_ColorMax) {
-			s_color.w += AddPower;
-		}
-		else {
+		if (helper->CheckMin(s_color.w, m_ColorMax, AddPower)) {
 			m_AddStartChange = false;
-			s_color.w = m_ColorMax;
 			return true;
 		}
 	}
@@ -49,15 +47,10 @@ bool BossSceneChange::AddBlack(float AddPower) {
 //–¾‚é‚­‚È‚éˆ—
 bool BossSceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
-		if (s_color.w > m_ColorMin) {
-			s_color.w -= SubPower;
-		}
-		else {
+		if (helper->CheckMax(s_color.w, m_ColorMin, -SubPower)) {
 			m_SubStartChange = false;
-			s_color.w = m_ColorMin;
 			return true;
 		}
 	}
-
 	return false;
 }

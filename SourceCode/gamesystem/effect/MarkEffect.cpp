@@ -11,6 +11,7 @@ MarkEffect::MarkEffect() {
 		markEffect_->SetPosition({ 0.0f,90.0f,0.0f });
 	
 		markEffect.reset(markEffect_);
+		helper = make_unique< Helper>();
 }
 //初期化
 void MarkEffect::Initialize() {
@@ -37,10 +38,7 @@ void MarkEffect::EffectMove(XMFLOAT3 StartPos) {
 	float l_AddFrame = 0.01f;//加算されるフレーム数
 	float l_ScaleMax = 2.5f;//最大の大きさ
 	//イージングで大きさと色を変えてる
-	if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
-	}
-	else {
+	if(helper->CheckMin(m_Frame,m_ColorMax,l_AddFrame)){
 		m_Frame = m_FrameMin;
 		m_Color.w = m_ColorMax;
 		m_Scale = m_ResetThirdFew;

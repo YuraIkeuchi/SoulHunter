@@ -168,7 +168,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw();
-		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -176,7 +175,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		camerawork->ImGuiDraw();
 		GameDraw(dxCommon);
 		FrontDraw();
 		dxCommon->PostDraw();

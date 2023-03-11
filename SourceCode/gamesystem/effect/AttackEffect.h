@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include "IKETexture.h"
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //攻撃エフェクト
 class AttackEffect {
@@ -26,9 +27,10 @@ public:
 	//getter setter
 	bool GetAttackAlive() { return  m_AttackAlive; }
 private:
+	unique_ptr<Helper> helper;
 	//攻撃エフェクト
 	unique_ptr<IKETexture> AttackEffecttexture;
-	XMFLOAT3 m_Pos = { 0.0f,0.0f,0.0f };//座標
+	XMFLOAT3 m_Position = { 0.0f,0.0f,0.0f };//座標
 	XMFLOAT4 m_Color = { 0.0f,0.0f,0.0f,1.0f };//色
 	XMFLOAT3 m_Scale = { 1.0f,1.0f,1.0f };//大きさ
 	XMFLOAT4 m_BirthColor = { 1.0f,1.0f,1.0f,1.0f };//誕生した瞬間の色

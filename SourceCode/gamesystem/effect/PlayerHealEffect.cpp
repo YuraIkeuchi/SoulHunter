@@ -13,6 +13,7 @@ void PlayerHealEffect::Initialize() {
 	healeffecttex_->TextureCreate();
 	healeffecttex.reset(healeffecttex_);
 	m_HealEffectNumber = Appear;
+	helper = make_unique< Helper>();
 }
 //XV
 void PlayerHealEffect::Update() {
@@ -50,18 +51,13 @@ void PlayerHealEffect::EffectMove() {
 	if (m_HealStart) {
 		m_HealRot.z += l_AddRotZ;
 		if (m_HealEffectNumber == Appear) {
-			m_HealScale.x += l_AddScale;
-			m_HealScale.y += l_AddScale;
-			m_HealScale.z += l_AddScale;
-			m_HealColor.w += l_AddColor;
-			if (m_HealColor.w > m_ColorMax) {
+			helper->Float3AddFloat(m_HealScale, l_AddScale);
+			if (helper->CheckMin(m_HealColor.w,m_ColorMax,l_AddColor)) {
 				m_HealEffectNumber = Disappear;
 			}
 		}
 		else {
-			m_HealColor.w -= l_AddColor;
-			m_HealColor.w = max(m_HealColor.w, m_ColorMin);
-			if (m_HealColor.w < m_ColorMin) {
+			if (helper->CheckMax(m_HealColor.w, m_ColorMin, -l_AddColor)) {
 				m_HealScale = m_ResetThirdFew;
 				m_HealEffectNumber = Appear;
 				m_HealStart = false;

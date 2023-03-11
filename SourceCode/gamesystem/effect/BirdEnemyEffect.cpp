@@ -12,6 +12,8 @@ BirdEnemyEffect::BirdEnemyEffect() {
 		JumpDamageEffect_[i]->SetScale(m_JumpDamageScale[i]);
 		JumpDamageEffect[i].reset(JumpDamageEffect_[i]);
 	}
+
+	helper = make_unique< Helper>();
 }
 //初期化
 void BirdEnemyEffect::Initialize() {
@@ -89,11 +91,12 @@ void BirdEnemyEffect::SetEffect(const XMFLOAT3& pos) {
 			//エフェクトが落ちていく
 			m_rot[i].z += m_AddRot[i];
 			m_pos[i].y -= m_Gravity[i];
+			//大きさも減らす
 			m_JumpDamageScale[i].x -= l_SubScale;
 			m_JumpDamageScale[i].y -= l_SubScale;
 			m_JumpDamageScale[i].z -= l_SubScale;
+			m_JumpDamageScale[i] = { max(m_JumpDamageScale[i].x,m_ResetFew),max(m_JumpDamageScale[i].y,m_ResetFew), max(m_JumpDamageScale[i].z,m_ResetFew) };
 			if (m_JumpDamageScale[i].x <= m_ResetFew) {
-				m_JumpDamageScale[i] = m_ResetThirdFew;
 				m_Effect[i] = false;
 				m_EffectNumber[i] = No;
 			}

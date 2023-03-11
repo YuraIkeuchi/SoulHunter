@@ -21,6 +21,8 @@ void PlayerDamageEffect::Initialize() {
 	HitEffectTexture_->TextureCreate();
 	HitEffectTexture_->SetScale(m_HitScale);
 	HitEffectTexture.reset(HitEffectTexture_);
+
+	helper = make_unique< Helper>();
 }
 //çXêV
 void PlayerDamageEffect::Update() {
@@ -109,13 +111,9 @@ void PlayerDamageEffect::DamageEffectMove() {
 				m_BoundPower[i].y += l_AddPowerY;
 			}
 
-			m_DamageEffectpos[i].x += m_BoundPower[i].x;
-			m_DamageEffectpos[i].y += m_BoundPower[i].y;
-			m_DamageEffectpos[i].z += m_BoundPower[i].z;
-			m_DamageEffectscale[i].x -= l_SubScale;
-			m_DamageEffectscale[i].y -= l_SubScale;
-			m_DamageEffectscale[i].z -= l_SubScale;
-			if (m_DamageEffectscale[i].x <= m_ResetFew) {
+			helper->Float3AddFloat3(m_DamageEffectpos[i], m_BoundPower[i]);
+			helper->Float3SubFloat(m_DamageEffectscale[i], l_SubScale);
+			if (helper->CheckMax(m_DamageEffectscale[i].x,m_ResetFew,m_ResetFew)) {
 				m_DamageEffectscale[i] = m_ResetThirdFew;
 				m_DamageAlive[i] = false;
 				m_DeleteEffect = true;

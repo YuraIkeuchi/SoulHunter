@@ -69,7 +69,7 @@ const void Save::Draw() {
 	if (m_SaveText) {
 		SaveSprite[m_SaveCount]->Draw();
 	}
-	//markEffect->Draw();
+	markEffect->Draw();
 }
 //“–‚½‚è”»’è
 bool Save::Collide() {

@@ -3,7 +3,7 @@
 PlayerEffect::PlayerEffect() {
 	
 }
-
+//エフェクトを管理する
 void PlayerEffect::CreateEffect(const std::string& newname, XMFLOAT3 pos, int dir) {
 	if (newname == "Attack") {
 		AttackEffect* newAttackEffect;
@@ -41,12 +41,11 @@ void PlayerEffect::CreateEffect(const std::string& newname, XMFLOAT3 pos, int di
 		healeffect.push_back(newHealEffect);
 	}
 }
-
+//初期化(いらないかも)
 void PlayerEffect::Initialize() {
 }
-
+//更新
 void PlayerEffect::Update() {
-	//エフェクト関係
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Update();
@@ -77,9 +76,8 @@ void PlayerEffect::Update() {
 		}
 	}
 }
-
+//エフェクトの描画
 void PlayerEffect::Draw() {
-	//エフェクトの描画
 	for (AttackEffect* attackeffect : attackeffects) {
 		if (attackeffect != nullptr) {
 			attackeffect->Draw();

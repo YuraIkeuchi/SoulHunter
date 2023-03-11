@@ -6,6 +6,7 @@ using namespace DirectX;
 //読み込み
 WallAttackEffect::WallAttackEffect() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
+	helper = make_unique< Helper>();
 }
 //初期化
 void WallAttackEffect::Initialize() {
@@ -50,7 +51,7 @@ void WallAttackEffect::EffectSet(const XMFLOAT3& pos,int HitDir) {
 	for (int i = 0; i < particleobj.size(); i++) {
 		//
 		if (!m_Effect[i] && !m_DeleteEffect) {
-			//乱数生成
+			//乱数生成(加算力と大きさ)
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_powerdistX(8, 12);
 			uniform_int_distribution<int> l_powerdistY(-5, 10);
@@ -79,11 +80,11 @@ void WallAttackEffect::EffectMove() {
 	for (int i = 0; i < particleobj.size(); i++) {
 		if (m_Effect[i]) {
 			m_BoundPower[i].y -= m_Gravity[i];
-			m_Pos[i] = { m_Pos[i].x + m_BoundPower[i].x,
-						m_Pos[i].y + m_BoundPower[i].y,
-						m_Pos[i].z + m_BoundPower[i].z };
-			m_Scale[i] = { m_Scale[i].x - m_AddScale[i],m_Scale[i].y - m_AddScale[i], m_Scale[i].z - m_AddScale[i] };
-			if (m_Scale[i].x <= m_ResetFew) {
+			//座標や大きさに加算する
+			helper->Float3AddFloat3(m_Pos[i], m_BoundPower[i]);
+			helper->Float3SubFloat(m_Scale[i], m_AddScale[i]);
+			//エフェクト消える
+			if (helper->CheckMax(m_Scale[i].x,m_ResetFew,m_ResetFew)) {
 				m_Scale[i] = m_ResetThirdFew;
 				m_Effect[i] = false;
 				m_DeleteEffect = true;
