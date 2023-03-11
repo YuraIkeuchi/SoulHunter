@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 
 class GamePlayer :
@@ -134,6 +135,7 @@ private:
 	//クラス
 	vector<PlayerEffect*> effects;
 	unique_ptr<Shake> shake = nullptr;
+	unique_ptr<Helper> helper;
 	//生きているかどうか
 	bool m_Alive = true;
 	//リスポーン

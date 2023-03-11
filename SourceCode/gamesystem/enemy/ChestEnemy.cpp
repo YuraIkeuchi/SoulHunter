@@ -165,6 +165,7 @@ void ChestEnemy::Pause() {
 }
 //ïÛî†ÇÃçUåÇ
 void ChestEnemy::ChestMove() {
+	float l_AddFrame = 0.1f;
 	Input* input = Input::GetInstance();
 	if ((input->TriggerButton(input->Button_A)) && (m_Hit) && (!m_Attack)) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/ntkz5-xxka3.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -192,11 +193,7 @@ void ChestEnemy::ChestMove() {
 			m_FootParticleCount++;
 		}
 		else if (m_MoveNumber == SetChest) {			//è„Ç…çsÇ≠
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.1f;
-			}
-			else {
-				m_Frame = 1.0f;
+			if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
 				m_IntervalTimer++;
 				if (m_IntervalTimer > 30) {
 					m_AfterPos = { m_Position.x,m_StartPos.y,m_Position.z };
@@ -207,11 +204,8 @@ void ChestEnemy::ChestMove() {
 			}
 		}
 		else if (m_MoveNumber == AttackChest) {			//çUåÇ
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.1f;
-			}
-			else {
-				m_Frame = 0.0f;
+			if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
+				m_Frame = m_FrameMin;
 				m_MoveNumber = IntervalChest;
 			}
 		}
@@ -225,11 +219,8 @@ void ChestEnemy::ChestMove() {
 			}
 		}
 		else {			//ñﬂÇÈ
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.1f;
-			}
-			else {
-				m_Frame = 0.0f;
+			if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
+				m_Frame = m_FrameMin;
 				m_Attack = false;
 			}
 		}

@@ -56,6 +56,8 @@ TutorialText::TutorialText() {
 		m_TexSize[i] = { 0.0f,0.0f };
 		m_AfterTexSize[i] = { 0.0f,0.0f };
 	}
+
+	helper = make_unique< Helper>();
 }
 //更新
 void TutorialText::Update() {
@@ -116,10 +118,6 @@ const void TutorialText::SpriteDraw() {
 	}
 }
 void TutorialText::ImGuiDraw() {
-	/*ImGui::Begin("Tutorial");
-	ImGui::Text("MoveCount%d", m_MoveCount);
-	ImGui::Text("m_BoardAlive[CameraMove]%d", m_BoardAlive[CameraMove]);
-	ImGui::End();*/
 }
 //当たり判定
 bool TutorialText::Collide() {
@@ -247,23 +245,18 @@ void TutorialText::Mission() {
 }
 //ボードが動く
 void TutorialText::MoveBoard() {
+	float l_AddFrame = 0.01f;
 	for (int i = 0; i < objboard.size(); i++) {
 		if (m_BoardState[i] == UpBoard) {
 			m_AfterPosY[i] = -280.0f;
-			if (m_Frame[i] < m_FrameMax) {
-				m_Frame[i] += 0.01f;
-			}
-			else {
+			if (helper->CheckMin(m_Frame[i], m_FrameMax, l_AddFrame)) {
 				m_BoardState[i] = NoMove;
 				m_Frame[i] = m_FrameMin;
 			}
 		}
 		else if (m_BoardState[i] == DownBoard) {
 			m_AfterPosY[i] = -290.0f;
-			if (m_Frame[i] < m_FrameMax) {
-				m_Frame[i] += 0.01f;
-			}
-			else {
+			if (helper->CheckMin(m_Frame[i], m_FrameMax, l_AddFrame)) {
 				m_BoardState[i] = NoMove;
 				m_BoardDraw[i] = false;
 				m_Frame[i] = m_FrameMin;

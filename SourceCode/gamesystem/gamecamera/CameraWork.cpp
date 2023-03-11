@@ -23,6 +23,8 @@ CameraWork::CameraWork() {
 	m_eyePos.z = m_TitleCameraCircleZ;
 	m_eyePos.y = 50.0f;
 	m_targetPos = { 0.0f,30.0f,0.0f };
+
+	helper = make_unique< Helper> ();
 }
 //更新
 void CameraWork::Update(DebugCamera* camera) {
@@ -64,7 +66,7 @@ void CameraWork::TitleCamera() {
 }
 //導入シーン
 void CameraWork::IntroductionCamera() {
-
+	float l_AddFrame = 0.005f;
 	//カメラの位置の処理
 	if (m_IntroTimer <= 119) {
 		m_eyePos = { 5.0f,10.0f,20.0f };
@@ -77,10 +79,7 @@ void CameraWork::IntroductionCamera() {
 		}
 
 		if (m_IntEyeStart) {
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.005f;
-			}
-			else {
+			if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
 				m_IntEyeStart = false;
 				m_Frame = m_FrameMin;
 			}
@@ -106,10 +105,7 @@ void CameraWork::IntroductionCamera() {
 		}
 
 		if (m_IntTargetStart) {
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.005f;
-			}
-			else {
+			if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
 				m_IntTargetStart = false;
 				m_Frame = m_FrameMin;
 			}

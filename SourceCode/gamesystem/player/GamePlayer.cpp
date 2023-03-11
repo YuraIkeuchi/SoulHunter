@@ -24,9 +24,8 @@ bool GamePlayer::Initialize()
 	fbxobject_->LoadAnimation();
 	m_fbxObject.reset(fbxobject_);
 
-	Shake* shake_ = new Shake();
-	shake.reset(shake_);
-
+	shake = make_unique< Shake>();
+	helper = make_unique< Helper>();
 	PlayerSword::GetInstance()->Initialize();
 
 	return true;
@@ -794,6 +793,10 @@ void GamePlayer::GoalMove() {
 }
 //死んだ時の動き
 bool GamePlayer::DeathMove() {
+	float l_AddFrame = 0.05f;
+	float l_AddColor = 0.01f;
+	float l_AddDisolve = 0.015f;
+	float l_TargetDisolve = 2.0f;
 	if (m_Death) {
 		Block::GetInstance()->SetThornDir(NoHit);
 		Block::GetInstance()->SetThornHit(false);
@@ -806,13 +809,7 @@ bool GamePlayer::DeathMove() {
 		}
 		//前を向く
 		if (m_DeathTimer >= 10) {
-			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.05f;
-			}
-			else {
-				m_Frame = m_FrameMax;
-			}
-
+			helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame);
 			m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, 180.0f);
 		}
 
@@ -831,26 +828,16 @@ bool GamePlayer::DeathMove() {
 			//シェイク始まったらパーティクル
 			m_DeathParticleCount++;
 			//ディゾルブで消す
-			if (m_Addcolor.x <= 1.0f) {
-				m_Addcolor.y += 0.01f;
-				m_Addcolor.z += 0.01f;
-			}
-			else {
-				m_Addcolor.y = 1.0f;
-				m_Addcolor.z = 1.0f;
-			}
-			if (m_AddDisolve < 2.0f) {
-				m_AddDisolve += 0.015f;
-			}
-			else {
-				m_AddDisolve = 1.5f;
+			helper->CheckMin(m_Addcolor.y, m_ColorMax, l_AddColor);
+			helper->CheckMin(m_Addcolor.z, m_ColorMax, l_AddColor);
+			
+			//消えきったらシーン変更
+			if (helper->CheckMin(m_AddDisolve, l_TargetDisolve, l_AddDisolve)) {
+				return true;
 			}
 		}
 		m_Position.x += m_ShakePos.x;
 		m_Position.y += m_ShakePos.y;
-		if (m_AddDisolve >= 1.9f) {
-			return true;
-		}
 	}
 	return false;
 }

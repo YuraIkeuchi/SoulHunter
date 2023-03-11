@@ -622,15 +622,9 @@ Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
 }
 //ボス登場シーンのイージング関数(回転)
 void FirstBoss::AppBossRot(XMFLOAT3 AfterRot, float AddFrame) {
-	if (m_RotFrame  < m_FrameMax)
-	{
-		m_RotFrame  += AddFrame;
-	}
-	else {
+	if (helper->CheckMin(m_RotFrame, m_FrameMax, AddFrame)) {
 		m_AfterRot = AfterRot;
-		m_RotFrame = m_FrameMax;
 	}
-
 	m_Rotation = {
 Ease(In,Cubic,m_RotFrame,m_Rotation.x,AfterRot.x),
 Ease(In,Cubic,m_RotFrame,m_Rotation.y,AfterRot.y),

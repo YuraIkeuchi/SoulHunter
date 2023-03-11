@@ -246,11 +246,11 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		chest->SpriteDraw();
 		tutorialtext->SpriteDraw();
 		pause->Draw();
-		BlackFilter->Draw();
-		chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
 		if (StageNumber != BossMap) {
 			enemymanager->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor());
 		}
+		chest->MapDraw(MiniMap::GetInstance()->GetMapType(), MiniMap::GetInstance()->GetMapColor(), pause->GetIsPause(), pause->GetPauseNumber());
+		BlackFilter->Draw();
 	}
 	mapchange->Draw();
 	scenechange->Draw();

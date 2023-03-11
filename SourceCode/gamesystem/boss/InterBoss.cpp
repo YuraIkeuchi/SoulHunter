@@ -77,7 +77,7 @@ bool InterBoss::collidePlayer() {
 	box.center = { m_Position.x,m_Position.y,m_Position.z };
 	box.scale = { m_HitRadius.x,m_HitRadius.y,m_HitRadius.z };
 
-	if (Collision::CheckSphere2Box(sphere, box) && l_Interval == 0 && m_HP > 0) {
+	if (Collision::CheckSphere2Box(sphere, box) && l_Interval == 0 && m_HP > 0 && player->GetHP() >= 1) {
 		player->PlayerHit(m_Position);
 		return true;
 	}

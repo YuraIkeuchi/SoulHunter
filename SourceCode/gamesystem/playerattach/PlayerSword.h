@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "SwordParticle.h"
+#include "Helper.h"
 //剣のクラス
 class PlayerSword : public
 	ObjCommon {
@@ -32,6 +33,7 @@ public:
 
 	void SetSwordParticleNum(int SwordParticleNum) { this->m_SwordParticleNum = SwordParticleNum; }
 private:
+	unique_ptr<Helper> helper;
 	//パーティクル
 	unique_ptr<SwordParticle> swordparticle = nullptr;
 

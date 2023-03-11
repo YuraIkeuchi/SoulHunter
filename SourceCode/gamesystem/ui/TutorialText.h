@@ -6,6 +6,7 @@
 #include <array>
 #include "CollisionPrimitive.h"
 #include "PlayerEffect.h"
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //チュートリアルのクラス(看板)
 class TutorialText {
@@ -51,6 +52,7 @@ public:
 
 private:
 	//クラス
+	unique_ptr<Helper> helper;
 	vector<PlayerEffect*> effects;
 	unique_ptr<GamePlayer> player = nullptr;
 	//OBB

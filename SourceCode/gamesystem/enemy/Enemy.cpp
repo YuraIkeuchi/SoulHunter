@@ -102,16 +102,16 @@ void Enemy::Action() {
 	BirthParticle();
 	//ダメージ時の動き
 	DamageAct();
-	//死んだときの挙動
-	DeathMove();
-	//パーティクル
-	DeathBirthParticle();
-	//エフェクト関係
-	ArgEffect();
-	//魂関係
-	ArgSoul();
-	//ミニマップに表示させる
-	MapEnemy();
+//死んだときの挙動
+DeathMove();
+//パーティクル
+DeathBirthParticle();
+//エフェクト関係
+ArgEffect();
+//魂関係
+ArgSoul();
+//ミニマップに表示させる
+MapEnemy();
 }
 //描画
 void Enemy::Draw(DirectXCommon* dxCommon) {
@@ -171,6 +171,7 @@ void Enemy::Move() {
 }
 //攻撃前の予備動作
 void Enemy::AttackExtra() {
+	float l_AddFrame = 0.1f;
 	//ロックオンした瞬間に飛ぶ
 	if (m_TargetTimer == 1 && !m_AttackExtra) {
 		m_AddPower = 0.3f;
@@ -187,7 +188,7 @@ void Enemy::AttackExtra() {
 				m_AfterRot.z = 90.0f;
 			}
 		}
-		else{
+		else {
 			if (m_Rotation.y == 90.0f) {
 				m_Rotation.z = 360.0f;
 				m_AfterRot.z = 270.0f;
@@ -201,14 +202,10 @@ void Enemy::AttackExtra() {
 
 	//イージングで回転指定
 	if (m_AttackExtra) {
-		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_Frame = 0.0f;
+		if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
+			m_Frame = m_FrameMin;
 			m_AttackExtra = false;
 		}
-
 
 		m_Rotation.z = Ease(In, Cubic, m_Frame, m_Rotation.z, m_AfterRot.z);
 	}

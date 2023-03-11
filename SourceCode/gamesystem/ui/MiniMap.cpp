@@ -339,8 +339,7 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == StartText) {
-		m_Frame += l_AddFrame;
-		m_Frame = min(m_Frame, m_FrameMin);
+		helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame);
 		if (input->TriggerButton(input->Button_B) || input->TriggerButton(input->Start)) {
 			m_Frame = 0.0f;
 			m_AfterStatePos = { 1280.0f,640.0f };
@@ -348,9 +347,7 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == BackText) {
-		m_Frame += l_AddFrame;
-		m_Frame = min(m_Frame, m_FrameMin);
-		if (m_Frame >= m_FrameMax) {
+		if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
 			m_Frame = m_FrameMin;
 			m_StateTextNumber = NoText;
 		}
