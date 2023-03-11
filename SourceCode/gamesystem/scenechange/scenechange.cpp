@@ -35,9 +35,7 @@ void SceneChange::Finalize() {
 }
 
 void SceneChange::ImGuiDraw() {
-	ImGui::Begin("change");
-	ImGui::Text("w:%f", s_color.w);
-	ImGui::End();
+	
 }
 //F‚ğ‰ÁZ
 bool SceneChange::AddBlack(float AddPower) {

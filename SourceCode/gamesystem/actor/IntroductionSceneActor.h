@@ -3,6 +3,7 @@
 #include "IKESprite.h"
 #include "IntroductionObj.h"
 #include "IntroPlayer.h"
+#include "Helper.h"
 /// タイトルシーン
 class IntroductionSceneActor : public BaseActor {
 public:
@@ -21,6 +22,7 @@ public:
 	//演出
 	void Movie();
 private://メンバ変数
+	unique_ptr<Helper> helper;
 	unique_ptr<IntroPlayer> introplayer = nullptr;
 	//Json読み込みのクラス
 	static IntroductionObj* Introductionobj;

@@ -6,6 +6,7 @@
 #include "DushPause.h"
 #include "HealPause.h"
 #include "JumpPause.h"
+#include "Helper.h"
 #include <array>   
 #include <memory> 
 using namespace std;         //  名前空間指定
@@ -21,6 +22,7 @@ public:
 	const void Draw();//描画
 	void ResetSkillPause();//リセット
 	void SelectSkill();//スキル選択
+	void ChangeColor();//色の変更
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -45,6 +47,7 @@ private:
 	unique_ptr<LibraPause> librapause = nullptr;
 	unique_ptr<HealPause> healpause = nullptr;
 	unique_ptr<JumpPause> jumppause = nullptr;
+	unique_ptr<Helper> helper;
 	//スプライト
 	unique_ptr<IKESprite> PauseSprite = nullptr;
 	unique_ptr<IKESprite> select = nullptr;

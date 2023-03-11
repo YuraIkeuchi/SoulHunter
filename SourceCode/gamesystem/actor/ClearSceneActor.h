@@ -3,6 +3,7 @@
 #include "IKESprite.h"
 #include "ClearObj.h"
 #include "ClearPlayer.h"
+#include "Helper.h"
 /// タイトルシーン
 class ClearSceneActor : public BaseActor {
 public:
@@ -21,7 +22,8 @@ public:
 	//演出
 	void Movie();
 private://メンバ変数
-	ClearPlayer* clearplayer = nullptr;
+	unique_ptr<Helper> helper;
+	unique_ptr<ClearPlayer> clearplayer = nullptr;
 	//Json読み込みのクラス
 	static ClearObj* clearobj;
 	array<unique_ptr<IKESprite>, 2> CurtainSprite;

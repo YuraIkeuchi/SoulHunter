@@ -62,7 +62,7 @@ Chest::Chest() {
 
 	//コンパススキル
 	IKESprite* CompassExplain_[CompassExplain_Max];
-	for (int i = 0; i < CompassExplain_Max; i++) {
+	for (int i = 0; i < CompassExplain.size(); i++) {
 		CompassExplain_[i] = IKESprite::Create(20, { 0.0f,0.0f });
 		int number_index_y = i / CompassExplain_Max;
 		int number_index_x = i % CompassExplain_Max;
@@ -79,7 +79,7 @@ Chest::Chest() {
 
 	//ライブラ
 	IKESprite* LibraExplain_[LibraExplain_Max];
-	for (int i = 0; i < LibraExplain_Max; i++) {
+	for (int i = 0; i < LibraExplain.size(); i++) {
 		LibraExplain_[i] = IKESprite::Create(21, { 0.0f,0.0f });
 		int number_index_y = i / LibraExplain_Max;
 		int number_index_x = i % LibraExplain_Max;
@@ -97,7 +97,7 @@ Chest::Chest() {
 
 	//ダッシュスキル
 	IKESprite* DushExplain_[DushExplain_Max];
-	for (int i = 0; i < DushExplain_Max; i++) {
+	for (int i = 0; i < DushExplain.size(); i++) {
 		DushExplain_[i] = IKESprite::Create(22, { 0.0f,0.0f });
 		int number_index_y = i / DushExplain_Max;
 		int number_index_x = i % DushExplain_Max;
@@ -114,7 +114,7 @@ Chest::Chest() {
 
 	//ヒール
 	IKESprite* HealExplain_[HealExplain_Max];
-	for (int i = 0; i < HealExplain_Max; i++) {
+	for (int i = 0; i < HealExplain.size(); i++) {
 		HealExplain_[i] = IKESprite::Create(23, { 0.0f,0.0f });
 		int number_index_y = i / HealExplain_Max;
 		int number_index_x = i % HealExplain_Max;
@@ -132,7 +132,7 @@ Chest::Chest() {
 
 	//ジャンプ
 	IKESprite* JumpExplain_[JumpExplain_Max];
-	for (int i = 0; i < JumpExplain_Max; i++) {
+	for (int i = 0; i < JumpExplain.size(); i++) {
 		JumpExplain_[i] = IKESprite::Create(24, { 0.0f,0.0f });
 		int number_index_y = i / JumpExplain_Max;
 		int number_index_x = i % JumpExplain_Max;
@@ -184,23 +184,23 @@ void Chest::Update() {
 
 	//色の設定
 	ExplainBack->SetColor(m_BackColor);
-	for (int i = 0; i < CompassExplain_Max; i++) {
+	for (int i = 0; i < CompassExplain.size(); i++) {
 		CompassExplain[i]->SetPosition(m_CompassTexPos[i]);
 		CompassExplain[i]->SetColor(m_CompassColor[i]);
 	}
-	for (int i = 0; i < LibraExplain_Max; i++) {
+	for (int i = 0; i < LibraExplain.size(); i++) {
 		LibraExplain[i]->SetPosition(m_LibraTexPos[i]);
 		LibraExplain[i]->SetColor(m_LibraColor[i]);
 	}
-	for (int i = 0; i < DushExplain_Max; i++) {
+	for (int i = 0; i < DushExplain.size(); i++) {
 		DushExplain[i]->SetPosition(m_DushTexPos[i]);
 		DushExplain[i]->SetColor(m_DushColor[i]);
 	}
-	for (int i = 0; i < HealExplain_Max; i++) {
+	for (int i = 0; i < HealExplain.size(); i++) {
 		HealExplain[i]->SetPosition(m_HealTexPos[i]);
 		HealExplain[i]->SetColor(m_HealColor[i]);
 	}
-	for (int i = 0; i < JumpExplain_Max; i++) {
+	for (int i = 0; i < JumpExplain.size(); i++) {
 		JumpExplain[i]->SetPosition(m_JumpTexPos[i]);
 		JumpExplain[i]->SetColor(m_JumpColor[i]);
 	}
@@ -232,19 +232,19 @@ const void Chest::Draw() {
 const void Chest::SpriteDraw() {
 	IKESprite::PreDraw();
 	ExplainBack->Draw();
-	for (int i = 0; i < CompassExplain_Max; i++) {
+	for (int i = 0; i < CompassExplain.size(); i++) {
 		CompassExplain[i]->Draw();
 	}
-	for (int i = 0; i < LibraExplain_Max; i++) {
+	for (int i = 0; i < LibraExplain.size(); i++) {
 		LibraExplain[i]->Draw();
 	}
-	for (int i = 0; i < DushExplain_Max; i++) {
+	for (int i = 0; i < DushExplain.size(); i++) {
 		DushExplain[i]->Draw();
 	}
-	for (int i = 0; i < DushExplain_Max; i++) {
+	for (int i = 0; i < HealExplain.size(); i++) {
 		HealExplain[i]->Draw();
 	}
-	for (int i = 0; i < JumpExplain_Max; i++) {
+	for (int i = 0; i < JumpExplain.size(); i++) {
 		JumpExplain[i]->Draw();
 	}
 }
@@ -347,6 +347,7 @@ void Chest::TexMove() {
 //宝箱を開ける
 void Chest::OpenChest() {
 	Input* input = Input::GetInstance();
+	float l_AddColor = 0.1f;
 	//宝箱オープン
 	if (input->TriggerButton(input->Button_A) && !m_Explain) {
 		if (m_Hit[Compass] && m_ChestState[Compass] == Close) {
@@ -418,10 +419,8 @@ void Chest::OpenChest() {
 	//宝箱の形態が変わる
 	for (int i = 0; i < Skill_Max; i++) {
 		if (m_ChestState[i] == Open) {
-			m_CloseColor[i].w -= 0.1f;
-			m_OpenColor[i].w += 0.1f;
-			m_CloseColor[i].w = max(m_CloseColor[i].w, m_ColorMin);
-			m_OpenColor[i].w = min(m_OpenColor[i].w, m_ColorMax);
+			helper->CheckMax(m_CloseColor[i].w, m_ColorMin, -l_AddColor);
+			helper->CheckMin(m_OpenColor[i].w, m_ColorMax, l_AddColor);
 		}
 	}
 }
@@ -440,40 +439,34 @@ void Chest::MapSet() {
 void Chest::Explain() {
 	//段々說明の文字が出るようになる
 	if (m_Explain) {
-		m_BackColor.w += m_ChangeAlpha;
-		m_BackColor.w = min(m_BackColor.w, m_ColorMax);
+		helper->CheckMin(m_BackColor.w, m_ColorMax, m_ChangeAlpha);
 		//テキストが出終わったら終わり
 		if (CompassText() || LibraText() || DushText() || HealText() || JumpText()) {
 			m_Explain = false;
 		}
 	}
 	else {
-		for (int i = 0; i < CompassExplain_Max; i++) {
-			m_CompassColor[i].w -= m_ChangeAlpha;
-			m_CompassColor[i].w = max(m_CompassColor[i].w, m_ColorMin);
+		//表示が薄くなる
+		for (int i = 0; i < CompassExplain.size(); i++) {
+			helper->CheckMax(m_CompassColor[i].w, m_ColorMin, -m_ChangeAlpha);
 		}
 
-		for (int i = 0; i < LibraExplain_Max; i++) {
-			m_LibraColor[i].w -= m_ChangeAlpha;
-			m_LibraColor[i].w = max(m_LibraColor[i].w, m_ColorMin);
+		for (int i = 0; i < LibraExplain.size(); i++) {
+			helper->CheckMax(m_LibraColor[i].w, m_ColorMin, -m_ChangeAlpha);
 		}
 
-		for (int i = 0; i < DushExplain_Max; i++) {
-			m_DushColor[i].w -= m_ChangeAlpha;
-			m_DushColor[i].w = max(m_DushColor[i].w, m_ColorMin);
+		for (int i = 0; i < DushExplain.size(); i++) {
+			helper->CheckMax(m_DushColor[i].w, m_ColorMin, -m_ChangeAlpha);
 		}
 
-		for (int i = 0; i < HealExplain_Max; i++) {
-			m_HealColor[i].w -= m_ChangeAlpha;
-			m_HealColor[i].w = max(m_HealColor[i].w, m_ColorMin);
+		for (int i = 0; i < HealExplain.size(); i++) {
+			helper->CheckMax(m_HealColor[i].w, m_ColorMin, -m_ChangeAlpha);
 		}
 
-		for (int i = 0; i < JumpExplain_Max; i++) {
-			m_JumpColor[i].w -= m_ChangeAlpha;
-			m_JumpColor[i].w = max(m_JumpColor[i].w, m_ColorMin);
+		for (int i = 0; i < JumpExplain.size(); i++) {
+			helper->CheckMax(m_JumpColor[i].w, m_ColorMin, -m_ChangeAlpha);
 		}
-		m_BackColor.w -= m_ChangeAlpha;
-		m_BackColor.w = max(m_BackColor.w, m_ColorMin);
+		helper->CheckMax(m_BackColor.w, m_ColorMin, -m_ChangeAlpha);
 	}
 }
 //コンパススキルの説明文が出る
@@ -482,7 +475,7 @@ bool Chest::CompassText() {
 	if (m_ReadText[Compass]) {
 		m_CompassTimer++;
 		if (input->TriggerButton(input->Button_A) && m_CompassTimer >= 10) {
-			for (int i = 0; i < CompassExplain_Max; i++) {
+			for (int i = 0; i < CompassExplain.size(); i++) {
 				m_CompassDraw[i] = false;
 			}
 			m_CompassTimer = 0;
@@ -492,7 +485,7 @@ bool Chest::CompassText() {
 	}
 	//徐々に説明文が出る
 	if (m_CompassTimer <= m_SkillTimerMax) {
-		for (int i = 0; i < CompassExplain_Max; i++) {
+		for (int i = 0; i < CompassExplain.size(); i++) {
 			if (m_CompassTimer % 30 == 0 && m_CompassTimer != 0) {
 				if (!m_CompassDraw[i]) {
 					m_CompassDraw[i] = true;
@@ -507,10 +500,8 @@ bool Chest::CompassText() {
 
 			if (m_CompassDraw[i]) {
 				//a値とフレームを一定数まで
-				m_CompassColor[i].w += m_ChangeAlpha;
-				m_CompassColor[i].w = min(m_CompassColor[i].w, m_ColorMax);
-				m_CompassTexframe[i] += m_ChangeTexFrame;
-				m_CompassTexframe[i] = min(m_CompassTexframe[i], m_FrameMax);
+				helper->CheckMin(m_CompassColor[i].w, m_ColorMax, m_ChangeAlpha);
+				helper->CheckMin(m_CompassTexframe[i], m_FrameMax, m_ChangeTexFrame);
 			
 				m_CompassTexPos[i] = {
 			Ease(In,Cubic, m_CompassTexframe[i],m_CompassTexPos[i].x, m_AfterCompassTexPos[i].x),
@@ -527,7 +518,7 @@ bool Chest::LibraText() {
 	if (m_ReadText[Libra]) {
 		m_LibraTimer++;
 		if (input->TriggerButton(input->Button_A) && m_LibraTimer >= 10) {
-			for (int i = 0; i < LibraExplain_Max; i++) {
+			for (int i = 0; i < LibraExplain.size(); i++) {
 				m_LibraDraw[i] = false;
 			}
 			m_LibraTimer = 0;
@@ -537,7 +528,7 @@ bool Chest::LibraText() {
 	}
 	//徐々に説明文が出る
 	if (m_LibraTimer <= m_LibraTimerMax) {
-		for (int i = 0; i < LibraExplain_Max; i++) {
+		for (int i = 0; i < LibraExplain.size(); i++) {
 			if (m_LibraTimer % 30 == 0 && m_LibraTimer != 0) {
 				if (!m_LibraDraw[i]) {
 					m_LibraDraw[i] = true;
@@ -554,10 +545,8 @@ bool Chest::LibraText() {
 
 			if (m_LibraDraw[i]) {
 				//a値とフレームを一定数まで
-				m_LibraColor[i].w += m_ChangeAlpha;
-				m_LibraColor[i].w = min(m_LibraColor[i].w, m_ColorMax);
-				m_LibraTexframe[i] += m_ChangeTexFrame;
-				m_LibraTexframe[i] = min(m_LibraTexframe[i], m_FrameMax);
+				helper->CheckMin(m_LibraColor[i].w, m_ColorMax, m_ChangeAlpha);
+				helper->CheckMin(m_LibraTexframe[i], m_FrameMax, m_ChangeTexFrame);
 				m_LibraTexPos[i] = {
 			Ease(In,Cubic, m_LibraTexframe[i],m_LibraTexPos[i].x, m_AfterLibraTexPos[i].x),
 			Ease(In,Cubic, m_LibraTexframe[i],m_LibraTexPos[i].y,m_AfterLibraTexPos[i].y),
@@ -573,7 +562,7 @@ bool Chest::DushText() {
 	if (m_ReadText[Dush]) {
 		m_DushTimer++;
 		if (input->TriggerButton(input->Button_A) && m_DushTimer >= 10) {
-			for (int i = 0; i < DushExplain_Max; i++) {
+			for (int i = 0; i < DushExplain.size(); i++) {
 				m_DushDraw[i] = false;
 			}
 			m_DushTimer = 0;
@@ -583,7 +572,7 @@ bool Chest::DushText() {
 	}
 	//徐々に説明文が出る
 	if (m_DushTimer <= m_SkillTimerMax) {
-		for (int i = 0; i < DushExplain_Max; i++) {
+		for (int i = 0; i < DushExplain.size(); i++) {
 			if (m_DushTimer % 30 == 0 && m_DushTimer != 0) {
 				if (!m_DushDraw[i]) {
 					m_DushDraw[i] = true;
@@ -597,10 +586,8 @@ bool Chest::DushText() {
 
 			if (m_DushDraw[i]) {
 				//a値とフレームを一定数まで
-				m_DushColor[i].w += m_ChangeAlpha;
-				m_DushColor[i].w = min(m_DushColor[i].w, m_ColorMax);
-				m_DushTexframe[i] += m_ChangeTexFrame;
-				m_DushTexframe[i] = min(m_DushTexframe[i], m_FrameMax);
+				helper->CheckMin(m_DushColor[i].w, m_ColorMax, m_ChangeAlpha);
+				helper->CheckMin(m_DushTexframe[i], m_FrameMax, m_ChangeTexFrame);
 				m_DushTexPos[i] = {
 			Ease(In,Cubic, m_DushTexframe[i],m_DushTexPos[i].x, m_AfterDushTexPos[i].x),
 			Ease(In,Cubic, m_DushTexframe[i],m_DushTexPos[i].y,m_AfterDushTexPos[i].y),
@@ -616,7 +603,7 @@ bool Chest::HealText() {
 	if (m_ReadText[Heal]) {
 		m_HealTimer++;
 		if (input->TriggerButton(input->Button_A) && m_HealTimer >= 10) {
-			for (int i = 0; i < HealExplain_Max; i++) {
+			for (int i = 0; i < HealExplain.size(); i++) {
 				m_HealDraw[i] = false;
 			}
 			m_HealTimer = 0;
@@ -626,7 +613,7 @@ bool Chest::HealText() {
 	}
 	//徐々に説明文が出る
 	if (m_HealTimer <= m_SkillTimerMax) {
-		for (int i = 0; i < HealExplain_Max; i++) {
+		for (int i = 0; i < HealExplain.size(); i++) {
 			if (m_HealTimer % 30 == 0 && m_HealTimer != 0) {
 				if (!m_HealDraw[i]) {
 					m_HealDraw[i] = true;
@@ -640,10 +627,8 @@ bool Chest::HealText() {
 
 			if (m_HealDraw[i]) {
 				//a値とフレームを一定数まで
-				m_HealColor[i].w += m_ChangeAlpha;
-				m_HealColor[i].w = min(m_HealColor[i].w, m_ColorMax);
-				m_HealTexframe[i] += m_ChangeTexFrame;
-				m_HealTexframe[i] = min(m_HealTexframe[i], m_FrameMax);
+				helper->CheckMin(m_HealColor[i].w, m_ColorMax, m_ChangeAlpha);
+				helper->CheckMin(m_HealTexframe[i], m_FrameMax, m_ChangeTexFrame);
 				m_HealTexPos[i] = {
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].x, m_AfterHealTexPos[i].x),
 			Ease(In,Cubic, m_HealTexframe[i],m_HealTexPos[i].y,m_AfterHealTexPos[i].y),
@@ -659,7 +644,7 @@ bool Chest::JumpText() {
 	if (m_ReadText[Jump]) {
 		m_JumpTimer++;
 		if (input->TriggerButton(input->Button_A) && m_JumpTimer >= 10) {
-			for (int i = 0; i < JumpExplain_Max; i++) {
+			for (int i = 0; i < JumpExplain.size(); i++) {
 				m_JumpDraw[i] = false;
 			}
 			m_JumpTimer = 0;
@@ -669,7 +654,7 @@ bool Chest::JumpText() {
 	}
 	//徐々に説明文が出る
 	if (m_JumpTimer <= m_LibraTimerMax) {
-		for (int i = 0; i < JumpExplain_Max; i++) {
+		for (int i = 0; i < JumpExplain.size(); i++) {
 			if (m_JumpTimer % 30 == 0 && m_JumpTimer != 0) {
 				if (!m_JumpDraw[i]) {
 					m_JumpDraw[i] = true;
@@ -686,10 +671,8 @@ bool Chest::JumpText() {
 
 			if (m_JumpDraw[i]) {
 				//a値とフレームを一定数まで
-				m_JumpColor[i].w += m_ChangeAlpha;
-				m_JumpColor[i].w = min(m_JumpColor[i].w, m_ColorMax);
-				m_JumpTexframe[i] += m_ChangeTexFrame;
-				m_JumpTexframe[i] = min(m_JumpTexframe[i], m_FrameMax);
+				helper->CheckMin(m_JumpColor[i].w, m_ColorMax, m_ChangeAlpha);
+				helper->CheckMin(m_JumpTexframe[i], m_FrameMax, m_ChangeTexFrame);
 				m_JumpTexPos[i] = {
 			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].x, m_AfterJumpTexPos[i].x),
 			Ease(In,Cubic, m_JumpTexframe[i],m_JumpTexPos[i].y,m_AfterJumpTexPos[i].y),

@@ -66,6 +66,8 @@ void IntroductionSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* ca
 	//オーディオ
 	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/8bo8k-1eq6w.wav");
 	Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum());
+
+	helper = make_unique< Helper>();
 }
 //更新
 void IntroductionSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -167,6 +169,9 @@ void IntroductionSceneActor::Finalize() {
 }
 //演出
 void IntroductionSceneActor::Movie() {
+	float l_AddFrame = 0.005f;
+	float l_AddColor = 0.01f;
+	float l_EndSepia = 0.1f;
 	//一定時間立つと画面が暗くなる
 	if (m_Timer == 420) {
 		PlayPostEffect = true;
@@ -174,22 +179,10 @@ void IntroductionSceneActor::Movie() {
 
 	//セピアカラーになる
 	if (PlayPostEffect) {
-		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.005f;
-		}
-		else {
-			m_Frame = 1.0f;
-		}
+		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, l_EndSepia);
 
-		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, 0.1f);
-
-		if (m_Frame == 1.0f) {
-			if (m_TextColor.w < 1.0f) {
-				m_TextColor.w += 0.01f;
-			}
-			else {
-				m_TextColor.w = 1.0f;
-			}
+		if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
+			helper->CheckMin(m_TextColor.w, m_ColorMax, l_AddColor);
 		}
 	}
 

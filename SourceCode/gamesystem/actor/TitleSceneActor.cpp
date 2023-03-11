@@ -102,6 +102,8 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//オーディオ
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
 	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
+
+	helper = make_unique< Helper>();
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -342,15 +344,12 @@ void TitleSceneActor::ModeMove() {
 }
 //色の変更
 void TitleSceneActor::ColorChange() {
+	//加算する色
+	float l_AddFrame = 0.1f;
 	if (m_ModeChange) {
-		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.1f;
-		}
-		else {
-			m_Frame = m_FrameMax;
+		if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
 			m_ModeChange = false;
 		}
-
 		m_TitleColor.w = Ease(In, Cubic, m_Frame, m_TitleColor.w, m_AfterTitleAlpha);
 		m_ModeColor.w = Ease(In, Cubic, m_Frame, m_ModeColor.w, m_AfterModeAlpha);
 	}

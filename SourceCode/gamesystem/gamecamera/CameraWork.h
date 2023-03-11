@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //ゲームのカメラの動き
 class CameraWork {
@@ -45,6 +46,7 @@ public:
 
 private:
 	//クラス
+	unique_ptr<Helper> helper;
 	unique_ptr<GamePlayer> player;
 	unique_ptr<IntroPlayer> introplayer;
 	unique_ptr<ClearPlayer> clearplayer;

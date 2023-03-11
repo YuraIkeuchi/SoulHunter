@@ -5,6 +5,7 @@
 #include "ParticleEmitter.h"
 #include "PlayerSword.h"
 bool InterEnemy::Initialize() {
+	helper = make_unique<Helper >();
 	return true;
 }
 //XV
@@ -158,12 +159,9 @@ bool InterEnemy::VanishEnemy() {
 	}
 
 	if (m_Disolve && m_Alive) {
-		m_Addcolor.x += l_AddColor;
-		m_Addcolor.y += l_AddColor;
-		m_Addcolor.z += l_AddColor;
-		m_Addcolor.x = min(m_Addcolor.x, m_ColorMax);
-		m_Addcolor.y = min(m_Addcolor.y, m_ColorMax);
-		m_Addcolor.z = min(m_Addcolor.z, m_ColorMax);
+		helper->CheckMin(m_Addcolor.x, m_ColorMax, l_AddColor);
+		helper->CheckMin(m_Addcolor.y, m_ColorMax, l_AddColor);
+		helper->CheckMin(m_Addcolor.z, m_ColorMax, l_AddColor);
 		if (m_AddDisolve < l_TargetDisolve) {
 			m_AddDisolve += l_AddColor;
 		}

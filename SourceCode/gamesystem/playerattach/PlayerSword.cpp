@@ -25,6 +25,7 @@ bool PlayerSword::Initialize() {
 
 	m_Scale = { 4.5f, 4.5f, 4.5f };
 	m_Color = { 1.0f, 1.0f, 0.0f, 0.0f };
+	helper = make_unique< Helper>();
 	return true;
 }
 
@@ -53,6 +54,7 @@ void PlayerSword::ImGuiDraw() {
 
 //Œ•‚ÌXV
 void PlayerSword::SwordUpdate() {
+	float l_AddFrame = 0.1f;
 	XMVECTOR l_VectorSwordPos;
 	//s—ñ‚ð‹‚ß‚é
 	l_VectorSwordPos.m128_f32[0] = m_HandMat.r[3].m128_f32[0];
@@ -65,11 +67,8 @@ void PlayerSword::SwordUpdate() {
 
 	m_SwordMatRot = m_FollowObject->GetMatrot();
 	if (m_SwordEase) {
-		if (m_SwordFrame < m_FrameMax) {
-			m_SwordFrame += 0.1f;
-		}
-		else {
-			m_SwordFrame = 0.0f;
+		if (helper->CheckMin(m_SwordFrame, m_FrameMax, l_AddFrame)) {
+			m_SwordFrame = m_FrameMin;
 			m_SwordEase = false;
 			m_SwordType = NoSword;
 		}
@@ -117,4 +116,5 @@ void PlayerSword::SwordFinish() {
 	m_SwordType = DeleteSword;
 	m_SwordAfterAlpha = 0.0f;
 	m_SwordParticleCount = 0;
+	m_SwordParticleNum = 0;
 }

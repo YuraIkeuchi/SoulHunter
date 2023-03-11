@@ -37,6 +37,8 @@ Pause::Pause() {
 	IKESprite* PauseBack_;
 	PauseBack_ = IKESprite::Create(ImageManager::PauseBack, { 0.0f,0.0f });
 	PauseBack.reset(PauseBack_);
+
+	helper = make_unique< Helper>();
 }
 //初期化
 void Pause::Initialize() {
@@ -48,10 +50,8 @@ void Pause::Initialize() {
 	skillpause->Update();
 	option->Update();
 }
-
 //更新
 void Pause::Update() {
-	float l_AddColor = 0.05f;//加わる色
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->Select) && (m_ReturnTimer == 0) && (!player->GetReadText())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Menu.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -72,25 +72,8 @@ void Pause::Update() {
 		m_ReturnTimer = 2;
 		m_IsPause = true;
 	}
-
-	//段々と色が変わる処理
-	if (m_ColorChangeType == Add) {
-		m_PauseColor.w += l_AddColor;
-		if (m_PauseColor.w > m_ColorMax) {
-			m_PauseColor.w = m_ColorMax;
-			m_ColorChangeType = No;
-		}
-	}
-	else if (m_ColorChangeType == Sub) {
-		m_PauseColor.w -= l_AddColor;
-		if (m_PauseColor.w < m_ColorMin) {
-			m_PauseColor.w = m_ColorMin;
-			m_ColorChangeType = No;
-			if (m_PauseNumber == NormalPause) {
-				m_IsPause = false;
-			}
-		}
-	}
+	//色の変更
+	ChangeColor();
 	//選択
 	PartsMove();
 	//元のポーズメニューに戻る
@@ -123,7 +106,6 @@ void Pause::Update() {
 	}
 	PauseSprite->SetColor(m_PauseColor);
 }
-
 //描画
 const void Pause::Draw() {
 	IKESprite::PreDraw();
@@ -149,12 +131,10 @@ const void Pause::Draw() {
 		}
 	}
 }
-
+//開放
 void Pause::Finalize() {
 }
-
-void Pause::ResetPause() {
-}
+//sin波
 void Pause::PartsMove() {
 	Input* input = Input::GetInstance();
 	//どのメニューを選んだかで更新するクラスが変わる
@@ -222,5 +202,23 @@ void Pause::PartsMove() {
 		m_PartsSize[SelectPause] = m_PartsSize[OptionPause];
 		m_PartsSize[SkillPause] = { 640.0f,128.0f };
 		m_Angle[SkillPause] = 0.0f;
+	}
+}
+//色の変更
+void Pause::ChangeColor() {
+	float l_AddColor = 0.05f;//加わる色
+	//段々と色が変わる処理
+	if (m_ColorChangeType == Add) {
+		if (helper->CheckMin(m_PauseColor.w, m_ColorMax, l_AddColor)) {
+			m_ColorChangeType = No;
+		}
+	}
+	else if (m_ColorChangeType == Sub) {
+		if (helper->CheckMax(m_PauseColor.w, m_ColorMin, -l_AddColor)) {
+			m_ColorChangeType = No;
+			if (m_PauseNumber == NormalPause) {
+				m_IsPause = false;
+			}
+		}
 	}
 }

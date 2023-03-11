@@ -5,6 +5,7 @@
 #include "GamePlayer.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //ポーズメニューのクラス
 class Pause {
@@ -17,8 +18,8 @@ public:
 	void Update();//更新
 	void Finalize();//解放
 	const void Draw();//描画
-	void ResetPause();//リセット
 	void PartsMove();//スプライトの動き
+	void ChangeColor();//色の変更
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -42,6 +43,8 @@ private:
 	unique_ptr<SkillPause> skillpause = nullptr;
 	unique_ptr<Option> option = nullptr;
 	unique_ptr<GamePlayer> player = nullptr;
+	//クラス
+	unique_ptr<Helper> helper;
 	//スプライト
 	unique_ptr<IKESprite> PauseBack;
 	unique_ptr<IKESprite> PauseSprite;

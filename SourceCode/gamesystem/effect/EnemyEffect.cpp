@@ -54,7 +54,7 @@ void EnemyEffect::Draw() {
 	IKETexture::PreDraw(AddBlendType);
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		if (m_Effect[i] && (m_Scale[i].x >= 0.0f && m_Scale[i].x <= 0.4f)) {
-			//ParticleEffect[i]->Draw();
+			ParticleEffect[i]->Draw();
 		}
 	}
 

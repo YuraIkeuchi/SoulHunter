@@ -1,10 +1,10 @@
 ﻿#include "SkillPause.h"
 #include "ImageManager.h"
 #include "Input.h"
-#include <Easing.h>
 #include "PlayerSkill.h"
 #include "Audio.h"
 #include "VolumManager.h"
+#include "VariableCommon.h"
 using namespace std;         //  名前空間指定
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -78,6 +78,8 @@ SkillPause::SkillPause() {
 		ExplainSprite_[i]->SetPosition({ 770.0f,200.0f });
 		ExplainSprite[i].reset(ExplainSprite_[i]);
 	}
+
+	helper = make_unique< Helper>();
 }
 //位置の初期化
 void SkillPause::InitPos() {
@@ -109,23 +111,10 @@ void SkillPause::Update() {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Menu.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_ColorChangeType = Sub;
 	}
-	//段々と色が変わる処理
-	if (m_ColorChangeType == Add) {
-		m_SkillColor.w += 0.05f;
-		if (m_SkillColor.w > 1.0f) {
-			m_SkillColor.w = 1.0f;
-			m_ColorChangeType = No;
-		}
-	}
-	else if (m_ColorChangeType == Sub) {
-		m_SkillColor.w -= 0.05f;
-		if (m_SkillColor.w < 0.0f) {
-			m_SkillColor.w = 0.0f;
-			m_ColorChangeType = No;
-			m_ReturnSkill = true;
-		}
-	}
-
+	//色の変更
+	ChangeColor();
+	//スキル選択
+	SelectSkill();
 	//色指定
 	PauseSprite->SetColor(m_SkillColor);
 	select->SetColor(m_SkillColor);
@@ -138,8 +127,6 @@ void SkillPause::Update() {
 	librapause->SetColor(m_SkillColor);
 	healpause->SetColor(m_SkillColor);
 	jumppause->SetColor(m_SkillColor);
-	//スキル選択
-	SelectSkill();
 	//選択肢が合うとサイズが動く
 	compasspause->ChangeSize(select->GetPosition());
 	dushpause->ChangeSize(select->GetPosition());
@@ -149,10 +136,6 @@ void SkillPause::Update() {
 }
 //描画
 const void SkillPause::Draw() {
-	ImGui::Begin("Pause");
-	ImGui::Text("SelectWidth:%d", m_SelectWeight);
-	ImGui::Text("SelectHeight:%d", m_SelectHeight);
-	ImGui::End();
 	IKESprite::PreDraw();
 	PauseSprite->Draw();
 	
@@ -243,6 +226,22 @@ void SkillPause::SelectSkill() {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Select.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_SelectWeight++;
 			select->SetPosition({ select->GetPosition().x + 150.0f,400.0f });
+		}
+	}
+}
+//色の変更
+void SkillPause::ChangeColor() {
+	float l_AddColor = 0.05f;
+	//段々と色が変わる処理
+	if (m_ColorChangeType == Add) {
+		if (helper->CheckMin(m_SkillColor.w, m_ColorMax, l_AddColor)) {
+			m_ColorChangeType = No;
+		}
+	}
+	else if (m_ColorChangeType == Sub) {
+		if (helper->CheckMax(m_SkillColor.w, m_ColorMin, -l_AddColor)) {
+			m_ColorChangeType = No;
+			m_ReturnSkill = true;
 		}
 	}
 }

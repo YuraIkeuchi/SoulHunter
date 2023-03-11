@@ -2,6 +2,7 @@
 #include "IKESprite.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //オプション画面のクラス
 class Option {
@@ -31,6 +32,7 @@ private:
 	static const int Option_Max = 2;//オプションの数
 private:
 	//クラス
+	unique_ptr<Helper> helper;
 	//スプライト
 	array<unique_ptr<IKESprite>, Option_Max> OptionSprite;
 	array<unique_ptr<IKESprite>, Option_Max> VolumBarSprite;

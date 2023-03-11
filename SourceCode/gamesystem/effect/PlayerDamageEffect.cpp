@@ -59,7 +59,6 @@ const void PlayerDamageEffect::Draw() {
 		HitEffectTexture->Draw();
 	}
 }
-
 //ダメージ食らった時のエフェクト
 void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 	int l_Division = 10;//割り算のためのもの
@@ -83,7 +82,7 @@ void PlayerDamageEffect::DamageEffectSet(const XMFLOAT3& pos) {
 		}
 	}
 }
-
+//エフェクトの動き
 void PlayerDamageEffect::DamageEffectMove() {
 	float l_AddPowerX = 0.02f;
 	float l_AddPowerY = 0.025f;
@@ -121,7 +120,6 @@ void PlayerDamageEffect::DamageEffectMove() {
 		}
 	}
 }
-
 //ヒットエフェクト
 void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 	//エフェクト出現
@@ -133,18 +131,13 @@ void PlayerDamageEffect::HitEffectSet(const XMFLOAT3& pos) {
 	}
 
 }
-
 //ヒットエフェクト動く
 void PlayerDamageEffect::HitEffectMove() {
 	float l_AddColor = 0.1f;
 	//エフェクト動く
 	if (m_HitEffect) {
-		m_HitScale.x += l_AddColor;
-		m_HitScale.y += l_AddColor;
-		m_HitScale.z += l_AddColor;
-		m_HitColor.w -= l_AddColor;
-
-		if (m_HitColor.w < m_ColorMin) {
+		helper->Float3AddFloat(m_HitScale, l_AddColor);
+		if (helper->CheckMax(m_HitColor.w,m_ColorMin,-l_AddColor)) {
 			m_HitColor = m_ResetFourthFew;
 			m_HitScale = m_ResetThirdFew;
 			m_HitEffect = false;

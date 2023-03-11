@@ -47,7 +47,7 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	scenechange->SetSubStartChange(true);
 
 	//プレイヤー
-	clearplayer = new ClearPlayer();
+	clearplayer = make_unique< ClearPlayer>();
 	clearplayer->Initialize();
 	lightgroup->SetPointLightActive(1, false);
 	lightgroup->SetPointLightActive(0, false);
@@ -55,10 +55,12 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	m_LightPos = { 5.0f,5.0f,-80.0f };
 
 	//プレイヤーが必要
-	camerawork->SetClearPlayer(clearplayer);
+	camerawork->SetClearPlayer(clearplayer.get());
 	//オーディオ
 	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
 	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+
+	helper = make_unique< Helper>();
 }
 //更新
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -156,6 +158,9 @@ void ClearSceneActor::Finalize() {
 }
 //演出
 void ClearSceneActor::Movie() {
+	float l_AddFrame = 0.005f;
+	float l_AddColor = 0.01f;
+	float l_EndSepia = 0.1f;
 	//一定時間立つと画面が暗くなる
 	if (m_Timer == 100) {
 		PlayPostEffect = true;
@@ -163,22 +168,10 @@ void ClearSceneActor::Movie() {
 
 	//セピアカラーになる
 	if (PlayPostEffect) {
-		if (m_Frame < m_FrameMax) {
-			m_Frame += 0.005f;
-		}
-		else {
-			m_Frame = 1.0f;
-		}
+		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, l_EndSepia);
 
-		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, 0.1f);
-
-		if (m_Frame == 1.0f) {
-			if (m_TextColor.w < 1.0f) {
-				m_TextColor.w += 0.01f;
-			}
-			else {
-				m_TextColor.w = 1.0f;
-			}
+		if (helper->CheckMin(m_Frame, m_FrameMax, l_AddFrame)) {
+			helper->CheckMin(m_TextColor.w, m_ColorMax, l_AddColor);
 		}
 
 		m_ClearPos.y -= 1.0f;

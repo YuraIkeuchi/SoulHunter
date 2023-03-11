@@ -38,7 +38,7 @@ void MarkEffect::EffectMove(XMFLOAT3 StartPos) {
 	float l_AddFrame = 0.01f;//加算されるフレーム数
 	float l_ScaleMax = 2.5f;//最大の大きさ
 	//イージングで大きさと色を変えてる
-	if(helper->CheckMin(m_Frame,m_ColorMax,l_AddFrame)){
+	if(helper->CheckMin(m_Frame,m_FrameMax,l_AddFrame)){
 		m_Frame = m_FrameMin;
 		m_Color.w = m_ColorMax;
 		m_Scale = m_ResetThirdFew;
