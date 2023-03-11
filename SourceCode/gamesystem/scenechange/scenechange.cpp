@@ -17,6 +17,8 @@ SceneChange::SceneChange() {
 	change_->SetColor(s_color);
 	change_->SetSize({ 1280.0f,720.0f });
 	change.reset(change_);
+
+	helper = make_unique< Helper>();
 }
 //XV
 void SceneChange::Update() {
@@ -31,12 +33,16 @@ const void SceneChange::Draw() {
 void SceneChange::Finalize() {
 
 }
+
+void SceneChange::ImGuiDraw() {
+	ImGui::Begin("change");
+	ImGui::Text("w:%f", s_color.w);
+	ImGui::End();
+}
 //F‚ð‰ÁŽZ
 bool SceneChange::AddBlack(float AddPower) {
 	if (m_AddStartChange) {
-		s_color.w += AddPower;
-		s_color.w = min(s_color.w, m_ColorMax);
-		if (s_color.w == m_ColorMax) {
+		if (helper->CheckMin(s_color.w, m_ColorMax, AddPower)) {
 			m_AddStartChange = false;
 			return true;
 		}
@@ -47,13 +53,10 @@ bool SceneChange::AddBlack(float AddPower) {
 //F‚ðŒ¸ŽZ
 bool SceneChange::SubBlack(float SubPower) {
 	if (m_SubStartChange) {
-		s_color.w -= SubPower;
-		s_color.w = max(s_color.w, m_ColorMin);
-		if (s_color.w == m_ColorMin) {
+		if (helper->CheckMax(s_color.w, m_ColorMin, -SubPower)) {
 			m_SubStartChange = false;
 			return true;
 		}
 	}
-	
 	return false;
 }

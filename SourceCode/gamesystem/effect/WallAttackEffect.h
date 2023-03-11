@@ -4,6 +4,7 @@
 #include "IkeObject3d.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  –¼‘O‹óŠÔw’è
 class WallAttackEffect {
 private:
@@ -28,6 +29,7 @@ private:
 public:
 	//getter setter
 private:
+	unique_ptr<Helper> helper;
 	array<unique_ptr <IKEObject3d>, Effect_Max> particleobj;
 	IKEModel* model = nullptr;
 	//‚»‚Ì‘¼•Ï”

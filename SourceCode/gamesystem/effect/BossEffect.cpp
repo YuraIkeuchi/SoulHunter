@@ -19,6 +19,8 @@ BossEffect::BossEffect() {
 	HitEffectTexture_->TextureCreate();
 	HitEffectTexture_->SetScale(m_HitScale);
 	HitEffectTexture.reset(HitEffectTexture_);
+
+	helper = make_unique< Helper>();
 }
 //初期化
 void BossEffect::Initialize() {
@@ -65,6 +67,8 @@ void BossEffect::Draw() {
 //エフェクトの動き
 void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 	int l_Division = 800;
+	//目標の大きさ
+	float l_TargetScale = 0.5f;
 	//エフェクトの発生
 	for (int i = 0; i < ParticleEffect.size(); i++) {
 		//
@@ -88,19 +92,16 @@ void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 		}
 
 		if (m_Effect[i]) {
-			m_Pos[i] = { m_Pos[i].x + m_BoundPower[i].x,
-						m_Pos[i].y + m_BoundPower[i].y,
-						m_Pos[i].z + m_BoundPower[i].z };
+			helper->Float3AddFloat3(m_Pos[i], m_BoundPower[i]);
 			if (!m_ScaleChange[i]) {
-				m_Scale[i] = { m_Scale[i].x + m_AddScale[i],m_Scale[i].y + m_AddScale[i], m_Scale[i].z + m_AddScale[i] };
-
-				if (m_Scale[i].x >= 0.5f) {
+				helper->Float3AddFloat(m_Scale[i], m_AddScale[i]);
+				if (m_Scale[i].x >= l_TargetScale) {
 					m_ScaleChange[i] = true;
 				}
 			}
 			else {
-				m_Scale[i] = { m_Scale[i].x - m_AddScale[i],m_Scale[i].y - m_AddScale[i], m_Scale[i].z - m_AddScale[i] };
-				if (m_Scale[i].x <= m_ResetFew) {
+				helper->Float3SubFloat(m_Scale[i], m_AddScale[i]);
+				if (helper->CheckMax(m_Scale[i].x, m_ResetFew, m_ResetFew)) {
 					m_Scale[i] = m_ResetThirdFew;
 					m_ScaleChange[i] = false;
 					m_Effect[i] = false;
@@ -113,22 +114,20 @@ void BossEffect::SetEffect(const XMFLOAT3& pos, bool& Effect, int HitDir) {
 }
 //ヒットエフェクト
 void BossEffect::SetHitEffect(const XMFLOAT3& pos, bool& Effect) {
+	float l_AddScale = 0.05f;
+	float l_AddColor = 0.05f;
 	//エフェクト出現
 	if (m_HitEffect == false && Effect && !m_DeleteHitEffect) {
 		m_HitScale = { 0.1f,0.1f,0.1f };
 		m_HitPos = { pos.x, pos.y, pos.z - 5.0f, };
-		m_HitColor = { 2.0f,2.0f,2.0f,2.0f };
+		m_HitColor = { 1.0f,1.0f,1.0f,1.0f };
 		m_HitEffect = true;
 	}
 
 	//エフェクト動く
 	if (m_HitEffect) {
-		m_HitScale.x += 0.05f;
-		m_HitScale.y += 0.05f;
-		m_HitScale.z += 0.05f;
-		m_HitColor.w -= 0.1f;
-
-		if (m_HitColor.w < 0.0f) {
+		helper->Float3AddFloat(m_HitScale, l_AddScale);
+		if (helper->CheckMax(m_HitColor.w, m_ColorMin, -l_AddColor)) {
 			m_HitColor = { 0.0f,0.0f,0.0f,0.0f };
 			m_HitScale = { 0.0f,0.0f,0.0f };
 			m_HitEffect = false;

@@ -307,33 +307,27 @@ void MiniMap::ColorChange() {
 	float l_AddColor = 0.05f;//加わる色
 	//色の変更
 	if (m_ColorChangeType == Add) {
-		m_MapColor.w += l_AddColor;
-		m_PlayerColor.w += l_AddColor;
-		m_SaveColor.w += l_AddColor;
-		m_WholeColor.w += l_AddColor;
-		if ((m_MapColor.w >= m_ColorMax)) {
+		helper->CheckMin(m_PlayerColor.w, m_ColorMax, l_AddColor);
+		helper->CheckMin(m_SaveColor.w, m_ColorMax, l_AddColor);
+		helper->CheckMin(m_WholeColor.w, m_ColorMax, l_AddColor);
+		if (helper->CheckMin(m_MapColor.w, m_ColorMax, l_AddColor)) {
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
-		m_MapColor.w -= l_AddColor;
-		m_PlayerColor.w -= l_AddColor;
-		m_SaveColor.w -= l_AddColor;
-		m_WholeColor.w -= l_AddColor;
-		if ((m_MapColor.w <= m_ColorMin)) {
+		helper->CheckMax(m_PlayerColor.w, m_ColorMin, -l_AddColor);
+		helper->CheckMax(m_SaveColor.w, m_ColorMin, -l_AddColor);
+		helper->CheckMax(m_WholeColor.w, m_ColorMin, -l_AddColor);
+		if (helper->CheckMax(m_MapColor.w, m_ColorMin, -l_AddColor)) {
 			m_ColorChangeType = No;
 			m_ReturnMap = true;
 			m_TextTimer = 0;
 		}
 	}
-	//段々と色が変わる処理
-	helper->FloatClamp(m_MapColor.w, m_ColorMin, m_ColorMax);
-	helper->FloatClamp(m_PlayerColor.w, m_ColorMin, m_ColorMax);
-	helper->FloatClamp(m_SaveColor.w, m_ColorMin, m_ColorMax);
-	helper->FloatClamp(m_WholeColor.w, m_ColorMin, m_ColorMax);
 }
 //マップを切り替えるテキストが出てくる
 void MiniMap::MoveStateTex() {
+	float l_AddFrame = 0.05f;
 	Input* input = Input::GetInstance();
 	if (m_StateTextNumber == NoText) {
 		m_TextTimer++;
@@ -345,12 +339,8 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == StartText) {
-		if (m_Frame < m_ColorMax) {
-			m_Frame += 0.05f;
-		}
-		else {
-			m_Frame = m_ColorMax;
-		}
+		m_Frame += l_AddFrame;
+		m_Frame = min(m_Frame, m_FrameMin);
 		if (input->TriggerButton(input->Button_B) || input->TriggerButton(input->Start)) {
 			m_Frame = 0.0f;
 			m_AfterStatePos = { 1280.0f,640.0f };
@@ -358,12 +348,11 @@ void MiniMap::MoveStateTex() {
 		}
 	}
 	else if (m_StateTextNumber == BackText) {
-		if (m_Frame < m_ColorMax) {
-			m_Frame += 0.05f;
-		}
-		else {
+		m_Frame += l_AddFrame;
+		m_Frame = min(m_Frame, m_FrameMin);
+		if (m_Frame >= m_FrameMax) {
+			m_Frame = m_FrameMin;
 			m_StateTextNumber = NoText;
-			m_Frame = 0.0f;
 		}
 	}
 

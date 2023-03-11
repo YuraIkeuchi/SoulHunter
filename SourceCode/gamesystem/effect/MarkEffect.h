@@ -2,6 +2,7 @@
 #include "IKETexture.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 
 //手紙やセーブポイントなど目立たせたい場所に出すエフェクト
@@ -22,6 +23,7 @@ public:
 	void Draw();//描画
 	void EffectMove(XMFLOAT3 StartPos);//エフェクトの動き
 private:
+	unique_ptr<Helper> helper;
 	//テクスチャ
 	unique_ptr<IKETexture> markEffect;
 	//変数

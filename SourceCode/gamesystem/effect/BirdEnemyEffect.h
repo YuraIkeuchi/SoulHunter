@@ -3,6 +3,7 @@
 #include "IKETexture.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //ジャンプしたときのエフェクト
 class BirdEnemyEffect {
@@ -30,6 +31,7 @@ private:
 public:
 	//getter setter
 private:
+	unique_ptr<Helper> helper;
 	//テクスチャ
 	array<unique_ptr<IKETexture>, JumpEffect_Max> JumpDamageEffect;
 

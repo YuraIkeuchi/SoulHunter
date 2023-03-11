@@ -2,6 +2,7 @@
 #include "IKETexture.h"
 #include <array>   
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //Vectorで持たなくていいプレイヤーエフェクトのクラス
 class PlayerDamageEffect {
@@ -32,6 +33,7 @@ private:
 	//定数
 	static const int DamageEffect_Max = 20;//エフェクトの数
 private:
+	unique_ptr<Helper> helper;
 	//ダメージ時
 	array<unique_ptr<IKETexture>, DamageEffect_Max> damagetex;
 	array<XMFLOAT3, DamageEffect_Max> m_DamageEffectpos;//座標

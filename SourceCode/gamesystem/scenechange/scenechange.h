@@ -1,6 +1,7 @@
 #pragma once
 #include"IKESprite.h"
 #include <memory>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //シーンを変えるときのクラス
 class SceneChange {
@@ -16,6 +17,7 @@ public:
 
 	bool SubBlack(float SubPower);//明るくなる
 
+	void ImGuiDraw();
 	const bool& GetAddStartChange() { return m_AddStartChange; }
 	const bool& GetSubStartChange() { return m_SubStartChange; }
 
@@ -31,6 +33,7 @@ private:
 private://静的メンバ変数
 	static XMFLOAT4 s_color;
 private:
+	unique_ptr<Helper> helper;
 	//シーン切り替え(縮小の方)
 	unique_ptr<IKESprite> change = nullptr;
 	XMFLOAT2 m_pos = { 640.0f,360.0f, };

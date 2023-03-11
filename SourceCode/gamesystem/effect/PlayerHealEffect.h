@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include "IKETexture.h"
 #include <memory> 
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //攻撃エフェクト
 class PlayerHealEffect {
@@ -23,6 +24,7 @@ public:
 	void EffectMove();//エフェクトの動き
 public:
 private:
+	unique_ptr<Helper> helper;
 	unique_ptr<IKETexture> healeffecttex;
 	//広がるエフェクト
 	bool m_HealStart = false;
