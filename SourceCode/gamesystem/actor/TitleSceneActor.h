@@ -2,6 +2,7 @@
 #include "BaseActor.h"
 #include "TitleObj.h"
 #include "IKESprite.h"
+#include "Helper.h"
 /// タイトルシーン
 class TitleSceneActor : public BaseActor {
 public:
@@ -26,6 +27,8 @@ private:
 	static const int MODE_MAX = 3;//モードパーツの最大数
 	static const int EXPLAIN_MAX = 3;//説明文の最大数
 private://メンバ変数
+	//クラス
+	unique_ptr<Helper> helper;
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> ModeSprite;

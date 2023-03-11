@@ -36,9 +36,9 @@ private:
 	array<unique_ptr<IKETexture>, JumpEffect_Max> JumpDamageEffect;
 
 	//その他変数
-	array<XMFLOAT3, JumpEffect_Max> m_pos;//座標
-	array<XMFLOAT3, JumpEffect_Max> m_rot;//回転
-	array<XMFLOAT3, JumpEffect_Max> m_JumpDamageScale;//大きさ
+	array<XMFLOAT3, JumpEffect_Max> m_Position;//座標
+	array<XMFLOAT3, JumpEffect_Max> m_Rotation;//回転
+	array<XMFLOAT3, JumpEffect_Max> m_Scale;//大きさ
 	array<float, JumpEffect_Max> m_Gravity;//重力
 	array<float, JumpEffect_Max> m_AddRot;//加わる回転力
 	array<XMFLOAT3, JumpEffect_Max> m_AddPower;//落下速度

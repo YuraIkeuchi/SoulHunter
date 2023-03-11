@@ -610,13 +610,8 @@ void FirstBoss::FireBallArgment() {
 }
 //ボス登場シーンのイージング関数(座標)
 void FirstBoss::AppBossMove(XMFLOAT3 AfterPos, float AddFrame) {
-	if (m_Frame < m_FrameMax)
-	{
-		m_Frame += AddFrame;
-	}
-	else {
+	if (helper->CheckMin(m_Frame, m_FrameMax, AddFrame)) {
 		m_AfterPos = AfterPos;
-		m_Frame = m_FrameMax;
 	}
 
 	m_Position = {

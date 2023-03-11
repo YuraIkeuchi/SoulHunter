@@ -2,6 +2,7 @@
 #include"IKESprite.h"
 #include"GamePlayer.h"
 #include "InterBoss.h"
+#include "Helper.h"
 //UIのクラス
 class UI {
 public:
@@ -21,6 +22,7 @@ private:
 	//定数
 	static const int HP_Max = 5;//HPの数
 private:
+	unique_ptr<Helper> helper;
 	unique_ptr<GamePlayer> player = nullptr;
 	unique_ptr<InterBoss> interboss = nullptr;
 	array<unique_ptr<IKESprite>,HP_Max> PlayerHpSprite;//プレイヤーのHP

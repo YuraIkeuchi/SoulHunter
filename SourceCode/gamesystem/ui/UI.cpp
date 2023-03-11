@@ -58,6 +58,8 @@ UI::UI(GamePlayer* player, InterBoss* boss) {
 	if (boss) {
 		m_BossHP = interboss->GetHP();
 	}
+
+	helper = make_unique< Helper>();
 }
 //XV
 void UI::Update(InterBoss* boss) {
@@ -87,12 +89,10 @@ void UI::Update(InterBoss* boss) {
 	BossHpSprite->SetSize(m_BossHPSize);
 	for (int i = 0; i < PlayerHpSprite.size(); i++) {
 		if (i >= m_HP) {
-			m_HPColor[i].w -= l_AddColor;
-			m_HPColor[i].w = max(m_HPColor[i].w, m_ColorMin);
+			helper->CheckMax(m_HPColor[i].w, m_ColorMin, -l_AddColor);
 		}
 		else {
-			m_HPColor[i].w += l_AddColor;
-			m_HPColor[i].w = min(m_HPColor[i].w, m_ColorMax);
+			helper->CheckMin(m_HPColor[i].w, m_ColorMax, l_AddColor);
 		}
 		PlayerHpSprite[i]->SetColor(m_HPColor[i]);
 	}

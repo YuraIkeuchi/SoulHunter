@@ -5,7 +5,7 @@
 #include "ObjCommon.h"
 #include "CollisionPrimitive.h"
 #include "IKESprite.h"
-
+#include "Helper.h"
 //敵基底
 class InterEnemy :
 public ObjCommon{
@@ -51,6 +51,7 @@ public:
 protected:
 	//クラス
 	unique_ptr<GamePlayer> player = nullptr;
+	unique_ptr<Helper> helper;
 	std::vector<EnemyEffect*> enemyeffects;
 	
 	//スプライト

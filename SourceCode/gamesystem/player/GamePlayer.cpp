@@ -243,9 +243,6 @@ void GamePlayer::Draw(DirectXCommon* dxCommon) {
 }
 //Imgui
 void GamePlayer::ImGuiDraw() {
-	ImGui::Begin("Player");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::End();
 }
 //エフェクトの更新
 void GamePlayer::EffectUpdate() {

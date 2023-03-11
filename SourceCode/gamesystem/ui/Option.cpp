@@ -23,6 +23,8 @@ Option::Option() {
 		VolumBarSprite_[i] = IKESprite::Create(ImageManager::VolumBar, { 0.0f,0.0f });
 		VolumBarSprite[i].reset(VolumBarSprite_[i]);
 	}
+
+	helper = make_unique< Helper>();
 }
 //初期化
 void Option::Initialize() {
@@ -32,7 +34,6 @@ void Option::Initialize() {
 	m_SEVolum = VolumManager::GetInstance()->GetSEVolum();
 	m_BGMVolum = VolumManager::GetInstance()->GetBGMVolum();
 }
-
 //更新
 void Option::Update() {
 	float l_AddColor = 0.05f;//加わる色
@@ -75,16 +76,12 @@ void Option::Update() {
 	//色の変更
 	//段々と色が変わる処理
 	if (m_ColorChangeType == Add) {
-		m_OptionColor.w += l_AddColor;
-		m_OptionColor.w = min(m_OptionColor.w, m_ColorMax);
-		if (m_OptionColor.w >= m_ColorMax) {
+		if (helper->CheckMin(m_OptionColor.w, m_ColorMax, l_AddColor)) {
 			m_ColorChangeType = No;
 		}
 	}
 	else if (m_ColorChangeType == Sub) {
-		m_OptionColor.w -= l_AddColor;
-		m_OptionColor.w = max(m_OptionColor.w, m_ColorMin);
-		if (m_OptionColor.w <= m_ColorMin) {
+		if (helper->CheckMax(m_OptionColor.w, m_ColorMin, -l_AddColor)) {
 			m_ColorChangeType = No;
 			m_ReturnOption = true;
 		}
@@ -100,7 +97,6 @@ void Option::Update() {
 		VolumBarSprite[i]->SetColor(m_OptionColor);
 	}
 }
-
 //描画
 const void Option::Draw() {
 	IKESprite::PreDraw();
