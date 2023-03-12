@@ -10,7 +10,7 @@ bool ClearSceneActor::m_ClearNew = false;
 void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//ƒJƒƒ‰ƒ[ƒN
 	camerawork = new CameraWork();
-	camerawork->SetCameraType(5);
+	camerawork->SetCameraType(CameraClear);
 	//‹¤’Ê‚Ì‰Šú‰»
 	BaseInitialize(dxCommon);
 	//Json

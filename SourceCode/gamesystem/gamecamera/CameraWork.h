@@ -10,6 +10,15 @@
 #include <memory>
 #include "Helper.h"
 using namespace std;         //  名前空間指定
+//カメラの種類
+enum CameraType {
+	CameraTitle,
+	CameraIntroduction,
+	CameraNormal,
+	CameraBossApp,
+	CameraBossEnd,
+	CameraClear,
+};
 //ゲームのカメラの動き
 class CameraWork {
 private:
@@ -112,14 +121,7 @@ private:
 	};
 	//カメラのタイプ
 	int m_CameraType = 0;
-	enum CameraType {
-		Title,
-		Introduction,
-		Normal,
-		BossApp,
-		BossEnd,
-		Clear,
-	};
+	
 
 	//導入シーン
 	int m_IntroTimer = 0;

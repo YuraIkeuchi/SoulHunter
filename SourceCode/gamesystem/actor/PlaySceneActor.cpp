@@ -28,7 +28,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
-	camerawork->SetCameraType(2);
+	camerawork->SetCameraType(CameraNormal);
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -275,7 +275,7 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 		}
 		ImGui::End();
 	}
-	player->ImGuiDraw();
+	camerawork->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
@@ -439,7 +439,7 @@ void PlaySceneActor::BossRoomUpdate() {
 		//ボス登場
 		if (m_BossNumber == BossApp) {
 			//カメラワークやプレイヤーの挙動
-			camerawork->SetCameraType(3);
+			camerawork->SetCameraType(CameraBossApp);
 			firstboss->SetMovie(true);
 			player->SetMovie(true);
 
@@ -480,7 +480,7 @@ void PlaySceneActor::BossRoomUpdate() {
 			//	m_NormalEnemyCount++;
 			//	respornenemy->SetEnemyArgment(false);
 			//}
-			camerawork->SetCameraType(2);
+			camerawork->SetCameraType(CameraNormal);
 
 			if (StageNumber == BossMap) {
 				if (!pause->GetIsPause()) {
@@ -502,7 +502,7 @@ void PlaySceneActor::BossRoomUpdate() {
 			}
 		}
 		else if (m_BossNumber == BossEnd) {
-			camerawork->SetCameraType(4);
+			camerawork->SetCameraType(CameraBossEnd);
 			//一定フレームでタイトルに戻る
 			if (bossstagobj->GetEndTimer() == 670) {
 				scenechange->SetAddStartChange(true);
@@ -514,7 +514,7 @@ void PlaySceneActor::BossRoomUpdate() {
 		}
 	}
 	else {
-		camerawork->SetCameraType(2);
+		camerawork->SetCameraType(CameraNormal);
 		firstboss->SetAlive(false);
 	}
 }

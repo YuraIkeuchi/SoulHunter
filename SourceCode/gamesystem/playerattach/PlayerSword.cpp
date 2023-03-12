@@ -9,7 +9,7 @@ PlayerSword* PlayerSword::GetInstance()
 
 	return &instance;
 }
-
+//初期化
 bool PlayerSword::Initialize() {
 	m_FollowModel = ModelManager::GetInstance()->GetModel(ModelManager::Sword);
 	IKEObject3d* m_FollowObject_ = new IKEObject3d();
@@ -28,7 +28,7 @@ bool PlayerSword::Initialize() {
 	helper = make_unique< Helper>();
 	return true;
 }
-
+//更新
 void PlayerSword::Update() {
 	SwordUpdate();
 	ParticleUpdate();
@@ -42,16 +42,7 @@ void PlayerSword::Draw(DirectXCommon* dxCommon) {
 }
 //Imgui描画
 void PlayerSword::ImGuiDraw() {
-	/*ImGui::Begin("playersword");
-	ImGui::Text("m_Color:%f", m_Color.w);
-	ImGui::Text("m_PosX:%f", m_Position.x);
-	ImGui::Text("m_PosY:%f", m_Position.y);
-	ImGui::Text("m_RotX:%f", m_Rotation.x);
-	ImGui::Text("m_RotY:%f", m_Rotation.y);
-	ImGui::Text("m_Ease:%d", m_SwordEase);
-	ImGui::End();*/
 }
-
 //剣の更新
 void PlayerSword::SwordUpdate() {
 	float l_AddFrame = 0.1f;
@@ -97,11 +88,11 @@ void PlayerSword::ParticleUpdate() {
 	}
 	swordparticle->Update(m_SwordParticlePos, m_SwordParticleCount, 1, m_FollowObject->GetMatrix2(m_HandMat));
 }
-
+//パーティクル描画
 void PlayerSword::ParticleDraw() {
 	swordparticle->Draw();
 }
-
+//剣の出現
 void PlayerSword::SwordBirth() {
 	//剣の処理
 	m_SwordEase = true;
@@ -109,7 +100,7 @@ void PlayerSword::SwordBirth() {
 	m_SwordType = ArgSword;
 	m_SwordAfterAlpha = 1.0f;
 }
-
+//剣消える
 void PlayerSword::SwordFinish() {
 	m_SwordEase = true;
 	m_SwordFrame = 0.0f;

@@ -258,9 +258,6 @@
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleObj.cpp">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ThornParticle.cpp">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClCompile>
@@ -663,9 +660,6 @@
       <Filter>SourceCords\gamesystem\save</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
-      <Filter>SourceCords\gamesystem\ParticleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleObj.h">
       <Filter>SourceCords\gamesystem\ParticleManager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ThornParticle.h">

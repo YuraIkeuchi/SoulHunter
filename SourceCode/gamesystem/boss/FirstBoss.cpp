@@ -183,9 +183,7 @@ void FirstBoss::Dead() {
 	float l_AddRot = 5.0f;
 	m_Rotation.y += l_AddRot;
 	if (m_Scale.x > 0.0f) {
-		m_Scale.x -= l_SubScale;
-		m_Scale.y -= l_SubScale;
-		m_Scale.z -= l_SubScale;
+		helper->Float3SubFloat(m_Scale, l_SubScale);
 	}
 	else {
 		m_Scale = { 0.0f,0.0f,0.0f };

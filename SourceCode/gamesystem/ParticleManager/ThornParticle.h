@@ -4,6 +4,7 @@
 #include "IkeObject3d.h"
 #include <array>   
 #include <memory>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //棘のOBJのパーティクル
 class ThornParticle {
@@ -51,6 +52,7 @@ private:
 public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
 private:
+	unique_ptr<Helper> helper;
 	array<unique_ptr <IKEObject3d>, ThornParticleObj_Max> particleobj;
 	IKEModel* model = nullptr;
 	//煙の方

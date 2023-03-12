@@ -4,6 +4,7 @@
 #include "IkeObject3d.h"
 #include <array>   
 #include <memory>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 //棘のOBJのパーティクル
 class BossEndParticle {
@@ -41,6 +42,7 @@ private:
 	//定数
 	static const int BossEndParticle_Max = 40;//パーティクルの数
 private:
+	unique_ptr<Helper> helper;
 	array<unique_ptr <IKEObject3d>, BossEndParticle_Max> particleobj;
 	IKEModel* model = nullptr;
 	//岩の方

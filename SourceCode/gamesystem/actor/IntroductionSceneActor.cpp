@@ -11,7 +11,7 @@ bool IntroductionSceneActor::m_IntroNew = false;
 void IntroductionSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//ƒJƒƒ‰ƒ[ƒN
 	camerawork = new CameraWork();
-	camerawork->SetCameraType(1);
+	camerawork->SetCameraType(CameraIntroduction);
 	//‹¤’Ê‚Ì‰Šú‰»
 	BaseInitialize(dxCommon);
 	//Json
