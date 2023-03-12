@@ -29,19 +29,19 @@ CameraWork::CameraWork() {
 //XV
 void CameraWork::Update(DebugCamera* camera) {
 	//ƒJƒƒ‰‚ª‚Ç‚Ì“®‚«‚ğ‚·‚é‚©
-	if (m_CameraType == Title) {
+	if (m_CameraType == CameraTitle) {
 		TitleCamera();
 	}
-	else if (m_CameraType == Introduction) {
+	else if (m_CameraType == CameraIntroduction) {
 		IntroductionCamera();
 	}
-	else if (m_CameraType == Normal) {
+	else if (m_CameraType == CameraNormal) {
 		NormalCamera();
 	}
-	else if(m_CameraType == BossApp) {
+	else if(m_CameraType == CameraBossApp) {
 		AppCamera();
 	}
-	else if(m_CameraType == BossEnd) {
+	else if(m_CameraType == CameraBossEnd) {
 		EndCamera();
 	}
 	else {

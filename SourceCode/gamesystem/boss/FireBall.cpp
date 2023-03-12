@@ -53,7 +53,6 @@ void FireBall::Shot() {
 	//弾が出現したらパーティクルも発生する
 	if (m_Alive) {
 		m_ParticleCount++;
-	
 		m_Position.x += m_AddSpeed;
 		m_Position.y += m_AddPowerY;
 	}

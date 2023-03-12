@@ -20,9 +20,7 @@ void  ResPornEnemy::Update(InterBoss* boss) {
 			uniform_int_distribution<int> l_resdist(0, 2);
 			m_ResPornType = l_resdist(mt);
 			m_ResPornParticle = true;
-			m_ResPornPos.x = l_BirthPos.x;
-			m_ResPornPos.y = l_BirthPos.y;
-			m_ResPornPos.z = l_BirthPos.z;
+			m_ResPornPos = l_BirthPos;
 		}
 
 		if (m_ResPornTimer == EnemyBirth) {

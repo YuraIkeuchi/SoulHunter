@@ -196,7 +196,7 @@ bool PlayerSoul::DrawCollide() {
 	}
 	return true;
 }
-
+//パーティクル
 void PlayerSoul::BirthParticle() {
 	XMFLOAT4 s_color = { 0.0f,0.5f,1.0f,0.8f };
 	XMFLOAT4 e_color = { 0.0f,0.5f,1.0f,0.8f };

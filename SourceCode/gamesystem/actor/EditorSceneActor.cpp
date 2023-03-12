@@ -20,7 +20,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	camerawork = new CameraWork();
 	enemymanager = new EnemyManager();
 	backmanager = new BackObjManager();
-	camerawork->SetCameraType(2);
+	camerawork->SetCameraType(CameraNormal);
 	OpenBrowser* openbrowser_;
 	openbrowser_ = new OpenBrowser();
 	openbrowser.reset(openbrowser_);

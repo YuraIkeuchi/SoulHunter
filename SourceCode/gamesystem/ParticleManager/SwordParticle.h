@@ -3,6 +3,7 @@
 #include "IKEObject3d.h"
 #include <array>   
 #include <memory>
+#include "Helper.h"
 using namespace std;         //  名前空間指定
 class SwordParticle {
 protected:
@@ -36,7 +37,6 @@ public:
 	void Draw();
 
 	void ImGuiDraw();
-	void ChangeShader(int DrawNumber);
 	void SetMatrix(XMMATRIX matrix);
 public:
 	void SetStartColor(const XMFLOAT4& m_color) { this->m_StartColor = m_color; }
@@ -45,7 +45,7 @@ private:
 	//定数
 	static const int Particle_Max = 40;//パーティクルの数
 private:
-
+	unique_ptr<Helper> helper;
 	IKEModel* model = nullptr;
 	array<unique_ptr <IKEObject3d>, Particle_Max> object;
 

@@ -1,11 +1,12 @@
 #include "SwordParticle.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include "VariableCommon.h"
 #include <random>
 SwordParticle::SwordParticle() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::Particle);
 }
-
+//初期化
 void SwordParticle::Initialize() {
 	IKEObject3d* object_[Particle_Max];
 	for (int i = 0; i < object.size(); i++) {
@@ -18,8 +19,10 @@ void SwordParticle::Initialize() {
 		object[i].reset(object_[i]);
 		m_pos[i] = { 0.0f,3.0f,3.0f };
 	}
-}
 
+	helper = make_unique< Helper>();
+}
+//更新
 void SwordParticle::Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATRIX matrix) {
 	NormalParticle(Timer, TargetTimer, matrix);
 	for (int i = 0; i < object.size(); i++) {
@@ -31,7 +34,7 @@ void SwordParticle::Update(XMFLOAT3 StartPos, int Timer, int TargetTimer, XMMATR
 		}
 	}
 }
-
+//描画
 void SwordParticle::Draw() {
 	IKEObject3d::PreDraw();
 	for (int i = 0; i < object.size(); i++) {
@@ -40,33 +43,26 @@ void SwordParticle::Draw() {
 		}
 	}
 }
-
+//ImGui
 void SwordParticle::ImGuiDraw() {
-}
-
-void SwordParticle::ChangeShader(int DrawNumber) {
 }
 //普通のパーティクル
 void SwordParticle::NormalParticle(int Timer, int TargetTimer, XMMATRIX matrix) {
+	float l_AddScale = 0.01f;
+	float l_TargetScale = 0.2f;
 	for (int i = 0; i < object.size(); i++) {
 		if (m_Alive[i]) {
 			m_pos[i].x += (cos(m_angle[i]) * m_speed[i].x);
 			m_pos[i].y += (sin(m_angle[i]) * m_speed[i].y);
 			if (!m_ScaleChange[i]) {
-				m_scale[i].x += 0.01f;
-				m_scale[i].y += 0.01f;
-				m_scale[i].z += 0.01f;
-
-				if (m_scale[i].x >= 0.2f) {
+				helper->Float3AddFloat(m_scale[i], l_AddScale);
+				if (helper->CheckMin(m_scale[i].x, l_TargetScale, m_ResetFew)) {
 					m_ScaleChange[i] = true;
 				}
 			}
 			else {
-				m_scale[i].x -= 0.01f;
-				m_scale[i].y -= 0.01f;
-				m_scale[i].z -= 0.01f;
-
-				if (m_scale[i].x <= 0.0f) {
+				helper->Float3SubFloat(m_scale[i], l_AddScale);
+				if (helper->CheckMax(m_scale[i].x,m_ResetFew,m_ResetFew)) {
 					m_Alive[i] = false;
 				}
 			}

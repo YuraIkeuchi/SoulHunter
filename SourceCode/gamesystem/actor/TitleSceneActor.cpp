@@ -76,7 +76,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	//カメラワーク
 	camerawork = new CameraWork();
-	camerawork->SetCameraType(0);
+	camerawork->SetCameraType(CameraTitle);
 
 	//Json
 	if (!m_TitleNew) {
@@ -221,6 +221,7 @@ void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 //解放
 void TitleSceneActor::Finalize() {
 }
+//ゲームモードの選択
 void TitleSceneActor::SelectGameMode() {
 	Input* input = Input::GetInstance();
 	//ゲームを始めるかモードを選択するか

@@ -73,7 +73,6 @@ enum BlendType
 	SubBlendType,
 };
 
-
 //“G‚ÌŽí—Þ
 enum EnemyType {
 	Normal,

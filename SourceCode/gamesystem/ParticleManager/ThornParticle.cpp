@@ -2,6 +2,7 @@
 #include "ImageManager.h"
 #include "ModelManager.h"
 #include <random>
+#include "VariableCommon.h"
 //読み込み
 ThornParticle::ThornParticle() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
@@ -29,6 +30,7 @@ void ThornParticle::Initialize() {
 		m_RockAlive[i] = false;
 		m_Rockscale[i] = { 0.0f,0.0f,0.0f };
 	}
+	helper = make_unique< Helper>();
 }
 //煙の方の更新
 void ThornParticle::TexUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer, int ThornDir) {
@@ -90,12 +92,12 @@ void ThornParticle::Draw() {
 		}
 	}
 }
-
+//ImGui
 void ThornParticle::ImGuiDraw() {
 }
-
 //各方向の更新
 void ThornParticle::UpSmokeParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.01f;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particletex.size(); i++) {
@@ -123,16 +125,15 @@ void ThornParticle::UpSmokeParticle(const XMFLOAT3& StartPos, int Timer, int Tar
 	for (int i = 0; i < particletex.size(); i++) {
 		if (m_SmokeAlive[i]) {
 			m_SmokePos[i].y += m_speed[i].y;
-			m_scale[i].x -= 0.01f;
-			m_scale[i].y -= 0.01f;
-			m_scale[i].z -= 0.01f;
-			if (m_scale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_scale[i], l_AddScale);
+			if (helper->CheckMax(m_scale[i].x,m_ResetFew,m_ResetFew)) {
 				m_SmokeAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::DownSmokeParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.01f;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particletex.size(); i++) {
@@ -160,16 +161,15 @@ void ThornParticle::DownSmokeParticle(const XMFLOAT3& StartPos, int Timer, int T
 	for (int i = 0; i < particletex.size(); i++) {
 		if (m_SmokeAlive[i]) {
 			m_SmokePos[i].y -= m_speed[i].y;
-			m_scale[i].x -= 0.01f;
-			m_scale[i].y -= 0.01f;
-			m_scale[i].z -= 0.01f;
-			if (m_scale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_scale[i], l_AddScale);
+			if (helper->CheckMax(m_scale[i].x, m_ResetFew, m_ResetFew)) {
 				m_SmokeAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::RightSmokeParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.01f;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particletex.size(); i++) {
@@ -197,16 +197,15 @@ void ThornParticle::RightSmokeParticle(const XMFLOAT3& StartPos, int Timer, int 
 	for (int i = 0; i < particletex.size(); i++) {
 		if (m_SmokeAlive[i]) {
 			m_SmokePos[i].x += m_speed[i].x;
-			m_scale[i].x -= 0.01f;
-			m_scale[i].y -= 0.01f;
-			m_scale[i].z -= 0.01f;
-			if (m_scale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_scale[i], l_AddScale);
+			if (helper->CheckMax(m_scale[i].x, m_ResetFew, m_ResetFew)) {
 				m_SmokeAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::LeftSmokeParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.01f;
 	//フレーム数が目標を超えたら出現する
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particletex.size(); i++) {
@@ -234,16 +233,15 @@ void ThornParticle::LeftSmokeParticle(const XMFLOAT3& StartPos, int Timer, int T
 	for (int i = 0; i < particletex.size(); i++) {
 		if (m_SmokeAlive[i]) {
 			m_SmokePos[i].x -= m_speed[i].x;
-			m_scale[i].x -= 0.01f;
-			m_scale[i].y -= 0.01f;
-			m_scale[i].z -= 0.01f;
-			if (m_scale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_scale[i], l_AddScale);
+			if (helper->CheckMax(m_scale[i].x, m_ResetFew, m_ResetFew)) {
 				m_SmokeAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::UpRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.005f;
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
@@ -270,16 +268,15 @@ void ThornParticle::UpRockParticle(const XMFLOAT3& StartPos, int Timer, int Targ
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x += m_RockAddPower[i].x;
-			m_Rockscale[i].x -= 0.005f;
-			m_Rockscale[i].y -= 0.005f;
-			m_Rockscale[i].z -= 0.005f;
-			if (m_Rockscale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_Rockscale[i], l_AddScale);
+			if (helper->CheckMax(m_Rockscale[i].x, m_ResetFew, m_ResetFew)) {
 				m_RockAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.005f;
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
@@ -305,16 +302,15 @@ void ThornParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int Ta
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x += m_RockAddPower[i].x;
-			m_Rockscale[i].x -= 0.005f;
-			m_Rockscale[i].y -= 0.005f;
-			m_Rockscale[i].z -= 0.005f;
-			if (m_Rockscale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_Rockscale[i], l_AddScale);
+			if (helper->CheckMax(m_Rockscale[i].x, m_ResetFew, m_ResetFew)) {
 				m_RockAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::RightRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.005f;
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
@@ -341,16 +337,15 @@ void ThornParticle::RightRockParticle(const XMFLOAT3& StartPos, int Timer, int T
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x += m_RockAddPower[i].x;
-			m_Rockscale[i].x -= 0.005f;
-			m_Rockscale[i].y -= 0.005f;
-			m_Rockscale[i].z -= 0.005f;
-			if (m_Rockscale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_Rockscale[i], l_AddScale);
+			if (helper->CheckMax(m_Rockscale[i].x, m_ResetFew, m_ResetFew)) {
 				m_RockAlive[i] = false;
 			}
 		}
 	}
 }
 void ThornParticle::LeftRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.005f;
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {
 			//飛ばす方向をランダムで決める
@@ -377,10 +372,8 @@ void ThornParticle::LeftRockParticle(const XMFLOAT3& StartPos, int Timer, int Ta
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x -= m_RockAddPower[i].x;
-			m_Rockscale[i].x -= 0.005f;
-			m_Rockscale[i].y -= 0.005f;
-			m_Rockscale[i].z -= 0.005f;
-			if (m_Rockscale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_Rockscale[i], l_AddScale);
+			if (helper->CheckMax(m_Rockscale[i].x, m_ResetFew, m_ResetFew)) {
 				m_RockAlive[i] = false;
 			}
 		}

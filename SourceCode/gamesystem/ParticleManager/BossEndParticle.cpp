@@ -1,7 +1,7 @@
 #include "BossEndParticle.h"
-#include "ImageManager.h"
 #include "ModelManager.h"
 #include <random>
+#include "VariableCommon.h"
 //“Ç‚Ýž‚Ý
 BossEndParticle::BossEndParticle() {
 	model = ModelManager::GetInstance()->GetModel(ModelManager::NormalBlock);
@@ -18,6 +18,8 @@ void BossEndParticle::Initialize() {
 		m_RockAlive[i] = false;
 		m_Rockscale[i] = { 0.0f,0.0f,0.0f };
 	}
+
+	helper = make_unique< Helper>();
 }
 //Šâ‚Ì•û‚ÌXV
 void BossEndParticle::ObjUpdate(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
@@ -43,6 +45,7 @@ void BossEndParticle::Draw() {
 void BossEndParticle::ImGuiDraw() {
 }
 void BossEndParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int TargetTimer) {
+	float l_AddScale = 0.005f;
 	if (Timer >= TargetTimer) {
 		for (int i = 0; i < particleobj.size(); i++) {
 			//”ò‚Î‚·•ûŒü‚ðƒ‰ƒ“ƒ_ƒ€‚ÅŒˆ‚ß‚é
@@ -69,10 +72,8 @@ void BossEndParticle::DownRockParticle(const XMFLOAT3& StartPos, int Timer, int 
 			m_RockAddPower[i].y -= m_Gravity[i];
 			m_RockPos[i].y += m_RockAddPower[i].y;
 			m_RockPos[i].x += m_RockAddPower[i].x;
-			m_Rockscale[i].x -= 0.005f;
-			m_Rockscale[i].y -= 0.005f;
-			m_Rockscale[i].z -= 0.005f;
-			if (m_Rockscale[i].x <= 0.0f) {
+			helper->Float3SubFloat(m_Rockscale[i], l_AddScale);
+			if (helper->CheckMax(m_Rockscale[i].x,m_ResetFew,m_ResetFew)) {
 				m_RockAlive[i] = false;
 			}
 		}
