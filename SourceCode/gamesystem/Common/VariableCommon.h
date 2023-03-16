@@ -96,6 +96,7 @@ enum AnimationType {
 	SecondAttack,
 	Rolling,
 	ThirdAttack,
+	UpAttack,
 	Walk,
 	FirstJump,
 	Wait,
@@ -105,5 +106,5 @@ enum AnimationType {
 	FinalJump,
 	Dush,
 	Damage,
-	Fall
+	Fall,
 };
